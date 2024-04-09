@@ -89,6 +89,44 @@ export function HeroStatsContent(props) {
   )
 }
 
+export function WonAuctionsContent(props) {
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={ZDJ_AUKCJI} alt='Your hero' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Wygrane licytacje: {props.stats.userAuctionsWon}</p>
+          <p className='pb-1'>Bilans punktowy: {props.stats.userAuctionsBalance}</p>
+
+        </Col>
+      </Row>
+  )
+}
+
+
+export function ColloquiumStatsContent(props) {
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={ZDJ_KOLOSOW} alt='Your hero' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Średni wynik z ostatniego kolokwium: {props.stats.avgTestScore}</p>
+          <p className='pb-1'>Twój wynik: {props.stats.userTestScore}</p>
+        </Col>
+      </Row>
+  )
+}
+
 export function PersonalRankingInfoContent(props) {
   const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
   const playerType = convertHeroTypeToPlayerType(props.stats.heroType)
