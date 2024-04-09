@@ -127,6 +127,8 @@ public class DashboardService {
         Double fileTaskPoints = getFileTaskPoints(member);
         Double userPoints = member.getPoints();
         Double maxPoints = getMaxPoints(student, course);
+        Double auctionsWon = getStudentAuctionsWon(student);
+        Double auctionsPoints = getStudentAuctionsPoints(student);
 
         return new GeneralStats(
                 avgGraphTask,
@@ -135,7 +137,9 @@ public class DashboardService {
                 graphTaskPoints,
                 fileTaskPoints,
                 userPoints,
-                maxPoints
+                maxPoints,
+                auctionsWon,
+                auctionsPoints
         );
     }
 
@@ -164,6 +168,20 @@ public class DashboardService {
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
     }
+
+    private Double getStudentAuctionsWon(User student) {
+        //todo
+//        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
+    }
+
+    private Double getStudentAuctionsPoints(User student) {
+        //todo
+//        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
+    }
+    private Double getGraphTaskPoints(CourseMember member) {
+        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
+    }
+
 
     private Double getFileTaskPoints(CourseMember member) {
         return getTaskPoints(fileTaskResultRepository.findAllByMember(member));

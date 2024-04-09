@@ -8,7 +8,9 @@ import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
-  PersonalRankingInfoContent
+  PersonalRankingInfoContent,
+  WonAuctionsContent,
+  ColloquiumStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'

@@ -17,4 +17,6 @@ public class GeneralStats {
     private Double fileTaskPoints;
     private Double allPoints;
     private Double maxPoints;
+    private Double auctionsWon;
+    private Double auctionsPoints;
 }
