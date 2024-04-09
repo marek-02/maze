@@ -64,10 +64,8 @@ export const GRAPH_NODE_SPECIAL_SIZE = 40
 
 export const base64Header = 'data:image/jpeg;base64,'
 
-export const BidImg = bidImg;
-
 export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
-export const getBidImage = 'frontend/src/utils/resources/activities/auctionTaskIcon.png'
+export const BidImg = 'frontend/src/utils/resources/activities/auctionTaskIcon.png'
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
   INFO: 'INFO',

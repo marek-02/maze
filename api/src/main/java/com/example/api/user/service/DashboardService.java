@@ -3,6 +3,7 @@ package com.example.api.user.service;
 import com.example.api.activity.Activity;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -33,6 +34,7 @@ import com.example.api.chapter.ChapterService;
 import com.example.api.user.badge.BadgeService;
 import com.example.api.user.dto.response.dashboard.DashboardResponse;
 import com.example.api.user.dto.response.dashboard.GeneralStats;
+import com.example.api.user.dto.response.dashboard.AuctionStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;
 import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
@@ -63,7 +65,6 @@ public class DashboardService {
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final AuctionRepository auctionRepository;
-    private final BidRepository bidRepository;
     private final SurveyService surveyService;
     private final InfoService infoService;
     private final ChapterService chapterService;
@@ -123,8 +124,8 @@ public class DashboardService {
     private AuctionStats getAuctionStats(CourseMember member) {
         log.info("getAuctionStats");
 
-        Double auctionsWon = getStudentAuctionsWon(student);
-        Double auctionsPoints = getStudentAuctionsPoints(student);
+        Double auctionsWon = getStudentAuctionsWonCount(member);
+        Double auctionsPoints = getStudentAuctionsPoints(member);
 
         return new AuctionStats(
                 auctionsWon,
@@ -150,7 +151,7 @@ public class DashboardService {
                 graphTaskPoints,
                 fileTaskPoints,
                 userPoints,
-                maxPoints,
+                maxPoints
         );
     }
 
@@ -176,10 +177,6 @@ public class DashboardService {
         return surveyResultRepository.countAllByMember(member);
     }
 
-    private Double getGraphTaskPoints(CourseMember member) {
-        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
-    }
-
     private Double getStudentAuctionsWonCount(CourseMember member) {
         return auctionRepository.findAllByResolvedIsTrue()
                 .stream()
@@ -188,7 +185,7 @@ public class DashboardService {
     }
 
     private Double getStudentAuctionsPoints(CourseMember membe) {
-        return 0;
+        return (Double) 0;
     }
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));

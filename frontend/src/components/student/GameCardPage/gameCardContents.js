@@ -4,14 +4,15 @@ import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, Linear
 import moment from 'moment'
 import { Col, Row } from 'react-bootstrap'
 import { Bar, Pie } from 'react-chartjs-2'
+
 import { ChartCol, CustomTable } from './gameCardContentsStyle'
 import { barConfig, pieConfig } from '../../../utils/chartConfig'
 import {
   convertHeroTypeToPlayerType,
   getActivityTypeName,
   getGameCardInfo,
-  HeroImg,
   BidImg,
+  HeroImg
 } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { PlayerType } from '../../../utils/userRole'
