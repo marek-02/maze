@@ -4,10 +4,15 @@ import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, Linear
 import moment from 'moment'
 import { Col, Row } from 'react-bootstrap'
 import { Bar, Pie } from 'react-chartjs-2'
-
 import { ChartCol, CustomTable } from './gameCardContentsStyle'
 import { barConfig, pieConfig } from '../../../utils/chartConfig'
-import { convertHeroTypeToPlayerType, getActivityTypeName, getGameCardInfo, HeroImg } from '../../../utils/constants'
+import {
+  convertHeroTypeToPlayerType,
+  getActivityTypeName,
+  getGameCardInfo,
+  HeroImg,
+  BidImg,
+} from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { PlayerType } from '../../../utils/userRole'
 import { colorPalette } from '../../general/chartHelper'
@@ -90,6 +95,11 @@ export function HeroStatsContent(props) {
 }
 
 export function WonAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsPoints = 0
+  } = props.stats
+
   return (
       <Row
           className={`h-100 d-flex justify-content-center align-items-center ${
@@ -97,11 +107,11 @@ export function WonAuctionsContent(props) {
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{ maxWidth: '100%' }} height='90%' src={ZDJ_AUKCJI} alt='Your hero' />
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
         </Col>
         <Col md={7}>
-          <p className='pb-1'>Wygrane licytacje: {props.stats.userAuctionsWon}</p>
-          <p className='pb-1'>Bilans punktowy: {props.stats.userAuctionsBalance}</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon}</p>
+          <p className='pb-1'>Bilans punktowy: {auctionsPoints}</p>
 
         </Col>
       </Row>
@@ -117,11 +127,11 @@ export function ColloquiumStatsContent(props) {
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{ maxWidth: '100%' }} height='90%' src={ZDJ_KOLOSOW} alt='Your hero' />
+          <img style={{maxWidth: '100%'}} height='90%' src={BidImg} alt='Your hero'/>
         </Col>
         <Col md={7}>
-          <p className='pb-1'>Średni wynik z ostatniego kolokwium: {props.stats.avgTestScore}</p>
-          <p className='pb-1'>Twój wynik: {props.stats.userTestScore}</p>
+          <p className='pb-1'>Średni wynik z ostatniego kolokwium:</p>
+          <p className='pb-1'>Twój wynik:</p>
         </Col>
       </Row>
   )

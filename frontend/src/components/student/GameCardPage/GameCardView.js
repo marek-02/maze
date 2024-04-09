@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+
 import GameCard from './GameCard'
 import {
   GradesStatsContent,
@@ -73,8 +74,8 @@ function GameCardView(props) {
             </Col>
             <Col md={7}>
               <GameCard
-                headerText='Ostatnio dodane aktywności'
-                content={<LastActivitiesContent theme={props.theme} stats={dashboardStats.lastAddedActivities} />}
+                headerText='Licytacje'
+                content={<WonAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>

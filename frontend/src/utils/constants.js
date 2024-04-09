@@ -4,8 +4,6 @@ import heroImg from './resources/achiever_type.png'
 import achieverImg from './resources/achieverImg.png'
 import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
-import BidImg from './resources/activities/auctionDashboardIcon.png'
-import ColloquiumImg from './resources/activities/colloquiumDashboardIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
 import InformationImg from './resources/activities/infoTaskIcon.png'
 import SubmitImg from './resources/activities/submitTaskIcon.png'
@@ -39,7 +37,7 @@ import warrior8 from './resources/warrior/7.png'
 import warrior10 from './resources/warrior/9.png'
 import { HeroType, PlayerType } from './userRole'
 import { GeneralRoutes, StudentRoutes } from '../routes/PageRoutes'
-import {ColloquiumStatsContent} from "../components/student/GameCardPage/gameCardContents";
+
 
 export const FIELD_REQUIRED = 'Pole wymagane.'
 export const NONNEGATIVE_NUMBER = 'Wymagana liczba nieujemna'
@@ -66,8 +64,10 @@ export const GRAPH_NODE_SPECIAL_SIZE = 40
 
 export const base64Header = 'data:image/jpeg;base64,'
 
-export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
+export const BidImg = bidImg;
 
+export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
+export const getBidImage = 'frontend/src/utils/resources/activities/auctionTaskIcon.png'
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
   INFO: 'INFO',

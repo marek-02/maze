@@ -87,7 +87,8 @@ public class DashboardService {
                 getHeroTypeStats(member),
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
-                getHeroStats(member)
+                getHeroStats(member),
+                getAuctionStats(member)
         );
     }
 
@@ -119,6 +120,18 @@ public class DashboardService {
                 .orElse(null);
     }
 
+    private AuctionStats getAuctionStats(CourseMember member) {
+        log.info("getAuctionStats");
+
+        Double auctionsWon = getStudentAuctionsWon(student);
+        Double auctionsPoints = getStudentAuctionsPoints(student);
+
+        return new AuctionStats(
+                auctionsWon,
+                auctionsPoints
+        );
+    }
+
     private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
         log.info("getGeneralStats");
 
@@ -129,8 +142,6 @@ public class DashboardService {
         Double fileTaskPoints = getFileTaskPoints(member);
         Double userPoints = member.getPoints();
         Double maxPoints = getMaxPoints(student, course);
-        Double auctionsWon = getStudentAuctionsWon(student);
-        Double auctionsPoints = getStudentAuctionsPoints(student);
 
         return new GeneralStats(
                 avgGraphTask,
@@ -140,8 +151,6 @@ public class DashboardService {
                 fileTaskPoints,
                 userPoints,
                 maxPoints,
-                auctionsWon,
-                auctionsPoints
         );
     }
 
@@ -175,12 +184,11 @@ public class DashboardService {
         return auctionRepository.findAllByResolvedIsTrue()
                 .stream()
                 .filter(auction -> !auction.getHighestBid().getMember().equals(member))
-                .sum()
+                .sum();
     }
 
     private Double getStudentAuctionsPoints(CourseMember membe) {
-        //todo
-//        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
+        return 0;
     }
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
