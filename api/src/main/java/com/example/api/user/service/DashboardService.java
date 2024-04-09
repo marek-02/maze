@@ -62,6 +62,8 @@ public class DashboardService {
     private final AdditionalPointsRepository additionalPointsRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
+    private final AuctionRepository auctionRepository;
+    private final BidRepository bidRepository;
     private final SurveyService surveyService;
     private final InfoService infoService;
     private final ChapterService chapterService;
@@ -169,12 +171,14 @@ public class DashboardService {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
     }
 
-    private Double getStudentAuctionsWon(User student) {
-        //todo
-//        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
+    private Double getStudentAuctionsWonCount(CourseMember member) {
+        return auctionRepository.findAllByResolvedIsTrue()
+                .stream()
+                .filter(auction -> !auction.getHighestBid().getMember().equals(member))
+                .sum()
     }
 
-    private Double getStudentAuctionsPoints(User student) {
+    private Double getStudentAuctionsPoints(CourseMember membe) {
         //todo
 //        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
     }

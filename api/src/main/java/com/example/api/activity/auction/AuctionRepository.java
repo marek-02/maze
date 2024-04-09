@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
     List<Auction> findAllByResolutionDateIsBeforeAndResolvedIsFalse(LocalDateTime localDateTime);
+    List<Auction> findAllByResolvedIsTrue();
 }
