@@ -27,6 +27,7 @@ import com.example.api.activity.task.graphtask.GraphTaskService;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.CourseService;
+import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -50,6 +51,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -62,6 +64,7 @@ public class DashboardService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final CourseMemberRepository courseMemberRepository;
     private final BidRepository bidRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
@@ -125,12 +128,12 @@ public class DashboardService {
     private AuctionStats getAuctionStats(CourseMember member, Long courseId) {
         log.info("getAuctionStats");
 
-        Double auctionsWon = getStudentAuctionsWonCount(member,courseId);
+        Integer auctionsWon = getStudentAuctionsWonCount(member,courseId);
         Double auctionsPoints = getStudentAuctionsPoints(member,courseId);
-        Double auctionsParticipations = getStudentAuctionsParticipations(member,courseId);
-        Double auctionsResolvedCount = getAuctionsResolvedCount(courseId);
-        Double auctionsCount = getAuctionsCount(courseId);
-        Double auctionRanking = getStudentAuctionRankingPosition(member,courseId);
+        Integer auctionsParticipations = getStudentAuctionsParticipations(member,courseId);
+        Integer auctionsResolvedCount = getAuctionsResolvedCount(courseId);
+        Integer auctionsCount = getAuctionsCount(courseId);
+        Integer auctionRanking = getStudentAuctionRankingPosition(member,courseId);
         String bestAuctioner = getBestStudentRanking(courseId);
 
         return new AuctionStats(
@@ -144,67 +147,63 @@ public class DashboardService {
         );
     }
 
-    private Map<Long,Integer> getStudentAuctionRanking(Long courseId){
+    private List<Long> getStudentAuctionRanking(Long courseId){
         List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
-        Map<Long,Integer> ranking = new HashMap<>();
+        Map<Long, List<Number>> ranking = new HashMap<>();
 
         if(!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {
                 long id = auction.getHighestBid().get().getMember().getId();
-                int value = ranking.getOrDefault(id,0);
-                ranking.put(id,value + 1);
+                double points = auction.getMaxPoints();
+
+                List<Number> curr = ranking.getOrDefault(id, Arrays.asList(0, 0.0));
+                ranking.put(id, Arrays.asList(curr.get(0).intValue() + 1, curr.get(1).doubleValue() + points));
             }
         }
-        return ranking;
+
+        List<Map.Entry<Long, List<Number>>> rankingList = new ArrayList<>(ranking.entrySet());
+
+        rankingList.sort((entry1, entry2) -> {
+            int compareValue = entry2.getValue().get(0).intValue() - entry1.getValue().get(0).intValue();
+            if (compareValue == 0) {
+                return Double.compare(entry2.getValue().get(1).doubleValue(), entry1.getValue().get(1).doubleValue());
+            } else {
+                return compareValue;
+            }
+        });
+
+        // Convert the sorted list of map entries to a list of student IDs
+        List<Long> sortedStudentIds = rankingList.stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return sortedStudentIds;
     }
     private String getBestStudentRanking(Long courseId) {
-        Map<Long,Integer> ranking = getStudentAuctionRanking(courseId);
-        long bestStudentId = -1;
-        int highestValue = 0;
-        for(Map.Entry<Long,Integer> rankingPos : ranking.entrySet()){
-            if(rankingPos.getValue() > highestValue){
-                bestStudentId = rankingPos.getKey();
-                highestValue = rankingPos.getValue();
-            }
-        }
+        List<Long> ranking = getStudentAuctionRanking(courseId);
+        if (!ranking.isEmpty()) {
+            CourseMember courseMember = courseMemberRepository.getById(ranking.get(0));
 
-        if(bestStudentId != -1){
-            Optional<CourseMember> courseMember = userService.getUser(bestStudentId).getCourseMember(courseId);
-
-            if (courseMember.isPresent()) {
-                return courseMember.get().getAlias();
-            }else{
+            if (courseMember != null) {
+                return courseMember.getAlias();
+            } else {
                 return "Brak aktualnego lidera";
             }
 
-        }else{
+        } else {
             return "Brak aktualnego lidera";
         }
     }
 
-    //todo
-    private Double getStudentAuctionRankingPosition(CourseMember member, Long courseId) {
-        Map<Long,Integer> ranking = getStudentAuctionRanking(courseId);
-        long bestStudentId = -1;
-        int highestValue = 0;
-        for(Map.Entry<Long,Integer> rankingPos : ranking.entrySet()){
-            if(rankingPos.getValue() > highestValue){
-                bestStudentId = rankingPos.getKey();
-                highestValue = rankingPos.getValue();
-            }
-        }
+    private Integer getStudentAuctionRankingPosition(CourseMember member, Long courseId) {
+        List<Long> ranking = getStudentAuctionRanking(courseId);
+        long id = member.getId();
 
-        if(bestStudentId != -1){
-            Optional<CourseMember> courseMember = userService.getUser(bestStudentId).getCourseMember(courseId);
-
-            if (courseMember.isPresent()) {
-                return (double) 2;
-            }else{
-                return (double) 2;
-            }
-
-        }else{
-            return (double) 2;
+        int index = ranking.indexOf(id);
+        if (index != -1) {
+            return (index + 1);
+        } else {
+            return (ranking.size() + 1);
         }
     }
 
@@ -256,8 +255,8 @@ public class DashboardService {
         return auctionRepository.findAllResolvedByCourseId(courseId);
     }
 
-    private Double getStudentAuctionsWonCount(CourseMember member, Long courseId) {
-        double count = 0;
+    private Integer getStudentAuctionsWonCount(CourseMember member, Long courseId) {
+        int count = 0;
         List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
         if(!resolvedAuctions.isEmpty()) {
@@ -270,33 +269,32 @@ public class DashboardService {
         return count;
     }
 
-    private Double getAuctionsResolvedCount(Long courseId) {
+    private Integer getAuctionsResolvedCount(Long courseId) {
         List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
         if(!resolvedAuctions.isEmpty()) {
-            return (double) resolvedAuctions.size();
+            return resolvedAuctions.size();
         }
 
         else {
-            return (double) 0;
+            return 0;
         }
 
     }
-//todo
-    private Double getAuctionsCount(Long courseId) {
+    private Integer getAuctionsCount(Long courseId) {
         List<Auction> resolvedAuctions = auctionRepository.findAllByCourseId(courseId);
 
         if(!resolvedAuctions.isEmpty()) {
-            return (double) resolvedAuctions.size();
+            return resolvedAuctions.size();
         }
 
         else {
-            return (double) 0;
+            return 0;
         }
     }
 
-    private Double getStudentAuctionsParticipations(CourseMember member, Long courseId) {
-        return (double) bidRepository.findAllByMemberAndCourse(member,courseId).size();
+    private Integer getStudentAuctionsParticipations(CourseMember member, Long courseId) {
+        return bidRepository.findAllByMemberAndCourse(member,courseId).size();
     }
 
     private Double getStudentAuctionsPoints(CourseMember member, Long courseId) {

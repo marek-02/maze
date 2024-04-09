@@ -114,7 +114,7 @@ export function KillerAuctionsContent(props) {
         </Col>
         <Col md={7}>
           <p className='pb-1'>Licytant #1: {bestAuctioner}</p>
-          <p className='pb-1'>Jesteś {auctionRanking} najlepszy w licytacjach</p>
+          <p className='pb-1'>Jesteś #{auctionRanking} najlepszy w licytacjach</p>
           <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
         </Col>
       </Row>

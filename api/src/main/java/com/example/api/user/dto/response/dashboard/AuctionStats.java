@@ -10,11 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuctionStats {
-    private Double auctionsWon;
+    private Integer auctionsWon;
     private Double auctionsPoints;
-    private Double auctionsParticipations;
-    private Double auctionsResolvedCount;
-    private Double auctionsCount;
-    private Double auctionRanking;
+    private Integer auctionsParticipations;
+    private Integer auctionsResolvedCount;
+    private Integer auctionsCount;
+    private Integer auctionRanking;
     private String bestAuctioner;
 }

@@ -76,7 +76,7 @@ function GameCardView(props) {
             <Col md={7}>
               <GameCard
                 headerText='Licytacje'
-                content={<KillerAuctionsContent stats={dashboardStats.auctionStats} />}
+                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>
