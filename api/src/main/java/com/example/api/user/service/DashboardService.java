@@ -178,14 +178,14 @@ public class DashboardService {
     }
 
     private Double getStudentAuctionsWonCount(CourseMember member) {
-        return auctionRepository.findAllByResolvedIsTrue()
+        return (double) auctionRepository.findAllByResolvedIsTrue()
                 .stream()
-                .filter(auction -> !auction.getHighestBid().getMember().equals(member))
-                .sum();
+                .filter(auction -> !auction.getHighestBid().get().getMember().equals(member))
+                .count();
     }
 
     private Double getStudentAuctionsPoints(CourseMember membe) {
-        return (Double) 0;
+        return (double) 0;
     }
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
