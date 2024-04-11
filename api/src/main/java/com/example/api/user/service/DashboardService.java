@@ -14,6 +14,10 @@ import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
+import com.example.api.activity.submittask.SubmitTask;
+import com.example.api.activity.submittask.SubmitTaskService;
+import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
+import com.example.api.activity.submittask.result.SubmitTaskStatus;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.survey.SurveyService;
 import com.example.api.activity.task.filetask.FileTask;
@@ -34,6 +38,7 @@ import com.example.api.user.badge.BadgeService;
 import com.example.api.user.dto.response.dashboard.DashboardResponse;
 import com.example.api.user.dto.response.dashboard.GeneralStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;
+import com.example.api.user.dto.response.dashboard.SubmitStats;
 import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
@@ -63,6 +68,7 @@ public class DashboardService {
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final SurveyService surveyService;
+    private final SubmitTaskResultRepository submitTaskResultRepository;
     private final InfoService infoService;
     private final ChapterService chapterService;
     private final RankService rankService;
@@ -85,7 +91,8 @@ public class DashboardService {
                 getHeroTypeStats(member),
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
-                getHeroStats(member)
+                getHeroStats(member),
+                getSubmitStats(member)
         );
     }
 
@@ -139,6 +146,14 @@ public class DashboardService {
         );
     }
 
+    private SubmitStats getSubmitStats(CourseMember member) {
+        return new SubmitStats(
+                submitTaskResultRepository.countSubmitTaskResultByMember(member),
+                submitTaskResultRepository.countSubmitTaskResultByMemberAndStatus(member, SubmitTaskStatus.ACCEPTED),
+                getFileTaskPoints(member)
+        );
+    }
+
     private Double getAvgGraphTask(CourseMember member) {
         OptionalDouble avg = graphTaskResultRepository.findAllByMember(member)
                 .stream()
@@ -183,6 +198,13 @@ public class DashboardService {
                 .filter(ActivityResult::isEvaluated)
                 .mapToDouble(ActivityResult::getPoints)
                 .sum();
+    }
+
+    private int getTaskCount(List<? extends ActivityResult> taskResults) {
+        return (int) taskResults
+                .stream()
+                .filter(ActivityResult::isEvaluated)
+                .count();
     }
 
     private Double getMaxPoints(User student, Course course) {
