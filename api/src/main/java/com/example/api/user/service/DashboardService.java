@@ -1,6 +1,7 @@
 package com.example.api.user.service;
 
 import com.example.api.activity.Activity;
+import com.example.api.activity.auction.Auction;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
 import com.example.api.activity.auction.AuctionRepository;
@@ -178,13 +179,20 @@ public class DashboardService {
     }
 
     private Double getStudentAuctionsWonCount(CourseMember member) {
-        return (double) auctionRepository.findAllByResolvedIsTrue()
-                .stream()
-                .filter(auction -> !auction.getHighestBid().get().getMember().equals(member))
-                .count();
+        int count = 0;
+        List<Auction> resolvedAuctions = auctionRepository.findAllResolved();
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                if (auction.getHighestBid().get().getMember().getId().equals(member.getId())) {
+                    count++;
+                }
+            }
+        }
+        return (double) count;
     }
 
-    private Double getStudentAuctionsPoints(CourseMember membe) {
+    private Double getStudentAuctionsPoints(CourseMember member) {
         return (double) 0;
     }
     private Double getGraphTaskPoints(CourseMember member) {

@@ -2,6 +2,7 @@ import moment from 'moment'
 
 import heroImg from './resources/achiever_type.png'
 import achieverImg from './resources/achieverImg.png'
+import bidImg from './resources/activities/auctionDashboardIcon.png'
 import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
@@ -65,7 +66,7 @@ export const GRAPH_NODE_SPECIAL_SIZE = 40
 export const base64Header = 'data:image/jpeg;base64,'
 
 export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
-export const BidImg = 'frontend/src/utils/resources/activities/auctionTaskIcon.png'
+export const BidImg = bidImg
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
   INFO: 'INFO',
