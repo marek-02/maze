@@ -2,6 +2,7 @@ package com.example.api.user.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
 import com.example.api.activity.auction.AuctionRepository;
@@ -178,22 +179,38 @@ public class DashboardService {
         return surveyResultRepository.countAllByMember(member);
     }
 
+    private List<Auction> getResolvedAuctions() {
+        return auctionRepository.findAllResolved();
+    }
+
     private Double getStudentAuctionsWonCount(CourseMember member) {
-        int count = 0;
-        List<Auction> resolvedAuctions = auctionRepository.findAllResolved();
+        double count = 0;
+        List<Auction> resolvedAuctions = getResolvedAuctions();
 
         if(!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {
                 if (auction.getHighestBid().get().getMember().getId().equals(member.getId())) {
-                    count++;
+                    count = count + 1;
                 }
             }
         }
-        return (double) count;
+        return count;
     }
 
     private Double getStudentAuctionsPoints(CourseMember member) {
-        return (double) 0;
+        double points = 0;
+        List<Auction> resolvedAuctions = getResolvedAuctions();
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                Bid bid = auction.getHighestBid().get();
+
+                if (bid.getMember().getId().equals(member.getId())) {
+                  points = points + bid.getPoints();
+                }
+            }
+        }
+        return points;
     }
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));

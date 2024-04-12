@@ -112,7 +112,7 @@ export function WonAuctionsContent(props) {
         </Col>
         <Col md={7}>
           <p className='pb-1'>Wygrane licytacje: {auctionsWon}</p>
-          <p className='pb-1'>Bilans punktowy: {auctionsPoints}</p>
+          <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
 
         </Col>
       </Row>
