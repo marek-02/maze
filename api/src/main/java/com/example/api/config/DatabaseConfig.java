@@ -1186,8 +1186,81 @@ public class DatabaseConfig {
                 course
         );
 
+        Badge badge20 = new ActivityScoreBadge(
+                null,
+                "Dzierżymord",
+                "Dzierżymordem zostaje Nieszczęśnik, który najwięcej razy uzyskał maksymalną nagrodę pełniąc rolę Ekonoma",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge21 = new ActivityScoreBadge(
+                null,
+                "Tropiciel",
+                "Każdy, kto znalazl przynajmniej trzy wilcze doły.",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge22 = new ActivityScoreBadge(
+                null,
+                "Kronikarz",
+                "Każdy, który będąc skrybą wykonał przynajmniej trzy bardzo dobre (100% nagrody) dokumentacje",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge23 = new ActivityScoreBadge(
+                null,
+                "Arcymotacz",
+                "Każdy, który będąc kabelmistrzem wykonał przynajmniej trzy bardzo dobre (100% nagrody) topologie",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+        
+        Badge badge24 = new ActivityScoreBadge(
+                null,
+                "E.U.geniusz",
+                "Ten, który najwięcej razy wskutek udzielonej w czasie spaceru pomocy został do tego glejtu nominowany przez nie swoją grupę",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge25 = new ActivityScoreBadge(
+                null,
+                "A.B.Normal",
+                "Ten, który wygrał i rozwiązał najwięcej licytacji o zadania (patrz: Hazard)  w razie remisu organizowany jest TWZ",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge26 = new ActivityScoreBadge(
+                null,
+                "Grim Reaper",
+                "Każdy, kto co najmniej trzy razy został Zausznikiem Krwiopijcy",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+       
+
         badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7, badge8, badge9, badge10,
-                badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
+                badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19,badge20,badge21,badge22,
+                badge23,badge24,badge25,badge26));
     }
 
     private void addReceivedPointsForUser(CourseMember student, Double points){

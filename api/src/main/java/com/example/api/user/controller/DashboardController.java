@@ -5,6 +5,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.user.service.DashboardService;
+import com.example.api.user.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/dashboard")
 @SecurityRequirement(name = "JWT_AUTH")
 public class DashboardController {
     private final DashboardService dashboardService;
 
-    @GetMapping
+    @GetMapping("/dashboard")
     public ResponseEntity<DashboardResponse> getStudentDashboard(@RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         return ResponseEntity.ok().body(dashboardService.getStudentDashboard(courseId));
+    }
+
+    @GetMapping("/someonesdashboard")
+    public ResponseEntity<DashboardResponse> getSpecifiedStudentDashboard(@RequestParam Long userId , @RequestParam Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        return ResponseEntity.ok().body(dashboardService.getSpecifiedStudentDashboard(userId,courseId));
     }
 }

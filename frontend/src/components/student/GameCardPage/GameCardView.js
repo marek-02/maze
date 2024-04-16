@@ -8,7 +8,8 @@ import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
-  PersonalRankingInfoContent
+  PersonalRankingInfoContent,
+  SearchOthersStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
@@ -19,6 +20,9 @@ function GameCardView(props) {
   const [dashboardStats, setDashboardStats] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
 
+  const [selectedUserId,setSelectedUserId] = useState(-1)
+  const [selectedUsersDashboardStats,setSelectedUsersDashboardStats] = useState(undefined)
+
   useEffect(() => {
     StudentService.getDashboardStats(courseId)
       .then((response) => {
@@ -27,6 +31,25 @@ function GameCardView(props) {
       })
       .catch(() => setDashboardStats(null))
   }, [])
+
+  useEffect(() => {
+    StudentService.getSpecifiedStudentsDashboardStats(selectedUserId,courseId)
+    .then((response) => {
+      setSelectedUsersDashboardStats(response)
+      localStorage.setItem('heroType', response?.heroTypeStatsDTO?.heroType)
+    })
+    .catch(((err) => {
+      console.log(err)
+      setSelectedUsersDashboardStats(null)
+    }))
+  },[selectedUserId])
+
+
+  const changeSelectedUserId = (newUserId) => {
+    console.log(`Invoked changeSelectedUserId: ${newUserId}`)
+    console.log(selectedUsersDashboardStats)
+    setSelectedUserId(newUserId)
+  }
 
   return (
     <Container>
@@ -58,15 +81,8 @@ function GameCardView(props) {
           <Row className='m-0 mb-5 m-md-0 pt-3'>
             <Col md={5}>
               <GameCard
-                headerText='Miejsce w rankingu'
-                content={
-                  <PersonalRankingInfoContent
-                    stats={{
-                      ...dashboardStats.heroTypeStatsDTO,
-                      userPoints: dashboardStats.generalStats.allPoints
-                    }}
-                  />
-                }
+                headerText='Podgląd statystyk innego gracza'
+                content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} handler={changeSelectedUserId}/>}
               />
             </Col>
             <Col md={7}>

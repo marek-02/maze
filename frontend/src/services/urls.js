@@ -152,6 +152,7 @@ export const GET_FILE_LOG = `${GET_FILE}/log`
 
 // Dashboard Controller
 export const GET_DASHBOARD = `${BASE_URL}/dashboard`
+export const GET_SOMEONES_DASHBOARD = `${BASE_URL}/someonesdashboard`
 
 // Activity Controller
 const ACTIVITY = `${BASE_URL}/activity`

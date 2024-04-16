@@ -89,6 +89,24 @@ public class DashboardService {
         );
     }
 
+    public DashboardResponse getSpecifiedStudentDashboard(Long userId,Long courseId) throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        log.info("getSpecifiedStudentDashboard");
+        User student = userService.getUser(userId);
+        CourseMember member = student.getCourseMember(courseId).orElseThrow();
+        Course course = courseService.getCourse(courseId);
+
+        badgeService.checkAllBadges(member);
+
+        return new DashboardResponse(
+                getHeroTypeStats(member),
+                getGeneralStats(student, course, member),
+                getLastAddedActivities(course),
+                getHeroStats(member)
+        );
+    }
+
+
+
     private HeroTypeStatsDTO getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
         log.info("getHeroTypeStats");
         String heroType = String.valueOf(member.getHeroType());
