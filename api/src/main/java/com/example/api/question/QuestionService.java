@@ -106,7 +106,7 @@ public class QuestionService {
 
                 if (nextQuestions.isEmpty()){
                     result.setFinished(true);
-                    result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
+                    //result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
                     log.info("Expedition finished");
                     badgeService.checkAllBadges(result.getMember());
                 }

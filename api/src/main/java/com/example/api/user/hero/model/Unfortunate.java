@@ -1,6 +1,6 @@
 package com.example.api.user.hero.model;
 
-import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.course.Course;
 import com.example.api.error.exception.RequestValidationException;
@@ -28,12 +28,12 @@ public class Unfortunate extends Hero{
         super(type, coolDownTimeMillis, course);
     }
 
-    @Override
-    public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
-                                               User user, GraphTaskResult result,
-                                               Question question) throws RequestValidationException {
-        return visitor.visitUnfortunate(this, result);
-    }
+    // @Override
+    // public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
+    //                                            User user, GraphTaskResult result,
+    //                                            Question question) throws RequestValidationException {
+    //     return visitor.visitUnfortunate(this, result);
+    // }
 
     @Override
     public void changeValue(Double value) {

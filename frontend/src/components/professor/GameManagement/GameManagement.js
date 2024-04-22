@@ -8,7 +8,7 @@ import ChapterModal from './ChapterModal/ChapterModal'
 import GameButton from './GameButton'
 import GameLoaderModal from './GameLoader/GameLoaderModal'
 import styles from './GameManagement.module.scss'
-import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
+// import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
 import ManagementCard from './ManagementCard'
 import { TableBodyRow } from './TableStyles'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -27,7 +27,7 @@ function GameManagement(props) {
   const [showAddChapterModal, setShowAddChapterModal] = useState(false)
   const [chapterList, setChapterList] = useState(undefined)
   const [shouldLoadAddChapterModal, setShouldLoadAddChapterModal] = useState(false)
-  const [isSuperpowerModalVisible, setIsSuperpowerModalVisible] = useState(false)
+  // const [isSuperpowerModalVisible, setIsSuperpowerModalVisible] = useState(false)
 
   const courseId = useAppSelector((state) => state.user.courseId)
 
@@ -156,11 +156,11 @@ function GameManagement(props) {
             {/*  description={'Dopasuj temat fabuły i wygląd całej gry oraz całego systemu.'} */}
             {/*  routePath={TeacherRoutes.GAME_MANAGEMENT.GAME_SETTINGS} */}
             {/* /> */}
-            <ManagementCard
+            {/* <ManagementCard
               header='Umiejętności postaci'
               description='Zmiana ustawienia umiejętności postaci .'
               callback={() => setIsSuperpowerModalVisible(true)}
-            />
+            /> */}
           </Col>
           <Col md={4} className='py-2'>
             <ManagementCard
@@ -192,7 +192,7 @@ function GameManagement(props) {
         onSuccess={fetchChaptersList}
         isLoaded={shouldLoadAddChapterModal}
       />
-      <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} />
+      {/* <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} /> */}
     </Container>
   )
 }

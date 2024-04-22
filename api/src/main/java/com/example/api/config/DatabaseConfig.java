@@ -1263,7 +1263,7 @@ public class DatabaseConfig {
     }
 
     private UserHero userHero(Hero hero) {
-        return new UserHero(hero, 0, 0L);
+        return new UserHero(hero);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {

@@ -1,7 +1,7 @@
 package com.example.api.activity.result.service;
 
-import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
 import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
@@ -154,31 +154,31 @@ public class GraphTaskResultService {
         return graphTaskResultRepository.findAllByUserAndCourse(student, course);
     }
 
-    public SuperPowerResponse<?> useSuperPower(Long graphTaskId, Long questionId) throws RequestValidationException {
-        User user = userService.getCurrentUserAndValidateStudentAccount();
+    // public SuperPowerResponse<?> useSuperPower(Long graphTaskId, Long questionId) throws RequestValidationException {
+    //     User user = userService.getCurrentUserAndValidateStudentAccount();
 
-        GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
-        GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
-        Question question = questionRepository.findQuestionById(questionId);
+    //     GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
+    //     GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
+    //     Question question = questionRepository.findQuestionById(questionId);
 
-        Hero hero = user.getCourseMember(graphTask.getCourse())
-                .orElseThrow()
-                .getUserHero()
-                .getHero();
+    //     Hero hero = user.getCourseMember(graphTask.getCourse())
+    //             .orElseThrow()
+    //             .getUserHero()
+    //             .getHero();
 
-        return hero.useSuperPower(heroVisitor, user, result, question);
-    }
+    //     return hero.useSuperPower(heroVisitor, user, result, question);
+    // }
 
-    public SuperPowerUsageResponse canSuperPowerBeUsed(Long graphTaskId) throws RequestValidationException {
-        User user = userService.getCurrentUserAndValidateStudentAccount();
-        GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
+    // public SuperPowerUsageResponse canSuperPowerBeUsed(Long graphTaskId) throws RequestValidationException {
+    //     User user = userService.getCurrentUserAndValidateStudentAccount();
+    //     GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
 
-        Hero hero = result.getMember().getUserHero().getHero();
-        boolean canBeUsed = hero.canPowerBeUsed(result);
-        String message = hero.getCanBeUsedMessage(result);
+    //     Hero hero = result.getMember().getUserHero().getHero();
+    //     boolean canBeUsed = hero.canPowerBeUsed(result);
+    //     String message = hero.getCanBeUsedMessage(result);
 
-        return new SuperPowerUsageResponse(canBeUsed, message);
-    }
+    //     return new SuperPowerUsageResponse(canBeUsed, message);
+    // }
 
     private GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(GraphTask graphTask, User user) throws EntityNotFoundException {
         GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);

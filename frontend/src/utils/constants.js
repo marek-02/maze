@@ -366,17 +366,17 @@ export const getSpecifyDescription = (heroType) => {
     heroType
   )} wartość ta oznacza <br/>`
 
-  const MAX_NUMBER_OF_USAGE = 'maksymalną liczbę możliwych wykorzystań umiejętności w jednej ekspedycji.'
+  // const MAX_NUMBER_OF_USAGE = 'maksymalną liczbę możliwych wykorzystań umiejętności w jednej ekspedycji.'
 
-  const heroTypeSuperPowerDescription = {
-    [HeroType.PRIEST]: 'liczbę ms o jaką gracz wydłuży sobie czas. Umiejętność jest dostępna raz na ekspedycję.',
-    [HeroType.ROGUE]:
-      'maksymalną liczbę punktów, którą może mieć zadanie, aby gracz mógł je pominąć. Umiejętność jest dostępna raz na ekspedycję.',
-    [HeroType.WARRIOR]: MAX_NUMBER_OF_USAGE,
-    [HeroType.WIZARD]: MAX_NUMBER_OF_USAGE
-  }
+  // const heroTypeSuperPowerDescription = {
+  //   [HeroType.PRIEST]: 'liczbę ms o jaką gracz wydłuży sobie czas. Umiejętność jest dostępna raz na ekspedycję.',
+  //   [HeroType.ROGUE]:
+  //     'maksymalną liczbę punktów, którą może mieć zadanie, aby gracz mógł je pominąć. Umiejętność jest dostępna raz na ekspedycję.',
+  //   [HeroType.WARRIOR]: MAX_NUMBER_OF_USAGE,
+  //   [HeroType.WIZARD]: MAX_NUMBER_OF_USAGE
+  // }
 
-  return baseInfo + heroTypeSuperPowerDescription[heroType]
+  return baseInfo // + heroTypeSuperPowerDescription[heroType]
 }
 
 export const coolDownDescription = (heroType) =>

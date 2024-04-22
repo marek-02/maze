@@ -18,6 +18,6 @@ public class UserHero {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Hero hero;
-    private Integer timesSuperPowerUsedInResult;
-    private Long lastSuperPowerUsageTimeMillis;
+    //private Integer timesSuperPowerUsedInResult;
+    //private Long lastSuperPowerUsageTimeMillis;
 }

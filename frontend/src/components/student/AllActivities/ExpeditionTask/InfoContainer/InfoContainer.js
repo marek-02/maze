@@ -5,7 +5,7 @@ import { TimerContainer } from './InfoContainerStyle'
 import { isMobileView } from '../../../../../utils/mobileHelper'
 import { getTimer } from '../../../../../utils/storageManager'
 import { PercentageBar } from '../../../BadgesPage/BadgesStyle'
-import SuperPower from '../SuperPower/SuperPower'
+// import SuperPower from '../SuperPower/SuperPower'
 
 const mobileViewStyle = {
   right: '50%',
@@ -91,12 +91,12 @@ export default function InfoContainer(props) {
         currentQuestionsPath={props.questionsPath}
         actualQuestionId={props.actualQuestionId}
       />
-      <SuperPower
+      {/* <SuperPower
         setRemainingTime={changeRemainingTime}
         activityId={activityId}
         questions={props.questions}
         status={props.status}
-      />
+      /> */}
       {React.cloneElement(props.children, {
         remainingTime
       })}

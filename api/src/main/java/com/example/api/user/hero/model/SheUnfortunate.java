@@ -1,6 +1,6 @@
 package com.example.api.user.hero.model;
 
-import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
 import com.example.api.course.Course;
@@ -29,13 +29,13 @@ public class SheUnfortunate extends Hero{
         super(type, coolDownTimeMillis, course);
     }
 
-    @Override
-    public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
-                                               User user,
-                                               GraphTaskResult result,
-                                               Question question) throws RequestValidationException {
-        return visitor.visitSheUnfortunate(this, result);
-    }
+    // @Override
+    // public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
+    //                                            User user,
+    //                                            GraphTaskResult result,
+    //                                            Question question) throws RequestValidationException {
+    //     return visitor.visitSheUnfortunate(this, result);
+    // }
 
     @Override
     public Boolean isResultStatusCorrect(GraphTaskResult result) {
@@ -47,36 +47,36 @@ public class SheUnfortunate extends Hero{
         setMultiplier(value);
     }
 
-    public Boolean canPowerBeUsed(GraphTaskResult result) {
-        int level = result.getMember().getLevel();
-        double points = result.getCurrQuestion().getPoints();
-        if (!canSkipQuestion(level, points)) {
-            return false;
-        }
-        return super.canPowerBeUsed(result);
-    }
+    // public Boolean canPowerBeUsed(GraphTaskResult result) {
+    //     int level = result.getMember().getLevel();
+    //     double points = result.getCurrQuestion().getPoints();
+    //     if (!canSkipQuestion(level, points)) {
+    //         return false;
+    //     }
+    //     return super.canPowerBeUsed(result);
+    // }
 
     private boolean canSkipQuestion(int level, double points) {
         return level * multiplier >= points;
     }
 
-    public String getCanBeUsedMessage(GraphTaskResult result) {
-        if (result.isFinished()) {
-            return HeroMessage.RESULT_FINISHED;
-        }
-        if (!isResultStatusCorrect(result)) {
-            return HeroMessage.INCORRECT_STATUS;
-        }
-        if (isCoolDownActive(result.getMember())) {
-            return HeroMessage.COOL_DOWN_ACTIVE;
-        }
-        int level = result.getMember().getLevel();
-        double points = result.getCurrQuestion().getPoints();
-        if (!canSkipQuestion(level, points)) {
-            String message = HeroMessage.CANNOT_SKIP;
-            double pointsToSkip = level * multiplier;
-            return message.replace("{}", String.valueOf(pointsToSkip));
-        }
-        return HeroMessage.POWER_READY_TO_BE_USED;
-    }
+    // public String getCanBeUsedMessage(GraphTaskResult result) {
+    //     if (result.isFinished()) {
+    //         return HeroMessage.RESULT_FINISHED;
+    //     }
+    //     if (!isResultStatusCorrect(result)) {
+    //         return HeroMessage.INCORRECT_STATUS;
+    //     }
+    //     if (isCoolDownActive(result.getMember())) {
+    //         return HeroMessage.COOL_DOWN_ACTIVE;
+    //     }
+    //     int level = result.getMember().getLevel();
+    //     double points = result.getCurrQuestion().getPoints();
+    //     if (!canSkipQuestion(level, points)) {
+    //         String message = HeroMessage.CANNOT_SKIP;
+    //         double pointsToSkip = level * multiplier;
+    //         return message.replace("{}", String.valueOf(pointsToSkip));
+    //     }
+    //     return HeroMessage.POWER_READY_TO_BE_USED;
+    // }
 }
