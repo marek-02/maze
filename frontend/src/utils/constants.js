@@ -9,15 +9,18 @@ import InformationImg from './resources/activities/infoTaskIcon.png'
 import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
 import explorerImg from './resources/explorerImg.png'
-import priestImg from './resources/heroes/pope.png'
+// import unfImg from './resources/heroes/pope.png'
+import priestImg from './resources/heroes/pope.png'// ?
 import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
 import killerImg from './resources/killerImg.png'
-import newMage from './resources/newHeroes/mage.png'
-import newPriest from './resources/newHeroes/priest.png'
-import newRogue from './resources/newHeroes/rouge.png'
-import newWarrior from './resources/newHeroes/warrior.png'
+// import newMage from './resources/newHeroes/mage.png'
+// import newPriest from './resources/newHeroes/priest.png'
+// import newRogue from './resources/newHeroes/rouge.png'
+// import newWarrior from './resources/newHeroes/warrior.png'
+import newSheUnfortunate from './resources/newHeroes/sheUnfortunate.png'
+import newUnfortunate from './resources/newHeroes/unfortunate.png'
 import socializerImg from './resources/socializerImg.png'
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
@@ -204,30 +207,34 @@ export const RegistrationLabelsAndTypes = {
   index: ['Nr. indeksu', 'text'],
   email: ['Email', 'email'],
   token: ['Klucz dostępu', 'password'],
-  heroType: ['Typ osobowości postaci', 'select'],
+  heroType: ['Typ postaci', 'select'],
   password: ['Hasło', 'password'],
   passwordRepeat: ['Powtórz hasło', 'password']
 }
 
 export const HeroDescriptions = {
-  [HeroType.WARRIOR]: `Skupiony na zdolnościach walki, całkowicie pozbawiony magicznych zdolności. 
-            Łatwiej mu pokonać trudnego przeciwnika. Pozwala na odkrycie typu pytania kilka razy w jednej ekspedycji (umiejętność dostępna raz na tydzień).
-            W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`,
-  [HeroType.WIZARD]: `Przejawiający zdolności magiczne, lecz fizycznie słaby. Dzięki swoim czarom może kilka razy w jednek ekspedycji
-            poznać punktację dowolnego pytania przed przejściem do tego pytania (umiejętność dostępna raz na tydzień).
-            W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
-  [HeroType.PRIEST]: `Specjalizujący się w uzdrawianiu. Dzięki swoim umiejętnościom uzdrawiania może jednorazowo w ekspedycji wydłużyć czas jej trwania 
-            (umiejętność dostępna raz na tydzień). W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
-  [HeroType.ROGUE]: `Potrafi poruszać się bezszelestnie, skradanie to jego dominująca umiejętność. Dzięki swoim zdolnościom 
-            umożliwi Ci pominąć jedno pytanie w ekspedycji na poziomie łatwym warte nie więcej niż 5pkt. 
-            W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`
+  [HeroType.UNFORTUNATE]: 'Opis klasy meskiej',
+  [HeroType.SHEUNFORTUNATE]: 'Opis klasy żeńskiej'
+  // [HeroType.WARRIOR]: `Skupiony na zdolnościach walki, całkowicie pozbawiony magicznych zdolności.
+  //           Łatwiej mu pokonać trudnego przeciwnika. Pozwala na odkrycie typu pytania kilka razy w jednej ekspedycji (umiejętność dostępna raz na tydzień).
+  //           W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`,
+  // [HeroType.WIZARD]: `Przejawiający zdolności magiczne, lecz fizycznie słaby. Dzięki swoim czarom może kilka razy w jednek ekspedycji
+  //           poznać punktację dowolnego pytania przed przejściem do tego pytania (umiejętność dostępna raz na tydzień).
+  //           W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
+  // [HeroType.PRIEST]: `Specjalizujący się w uzdrawianiu. Dzięki swoim umiejętnościom uzdrawiania może jednorazowo w ekspedycji wydłużyć czas jej trwania
+  //           (umiejętność dostępna raz na tydzień). W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
+  // [HeroType.ROGUE]: `Potrafi poruszać się bezszelestnie, skradanie to jego dominująca umiejętność. Dzięki swoim zdolnościom
+  //           umożliwi Ci pominąć jedno pytanie w ekspedycji na poziomie łatwym warte nie więcej niż 5pkt.
+  //           W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`
 }
 
 export const HeroImg = {
-  WARRIOR: newWarrior,
-  WIZARD: newMage,
-  PRIEST: newPriest,
-  ROGUE: newRogue
+  UNFORTUNATE: newUnfortunate,
+  SHEUNFORTUNATE: newSheUnfortunate
+  // WARRIOR: newWarrior,
+  // WIZARD: newMage,
+  // PRIEST: newPriest,
+  // ROGUE: newRogue
 }
 
 export const HeroDataset = {
@@ -271,14 +278,18 @@ export const percentagesToGrade = (percentages) => {
 
 export const getHeroName = (heroName) => {
   switch (heroName) {
-    case HeroType.PRIEST:
-      return 'Kapłan'
-    case HeroType.ROGUE:
-      return 'Łotrzyk'
-    case HeroType.WARRIOR:
-      return 'Wojownik'
-    case HeroType.WIZARD:
-      return 'Czarodziej'
+    // case HeroType.PRIEST:
+    //   return 'Kapłan'
+    // case HeroType.ROGUE:
+    //   return 'Łotrzyk'
+    // case HeroType.WARRIOR:
+    //   return 'Wojownik'
+    // case HeroType.WIZARD:
+    //   return 'Czarodziej'
+    case HeroType.UNFORTUNATE:
+      return 'Nieszczęśnik'
+    case HeroType.SHEUNFORTUNATE:
+      return 'Nieszczęśnica'
     default:
   }
 }

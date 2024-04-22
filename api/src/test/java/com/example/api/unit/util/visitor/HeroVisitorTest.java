@@ -10,8 +10,8 @@ import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.question.Difficulty;
 import com.example.api.question.Question;
 import com.example.api.question.QuestionType;
-import com.example.api.user.hero.model.Priest;
-import com.example.api.user.hero.model.Rogue;
+import com.example.api.user.hero.model.Unfortunate;
+import com.example.api.user.hero.model.SheUnfortunate;
 import com.example.api.user.hero.model.UserHero;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.hero.HeroType;
@@ -68,19 +68,19 @@ public class HeroVisitorTest {
     }
 
     @Test
-    public void shouldUsePriestSuperPowerNormally() throws RequestValidationException {
+    public void shouldUseUnfortunateSuperPowerNormally() throws RequestValidationException {
         //given
         courseMember.setLevel(1);
-        Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        courseMember.setUserHero(new UserHero(priest, 0, 0L, null));
+        Unfortunate unfortunate = new Unfortunate(HeroType.Unfortunate, TimeUnit.DAYS.toMillis(10), null);
+        courseMember.setUserHero(new UserHero(Unfortunate, 0, 0L, null));
         long startDateMillis = result.getStartDateMillis();
-        long healValue = priest.getHealValueForLevel(courseMember.getLevel());
+        long healValue = Unfortunate.getHealValueForLevel(courseMember.getLevel());
         long timeToSolve = result.getGraphTask().getTimeToSolveMillis();
         long newTimeRemaining = TimeUnit.MINUTES.toMillis(10) + healValue;
         when(timeCalculator.getTimeRemaining(startDateMillis+healValue, timeToSolve)).thenReturn(newTimeRemaining);
 
         //when
-        SuperPowerResponse<Long> response = heroVisitor.visitPriest(priest, result);
+        SuperPowerResponse<Long> response = heroVisitor.visitUnfortunate(Unfortunate, result);
         Long time = response.getValue();
 
         //then
@@ -89,19 +89,19 @@ public class HeroVisitorTest {
     }
 
     @Test
-    public void shouldUsePriestSuperPowerNormallyWithHigherUserLevel() throws RequestValidationException {
+    public void shouldUseUnfortunateSuperPowerNormallyWithHigherUserLevel() throws RequestValidationException {
         //given
-        Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        courseMember.setUserHero(new UserHero(priest, 0, 0L, null));
+        Unfortunate Unfortunate = new Unfortunate(HeroType.Unfortunate, TimeUnit.DAYS.toMillis(10), null);
+        courseMember.setUserHero(new UserHero(Unfortunate, 0, 0L, null));
         courseMember.setLevel(3);
         long startDateMillis = result.getStartDateMillis();
-        long healValue = priest.getHealValueForLevel(courseMember.getLevel());
+        long healValue = Unfortunate.getHealValueForLevel(courseMember.getLevel());
         long timeToSolve = result.getGraphTask().getTimeToSolveMillis();
         long newTimeRemaining = TimeUnit.MINUTES.toMillis(10) + healValue;
         when(timeCalculator.getTimeRemaining(startDateMillis + healValue, timeToSolve)).thenReturn(newTimeRemaining);
 
         //when
-        SuperPowerResponse<Long> response = heroVisitor.visitPriest(priest, result);
+        SuperPowerResponse<Long> response = heroVisitor.visitUnfortunate(Unfortunate, result);
         Long time = response.getValue();
 
         //then
@@ -112,13 +112,13 @@ public class HeroVisitorTest {
     @Test
     public void shouldThrowRequestValidationExceptionBecauseResultIsFinished() {
         //given
-        Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(priest, 0, 0L, null));
+        Unfortunate Unfortunate = new Unfortunate(HeroType.Unfortunate, TimeUnit.DAYS.toMillis(10), null);
+        //user.setUserHero(new UserHero(Unfortunate, 0, 0L, null));
         result.setFinished(true);
 
         //when
         //then
-        assertThatThrownBy(() -> heroVisitor.visitPriest(priest, result))
+        assertThatThrownBy(() -> heroVisitor.visitUnfortunate(Unfortunate, result))
                 .isInstanceOf(RequestValidationException.class)
                 .hasMessageContaining("You cannot use hero power now!");
     }
@@ -126,27 +126,27 @@ public class HeroVisitorTest {
     @Test
     public void shouldThrowRequestValidationExceptionBecauseCoolDownIsActive() {
         //given
-        Priest priest = new Priest(HeroType.PRIEST, TimeUnit.DAYS.toMillis(10), null);
-        courseMember.setUserHero(new UserHero(priest, 0, currTime - TimeUnit.DAYS.toMillis(9), null));
+        Unfortunate Unfortunate = new Unfortunate(HeroType.Unfortunate, TimeUnit.DAYS.toMillis(10), null);
+        courseMember.setUserHero(new UserHero(Unfortunate, 0, currTime - TimeUnit.DAYS.toMillis(9), null));
 
         //then
-        assertThatThrownBy(() -> heroVisitor.visitPriest(priest, result))
+        assertThatThrownBy(() -> heroVisitor.visitUnfortunate(Unfortunate, result))
                 .isInstanceOf(RequestValidationException.class)
                 .hasMessageContaining("You cannot use hero power now!");
     }
 
     @Test
-    public void shouldUseRogueSuperPowerNormally() throws RequestValidationException {
+    public void shouldUseSheUnfortunateSuperPowerNormally() throws RequestValidationException {
         //given
-        Rogue rogue = new Rogue(HeroType.ROGUE, TimeUnit.DAYS.toMillis(10), null);
-        courseMember.setUserHero(new UserHero(rogue, 0, 0L, null));
+        SheUnfortunate SheUnfortunate = new SheUnfortunate(HeroType.SheUnfortunate, TimeUnit.DAYS.toMillis(10), null);
+        courseMember.setUserHero(new UserHero(SheUnfortunate, 0, 0L, null));
         courseMember.setLevel(11);
         result.setCurrQuestion(firstQuestion.getNext().get(0));
         result.setStatus(ResultStatus.ANSWER);
 
 
         //when
-        SuperPowerResponse<Boolean> response = heroVisitor.visitRogue(rogue, result);
+        SuperPowerResponse<Boolean> response = heroVisitor.visitSheUnfortunate(SheUnfortunate, result);
         Boolean isDone = response.getValue();
 
         //then
@@ -155,16 +155,16 @@ public class HeroVisitorTest {
     }
 
     @Test
-    public void shouldThrowRequestValidationExceptionBecauseLevelIsTooLowRogue() {
+    public void shouldThrowRequestValidationExceptionBecauseLevelIsTooLowSheUnfortunate() {
         //given
-        Rogue rogue = new Rogue(HeroType.ROGUE, TimeUnit.DAYS.toMillis(10), null);
-        //user.setUserHero(new UserHero(rogue, 0, 0L, null));
+        SheUnfortunate SheUnfortunate = new SheUnfortunate(HeroType.SheUnfortunate, TimeUnit.DAYS.toMillis(10), null);
+        //user.setUserHero(new UserHero(SheUnfortunate, 0, 0L, null));
         result.setCurrQuestion(firstQuestion.getNext().get(0));
         result.setStatus(ResultStatus.ANSWER);
 
         //when
         //then
-        assertThatThrownBy(() -> heroVisitor.visitRogue(rogue, result))
+        assertThatThrownBy(() -> heroVisitor.visitSheUnfortunate(SheUnfortunate, result))
                 .isInstanceOf(RequestValidationException.class)
                 .hasMessageContaining("You cannot use hero power now!");
     }
@@ -172,15 +172,15 @@ public class HeroVisitorTest {
     @Test
     public void shouldThrowRequestValidationExceptionBecauseStatusIsIncorrect() {
         //given
-        Rogue rogue = new Rogue(HeroType.ROGUE, TimeUnit.DAYS.toMillis(10), null);
-        courseMember.setUserHero(new UserHero(rogue, 0, 0L, null));
+        SheUnfortunate SheUnfortunate = new SheUnfortunate(HeroType.SheUnfortunate, TimeUnit.DAYS.toMillis(10), null);
+        courseMember.setUserHero(new UserHero(SheUnfortunate, 0, 0L, null));
         Question question = firstQuestion.getNext().get(0);
-        courseMember.setLevel((int) Math.round(rogue.getMultiplier() * question.getPoints()) + 1);
+        courseMember.setLevel((int) Math.round(SheUnfortunate.getMultiplier() * question.getPoints()) + 1);
         result.setCurrQuestion(firstQuestion.getNext().get(0));
         result.setStatus(ResultStatus.CHOOSE);
 
         //then
-        assertThatThrownBy(() -> heroVisitor.visitRogue(rogue, result))
+        assertThatThrownBy(() -> heroVisitor.visitSheUnfortunate(SheUnfortunate, result))
                 .isInstanceOf(RequestValidationException.class)
                 .hasMessageContaining("You cannot use hero power now!");
     }

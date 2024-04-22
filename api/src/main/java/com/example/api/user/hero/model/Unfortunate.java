@@ -21,10 +21,10 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Priest extends Hero{
+public class Unfortunate extends Hero{
     private int healValue = 20;
 
-    public Priest(HeroType type, Long coolDownTimeMillis, Course course) {
+    public Unfortunate(HeroType type, Long coolDownTimeMillis, Course course) {
         super(type, coolDownTimeMillis, course);
     }
 
@@ -32,7 +32,7 @@ public class Priest extends Hero{
     public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
                                                User user, GraphTaskResult result,
                                                Question question) throws RequestValidationException {
-        return visitor.visitPriest(this, result);
+        return visitor.visitUnfortunate(this, result);
     }
 
     @Override

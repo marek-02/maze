@@ -35,28 +35,28 @@ export const arrayToSort = [
     firstName: 'Jan',
     lastName: 'Nowak',
     position: 1,
-    heroType: HeroType.WARRIOR,
+    heroType: HeroType.UNFORTUNATE,
     foo: 'test1'
   },
   {
     firstName: 'Tomasz',
     lastName: 'Kowal',
     position: 4,
-    heroType: HeroType.WIZARD,
+    heroType: HeroType.UNFORTUNATE,
     foo: 'test2'
   },
   {
     firstName: 'Lucek',
     lastName: 'Kwiatek',
     position: 2,
-    heroType: HeroType.ROGUE,
+    heroType: HeroType.SHEUNFORTUNATE,
     foo: 'test3'
   },
   {
     firstName: 'Łukasz',
     lastName: 'Baran',
     position: 3,
-    heroType: HeroType.PRIEST,
+    heroType: HeroType.UNFORTUNATE,
     foo: 'test4'
   }
 ]
@@ -71,28 +71,28 @@ export const expectedSortedArray = [
         firstName: 'Jan',
         lastName: 'Nowak',
         position: 1,
-        heroType: HeroType.WARRIOR,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test1'
       },
       {
         firstName: 'Lucek',
         lastName: 'Kwiatek',
         position: 2,
-        heroType: HeroType.ROGUE,
+        heroType: HeroType.SHEUNFORTUNATE,
         foo: 'test3'
       },
       {
         firstName: 'Łukasz',
         lastName: 'Baran',
         position: 3,
-        heroType: HeroType.PRIEST,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test4'
       },
       {
         firstName: 'Tomasz',
         lastName: 'Kowal',
         position: 4,
-        heroType: HeroType.WIZARD,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test2'
       }
     ]
@@ -106,28 +106,28 @@ export const expectedSortedArray = [
         firstName: 'Tomasz',
         lastName: 'Kowal',
         position: 4,
-        heroType: HeroType.WIZARD,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test2'
       },
       {
         firstName: 'Łukasz',
         lastName: 'Baran',
         position: 3,
-        heroType: HeroType.PRIEST,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test4'
       },
       {
         firstName: 'Lucek',
         lastName: 'Kwiatek',
         position: 2,
-        heroType: HeroType.ROGUE,
+        heroType: HeroType.SHEUNFORTUNATE,
         foo: 'test3'
       },
       {
         firstName: 'Jan',
         lastName: 'Nowak',
         position: 1,
-        heroType: HeroType.WARRIOR,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test1'
       }
     ]
@@ -141,28 +141,28 @@ export const expectedSortedArray = [
         firstName: 'Tomasz',
         lastName: 'Kowal',
         position: 4,
-        heroType: HeroType.WIZARD,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test2'
       },
       {
         firstName: 'Łukasz',
         lastName: 'Baran',
         position: 3,
-        heroType: HeroType.PRIEST,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test4'
       },
       {
         firstName: 'Lucek',
         lastName: 'Kwiatek',
         position: 2,
-        heroType: HeroType.ROGUE,
+        heroType: HeroType.SHEUNFORTUNATE,
         foo: 'test3'
       },
       {
         firstName: 'Jan',
         lastName: 'Nowak',
         position: 1,
-        heroType: HeroType.WARRIOR,
+        heroType: HeroType.UNFORTUNATE,
         foo: 'test1'
       }
     ]
