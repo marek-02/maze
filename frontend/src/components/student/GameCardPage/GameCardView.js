@@ -10,7 +10,8 @@ import {
   HeroStatsContent,
   LastActivitiesContent,
   PersonalRankingInfoContent,
-  WonAuctionsContent,
+  KillerAuctionsContent,
+  AchieverAuctionsContent,
   ColloquiumStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -75,7 +76,7 @@ function GameCardView(props) {
             <Col md={7}>
               <GameCard
                 headerText='Licytacje'
-                content={<WonAuctionsContent stats={dashboardStats.auctionStats} />}
+                content={<KillerAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>

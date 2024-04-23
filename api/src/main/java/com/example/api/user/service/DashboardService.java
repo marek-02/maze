@@ -3,6 +3,7 @@ package com.example.api.user.service;
 import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
 import com.example.api.activity.auction.bid.Bid;
+import com.example.api.activity.auction.bid.BidRepository;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
 import com.example.api.activity.auction.AuctionRepository;
@@ -48,10 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.OptionalDouble;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -64,6 +62,7 @@ public class DashboardService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final BidRepository bidRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
     private final AuctionRepository auctionRepository;
@@ -91,7 +90,7 @@ public class DashboardService {
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
                 getHeroStats(member),
-                getAuctionStats(member)
+                getAuctionStats(member,courseId)
         );
     }
 
@@ -123,16 +122,90 @@ public class DashboardService {
                 .orElse(null);
     }
 
-    private AuctionStats getAuctionStats(CourseMember member) {
+    private AuctionStats getAuctionStats(CourseMember member, Long courseId) {
         log.info("getAuctionStats");
 
-        Double auctionsWon = getStudentAuctionsWonCount(member);
-        Double auctionsPoints = getStudentAuctionsPoints(member);
+        Double auctionsWon = getStudentAuctionsWonCount(member,courseId);
+        Double auctionsPoints = getStudentAuctionsPoints(member,courseId);
+        Double auctionsParticipations = getStudentAuctionsParticipations(member,courseId);
+        Double auctionsResolvedCount = getAuctionsResolvedCount(courseId);
+        Double auctionsCount = getAuctionsCount(courseId);
+        Double auctionRanking = getStudentAuctionRankingPosition(member,courseId);
+        String bestAuctioner = getBestStudentRanking(courseId);
 
         return new AuctionStats(
                 auctionsWon,
-                auctionsPoints
+                auctionsPoints,
+                auctionsParticipations,
+                auctionsResolvedCount,
+                auctionsCount,
+                auctionRanking,
+                bestAuctioner
         );
+    }
+
+    private Map<Long,Integer> getStudentAuctionRanking(Long courseId){
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+        Map<Long,Integer> ranking = new HashMap<>();
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                long id = auction.getHighestBid().get().getMember().getId();
+                int value = ranking.getOrDefault(id,0);
+                ranking.put(id,value + 1);
+            }
+        }
+        return ranking;
+    }
+    private String getBestStudentRanking(Long courseId) {
+        Map<Long,Integer> ranking = getStudentAuctionRanking(courseId);
+        long bestStudentId = -1;
+        int highestValue = 0;
+        for(Map.Entry<Long,Integer> rankingPos : ranking.entrySet()){
+            if(rankingPos.getValue() > highestValue){
+                bestStudentId = rankingPos.getKey();
+                highestValue = rankingPos.getValue();
+            }
+        }
+
+        if(bestStudentId != -1){
+            Optional<CourseMember> courseMember = userService.getUser(bestStudentId).getCourseMember(courseId);
+
+            if (courseMember.isPresent()) {
+                return courseMember.get().getAlias();
+            }else{
+                return "Brak aktualnego lidera";
+            }
+
+        }else{
+            return "Brak aktualnego lidera";
+        }
+    }
+
+    //todo
+    private Double getStudentAuctionRankingPosition(CourseMember member, Long courseId) {
+        Map<Long,Integer> ranking = getStudentAuctionRanking(courseId);
+        long bestStudentId = -1;
+        int highestValue = 0;
+        for(Map.Entry<Long,Integer> rankingPos : ranking.entrySet()){
+            if(rankingPos.getValue() > highestValue){
+                bestStudentId = rankingPos.getKey();
+                highestValue = rankingPos.getValue();
+            }
+        }
+
+        if(bestStudentId != -1){
+            Optional<CourseMember> courseMember = userService.getUser(bestStudentId).getCourseMember(courseId);
+
+            if (courseMember.isPresent()) {
+                return (double) 2;
+            }else{
+                return (double) 2;
+            }
+
+        }else{
+            return (double) 2;
+        }
     }
 
     private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
@@ -179,13 +252,13 @@ public class DashboardService {
         return surveyResultRepository.countAllByMember(member);
     }
 
-    private List<Auction> getResolvedAuctions() {
-        return auctionRepository.findAllResolved();
+    private List<Auction> getResolvedAuctions(Long courseId) {
+        return auctionRepository.findAllResolvedByCourseId(courseId);
     }
 
-    private Double getStudentAuctionsWonCount(CourseMember member) {
+    private Double getStudentAuctionsWonCount(CourseMember member, Long courseId) {
         double count = 0;
-        List<Auction> resolvedAuctions = getResolvedAuctions();
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
         if(!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {
@@ -197,9 +270,38 @@ public class DashboardService {
         return count;
     }
 
-    private Double getStudentAuctionsPoints(CourseMember member) {
+    private Double getAuctionsResolvedCount(Long courseId) {
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            return (double) resolvedAuctions.size();
+        }
+
+        else {
+            return (double) 0;
+        }
+
+    }
+//todo
+    private Double getAuctionsCount(Long courseId) {
+        List<Auction> resolvedAuctions = auctionRepository.findAllByCourseId(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            return (double) resolvedAuctions.size();
+        }
+
+        else {
+            return (double) 0;
+        }
+    }
+
+    private Double getStudentAuctionsParticipations(CourseMember member, Long courseId) {
+        return (double) bidRepository.findAllByMemberAndCourse(member,courseId).size();
+    }
+
+    private Double getStudentAuctionsPoints(CourseMember member, Long courseId) {
         double points = 0;
-        List<Auction> resolvedAuctions = getResolvedAuctions();
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
         if(!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {

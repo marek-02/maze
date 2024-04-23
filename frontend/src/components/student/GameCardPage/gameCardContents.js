@@ -95,10 +95,12 @@ export function HeroStatsContent(props) {
   )
 }
 
-export function WonAuctionsContent(props) {
+export function KillerAuctionsContent(props) {
   const {
     auctionsWon = 0,
-    auctionsPoints = 0
+    auctionsResolvedCount = 0,
+    auctionRanking = 0,
+    bestAuctioner
   } = props.stats
 
   return (
@@ -111,16 +113,24 @@ export function WonAuctionsContent(props) {
           <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
         </Col>
         <Col md={7}>
-          <p className='pb-1'>Wygrane licytacje: {auctionsWon}</p>
-          <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
-
+          <p className='pb-1'>Licytant #1: {bestAuctioner}</p>
+          <p className='pb-1'>Jesteś {auctionRanking} najlepszy w licytacjach</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
         </Col>
       </Row>
   )
 }
 
 
-export function ColloquiumStatsContent(props) {
+export function AchieverAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsPoints = 0,
+    auctionsParticipations = 0,
+    auctionsResolvedCount = 0,
+    auctionsCount = 0
+  } = props.stats
+
   return (
       <Row
           className={`h-100 d-flex justify-content-center align-items-center ${
@@ -128,11 +138,12 @@ export function ColloquiumStatsContent(props) {
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{maxWidth: '100%'}} height='90%' src={BidImg} alt='Your hero'/>
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
         </Col>
         <Col md={7}>
-          <p className='pb-1'>Średni wynik z ostatniego kolokwium:</p>
-          <p className='pb-1'>Twój wynik:</p>
+          <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
+          <p className='pb-1'>Udziały w licytacjach: {auctionsParticipations} / {auctionsCount}</p>
         </Col>
       </Row>
   )

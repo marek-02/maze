@@ -12,4 +12,9 @@ import lombok.Setter;
 public class AuctionStats {
     private Double auctionsWon;
     private Double auctionsPoints;
+    private Double auctionsParticipations;
+    private Double auctionsResolvedCount;
+    private Double auctionsCount;
+    private Double auctionRanking;
+    private String bestAuctioner;
 }
