@@ -13,7 +13,7 @@ import {
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
-import { ERROR_OCCURRED } from '../../../utils/constants'
+import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR } from '../../../utils/constants'
 import Loader from '../../general/Loader/Loader'
 
 function GameCardView(props) {
@@ -22,6 +22,8 @@ function GameCardView(props) {
 
   const [selectedUserId,setSelectedUserId] = useState(-1)
   const [selectedUsersDashboardStats,setSelectedUsersDashboardStats] = useState(undefined)
+
+  const [members,setMembers] = useState(undefined)
 
   useEffect(() => {
     StudentService.getDashboardStats(courseId)
@@ -33,6 +35,7 @@ function GameCardView(props) {
   }, [])
 
   useEffect(() => {
+    if(selectedUserId===-1) return
     StudentService.getSpecifiedStudentsDashboardStats(selectedUserId,courseId)
     .then((response) => {
       setSelectedUsersDashboardStats(response)
@@ -44,10 +47,21 @@ function GameCardView(props) {
     }))
   },[selectedUserId])
 
+  useEffect(() => {
+    StudentService.getAllMembers(courseId)
+    .then((response) => {
+      setMembers(response)
+    })
+    .catch(((err) => {
+      console.log(err)
+      setMembers(null)
+    }
+  ))
+  },[])
 
   const changeSelectedUserId = (newUserId) => {
-    console.log(`Invoked changeSelectedUserId: ${newUserId}`)
-    console.log(selectedUsersDashboardStats)
+    // console.log(`Invoked changeSelectedUserId: ${newUserId}`)
+    // console.log(selectedUsersDashboardStats)
     setSelectedUserId(newUserId)
   }
 
@@ -82,7 +96,8 @@ function GameCardView(props) {
             <Col md={5}>
               <GameCard
                 headerText='Podgląd statystyk innego gracza'
-                content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} handler={changeSelectedUserId}/>}
+                content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} members={members}
+                  heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} handler={changeSelectedUserId}/>}
               />
             </Col>
             <Col md={7}>

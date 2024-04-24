@@ -26,6 +26,9 @@ export const GET_PROFESSOR_EMAILS = `${BASE_URL}/user/professor/emails`
 export const DELETE_USER_STUDENT = `${BASE_URL}/user/delete-student`
 export const DELETE_USER_PROFESSOR = `${BASE_URL}/user/delete-professor`
 
+// Member Controller
+export const GET_ALL_MEMBERS = `${BASE_URL}/coursemembers`
+
 // Chapter Controller
 export const GET_CHAPTER = `${BASE_URL}/chapter`
 export const PUT_CHAPTER_EDIT = `${GET_CHAPTER}/edit`

@@ -5,7 +5,9 @@ import {
   GET_POINTS_ALL_TOTAL,
   GET_DASHBOARD,
   GET_SOMEONES_DASHBOARD,
-  DELETE_USER_STUDENT
+  DELETE_USER_STUDENT,
+  GET_ALL_MEMBERS
+
 } from './urls'
 import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
 
@@ -37,6 +39,12 @@ class StudentService {
 
   getDashboardStats(courseId: number) {
     return axiosApiGet(`${GET_DASHBOARD}?courseId=${courseId}`).catch((error) => {
+      throw error
+    })
+  }
+
+  getAllMembers(courseId: number){
+    return axiosApiGet(`${GET_ALL_MEMBERS}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }
