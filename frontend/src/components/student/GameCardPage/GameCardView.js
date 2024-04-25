@@ -3,12 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+
 import GameCard from './GameCard'
 import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
-  PersonalRankingInfoContent
+  PersonalRankingInfoContent,
+  KillerAuctionsContent,
+  AchieverAuctionsContent,
+  ColloquiumStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
@@ -71,8 +75,8 @@ function GameCardView(props) {
             </Col>
             <Col md={7}>
               <GameCard
-                headerText='Ostatnio dodane aktywności'
-                content={<LastActivitiesContent theme={props.theme} stats={dashboardStats.lastAddedActivities} />}
+                headerText='Licytacje'
+                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>
