@@ -8,7 +8,8 @@ import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
-  PersonalRankingInfoContent
+  PersonalRankingInfoContent,
+  PersonalOverallRankingInfoContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
@@ -70,9 +71,16 @@ function GameCardView(props) {
               />
             </Col>
             <Col md={7}>
-              <GameCard
-                headerText='Ostatnio dodane aktywności'
-                content={<LastActivitiesContent theme={props.theme} stats={dashboardStats.lastAddedActivities} />}
+            <GameCard
+                headerText='Miejsce w rankingu'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      ...dashboardStats.heroTypeStatsDTO,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
+                  />
+                }
               />
             </Col>
           </Row>

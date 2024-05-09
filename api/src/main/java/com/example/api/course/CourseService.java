@@ -1,6 +1,7 @@
 package com.example.api.course;
 
 import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursetype.CourseType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.security.LoggedInUserService;
@@ -97,5 +98,9 @@ public class CourseService {
         Course course = courseRepository.getById(courseId);
         courseValidator.validateCourseIsNotNull(course, courseId);
         return course;
+    }
+
+    public List<Course> getCoursesByCourseType(CourseType courseType) {
+        return courseRepository.findByCourseType(courseType);
     }
 }

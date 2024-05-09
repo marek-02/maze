@@ -48,6 +48,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -103,10 +104,32 @@ public class DashboardService {
 
         Integer rankPosition = rank.getPosition();
         Long rankLength = (long) ranking.size();
+
+        Integer overallRankPosition = rankPosition;
+        Long overallRankLength = rankLength;
+
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
         Double worsePlayerPoints = rankPosition < rankLength ? ranking.get(rankPosition).getPoints() : null;
 
-        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
+        Double betterPlayerPointsOverall = betterPlayerPoints;
+        Double worsePlayerPointsOvearll = worsePlayerPoints;
+
+        if(member.getCourse().getCourseType() != null) {
+            List<Course> coursesForOverallRanking = courseService.getCoursesByCourseType(member.getCourse().getCourseType());
+            List<RankingResponse> overallRanking = coursesForOverallRanking.stream()
+                    .flatMap(course -> rankingService.getRanking(course.getId()).stream()).toList();
+            RankingResponse overallRank = getRank(member.getUser(), overallRanking);
+
+            overallRankPosition = overallRank.getPosition();
+            overallRankLength = (long) overallRanking.size();
+
+            betterPlayerPointsOverall = overallRankPosition > 1 ? overallRanking.get(overallRankPosition - 2).getPoints() : null;
+            worsePlayerPointsOvearll = overallRankPosition < overallRankLength ? overallRanking.get(overallRankPosition).getPoints() : null;
+        }
+
+
+
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {

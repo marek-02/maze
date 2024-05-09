@@ -1,6 +1,7 @@
 package com.example.api.course;
 
 import com.example.api.course.coursemember.CourseMember;
+import com.example.api.course.coursetype.CourseType;
 import com.example.api.group.Group;
 import com.example.api.chapter.Chapter;
 import com.example.api.user.model.AccountType;
@@ -43,6 +44,10 @@ public class Course {
     @JsonBackReference
     private List<CourseMember> courseMembers = new LinkedList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "courseType_id")
+    private CourseType courseType;
+
     @OneToMany(mappedBy = "course", orphanRemoval = true)
     private List<Chapter> chapters = new LinkedList<>();
 
@@ -51,6 +56,14 @@ public class Course {
         this.name = name;
         this.description = description;
         this.owner = owner;
+    }
+
+    public Course(Long id, String name, String description, User owner, CourseType courseType) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.owner = owner;
+        this.courseType = courseType;
     }
 
     public List<User> getAllStudents() {
