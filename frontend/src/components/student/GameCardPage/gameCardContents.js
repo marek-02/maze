@@ -95,6 +95,28 @@ export function HeroStatsContent(props) {
   )
 }
 
+
+export function SubmitStatsContent(props) {
+  const {
+    submitTaskResultCount = 0,
+    fileTaskResultCount = 0,
+    submitPoints = 0
+  } = props.stats
+  const percentageValue = fileTaskResultCount && submitTaskResultCount ? Math.round(100 * (fileTaskResultCount / submitTaskResultCount)) : 0
+
+  return (
+    <Row className='h-100 d-flex justify-content-center align-items-center'>
+      <Col md={5}>
+        <p className='pb-1'>Złożone propozycje: {submitTaskResultCount}</p>
+        <p className='pb-1'>Przyjęte propozycje: {fileTaskResultCount}</p>
+        <p className='pb-1'>Zdobyte punkty: {submitPoints}</p>
+      </Col>
+      <Col md={5}>
+        <PercentageCircle percentageValue={percentageValue} points={fileTaskResultCount} maxPoints={submitTaskResultCount} />
+      </Col>
+    </Row>
+  )
+}
 export function KillerAuctionsContent(props) {
   const {
     auctionsWon = 0,

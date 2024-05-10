@@ -1,10 +1,7 @@
 package com.example.api.activity.submittask;
 
 import com.example.api.activity.CreateSubmitTaskChapterForm;
-import com.example.api.activity.submittask.result.SubmitTaskResult;
-import com.example.api.activity.submittask.result.SubmitTaskResultDTO;
-import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
-import com.example.api.activity.submittask.result.SubmitTaskResultWithFileDTO;
+import com.example.api.activity.submittask.result.*;
 import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
@@ -99,13 +96,19 @@ public class SubmitTaskService {
     public void rejectResult(Long id) {
         SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));
         result.setEvaluated(true);
+        result.setSubmitTaskStatus(SubmitTaskStatus.REJECTED);
         submitTaskResultRepository.save(result);
     }
 
-    public CreateFileTaskForm acceptResult(Long id) {
+    public void acceptResult(Long id) {
         SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));
         result.setEvaluated(true);
+        result.setSubmitTaskStatus(SubmitTaskStatus.ACCEPTED);
         submitTaskResultRepository.save(result);
+    }
+
+    public CreateFileTaskForm createResult(Long id) {
+        SubmitTaskResult result = submitTaskResultRepository.findById(id).orElseThrow(() -> new javax.persistence.EntityNotFoundException("Result not found"));
 
         CreateFileTaskForm fileTask = CreateFileTaskForm.example();
         fileTask.setTitle(result.getSubmittedTitle());

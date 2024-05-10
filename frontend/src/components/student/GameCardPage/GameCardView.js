@@ -9,6 +9,8 @@ import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
+  PersonalRankingInfoContent, 
+  SubmitStatsContent
   PersonalRankingInfoContent,
   PersonalOverallRankingInfoContent
   KillerAuctionsContent,
@@ -44,11 +46,18 @@ function GameCardView(props) {
           <Row className='m-0 gy-2'>
             <Col md={5}>
               <GameCard
+                  headerText='Statystyki zausznika'
+                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
+              />
+            </Col>
+          </Row>
+          <Row className='m-0 gy-2'>
+            <Col md={5}>
+              <GameCard
                 headerText='Statystyki bohatera'
                 content={
-                  <HeroStatsContent
+                  <GradesStatsContent
                     stats={dashboardStats.heroStatsDTO}
-                    heroType={dashboardStats.heroTypeStatsDTO.heroType}
                   />
                 }
               />
