@@ -11,7 +11,7 @@ import ExpeditionService from '../../../../../services/expedition.service'
 import { convertDateToStringInfo } from '../../../../../utils/Api'
 import { Activity, ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../../../utils/constants'
 import { isMobileView } from '../../../../../utils/mobileHelper'
-import { CustomTable } from '../../../GameCardPage/gameCardContentsStyle'
+import { CustomTable } from '../../../GameCardPages/gameCardContentsStyle'
 import PercentageCircle from '../../../PointsPage/ChartAndStats/PercentageCircle'
 
 

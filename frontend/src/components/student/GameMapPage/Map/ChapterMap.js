@@ -32,14 +32,13 @@ export default function ChapterMap({ chapterId, marginNeeded, parentSize, mapCli
   useEffect(() => {
     getActivityMap()
 
-    // eslint-disable-next-line
   }, [chapterId])
 
   useEffect(() => {
     if (reload) {
       getActivityMap()
     }
-    // eslint-disable-next-line
+
   }, [reload])
 
   useEffect(() => {

@@ -27,8 +27,8 @@ import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { getChartConfig } from '../../general/chartHelper'
 import Loader from '../../general/Loader/Loader'
-import { ChartCol, CustomTable } from '../../student/GameCardPage/gameCardContentsStyle'
-import { CustomCard } from '../../student/GameCardPage/GameCardStyles'
+import { ChartCol, CustomTable } from '../../student/GameCardPages/gameCardContentsStyle'
+import { CustomCard } from '../../student/GameCardPages/GameCardStyles'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement)
 

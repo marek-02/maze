@@ -28,10 +28,10 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
   const prepareRequest = (body: GradeTaskRequest): FormData => {
     const formData = new FormData()
     Object.keys(body).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore
       if (body[key]) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
         // @ts-ignore
         formData.append(key, body[key])
       }

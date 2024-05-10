@@ -27,7 +27,7 @@ function GroupsTable(props) {
     updateTableContent()
     props.setRefreshFunction(() => updateTableContent)
     // I want this code to run ONLY ONCE, I don't care what this warning says, you are free to change it and see the consequences
-    // eslint-disable-next-line
+
   }, [])
 
   const TableBody = (tableContent) =>

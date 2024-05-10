@@ -43,7 +43,6 @@ export default function InfoContainer(props) {
       setIntervalForTimer()
     }
 
-    // eslint-disable-next-line
   }, [timeToSolveMillis])
 
   // complete the expedition and record user responses if the expedition has not been completed

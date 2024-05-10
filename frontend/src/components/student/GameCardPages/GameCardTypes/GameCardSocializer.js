@@ -4,27 +4,25 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 
-import GameCard from './GameCard'
+import GameCard from '../GameCard'
 import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
   PersonalRankingInfoContent,
-  SearchOthersStatsContent
-  PersonalRankingInfoContent, 
-  SubmitStatsContent
-  PersonalRankingInfoContent,
-  PersonalOverallRankingInfoContent
+  SearchOthersStatsContent,
+  SubmitStatsContent,
+  PersonalOverallRankingInfoContent,
   KillerAuctionsContent,
   AchieverAuctionsContent,
   ColloquiumStatsContent
-} from './gameCardContents'
-import { useAppSelector } from '../../../hooks/hooks'
-import StudentService from '../../../services/student.service'
-import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR } from '../../../utils/constants'
-import Loader from '../../general/Loader/Loader'
+} from '../gameCardContents'
+import { useAppSelector } from '../../../../hooks/hooks'
+import StudentService from '../../../../services/student.service'
+import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR, getPersonalityName } from '../../../../utils/constants'
+import Loader from '../../../general/Loader/Loader'
 
-function GameCardView(props) {
+function GameCardSocializer(props) {
   const [dashboardStats, setDashboardStats] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
 
@@ -82,15 +80,7 @@ function GameCardView(props) {
       ) : (
         <>
           <Row className='m-0 gy-2'>
-            <Col md={5}>
-              <GameCard
-                  headerText='Statystyki zausznika'
-                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
-              />
-            </Col>
-          </Row>
-          <Row className='m-0 gy-2'>
-            <Col md={5}>
+          <Col md={5}>
               <GameCard
                 headerText='Statystyki bohatera'
                 content={
@@ -102,30 +92,30 @@ function GameCardView(props) {
             </Col>
             <Col md={7}>
               <GameCard
-                headerText='Statystyki ocen'
-                content={<GradesStatsContent stats={dashboardStats.generalStats} />}
-              />
+                  headerText='Miejsce w rankingu'
+                  content={
+                    <PersonalRankingInfoContent
+                      stats={{
+                        ...dashboardStats.heroTypeStatsDTO,
+                        userPoints: dashboardStats.generalStats.allPoints
+                      }}
+                    />
+                  }
+                />
             </Col>
           </Row>
-          <Row className='m-0 mb-5 m-md-0 pt-3'>
-            <Col md={5}>
+          <Row className='m-0 gy-2'>
+          <Col md={5}>
+              <GameCard
+                  headerText='Statystyki zausznika'
+                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
+              />
+            </Col>
+            <Col md={7}>
               <GameCard
                 headerText='Podgląd statystyk innego gracza'
                 content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} members={members}
                   heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} handler={changeSelectedUserId}/>}
-              />
-            </Col>
-            <Col md={7}>
-            <GameCard
-                headerText='Miejsce w rankingu'
-                content={
-                  <PersonalRankingInfoContent
-                    stats={{
-                      ...dashboardStats.heroTypeStatsDTO,
-                      userPoints: dashboardStats.generalStats.allPoints
-                    }}
-                  />
-                }
               />
             </Col>
           </Row>
@@ -141,4 +131,4 @@ function mapStateToProps(state) {
   return { theme }
 }
 
-export default connect(mapStateToProps)(GameCardView)
+export default connect(mapStateToProps)(GameCardSocializer)

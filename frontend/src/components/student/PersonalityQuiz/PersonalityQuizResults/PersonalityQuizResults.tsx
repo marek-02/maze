@@ -67,7 +67,6 @@ const PersonalityQuizResults = () => {
                   <span>Pozostałe wyniki:</span>
                 </p>
                 <ul>
-                  {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
                   {/* @ts-ignore */}
                   {personality &&
                     Object.entries(personality)

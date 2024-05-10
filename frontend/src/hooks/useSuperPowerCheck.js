@@ -18,7 +18,7 @@
 //       setSuperPowerCanBeUsed(onSkipObject)
 //     }
 
-//     // eslint-disable-next-line
+
 //   }, [superPowerInfo, skip])
 
 //   return superPowerCanBeUsed

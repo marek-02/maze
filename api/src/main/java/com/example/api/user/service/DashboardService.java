@@ -99,7 +99,7 @@ public class DashboardService {
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
                 getHeroStats(member),
-                getSubmitStats(member)
+                getSubmitStats(member),
                 getAuctionStats(member,courseId)
         );
     }
@@ -116,7 +116,9 @@ public class DashboardService {
                 getHeroTypeStats(member),
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
-                getHeroStats(member)
+                getHeroStats(member),
+                getSubmitStats(member),
+                getAuctionStats(member,courseId)
         );
     }
 

@@ -13,7 +13,7 @@ import { isMobileView } from '../../../../utils/mobileHelper'
 import { successToast } from '../../../../utils/toasts'
 import CreatableInput from '../../../general/CreatableInput/CreatableInput'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
-import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
+import { CustomTable } from '../../../student/GameCardPages/gameCardContentsStyle'
 import 'react-datepicker/dist/react-datepicker.css'
 
 registerLocale('pl', pl)
@@ -39,7 +39,6 @@ function Requirements(props) {
       .catch(() => {
         setRequirementsList(null)
       })
-    // eslint-disable-next-line
   }, [props.id])
 
   useEffect(() => {

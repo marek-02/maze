@@ -130,7 +130,7 @@ export function SearchOthersStatsContent(props){
       </Row>
     )
 }
-    
+
 export function SubmitStatsContent(props) {
   const {
     submitTaskResultCount = 0,

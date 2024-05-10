@@ -16,7 +16,7 @@ import { Content } from '../../../App/AppGeneralStyles'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import ImagesGallery from '../../../general/ImagesGallery/ImagesGallery'
 import Loader from '../../../general/Loader/Loader'
-import { CustomCard } from '../../GameCardPage/GameCardStyles'
+import { CustomCard } from '../../GameCardPages/GameCardStyles'
 
 // Old view
 function Information(props) {

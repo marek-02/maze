@@ -5,7 +5,7 @@ import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
 
 import { isMobileView } from '../../../../utils/mobileHelper'
-import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
+import { CustomCard } from '../../../student/GameCardPages/GameCardStyles'
 
 function ContentCard(props) {
   const isMobileDisplay = isMobileView()

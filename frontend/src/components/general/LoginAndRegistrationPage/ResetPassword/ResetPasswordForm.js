@@ -99,7 +99,6 @@ function ResetPasswordForm(props) {
         </div>
       </FormGroup>
     )
-    // eslint-disable-next-line
   }, [ErrorMessage, FormButton, emailValue, error, navigate, props.theme.danger, props.theme.font])
 
   const SecondStepForm = useMemo(() =>
@@ -126,7 +125,6 @@ function ResetPasswordForm(props) {
       </>
     )
 
-    // eslint-disable-next-line
   , [FormButton, props.theme.danger, props.theme.font, props.theme.secondary])
 
   const ThirdStepForm = useMemo(() => {
@@ -183,7 +181,6 @@ function ResetPasswordForm(props) {
         </div>
       </FormGroup>
     )
-    // eslint-disable-next-line
   }, [ErrorMessage, FormButton, error, passwordValue, props.theme.danger, props.theme.font])
 
   const formContents = [FirstStepForm, SecondStepForm, ThirdStepForm]

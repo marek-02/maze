@@ -4,7 +4,7 @@ import { Card } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
 
-import { CustomCard } from '../GameCardPage/GameCardStyles'
+import { CustomCard } from '../GameCardPages/GameCardStyles'
 
 function ContentCard(props) {
   return (

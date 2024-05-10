@@ -3,7 +3,6 @@ import React from 'react'
 import style from './CustomDropdownToggle.module.scss'
 
 type CustomDropdownToggleProps = {
-  // eslint-disable-next-line no-unused-vars
   onClick: (e: React.MouseEvent<HTMLDivElement>) => void
 }
 

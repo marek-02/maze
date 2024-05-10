@@ -12,7 +12,6 @@
 //     if (superPowerInfo?.value) {
 //       props.setRemainingTime(+superPowerInfo.value / 1000) // ms -> s
 //     }
-//     // eslint-disable-next-line
 //   }, [superPowerInfo])
 
 //   const startUsingSuperPower = () => {

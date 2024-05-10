@@ -4,7 +4,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux'
 
-import { CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
+import { CustomTable } from '../../../student/GameCardPages/gameCardContentsStyle'
 
 function Table(props) {
   return (

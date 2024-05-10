@@ -19,8 +19,8 @@ import {
 import { successToast } from '../../../../utils/toasts'
 import GoBackButton from '../../../general/GoBackButton/GoBackButton'
 import Loader from '../../../general/Loader/Loader'
-import GameCard from '../../GameCardPage/GameCard'
-import { CustomTable } from '../../GameCardPage/gameCardContentsStyle'
+import GameCard from '../../GameCardPages/GameCard'
+import { CustomTable } from '../../GameCardPages/gameCardContentsStyle'
 
 const icons = [fa1, fa2, fa3, fa4, fa5]
 
