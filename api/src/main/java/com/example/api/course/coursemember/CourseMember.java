@@ -69,6 +69,10 @@ public class CourseMember {
         points = points + diff;
     }
 
+    public String getAlias() {
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
     public HeroType getHeroType() {
         return userHero.getHero().getType();
     }

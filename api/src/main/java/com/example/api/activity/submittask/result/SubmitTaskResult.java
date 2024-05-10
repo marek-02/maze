@@ -25,7 +25,7 @@ import java.util.List;
 @Entity
 public class SubmitTaskResult extends ActivityResult {
     private boolean evaluated = false;
-
+    private SubmitTaskStatus status = SubmitTaskStatus.NONE;
     private String submittedTitle;
 
     @Lob
@@ -62,5 +62,9 @@ public class SubmitTaskResult extends ActivityResult {
         Double pointPercentage = Math.round(fullPoints * getSubmitTask().getPercentageForAuthor()) / 100D;
         Double newPoints = Math.min( pointPercentage, getSubmitTask().getMaxPoints() - points);
         super.setPoints(newPoints);
+    }
+
+    public void setSubmitTaskStatus(SubmitTaskStatus status) {
+        this.status = status;
     }
 }

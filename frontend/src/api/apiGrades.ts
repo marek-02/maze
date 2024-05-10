@@ -25,7 +25,14 @@ const apiGrades = api.injectEndpoints({
       }),
       invalidatesTags: ['Grades']
     }),
-    gradeSubmitTask: build.mutation<ActivityResponseInfo, ProfessorGradeRequest>({
+    gradeSubmitTask: build.mutation<ActivityResponseInfo, number>({
+      query: (id) => ({
+        url: `task/submit/result/create/${id}`,
+        method: 'POST'
+      }),
+      invalidatesTags: ['Grades']
+    }),
+    evaluateSubmitTask: build.mutation<ActivityResponseInfo, ProfessorGradeRequest>({
       query: (body) => ({
         url: `task/submit/result/${body.id}?accept=${body.accepted}`,
         method: 'POST'
@@ -40,5 +47,6 @@ export const {
   useGetFirstTaskToGradeQuery,
   useGetTasksToGradeQuery,
   useGradeTaskMutation,
-  useGradeSubmitTaskMutation
+  useGradeSubmitTaskMutation,
+  useEvaluateSubmitTaskMutation
 } = apiGrades

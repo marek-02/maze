@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+
 import GameCard from './GameCard'
 import {
   GradesStatsContent,
@@ -10,6 +11,13 @@ import {
   LastActivitiesContent,
   PersonalRankingInfoContent,
   SearchOthersStatsContent
+  PersonalRankingInfoContent, 
+  SubmitStatsContent
+  PersonalRankingInfoContent,
+  PersonalOverallRankingInfoContent
+  KillerAuctionsContent,
+  AchieverAuctionsContent,
+  ColloquiumStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
@@ -76,11 +84,18 @@ function GameCardView(props) {
           <Row className='m-0 gy-2'>
             <Col md={5}>
               <GameCard
+                  headerText='Statystyki zausznika'
+                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
+              />
+            </Col>
+          </Row>
+          <Row className='m-0 gy-2'>
+            <Col md={5}>
+              <GameCard
                 headerText='Statystyki bohatera'
                 content={
-                  <HeroStatsContent
+                  <GradesStatsContent
                     stats={dashboardStats.heroStatsDTO}
-                    heroType={dashboardStats.heroTypeStatsDTO.heroType}
                   />
                 }
               />
@@ -101,9 +116,16 @@ function GameCardView(props) {
               />
             </Col>
             <Col md={7}>
-              <GameCard
-                headerText='Ostatnio dodane aktywności'
-                content={<LastActivitiesContent theme={props.theme} stats={dashboardStats.lastAddedActivities} />}
+            <GameCard
+                headerText='Miejsce w rankingu'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      ...dashboardStats.heroTypeStatsDTO,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
+                  />
+                }
               />
             </Col>
           </Row>

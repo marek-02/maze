@@ -17,6 +17,8 @@ import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.course.CourseRepository;
 import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.course.coursetype.CourseType;
+import com.example.api.course.coursetype.CourseTypeRepository;
 import com.example.api.group.accessdate.AccessDate;
 import com.example.api.group.Group;
 import com.example.api.map.ActivityMap;
@@ -89,6 +91,7 @@ public class DatabaseConfig {
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
+    private final CourseTypeRepository courseTypeRepository;
     private final CourseMemberRepository courseMemberRepository;
     private final long week = TimeUnit.DAYS.toMillis(7);
     private final PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
@@ -189,6 +192,9 @@ public class DatabaseConfig {
              //////////// PREVIOUS CONFIGURATION ////////////
             ///////////////////////////////////////////////
 
+            CourseType courseType1 = new CourseType("Siecie komputerowe");
+
+            courseTypeRepository.save(courseType1);
 
             Course course1 = new Course(null, "course1", "description for course1", null);
             Course course2 = new Course(null, "course2", "description for course1", null);
@@ -497,10 +503,14 @@ public class DatabaseConfig {
             professor2.getCourses().add(course3);
             course3.setOwner(professor2);
 
+            courseType1.getCourses().add(course3);
+            course3.setCourseType(courseType1);
+
             userRepository.save(professor1);
             courseRepository.save(course1);
 
             userRepository.save(professor2);
+            courseTypeRepository.save(courseType1);
             courseRepository.save(course3);
 
             List<Group> groups = new ArrayList<>();
