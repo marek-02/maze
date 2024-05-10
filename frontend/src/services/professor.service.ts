@@ -113,15 +113,15 @@ class ProfessorService {
     })
   }
 
-  editHeroSuperPower(heroType: any, powerBaseValue: number, coolDownMs: number) {
-    return axiosApiPut(PUT_HERO, {
-      type: heroType,
-      value: powerBaseValue,
-      coolDownMillis: coolDownMs
-    }).catch((error) => {
-      throw error
-    })
-  }
+  // editHeroSuperPower(heroType: any, powerBaseValue: number, coolDownMs: number) {
+  //   return axiosApiPut(PUT_HERO, {
+  //     type: heroType,
+  //     value: powerBaseValue,
+  //     coolDownMillis: coolDownMs
+  //   }).catch((error) => {
+  //     throw error
+  //   })
+  // }
 
   getLogsFile() {
     return axiosApiGet(GET_FILE_LOG).catch((error) => {

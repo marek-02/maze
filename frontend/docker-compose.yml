@@ -8,4 +8,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:50"
+    volumes:
+      - .:/app/frontend
     container_name: 'sc-frontend'

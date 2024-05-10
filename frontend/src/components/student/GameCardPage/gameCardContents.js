@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState,useEffect} from 'react'
 
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
 import moment from 'moment'
@@ -85,6 +85,7 @@ export function HeroStatsContent(props) {
         <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[props.heroType]} alt='Your hero' />
       </Col>
       <Col md={7}>
+
         <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
         <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints}</p>
         <p className='pb-1'>Ranga: {props.stats.rankName}</p>
@@ -96,6 +97,40 @@ export function HeroStatsContent(props) {
 }
 
 
+export function SearchOthersStatsContent(props){
+    // const [userId,setUserId] = useState(0)
+    const [selectedMemberId, setSelectedMemberId] = useState(1)
+
+    useEffect(() => {
+      props.handler(selectedMemberId)
+    },[selectedMemberId])
+
+    return (
+      <Row
+        className={`h-100 d-flex justify-content-center align-items-center ${
+          isMobileView() ? 'flex-column' : 'flex-row'
+        }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[props.heroType]} alt='Your hero' />
+        </Col>
+        <Col md={7}>
+          <select id="selectMember" value={selectedMemberId} onChange={(event) => {setSelectedMemberId(event.target.value)}}>
+            {
+                props?.members?.map((member) => <option key={member?.id} value={member?.id}>{`${member?.firstName} ${member?.lastName}`}</option>)
+            }
+          </select>
+          {/* <button onClick={() => props.handler(userId)}>Szukaj</button> */}
+          <p className='pb-1'>Punkty doświadczenia: {props?.stats?.experiencePoints}</p>
+          <p className='pb-1'>Punkty do kolejnej rangi: {props?.stats?.nextLvlPoints}</p>
+          <p className='pb-1'>Ranga: {props?.stats?.rankName}</p>
+          <p className='pb-1'>Zdobytych medali: {props?.stats?.badgesNumber}</p>
+          <p>Wykonanych aktywności: {props?.stats?.completedActivities}</p>
+        </Col>
+      </Row>
+    )
+}
+    
 export function SubmitStatsContent(props) {
   const {
     submitTaskResultCount = 0,
@@ -169,6 +204,7 @@ export function AchieverAuctionsContent(props) {
         </Col>
       </Row>
   )
+
 }
 
 export function PersonalRankingInfoContent(props) {

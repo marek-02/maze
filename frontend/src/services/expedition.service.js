@@ -116,20 +116,20 @@ class ExpeditionService {
     })
   }
 
-  checkSuperPowerCanBeUsed(graphTaskId) {
-    return axiosApiGet(GET_TASK_GRAPH_RESULT_SUPER_POWER_CAN_USE, { graphTaskId }).catch((error) => {
-      throw error
-    })
-  }
+  // checkSuperPowerCanBeUsed(graphTaskId) {
+  //   return axiosApiGet(GET_TASK_GRAPH_RESULT_SUPER_POWER_CAN_USE, { graphTaskId }).catch((error) => {
+  //     throw error
+  //   })
+  // }
 
-  startSuperPower(graphTaskId, questionId = undefined) {
-    return axiosApiGet(GET_TASK_GRAPH_RESULT_SUPER_POWER, {
-      graphTaskId,
-      questionId
-    }).catch((error) => {
-      throw error
-    })
-  }
+  // startSuperPower(graphTaskId, questionId = undefined) {
+  //   return axiosApiGet(GET_TASK_GRAPH_RESULT_SUPER_POWER, {
+  //     graphTaskId,
+  //     questionId
+  //   }).catch((error) => {
+  //     throw error
+  //   })
+  // }
 }
 
 export default new ExpeditionService()

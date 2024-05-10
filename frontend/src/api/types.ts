@@ -1,4 +1,4 @@
-type SupportedHeroes = 'WARRIOR' | 'WIZARD' | 'PRIEST' | 'ROGUE'
+type SupportedHeroes = 'UNFORTUNATE' | 'SHEUNFORTUNATE'
 
 export type CourseHeroDTO = {
   type: SupportedHeroes

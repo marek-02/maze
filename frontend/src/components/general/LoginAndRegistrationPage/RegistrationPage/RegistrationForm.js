@@ -98,17 +98,11 @@ function RegistrationForm(props) {
                           value={character}
                         >
                           {/* //TODO: mapper and variable */}
-                          <option id='warrior' value={HeroType.WARRIOR}>
-                            Wojownik
+                          <option id='nieszczesnik' value={HeroType.UNFORTUNATE}>
+                            Nieszczęśnik
                           </option>
-                          <option id='wizard' value={HeroType.WIZARD}>
-                            Czarodziej
-                          </option>
-                          <option id='priest' value={HeroType.PRIEST}>
-                            Kapłan
-                          </option>
-                          <option id='rogue' value={HeroType.ROGUE}>
-                            Łotrzyk
+                          <option id='nieszczesnica' value={HeroType.SHEUNFORTUNATE}>
+                            Nieszczęśnica
                           </option>
                         </Field>
                         <Info $buttonColor={props.theme.success}>

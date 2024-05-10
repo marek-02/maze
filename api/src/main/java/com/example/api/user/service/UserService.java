@@ -182,7 +182,7 @@ public class UserService implements UserDetailsService {
         userValidator.validateUserNotInCourse(user, group.getCourse());
 
         Hero hero = heroRepository.findHeroByTypeAndCourse(heroType, group.getCourse());
-        UserHero userHero = new UserHero(hero, 0, 0L);
+        UserHero userHero = new UserHero(hero);
         CourseMember courseMember = courseMemberService.create(user, group, userHero);
         user.getCourseMemberships().add(courseMember);
         groupService.addUser(courseMember, group);

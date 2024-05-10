@@ -1,8 +1,8 @@
 package com.example.api.activity.result.controller;
 
 import com.example.api.activity.result.dto.request.SaveGraphTaskResultForm;
-import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -74,17 +74,17 @@ public class GraphTaskResultController {
         return ResponseEntity.ok().body(graphTaskResultService.getTimeLeftAfterEnd(resultId));
     }
 
-    @GetMapping("/super-power")
-    public ResponseEntity<SuperPowerResponse<?>> useSuperPower(
-            @RequestParam Long graphTaskId,
-            @Nullable @RequestParam Long questionId
-    ) throws RequestValidationException {
-        return ResponseEntity.ok().body(graphTaskResultService.useSuperPower(graphTaskId, questionId));
-    }
+    // @GetMapping("/super-power")
+    // public ResponseEntity<SuperPowerResponse<?>> useSuperPower(
+    //         @RequestParam Long graphTaskId,
+    //         @Nullable @RequestParam Long questionId
+    // ) throws RequestValidationException {
+    //     return ResponseEntity.ok().body(graphTaskResultService.useSuperPower(graphTaskId, questionId));
+    // }
 
-    @GetMapping("/super-power/can-use")
-    public ResponseEntity<SuperPowerUsageResponse> canSuperPowerBeUsed(@RequestParam Long graphTaskId)
-            throws RequestValidationException {
-        return ResponseEntity.ok().body(graphTaskResultService.canSuperPowerBeUsed(graphTaskId));
-    }
+    // @GetMapping("/super-power/can-use")
+    // public ResponseEntity<SuperPowerUsageResponse> canSuperPowerBeUsed(@RequestParam Long graphTaskId)
+    //         throws RequestValidationException {
+    //     return ResponseEntity.ok().body(graphTaskResultService.canSuperPowerBeUsed(graphTaskId));
+    // }
 }

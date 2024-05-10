@@ -66,6 +66,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.lang.String;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -113,11 +114,11 @@ public class DatabaseConfig {
 //                    null);
 //            courseRepository.save(testCourse);
 //
-//            Hero testPriest = new Priest(HeroType.PRIEST, week, testCourse);
-//            Hero testRogue = new Rogue(HeroType.ROGUE, week, testCourse);
-//            Hero testWarrior = new Warrior(HeroType.WARRIOR, week, testCourse);
-//            Hero testWizard = new Wizard(HeroType.WIZARD, week, testCourse);
-//            List<Hero> testHeroes = List.of(testPriest, testRogue, testWarrior, testWizard);
+//            Hero testUnfortunate = new Unfortunate(HeroType.UNFORTUNATE, week, testCourse);
+//            Hero testSheUnfortunate = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, testCourse);
+//            Hero testSheUnfortunate = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, testCourse);
+//            Hero testUnfortunate = new Unfortunate(HeroType.UNFORTUNATE, week, testCourse);
+//            List<Hero> testHeroes = List.of(testUnfortunate, testSheUnfortunate, testSheUnfortunate, testUnfortunate);
 //            heroRepository.saveAll(testHeroes);
 //
 //            List<User> studentsMon13 = createTestUsers("pon13");
@@ -204,17 +205,20 @@ public class DatabaseConfig {
             courseRepository.save(course3);
 
             // HEROES
-            Hero priest = new Priest(HeroType.PRIEST, week, course1);
-            Hero priest3 = new Priest(HeroType.PRIEST, week, course3);
-            Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
-            Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
-            Hero rogue3 = new Rogue(HeroType.ROGUE, week, course3);
-            Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
-            Hero warrior3 = new Warrior(HeroType.WARRIOR, week, course3);
-            Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
-            Hero wizard3 = new Wizard(HeroType.WIZARD, week, course3);
-            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior, priest2));
-            heroRepository.saveAll(List.of(priest3, rogue3, wizard3, warrior3));
+            Hero Unfortunate = new Unfortunate(HeroType.UNFORTUNATE, week, course1);            
+            Hero Unfortunate2 = new Unfortunate(HeroType.UNFORTUNATE, week, course2);
+            Hero Unfortunate3 = new Unfortunate(HeroType.UNFORTUNATE, week, course3);
+
+            Hero SheUnfortunate = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, course1);
+            Hero SheUnfortunate2 = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, course2);
+            Hero SheUnfortunate3 = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, course3);
+        //     Hero SheUnfortunate = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, course1);
+        //     Hero SheUnfortunate3 = new SheUnfortunate(HeroType.SHEUNFORTUNATE, week, course3);
+            //Hero Unfortunate = new Unfortunate(HeroType.UNFORTUNATE, week, course1);
+            //Hero Unfortunate3 = new Unfortunate(HeroType.UNFORTUNATE, week, course3);
+            heroRepository.saveAll(List.of(Unfortunate, SheUnfortunate));
+            heroRepository.saveAll(List.of(Unfortunate2, SheUnfortunate2));
+            heroRepository.saveAll(List.of(Unfortunate3, SheUnfortunate3));
 
             // USERS & GROUPS
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
@@ -389,108 +393,108 @@ public class DatabaseConfig {
             group1course2.setCourse(course2);
             groupService.saveGroup(group1course2);
 
-            addToGroup(students1.get(0), group1course2, priest2);
+            addToGroup(students1.get(0), group1course2, Unfortunate2);
 
-            addToGroup(students1.get(0), group, priest);
-            addToGroup(students1.get(1), group, rogue);
-            addToGroup(students1.get(2), group, wizard);
-            addToGroup(students1.get(3), group, warrior);
-            addToGroup(students1.get(4), group, priest);
-            addToGroup(students1.get(5), group, rogue);
-            addToGroup(students1.get(6), group, wizard);
-            addToGroup(students1.get(7), group, warrior);
+            addToGroup(students1.get(0), group, Unfortunate);
+            addToGroup(students1.get(1), group, SheUnfortunate);
+            addToGroup(students1.get(2), group, Unfortunate);
+            addToGroup(students1.get(3), group, SheUnfortunate);
+            addToGroup(students1.get(4), group, Unfortunate);
+            addToGroup(students1.get(5), group, SheUnfortunate);
+            addToGroup(students1.get(6), group, Unfortunate);
+            addToGroup(students1.get(7), group, SheUnfortunate);
 
-            addToGroup(students2.get(0), group1, priest);
-            addToGroup(students2.get(1), group1, rogue);
-            addToGroup(students2.get(2), group1, wizard);
-            addToGroup(students2.get(3), group1, warrior);
-            addToGroup(students2.get(4), group1, priest);
-            addToGroup(students2.get(5), group1, rogue);
-            addToGroup(students2.get(6), group1, wizard);
-            addToGroup(students2.get(7), group1, warrior);
+            addToGroup(students2.get(0), group1, Unfortunate);
+            addToGroup(students2.get(1), group1, SheUnfortunate);
+            addToGroup(students2.get(2), group1, Unfortunate);
+            addToGroup(students2.get(3), group1, SheUnfortunate);
+            addToGroup(students2.get(4), group1, Unfortunate);
+            addToGroup(students2.get(5), group1, SheUnfortunate);
+            addToGroup(students2.get(6), group1, Unfortunate);
+            addToGroup(students2.get(7), group1, SheUnfortunate);
 
-            addToGroup(students3.get(0), group3, priest);
-            addToGroup(students3.get(1), group3, rogue);
-            addToGroup(students3.get(2), group3, wizard);
-            addToGroup(students3.get(3), group3, warrior);
-            addToGroup(students3.get(4), group3, priest);
-            addToGroup(students3.get(5), group3, rogue);
-            addToGroup(students3.get(6), group3, wizard);
-            addToGroup(students3.get(7), group3, warrior);
+            addToGroup(students3.get(0), group3, Unfortunate);
+            addToGroup(students3.get(1), group3, SheUnfortunate);
+            addToGroup(students3.get(2), group3, Unfortunate);
+            addToGroup(students3.get(3), group3, SheUnfortunate);
+            addToGroup(students3.get(4), group3, Unfortunate);
+            addToGroup(students3.get(5), group3, SheUnfortunate);
+            addToGroup(students3.get(6), group3, Unfortunate);
+            addToGroup(students3.get(7), group3, SheUnfortunate);
 
-            addToGroup(students4.get(0), group4, priest);
-            addToGroup(students4.get(1), group4, rogue);
-            addToGroup(students4.get(2), group4, wizard);
-            addToGroup(students4.get(3), group4, warrior);
-            addToGroup(students4.get(4), group4, priest);
-            addToGroup(students4.get(5), group4, rogue);
-            addToGroup(students4.get(6), group4, wizard);
+            addToGroup(students4.get(0), group4, Unfortunate);
+            addToGroup(students4.get(1), group4, SheUnfortunate);
+            addToGroup(students4.get(2), group4, Unfortunate);
+            addToGroup(students4.get(3), group4, SheUnfortunate);
+            addToGroup(students4.get(4), group4, Unfortunate);
+            addToGroup(students4.get(5), group4, SheUnfortunate);
+            addToGroup(students4.get(6), group4, Unfortunate);
 
-            addToGroup(students5.get(0), group5, priest);
-            addToGroup(students5.get(1), group5, rogue);
-            addToGroup(students5.get(2), group5, wizard);
-            addToGroup(students5.get(3), group5, warrior);
-            addToGroup(students5.get(4), group5, priest);
-            addToGroup(students5.get(5), group5, rogue);
-            addToGroup(students5.get(6), group5, wizard);
-            addToGroup(students5.get(7), group5, warrior);
+            addToGroup(students5.get(0), group5, Unfortunate);
+            addToGroup(students5.get(1), group5, SheUnfortunate);
+            addToGroup(students5.get(2), group5, Unfortunate);
+            addToGroup(students5.get(3), group5, SheUnfortunate);
+            addToGroup(students5.get(4), group5, Unfortunate);
+            addToGroup(students5.get(5), group5, SheUnfortunate);
+            addToGroup(students5.get(6), group5, Unfortunate);
+            addToGroup(students5.get(7), group5, SheUnfortunate);
 
-            addToGroup(students6.get(0), group6, priest);
-            addToGroup(students6.get(1), group6, rogue);
-            addToGroup(students6.get(2), group6, wizard);
-            addToGroup(students6.get(3), group6, warrior);
-            addToGroup(students6.get(4), group6, priest);
-            addToGroup(students6.get(5), group6, rogue);
-            addToGroup(students6.get(6), group6, wizard);
+            addToGroup(students6.get(0), group6, Unfortunate);
+            addToGroup(students6.get(1), group6, SheUnfortunate);
+            addToGroup(students6.get(2), group6, Unfortunate);
+            addToGroup(students6.get(3), group6, SheUnfortunate);
+            addToGroup(students6.get(4), group6, Unfortunate);
+            addToGroup(students6.get(5), group6, SheUnfortunate);
+            addToGroup(students6.get(6), group6, Unfortunate);
 
 
-            addToGroup(studentsFri15A.get(0), groupFri15A, priest);
-            addToGroup(studentsFri15A.get(1), groupFri15A, rogue);
-            addToGroup(studentsFri15A.get(2), groupFri15A, wizard);
-            addToGroup(studentsFri15A.get(3), groupFri15A, warrior);
-            addToGroup(studentsFri15A.get(4), groupFri15A, priest);
-            addToGroup(studentsFri15A.get(5), groupFri15A, rogue);
-            addToGroup(studentsFri15A.get(6), groupFri15A, wizard);
-            addToGroup(studentsFri15A.get(7), groupFri15A, warrior);
-            addToGroup(studentsFri15B.get(0), groupFri15B, priest);
-            addToGroup(studentsFri15B.get(1), groupFri15B, rogue);
-            addToGroup(studentsFri15B.get(2), groupFri15B, wizard);
-            addToGroup(studentsFri15B.get(3), groupFri15B, warrior);
-            addToGroup(studentsFri15B.get(4), groupFri15B, priest);
-            addToGroup(studentsFri15B.get(5), groupFri15B, rogue);
-            addToGroup(studentsFri15B.get(6), groupFri15B, wizard);
+            addToGroup(studentsFri15A.get(0), groupFri15A, Unfortunate);
+            addToGroup(studentsFri15A.get(1), groupFri15A, SheUnfortunate);
+            addToGroup(studentsFri15A.get(2), groupFri15A, Unfortunate);
+            addToGroup(studentsFri15A.get(3), groupFri15A, SheUnfortunate);
+            addToGroup(studentsFri15A.get(4), groupFri15A, Unfortunate);
+            addToGroup(studentsFri15A.get(5), groupFri15A, SheUnfortunate);
+            addToGroup(studentsFri15A.get(6), groupFri15A, Unfortunate);
+            addToGroup(studentsFri15A.get(7), groupFri15A, SheUnfortunate);
+            addToGroup(studentsFri15B.get(0), groupFri15B, Unfortunate);
+            addToGroup(studentsFri15B.get(1), groupFri15B, SheUnfortunate);
+            addToGroup(studentsFri15B.get(2), groupFri15B, Unfortunate);
+            addToGroup(studentsFri15B.get(3), groupFri15B, SheUnfortunate);
+            addToGroup(studentsFri15B.get(4), groupFri15B, Unfortunate);
+            addToGroup(studentsFri15B.get(5), groupFri15B, SheUnfortunate);
+            addToGroup(studentsFri15B.get(6), groupFri15B, Unfortunate);
 
-            addToGroup(studentsFri16A.get(0), groupFri16A, priest);
-            addToGroup(studentsFri16A.get(1), groupFri16A, rogue);
-            addToGroup(studentsFri16A.get(2), groupFri16A, wizard);
-            addToGroup(studentsFri16A.get(3), groupFri16A, warrior);
-            addToGroup(studentsFri16A.get(4), groupFri16A, priest);
-            addToGroup(studentsFri16A.get(5), groupFri16A, rogue);
-            addToGroup(studentsFri16A.get(6), groupFri16A, wizard);
-            addToGroup(studentsFri16A.get(7), groupFri16A, warrior);
-            addToGroup(studentsFri16B.get(0), groupFri16B, priest);
-            addToGroup(studentsFri16B.get(1), groupFri16B, rogue);
-            addToGroup(studentsFri16B.get(2), groupFri16B, wizard);
-            addToGroup(studentsFri16B.get(3), groupFri16B, warrior);
-            addToGroup(studentsFri16B.get(4), groupFri16B, priest);
-            addToGroup(studentsFri16B.get(5), groupFri16B, rogue);
-            addToGroup(studentsFri16B.get(6), groupFri16B, wizard);
+            addToGroup(studentsFri16A.get(0), groupFri16A, Unfortunate);
+            addToGroup(studentsFri16A.get(1), groupFri16A, SheUnfortunate);
+            addToGroup(studentsFri16A.get(2), groupFri16A, Unfortunate);
+            addToGroup(studentsFri16A.get(3), groupFri16A, SheUnfortunate);
+            addToGroup(studentsFri16A.get(4), groupFri16A, Unfortunate);
+            addToGroup(studentsFri16A.get(5), groupFri16A, SheUnfortunate);
+            addToGroup(studentsFri16A.get(6), groupFri16A, Unfortunate);
+            addToGroup(studentsFri16A.get(7), groupFri16A, SheUnfortunate);
+            addToGroup(studentsFri16B.get(0), groupFri16B, Unfortunate);
+            addToGroup(studentsFri16B.get(1), groupFri16B, SheUnfortunate);
+            addToGroup(studentsFri16B.get(2), groupFri16B, Unfortunate);
+            addToGroup(studentsFri16B.get(3), groupFri16B, SheUnfortunate);
+            addToGroup(studentsFri16B.get(4), groupFri16B, Unfortunate);
+            addToGroup(studentsFri16B.get(5), groupFri16B, SheUnfortunate);
+            addToGroup(studentsFri16B.get(6), groupFri16B, Unfortunate);
 
-            addToGroup(studentsFri18A.get(0), groupFri18A, priest);
-            addToGroup(studentsFri18A.get(1), groupFri18A, rogue);
-            addToGroup(studentsFri18A.get(2), groupFri18A, wizard);
-            addToGroup(studentsFri18A.get(3), groupFri18A, warrior);
-            addToGroup(studentsFri18A.get(4), groupFri18A, priest);
-            addToGroup(studentsFri18A.get(5), groupFri18A, rogue);
-            addToGroup(studentsFri18A.get(6), groupFri18A, wizard);
-            addToGroup(studentsFri18A.get(7), groupFri18A, warrior);
-            addToGroup(studentsFri18B.get(0), groupFri18B, priest);
-            addToGroup(studentsFri18B.get(1), groupFri18B, rogue);
-            addToGroup(studentsFri18B.get(2), groupFri18B, wizard);
-            addToGroup(studentsFri18B.get(3), groupFri18B, warrior);
-            addToGroup(studentsFri18B.get(4), groupFri18B, priest);
-            addToGroup(studentsFri18B.get(5), groupFri18B, rogue);
-            addToGroup(studentsFri18B.get(6), groupFri18B, wizard);
+            addToGroup(studentsFri18A.get(0), groupFri18A, Unfortunate);
+            addToGroup(studentsFri18A.get(1), groupFri18A, SheUnfortunate);
+            addToGroup(studentsFri18A.get(2), groupFri18A, Unfortunate);
+            addToGroup(studentsFri18A.get(3), groupFri18A, SheUnfortunate);
+            addToGroup(studentsFri18A.get(4), groupFri18A, Unfortunate);
+            addToGroup(studentsFri18A.get(5), groupFri18A, SheUnfortunate);
+            addToGroup(studentsFri18A.get(6), groupFri18A, Unfortunate);
+            addToGroup(studentsFri18A.get(7), groupFri18A, SheUnfortunate);
+            addToGroup(studentsFri18B.get(0), groupFri18B, Unfortunate);
+            addToGroup(studentsFri18B.get(1), groupFri18B, SheUnfortunate);
+            addToGroup(studentsFri18B.get(2), groupFri18B, Unfortunate);
+            addToGroup(studentsFri18B.get(3), groupFri18B, SheUnfortunate);
+            addToGroup(studentsFri18B.get(4), groupFri18B, Unfortunate);
+            addToGroup(studentsFri18B.get(5), groupFri18B, SheUnfortunate);
+            addToGroup(studentsFri18B.get(6), groupFri18B, Unfortunate);
 
 
             professor1.getCourses().add(course1);
@@ -872,114 +876,91 @@ public class DatabaseConfig {
     }
 
     private void initAllRanks(Course course) throws IOException {
-        byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png");
-        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK);
-        fileRepository.save(warriorImage1);
+        byte[] SheUnfortunateImageBytes1 = getByteArrayForFile("src/main/resources/images/sheUnfortunate1.png");
+        Image SheUnfortunateImage1 = new Image("SheUnfortunate rank image 1", SheUnfortunateImageBytes1, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage1);
 
-        byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png");
-        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK);
-        fileRepository.save(warriorImage2);
+        byte[] SheUnfortunateImageBytes2 = getByteArrayForFile("src/main/resources/images/sheUnfortunate2.png");
+        Image SheUnfortunateImage2 = new Image("SheUnfortunate rank image 2", SheUnfortunateImageBytes2, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage2);
 
-        byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png");
-        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK);
-        fileRepository.save(warriorImage3);
+        byte[] SheUnfortunateImageBytes3 = getByteArrayForFile("src/main/resources/images/sheUnfortunate3.png");
+        Image SheUnfortunateImage3 = new Image("SheUnfortunate rank image 3", SheUnfortunateImageBytes3, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage3);
 
-        byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png");
-        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK);
-        fileRepository.save(warriorImage4);
+        byte[] SheUnfortunateImageBytes4 = getByteArrayForFile("src/main/resources/images/sheUnfortunate4.png");
+        Image SheUnfortunateImage4 = new Image("SheUnfortunate rank image 4", SheUnfortunateImageBytes4, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage4);
 
-        byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png");
-        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK);
-        fileRepository.save(warriorImage5);
+        byte[] SheUnfortunateImageBytes5 = getByteArrayForFile("src/main/resources/images/sheUnfortunate5.png");
+        Image SheUnfortunateImage5 = new Image("SheUnfortunate rank image 5", SheUnfortunateImageBytes5, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage5);
 
-        byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png");
-        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK);
-        fileRepository.save(wizardImage1);
+        byte[] SheUnfortunateImageBytes6 = getByteArrayForFile("src/main/resources/images/sheUnfortunate6.png");
+        Image SheUnfortunateImage6 = new Image("SheUnfortunate rank image 6", SheUnfortunateImageBytes6, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage6);
 
-        byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png");
-        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK);
-        fileRepository.save(wizardImage2);
+        byte[] SheUnfortunateImageBytes7 = getByteArrayForFile("src/main/resources/images/sheUnfortunate7.png");
+        Image SheUnfortunateImage7 = new Image("SheUnfortunate rank image 7", SheUnfortunateImageBytes7, ImageType.RANK);
+        fileRepository.save(SheUnfortunateImage7);
 
-        byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png");
-        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK);
-        fileRepository.save(wizardImage3);
 
-        byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png");
-        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK);
-        fileRepository.save(wizardImage4);
+        byte[] UnfortunateImageBytes1 = getByteArrayForFile("src/main/resources/images/unfortunate1.png");
+        Image UnfortunateImage1 = new Image("Unfortunate rank image 1", UnfortunateImageBytes1, ImageType.RANK);
+        fileRepository.save(UnfortunateImage1);
 
-        byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png");
-        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK);
-        fileRepository.save(wizardImage5);
+        byte[] UnfortunateImageBytes2 = getByteArrayForFile("src/main/resources/images/unfortunate2.png");
+        Image UnfortunateImage2 = new Image("Unfortunate rank image 2", UnfortunateImageBytes2, ImageType.RANK);
+        fileRepository.save(UnfortunateImage2);
 
-        byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png");
-        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK);
-        fileRepository.save(priestImage1);
+        byte[] UnfortunateImageBytes3 = getByteArrayForFile("src/main/resources/images/unfortunate3.png");
+        Image UnfortunateImage3 = new Image("Unfortunate rank image 3", UnfortunateImageBytes3, ImageType.RANK);
+        fileRepository.save(UnfortunateImage3);
 
-        byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png");
-        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK);
-        fileRepository.save(priestImage2);
+        byte[] UnfortunateImageBytes4 = getByteArrayForFile("src/main/resources/images/unfortunate4.png");
+        Image UnfortunateImage4 = new Image("Unfortunate rank image 4", UnfortunateImageBytes4, ImageType.RANK);
+        fileRepository.save(UnfortunateImage4);
 
-        byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png");
-        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK);
-        fileRepository.save(priestImage3);
+        byte[] UnfortunateImageBytes5 = getByteArrayForFile("src/main/resources/images/unfortunate5.png");
+        Image UnfortunateImage5 = new Image("Unfortunate rank image 5", UnfortunateImageBytes5, ImageType.RANK);
+        fileRepository.save(UnfortunateImage5);
 
-        byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png");
-        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK);
-        fileRepository.save(priestImage4);
+        byte[] UnfortunateImageBytes6 = getByteArrayForFile("src/main/resources/images/unfortunate6.png");
+        Image UnfortunateImage6 = new Image("Unfortunate rank image 6", UnfortunateImageBytes6, ImageType.RANK);
+        fileRepository.save(UnfortunateImage6);
 
-        byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png");
-        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK);
-        fileRepository.save(priestImage5);
+        byte[] UnfortunateImageBytes7 = getByteArrayForFile("src/main/resources/images/unfortunate7.png");
+        Image UnfortunateImage7 = new Image("Unfortunate rank image 7", UnfortunateImageBytes7, ImageType.RANK);
+        fileRepository.save(UnfortunateImage7);
 
-        byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png");
-        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK);
-        fileRepository.save(rogueImage1);
 
-        byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png");
-        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK);
-        fileRepository.save(rogueImage2);
+        fileRepository.save(SheUnfortunateImage5);
 
-        byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png");
-        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK);
-        fileRepository.save(rogueImage3);
+        Rank SheUnfortunateRank1 = new Rank(null, HeroType.SHEUNFORTUNATE, "Nornica", 0.0, SheUnfortunateImage1, course);
+        Rank SheUnfortunateRank2 = new Rank(null, HeroType.SHEUNFORTUNATE, "Mamuna", 20.0, SheUnfortunateImage2, course);
+        Rank SheUnfortunateRank3 = new Rank(null, HeroType.SHEUNFORTUNATE, "Fochna", 50.0, SheUnfortunateImage3, course);
+        Rank SheUnfortunateRank4 = new Rank(null, HeroType.SHEUNFORTUNATE, "Ognista Potwora", 80.0, SheUnfortunateImage4, course);
+        Rank SheUnfortunateRank5 = new Rank(null, HeroType.SHEUNFORTUNATE, "Busianna", 120.0, SheUnfortunateImage5, course);
+        Rank SheUnfortunateRank6 = new Rank(null, HeroType.SHEUNFORTUNATE, "Lubawa", 160.0, SheUnfortunateImage6, course);
+        Rank SheUnfortunateRank7 = new Rank(null, HeroType.SHEUNFORTUNATE, "Ciotka Jaga", 200.0, SheUnfortunateImage7, course);
 
-        byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png");
-        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK);
-        fileRepository.save(rogueImage4);
+        Rank UnfortunateRank1 = new Rank(null, HeroType.UNFORTUNATE, "Chomik", 0.0, UnfortunateImage1, course);
+        Rank UnfortunateRank2 = new Rank(null, HeroType.UNFORTUNATE, "Woj Wit", 20.0, UnfortunateImage2, course);
+        Rank UnfortunateRank3 = new Rank(null, HeroType.UNFORTUNATE, "Mirmił", 50.0, UnfortunateImage3, course);
+        Rank UnfortunateRank4 = new Rank(null, HeroType.UNFORTUNATE, "Miluś", 80.0,UnfortunateImage4, course);
+        Rank UnfortunateRank5 = new Rank(null, HeroType.UNFORTUNATE, "Kajko", 120.0, UnfortunateImage5, course);
+        Rank UnfortunateRank6 = new Rank(null, HeroType.UNFORTUNATE, "Kokosz", 160.0, UnfortunateImage6, course);
+        Rank UnfortunateRank7 = new Rank(null, HeroType.UNFORTUNATE, "Łamignat", 200.0, UnfortunateImage7, course);
 
-        byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png");
-        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
-        fileRepository.save(rogueImage5);
 
-        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, course);
-        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2, course);
-        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3, course);
-        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4, course);
-        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5, course);
+        rankRepository.saveAll(List.of(SheUnfortunateRank1, SheUnfortunateRank2, SheUnfortunateRank3, SheUnfortunateRank4, SheUnfortunateRank5
+        , SheUnfortunateRank6, SheUnfortunateRank7));
 
-        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1, course);
-        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2, course);
-        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3, course);
-        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4, course);
-        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5, course);
+        rankRepository.saveAll(List.of(UnfortunateRank1, UnfortunateRank2, UnfortunateRank3, UnfortunateRank4, UnfortunateRank5,
+        UnfortunateRank6,UnfortunateRank7));
 
-        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1, course);
-        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2, course);
-        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3, course);
-        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4, course);
-        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5, course);
-
-        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1, course);
-        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2, course);
-        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3, course);
-        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4, course);
-        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5, course);
-
-        rankRepository.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
-        rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
-        rankRepository.saveAll(List.of(priestRank1, priestRank2, priestRank3, priestRank4, priestRank5));
-        rankRepository.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
+        // rankRepository.saveAll(List.of(UnfortunateRank1, UnfortunateRank2, UnfortunateRank3, UnfortunateRank4, UnfortunateRank5));
+        // rankRepository.saveAll(List.of(SheUnfortunateRank1, SheUnfortunateRank2, SheUnfortunateRank3, SheUnfortunateRank4, SheUnfortunateRank5));
         courseRepository.save(course);
     }
 
@@ -1015,7 +996,7 @@ public class DatabaseConfig {
                 fileTaskMaster,topFive,graphTaskExperienced,graphTaskFirstSteps,graphTaskMaster,groupLeader
                 ,handshake,inTheMiddle,itsTheBeginning,leader,longA,lookingUp, smileFromProfessor, theEnd, topTwenty));
 
-        Badge badge1 = new ConsistencyBadge(
+        Badge badge1 = new ConsistencyBadge( 
                 null,
                 "To dopiero początek",
                 "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres miesiąca",
@@ -1196,8 +1177,81 @@ public class DatabaseConfig {
                 course
         );
 
+        Badge badge20 = new ActivityScoreBadge(
+                null,
+                "Dzierżymord",
+                "Dzierżymordem zostaje Nieszczęśnik, który najwięcej razy uzyskał maksymalną nagrodę pełniąc rolę Ekonoma",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge21 = new ActivityScoreBadge(
+                null,
+                "Tropiciel",
+                "Każdy, kto znalazl przynajmniej trzy wilcze doły.",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge22 = new ActivityScoreBadge(
+                null,
+                "Kronikarz",
+                "Każdy, który będąc skrybą wykonał przynajmniej trzy bardzo dobre (100% nagrody) dokumentacje",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge23 = new ActivityScoreBadge(
+                null,
+                "Arcymotacz",
+                "Każdy, który będąc kabelmistrzem wykonał przynajmniej trzy bardzo dobre (100% nagrody) topologie",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+        
+        Badge badge24 = new ActivityScoreBadge(
+                null,
+                "E.U.geniusz",
+                "Ten, który najwięcej razy wskutek udzielonej w czasie spaceru pomocy został do tego glejtu nominowany przez nie swoją grupę",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge25 = new ActivityScoreBadge(
+                null,
+                "A.B.Normal",
+                "Ten, który wygrał i rozwiązał najwięcej licytacji o zadania (patrz: Hazard)  w razie remisu organizowany jest TWZ",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+        Badge badge26 = new ActivityScoreBadge(
+                null,
+                "Grim Reaper",
+                "Każdy, kto co najmniej trzy razy został Zausznikiem Krwiopijcy",
+                inTheMiddle,
+                0.0,
+                true,
+                course
+        );
+
+       
+
         badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7, badge8, badge9, badge10,
-                badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
+                badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19,badge20,badge21,badge22,
+                badge23,badge24,badge25,badge26));
     }
 
     private void addReceivedPointsForUser(CourseMember student, Double points){
@@ -1219,7 +1273,7 @@ public class DatabaseConfig {
     }
 
     private UserHero userHero(Hero hero) {
-        return new UserHero(hero, 0, 0L);
+        return new UserHero(hero);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {

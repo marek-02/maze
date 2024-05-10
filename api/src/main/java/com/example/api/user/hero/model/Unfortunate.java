@@ -1,6 +1,6 @@
 package com.example.api.user.hero.model;
 
-import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.dto.response.SuperPowerResponse;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.course.Course;
 import com.example.api.error.exception.RequestValidationException;
@@ -21,19 +21,19 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Priest extends Hero{
+public class Unfortunate extends Hero{
     private int healValue = 20;
 
-    public Priest(HeroType type, Long coolDownTimeMillis, Course course) {
+    public Unfortunate(HeroType type, Long coolDownTimeMillis, Course course) {
         super(type, coolDownTimeMillis, course);
     }
 
-    @Override
-    public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
-                                               User user, GraphTaskResult result,
-                                               Question question) throws RequestValidationException {
-        return visitor.visitPriest(this, result);
-    }
+    // @Override
+    // public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
+    //                                            User user, GraphTaskResult result,
+    //                                            Question question) throws RequestValidationException {
+    //     return visitor.visitUnfortunate(this, result);
+    // }
 
     @Override
     public void changeValue(Double value) {

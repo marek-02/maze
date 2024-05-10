@@ -9,6 +9,8 @@ import {
   GradesStatsContent,
   HeroStatsContent,
   LastActivitiesContent,
+  PersonalRankingInfoContent,
+  SearchOthersStatsContent
   PersonalRankingInfoContent, 
   SubmitStatsContent
   PersonalRankingInfoContent,
@@ -19,12 +21,17 @@ import {
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'
-import { ERROR_OCCURRED } from '../../../utils/constants'
+import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR } from '../../../utils/constants'
 import Loader from '../../general/Loader/Loader'
 
 function GameCardView(props) {
   const [dashboardStats, setDashboardStats] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
+
+  const [selectedUserId,setSelectedUserId] = useState(-1)
+  const [selectedUsersDashboardStats,setSelectedUsersDashboardStats] = useState(undefined)
+
+  const [members,setMembers] = useState(undefined)
 
   useEffect(() => {
     StudentService.getDashboardStats(courseId)
@@ -34,6 +41,37 @@ function GameCardView(props) {
       })
       .catch(() => setDashboardStats(null))
   }, [])
+
+  useEffect(() => {
+    if(selectedUserId===-1) return
+    StudentService.getSpecifiedStudentsDashboardStats(selectedUserId,courseId)
+    .then((response) => {
+      setSelectedUsersDashboardStats(response)
+      localStorage.setItem('heroType', response?.heroTypeStatsDTO?.heroType)
+    })
+    .catch(((err) => {
+      console.log(err)
+      setSelectedUsersDashboardStats(null)
+    }))
+  },[selectedUserId])
+
+  useEffect(() => {
+    StudentService.getAllMembers(courseId)
+    .then((response) => {
+      setMembers(response)
+    })
+    .catch(((err) => {
+      console.log(err)
+      setMembers(null)
+    }
+  ))
+  },[])
+
+  const changeSelectedUserId = (newUserId) => {
+    // console.log(`Invoked changeSelectedUserId: ${newUserId}`)
+    // console.log(selectedUsersDashboardStats)
+    setSelectedUserId(newUserId)
+  }
 
   return (
     <Container>
@@ -72,15 +110,9 @@ function GameCardView(props) {
           <Row className='m-0 mb-5 m-md-0 pt-3'>
             <Col md={5}>
               <GameCard
-                headerText='Miejsce w rankingu'
-                content={
-                  <PersonalRankingInfoContent
-                    stats={{
-                      ...dashboardStats.heroTypeStatsDTO,
-                      userPoints: dashboardStats.generalStats.allPoints
-                    }}
-                  />
-                }
+                headerText='Podgląd statystyk innego gracza'
+                content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} members={members}
+                  heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} handler={changeSelectedUserId}/>}
               />
             </Col>
             <Col md={7}>

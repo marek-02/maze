@@ -85,4 +85,15 @@ public class User {
     public boolean inCourse(Long courseId) {
         return courseMemberships.stream().anyMatch(member -> member.getCourse().getId().equals(courseId));
     }
+
+    public String getFirstName(){
+        return this.firstName;
+    }
+
+    public String getLastName(){
+        return this.lastName;
+    }
+    public Long getUserId(){
+        return this.id;
+    }
 }
