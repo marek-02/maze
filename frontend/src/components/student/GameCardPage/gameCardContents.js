@@ -196,3 +196,51 @@ export function PersonalRankingInfoContent(props) {
     </Row>
   )
 }
+
+export function PersonalOverallRankingInfoContent(props) {
+  const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
+  const playerType = convertHeroTypeToPlayerType(props.stats.heroType)
+  const chartType = playerType === PlayerType.CHALLENGING ? 'BAR' : 'PIE'
+
+  const rankComment = getGameCardInfo(playerType, {
+    rankPosition: props.stats.overallRankPosition,
+    rankLength: props.stats.overallRankLength,
+    userPoints: userPointsGroup
+  })
+
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
+
+  const getChartInfo = () => {
+    if (chartType === 'BAR') {
+      const barLabels = [
+        props.stats.betterPlayerPointsOverall != null ? 'Punkty gracza przed Tobą' : '',
+        'Twój wynik',
+        props.stats.worsePlayerPointsOverall != null ? 'Punkty gracza za Tobą' : ''
+      ].filter((label) => !!label)
+
+      const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
+        (points) => points != null
+      )
+      return barConfig(barLabels, barPoints, colorPalette(barLabels.length))
+    }
+
+    return pieConfig(
+      ['Grupa graczy, w której jesteś', 'Pozostali gracze'],
+      [props.stats.rankPosition, props.stats.rankLength],
+      colorPalette(2)
+    )
+  }
+
+  const { data, options } = getChartInfo()
+
+  return (
+    <Row className='h-100 d-flex justify-content-center align-items-center'>
+      <ChartCol md={12}>
+        {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
+      </ChartCol>
+      <Col md={12}>
+        <p className='text-center w-100'>{rankComment}</p>
+      </Col>
+    </Row>
+  )
+}

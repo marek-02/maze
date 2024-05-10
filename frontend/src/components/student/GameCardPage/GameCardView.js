@@ -10,6 +10,7 @@ import {
   HeroStatsContent,
   LastActivitiesContent,
   PersonalRankingInfoContent,
+  PersonalOverallRankingInfoContent
   KillerAuctionsContent,
   AchieverAuctionsContent,
   ColloquiumStatsContent
@@ -74,9 +75,16 @@ function GameCardView(props) {
               />
             </Col>
             <Col md={7}>
-              <GameCard
-                headerText='Licytacje'
-                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
+            <GameCard
+                headerText='Miejsce w rankingu'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      ...dashboardStats.heroTypeStatsDTO,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
+                  />
+                }
               />
             </Col>
           </Row>
