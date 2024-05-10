@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
+
 import GameCard from './GameCard'
 import {
   GradesStatsContent,
@@ -10,6 +11,9 @@ import {
   LastActivitiesContent,
   PersonalRankingInfoContent,
   PersonalOverallRankingInfoContent
+  KillerAuctionsContent,
+  AchieverAuctionsContent,
+  ColloquiumStatsContent
 } from './gameCardContents'
 import { useAppSelector } from '../../../hooks/hooks'
 import StudentService from '../../../services/student.service'

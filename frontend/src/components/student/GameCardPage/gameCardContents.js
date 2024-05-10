@@ -7,7 +7,13 @@ import { Bar, Pie } from 'react-chartjs-2'
 
 import { ChartCol, CustomTable } from './gameCardContentsStyle'
 import { barConfig, pieConfig } from '../../../utils/chartConfig'
-import { convertHeroTypeToPlayerType, getActivityTypeName, getGameCardInfo, HeroImg } from '../../../utils/constants'
+import {
+  convertHeroTypeToPlayerType,
+  getActivityTypeName,
+  getGameCardInfo,
+  BidImg,
+  HeroImg
+} from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { PlayerType } from '../../../utils/userRole'
 import { colorPalette } from '../../general/chartHelper'
@@ -86,6 +92,60 @@ export function HeroStatsContent(props) {
         <p>Wykonanych aktywności: {props.stats.completedActivities}</p>
       </Col>
     </Row>
+  )
+}
+
+export function KillerAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsResolvedCount = 0,
+    auctionRanking = 0,
+    bestAuctioner
+  } = props.stats
+
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Licytant #1: {bestAuctioner}</p>
+          <p className='pb-1'>Jesteś #{auctionRanking} najlepszy w licytacjach</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
+        </Col>
+      </Row>
+  )
+}
+
+
+export function AchieverAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsPoints = 0,
+    auctionsParticipations = 0,
+    auctionsResolvedCount = 0,
+    auctionsCount = 0
+  } = props.stats
+
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
+          <p className='pb-1'>Udziały w licytacjach: {auctionsParticipations} / {auctionsCount}</p>
+        </Col>
+      </Row>
   )
 }
 
