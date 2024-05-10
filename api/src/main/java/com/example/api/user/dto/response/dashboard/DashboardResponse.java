@@ -19,5 +19,5 @@ public class DashboardResponse {
     private List<LastAddedActivity> lastAddedActivities;
     private HeroStatsDTO heroStatsDTO;
     private SubmitStats submitStats;
-
+    private AuctionStats auctionStats;
 }

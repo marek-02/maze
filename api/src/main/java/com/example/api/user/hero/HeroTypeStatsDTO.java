@@ -13,6 +13,10 @@ public class HeroTypeStatsDTO {
     private String heroType;
     private Integer rankPosition;
     private Long rankLength;
+    private Integer overallRankPosition;
+    private Long overallRankLength;
     private Double betterPlayerPoints;
     private Double worsePlayerPoints;
+    private Double betterPlayerPointsOverall;
+    private Double worsePlayerPointsOverall;
 }

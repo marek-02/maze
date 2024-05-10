@@ -1,8 +1,12 @@
 package com.example.api.user.service;
 
 import com.example.api.activity.Activity;
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.bid.Bid;
+import com.example.api.activity.auction.bid.BidRepository;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
@@ -27,6 +31,7 @@ import com.example.api.activity.task.graphtask.GraphTaskService;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.CourseService;
+import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -37,6 +42,7 @@ import com.example.api.chapter.ChapterService;
 import com.example.api.user.badge.BadgeService;
 import com.example.api.user.dto.response.dashboard.DashboardResponse;
 import com.example.api.user.dto.response.dashboard.GeneralStats;
+import com.example.api.user.dto.response.dashboard.AuctionStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;
 import com.example.api.user.dto.response.dashboard.SubmitStats;
 import com.example.api.user.hero.HeroStatsDTO;
@@ -49,10 +55,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.OptionalDouble;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -65,8 +69,11 @@ public class DashboardService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final CourseMemberRepository courseMemberRepository;
+    private final BidRepository bidRepository;
     private final GraphTaskService graphTaskService;
     private final FileTaskService fileTaskService;
+    private final AuctionRepository auctionRepository;
     private final SurveyService surveyService;
     private final SubmitTaskResultRepository submitTaskResultRepository;
     private final InfoService infoService;
@@ -93,6 +100,7 @@ public class DashboardService {
                 getLastAddedActivities(course),
                 getHeroStats(member),
                 getSubmitStats(member)
+                getAuctionStats(member,courseId)
         );
     }
 
@@ -110,10 +118,32 @@ public class DashboardService {
 
         Integer rankPosition = rank.getPosition();
         Long rankLength = (long) ranking.size();
+
+        Integer overallRankPosition = rankPosition;
+        Long overallRankLength = rankLength;
+
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
         Double worsePlayerPoints = rankPosition < rankLength ? ranking.get(rankPosition).getPoints() : null;
 
-        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, betterPlayerPoints, worsePlayerPoints);
+        Double betterPlayerPointsOverall = betterPlayerPoints;
+        Double worsePlayerPointsOvearll = worsePlayerPoints;
+
+        if(member.getCourse().getCourseType() != null) {
+            List<Course> coursesForOverallRanking = courseService.getCoursesByCourseType(member.getCourse().getCourseType());
+            List<RankingResponse> overallRanking = coursesForOverallRanking.stream()
+                    .flatMap(course -> rankingService.getRanking(course.getId()).stream()).toList();
+            RankingResponse overallRank = getRank(member.getUser(), overallRanking);
+
+            overallRankPosition = overallRank.getPosition();
+            overallRankLength = (long) overallRanking.size();
+
+            betterPlayerPointsOverall = overallRankPosition > 1 ? overallRanking.get(overallRankPosition - 2).getPoints() : null;
+            worsePlayerPointsOvearll = overallRankPosition < overallRankLength ? overallRanking.get(overallRankPosition).getPoints() : null;
+        }
+
+
+
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {
@@ -122,6 +152,88 @@ public class DashboardService {
                 .filter(rankingResponse -> rankingResponse.getEmail().equals(student.getEmail()))
                 .findAny()
                 .orElse(null);
+    }
+
+    private AuctionStats getAuctionStats(CourseMember member, Long courseId) {
+        log.info("getAuctionStats");
+
+        Integer auctionsWon = getStudentAuctionsWonCount(member,courseId);
+        Double auctionsPoints = getStudentAuctionsPoints(member,courseId);
+        Integer auctionsParticipations = getStudentAuctionsParticipations(member,courseId);
+        Integer auctionsResolvedCount = getAuctionsResolvedCount(courseId);
+        Integer auctionsCount = getAuctionsCount(courseId);
+        Integer auctionRanking = getStudentAuctionRankingPosition(member,courseId);
+        String bestAuctioner = getBestStudentRanking(courseId);
+
+        return new AuctionStats(
+                auctionsWon,
+                auctionsPoints,
+                auctionsParticipations,
+                auctionsResolvedCount,
+                auctionsCount,
+                auctionRanking,
+                bestAuctioner
+        );
+    }
+
+    private List<Long> getStudentAuctionRanking(Long courseId){
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+        Map<Long, List<Number>> ranking = new HashMap<>();
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                long id = auction.getHighestBid().get().getMember().getId();
+                double points = auction.getMaxPoints();
+
+                List<Number> curr = ranking.getOrDefault(id, Arrays.asList(0, 0.0));
+                ranking.put(id, Arrays.asList(curr.get(0).intValue() + 1, curr.get(1).doubleValue() + points));
+            }
+        }
+
+        List<Map.Entry<Long, List<Number>>> rankingList = new ArrayList<>(ranking.entrySet());
+
+        rankingList.sort((entry1, entry2) -> {
+            int compareValue = entry2.getValue().get(0).intValue() - entry1.getValue().get(0).intValue();
+            if (compareValue == 0) {
+                return Double.compare(entry2.getValue().get(1).doubleValue(), entry1.getValue().get(1).doubleValue());
+            } else {
+                return compareValue;
+            }
+        });
+
+        // Convert the sorted list of map entries to a list of student IDs
+        List<Long> sortedStudentIds = rankingList.stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        return sortedStudentIds;
+    }
+    private String getBestStudentRanking(Long courseId) {
+        List<Long> ranking = getStudentAuctionRanking(courseId);
+        if (!ranking.isEmpty()) {
+            CourseMember courseMember = courseMemberRepository.getById(ranking.get(0));
+
+            if (courseMember != null) {
+                return courseMember.getAlias();
+            } else {
+                return "Brak aktualnego lidera";
+            }
+
+        } else {
+            return "Brak aktualnego lidera";
+        }
+    }
+
+    private Integer getStudentAuctionRankingPosition(CourseMember member, Long courseId) {
+        List<Long> ranking = getStudentAuctionRanking(courseId);
+        long id = member.getId();
+
+        int index = ranking.indexOf(id);
+        if (index != -1) {
+            return (index + 1);
+        } else {
+            return (ranking.size() + 1);
+        }
     }
 
     private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
@@ -176,9 +288,71 @@ public class DashboardService {
         return surveyResultRepository.countAllByMember(member);
     }
 
+    private List<Auction> getResolvedAuctions(Long courseId) {
+        return auctionRepository.findAllResolvedByCourseId(courseId);
+    }
+
+    private Integer getStudentAuctionsWonCount(CourseMember member, Long courseId) {
+        int count = 0;
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                if (auction.getHighestBid().get().getMember().getId().equals(member.getId())) {
+                    count = count + 1;
+                }
+            }
+        }
+        return count;
+    }
+
+    private Integer getAuctionsResolvedCount(Long courseId) {
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            return resolvedAuctions.size();
+        }
+
+        else {
+            return 0;
+        }
+
+    }
+    private Integer getAuctionsCount(Long courseId) {
+        List<Auction> resolvedAuctions = auctionRepository.findAllByCourseId(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            return resolvedAuctions.size();
+        }
+
+        else {
+            return 0;
+        }
+    }
+
+    private Integer getStudentAuctionsParticipations(CourseMember member, Long courseId) {
+        return bidRepository.findAllByMemberAndCourse(member,courseId).size();
+    }
+
+    private Double getStudentAuctionsPoints(CourseMember member, Long courseId) {
+        double points = 0;
+        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+
+        if(!resolvedAuctions.isEmpty()) {
+            for (Auction auction : resolvedAuctions) {
+                Bid bid = auction.getHighestBid().get();
+
+                if (bid.getMember().getId().equals(member.getId())) {
+                  points = points + bid.getPoints();
+                }
+            }
+        }
+        return points;
+    }
     private Double getGraphTaskPoints(CourseMember member) {
         return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
     }
+
 
     private Double getFileTaskPoints(CourseMember member) {
         return getTaskPoints(fileTaskResultRepository.findAllByMember(member));

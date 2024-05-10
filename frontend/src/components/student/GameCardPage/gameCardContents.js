@@ -7,7 +7,13 @@ import { Bar, Pie } from 'react-chartjs-2'
 
 import { ChartCol, CustomTable } from './gameCardContentsStyle'
 import { barConfig, pieConfig } from '../../../utils/chartConfig'
-import { convertHeroTypeToPlayerType, getActivityTypeName, getGameCardInfo, HeroImg } from '../../../utils/constants'
+import {
+  convertHeroTypeToPlayerType,
+  getActivityTypeName,
+  getGameCardInfo,
+  BidImg,
+  HeroImg
+} from '../../../utils/constants'
 import { isMobileView } from '../../../utils/mobileHelper'
 import { PlayerType } from '../../../utils/userRole'
 import { colorPalette } from '../../general/chartHelper'
@@ -89,6 +95,7 @@ export function HeroStatsContent(props) {
   )
 }
 
+
 export function SubmitStatsContent(props) {
   const {
     submitTaskResultCount = 0,
@@ -108,6 +115,59 @@ export function SubmitStatsContent(props) {
         <PercentageCircle percentageValue={percentageValue} points={fileTaskResultCount} maxPoints={submitTaskResultCount} />
       </Col>
     </Row>
+  )
+}
+export function KillerAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsResolvedCount = 0,
+    auctionRanking = 0,
+    bestAuctioner
+  } = props.stats
+
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Licytant #1: {bestAuctioner}</p>
+          <p className='pb-1'>Jesteś #{auctionRanking} najlepszy w licytacjach</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
+        </Col>
+      </Row>
+  )
+}
+
+
+export function AchieverAuctionsContent(props) {
+  const {
+    auctionsWon = 0,
+    auctionsPoints = 0,
+    auctionsParticipations = 0,
+    auctionsResolvedCount = 0,
+    auctionsCount = 0
+  } = props.stats
+
+  return (
+      <Row
+          className={`h-100 d-flex justify-content-center align-items-center ${
+              isMobileView() ? 'flex-column' : 'flex-row'
+          }`}
+      >
+        <Col md={4} className='h-100'>
+          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+        </Col>
+        <Col md={7}>
+          <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
+          <p className='pb-1'>Wygrane licytacje: {auctionsWon} / {auctionsResolvedCount}</p>
+          <p className='pb-1'>Udziały w licytacjach: {auctionsParticipations} / {auctionsCount}</p>
+        </Col>
+      </Row>
   )
 }
 
@@ -130,6 +190,54 @@ export function PersonalRankingInfoContent(props) {
         props.stats.betterPlayerPoints != null ? 'Punkty gracza przed Tobą' : '',
         'Twój wynik',
         props.stats.worsePlayerPoints != null ? 'Punkty gracza za Tobą' : ''
+      ].filter((label) => !!label)
+
+      const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
+        (points) => points != null
+      )
+      return barConfig(barLabels, barPoints, colorPalette(barLabels.length))
+    }
+
+    return pieConfig(
+      ['Grupa graczy, w której jesteś', 'Pozostali gracze'],
+      [props.stats.rankPosition, props.stats.rankLength],
+      colorPalette(2)
+    )
+  }
+
+  const { data, options } = getChartInfo()
+
+  return (
+    <Row className='h-100 d-flex justify-content-center align-items-center'>
+      <ChartCol md={12}>
+        {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
+      </ChartCol>
+      <Col md={12}>
+        <p className='text-center w-100'>{rankComment}</p>
+      </Col>
+    </Row>
+  )
+}
+
+export function PersonalOverallRankingInfoContent(props) {
+  const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
+  const playerType = convertHeroTypeToPlayerType(props.stats.heroType)
+  const chartType = playerType === PlayerType.CHALLENGING ? 'BAR' : 'PIE'
+
+  const rankComment = getGameCardInfo(playerType, {
+    rankPosition: props.stats.overallRankPosition,
+    rankLength: props.stats.overallRankLength,
+    userPoints: userPointsGroup
+  })
+
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
+
+  const getChartInfo = () => {
+    if (chartType === 'BAR') {
+      const barLabels = [
+        props.stats.betterPlayerPointsOverall != null ? 'Punkty gracza przed Tobą' : '',
+        'Twój wynik',
+        props.stats.worsePlayerPointsOverall != null ? 'Punkty gracza za Tobą' : ''
       ].filter((label) => !!label)
 
       const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
