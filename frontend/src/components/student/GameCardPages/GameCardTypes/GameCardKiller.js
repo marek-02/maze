@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -7,19 +7,12 @@ import { connect } from 'react-redux'
 import GameCard from '../GameCard'
 import {
   GradesStatsContent,
-  HeroStatsContent,
-  LastActivitiesContent,
   PersonalRankingInfoContent,
-  SearchOthersStatsContent,
-  SubmitStatsContent,
   PersonalOverallRankingInfoContent,
-  KillerAuctionsContent,
-  AchieverAuctionsContent,
-  ColloquiumStatsContent
 } from '../gameCardContents'
 import { useAppSelector } from '../../../../hooks/hooks'
 import StudentService from '../../../../services/student.service'
-import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR, getPersonalityName } from '../../../../utils/constants'
+import { ERROR_OCCURRED } from '../../../../utils/constants'
 import Loader from '../../../general/Loader/Loader'
 
 
@@ -27,10 +20,6 @@ function GameCardKiller(props) {
   const [dashboardStats, setDashboardStats] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
 
-  const [selectedUserId,setSelectedUserId] = useState(-1)
-  const [selectedUsersDashboardStats,setSelectedUsersDashboardStats] = useState(undefined)
-
-  const [members,setMembers] = useState(undefined)
 
   useEffect(() => {
     StudentService.getDashboardStats(courseId)
@@ -40,37 +29,6 @@ function GameCardKiller(props) {
       })
       .catch(() => setDashboardStats(null))
   }, [])
-
-  useEffect(() => {
-    if(selectedUserId===-1) return
-    StudentService.getSpecifiedStudentsDashboardStats(selectedUserId,courseId)
-    .then((response) => {
-      setSelectedUsersDashboardStats(response)
-      localStorage.setItem('heroType', response?.heroTypeStatsDTO?.heroType)
-    })
-    .catch(((err) => {
-      console.log(err)
-      setSelectedUsersDashboardStats(null)
-    }))
-  },[selectedUserId])
-
-  useEffect(() => {
-    StudentService.getAllMembers(courseId)
-    .then((response) => {
-      setMembers(response)
-    })
-    .catch(((err) => {
-      console.log(err)
-      setMembers(null)
-    }
-  ))
-  },[])
-
-  const changeSelectedUserId = (newUserId) => {
-    // console.log(`Invoked changeSelectedUserId: ${newUserId}`)
-    // console.log(selectedUsersDashboardStats)
-    setSelectedUserId(newUserId)
-  }
 
   return (
     <Container>

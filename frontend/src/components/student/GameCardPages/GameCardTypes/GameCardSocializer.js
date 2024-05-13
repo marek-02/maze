@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Col, Container, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-
 import GameCard from '../GameCard'
 import {
   GradesStatsContent,
-  HeroStatsContent,
-  LastActivitiesContent,
   PersonalRankingInfoContent,
   SearchOthersStatsContent,
   SubmitStatsContent,
-  PersonalOverallRankingInfoContent,
-  KillerAuctionsContent,
-  AchieverAuctionsContent,
-  ColloquiumStatsContent
 } from '../gameCardContents'
 import { useAppSelector } from '../../../../hooks/hooks'
 import StudentService from '../../../../services/student.service'
-import { ERROR_OCCURRED, PASSWORD_VALIDATION_ERROR, getPersonalityName } from '../../../../utils/constants'
+import { ERROR_OCCURRED } from '../../../../utils/constants'
 import Loader from '../../../general/Loader/Loader'
 
 function GameCardSocializer(props) {
@@ -66,8 +59,6 @@ function GameCardSocializer(props) {
   },[])
 
   const changeSelectedUserId = (newUserId) => {
-    // console.log(`Invoked changeSelectedUserId: ${newUserId}`)
-    // console.log(selectedUsersDashboardStats)
     setSelectedUserId(newUserId)
   }
 
