@@ -43,12 +43,11 @@ public class AdditionalPointsService {
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
 
-        AdditionalPoints additionalPoints = new AdditionalPoints(null,
+        AdditionalPoints additionalPoints = new AdditionalPoints(
                 form.getPoints(),
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                course,
                 user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             additionalPoints.setDescription(form.getDescription());

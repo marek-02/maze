@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddAdditionalPointsForm {
     @Schema(required = true) private Long studentId;
+    @Schema(required = true) private Long courseId;
     @Schema(required = true) private Double points;
     @Schema(required = false) private String description;
     @Schema(required = true) private Long dateInMillis;
-    @Schema(required = true) private Long courseId;
 }

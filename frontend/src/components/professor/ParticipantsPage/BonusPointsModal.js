@@ -7,11 +7,13 @@ import { connect } from 'react-redux'
 import ProfessorService from '../../../services/professor.service'
 import { FIELD_REQUIRED, NUMBER_FROM_RANGE } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
+import { useAppSelector } from '../../../hooks/hooks'
 
 
 function BonusPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   return (
     <>
@@ -32,7 +34,7 @@ function BonusPointsModal(props) {
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-              ProfessorService.sendBonusPoints(props?.studentId, parseInt(values.points, 10), values.reason, Date.now())
+              ProfessorService.sendBonusPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, Date.now())
                 .then(() => {
                   setFinishModalDescription('Proces przyznawania dodatkowych punktów zakończył się pomyślnie.')
                 })

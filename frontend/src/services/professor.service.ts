@@ -66,9 +66,10 @@ class ProfessorService {
     })
   }
 
-  sendBonusPoints(studentId: number, points: number, description: string, dateInMillis: number) {
+  sendBonusPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number) {
     return axiosApiPost(POST_ADDITIONAL_POINTS, {
       studentId,
+      courseId,
       points,
       description,
       dateInMillis

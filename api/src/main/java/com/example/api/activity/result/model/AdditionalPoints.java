@@ -34,6 +34,18 @@ public class AdditionalPoints extends ActivityResult {
         this.description = description;
     }
 
+    public AdditionalPoints(
+                            Double points,
+                            Long sendDateMillis,
+                            String professorEmail,
+                            String description,
+                            CourseMember courseMember)
+            throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
+        super(points, sendDateMillis, courseMember);
+        this.professorEmail = professorEmail;
+        this.description = description;
+    }
+
     @Override
     public boolean isEvaluated() {
         return true;
