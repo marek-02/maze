@@ -25,12 +25,14 @@ function BonusPointsModal(props) {
           <Formik
             initialValues={{
               reason: 'Praca na zajęciach',
-              points: ''
+              points: '',
+              activityType: ''
             }}
             validate={(values) => {
               const errors = {}
               if (!values.points) errors.points = FIELD_REQUIRED
               if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 10)
+              if (!values.activityType) errors.activityType = FIELD_REQUIRED
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -46,7 +48,7 @@ function BonusPointsModal(props) {
               setSubmitting(false)
             }}
           >
-            {({ isSubmitting, handleSubmit }) => (
+            {({ isSubmitting, handleSubmit, setFieldValue }) => (
               <Form onSubmit={handleSubmit}>
                 <Container>
                   <Row className='mx-auto'>
@@ -54,6 +56,7 @@ function BonusPointsModal(props) {
                       errorColor: props.theme.danger
                     })}
                     {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
+                    {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
                     <Col sm={12} className='d-flex justify-content-center mb-2'>
