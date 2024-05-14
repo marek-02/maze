@@ -10,7 +10,7 @@ import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
 import { useAppSelector } from '../../../hooks/hooks'
 
 
-function BonusPointsModal(props) {
+function AssignPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
@@ -19,7 +19,7 @@ function BonusPointsModal(props) {
     <>
       <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="lg">
         <ModalHeader>
-          <h4 className="text-center w-100">Przyznaj dodatkowe punkty</h4>
+          <h4 className="text-center w-100">Przyznaj punkty</h4>
         </ModalHeader>
         <ModalBody>
           <Formik
@@ -38,7 +38,7 @@ function BonusPointsModal(props) {
             onSubmit={(values, { setSubmitting }) => {
               ProfessorService.sendBonusPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, Date.now())
                 .then(() => {
-                  setFinishModalDescription('Proces przyznawania dodatkowych punktów zakończył się pomyślnie.')
+                  setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
                 })
                 .catch((error) => {
                   setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
@@ -109,4 +109,4 @@ function mapStateToProps(state) {
     theme
   }
 }
-export default connect(mapStateToProps)(BonusPointsModal)
+export default connect(mapStateToProps)(AssignPointsModal)
