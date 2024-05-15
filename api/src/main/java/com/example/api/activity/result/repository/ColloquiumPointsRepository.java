@@ -1,6 +1,5 @@
 package com.example.api.activity.result.repository;
 
-import com.example.api.activity.result.model.AdditionalPoints;
 import com.example.api.activity.result.model.ColloquiumPoints;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;

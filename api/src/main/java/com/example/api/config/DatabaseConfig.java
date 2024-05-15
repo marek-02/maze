@@ -1,10 +1,9 @@
 package com.example.api.config;
 
-import com.example.api.activity.result.model.AdditionalPoints;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
+import com.example.api.activity.result.model.*;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.repository.ColloquiumPointsRepository;
+import com.example.api.activity.result.repository.LaboratoryPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
@@ -729,6 +728,18 @@ public class DatabaseConfig {
             additionalPoints.setDescription("Good job");
             addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPoints());
             additionalPointsRepository.save(additionalPoints);
+
+//            ColloquiumPoints colloquiumPoints = new ColloquiumPoints();
+//            colloquiumPoints.setId(1L);
+//            CourseMember colloquiumPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
+//            colloquiumPoints.setMember(colloquiumPointsMember);
+//            colloquiumPoints.setPoints(72D);
+//            colloquiumPoints.setSendDateMillis(calendar.getTimeInMillis());
+//            colloquiumPoints.setProfessorEmail(professor1.getEmail());
+//            colloquiumPoints.setDescription("Good job");
+//            colloquiumPoints.setColloquiumNumber(1);
+//            addReceivedPointsForUser(colloquiumPointsMember, colloquiumPoints.getPoints());
+//            colloquiumPointsRepository.save(colloquiumPoints);
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);

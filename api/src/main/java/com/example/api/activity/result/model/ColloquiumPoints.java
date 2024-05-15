@@ -1,6 +1,5 @@
 package com.example.api.activity.result.model;
 
-import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
@@ -20,6 +19,7 @@ import javax.persistence.Entity;
 public class ColloquiumPoints extends ActivityResult {
     private String professorEmail;
     private String description;
+    private Long colloquiumNumber;
 
     public ColloquiumPoints(
             Double points,
@@ -32,6 +32,7 @@ public class ColloquiumPoints extends ActivityResult {
         super(points, sendDateMillis, courseMember);
         this.professorEmail = professorEmail;
         this.description = description;
+        this.colloquiumNumber = colloquiumNumber;
     }
 
     @Override

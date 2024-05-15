@@ -48,7 +48,7 @@ public class ColloquiumPointsService {
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                ,
+                form.getColloquiumNumber(),
                 user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             colloquiumPoints.setDescription(form.getDescription());

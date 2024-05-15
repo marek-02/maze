@@ -26,17 +26,18 @@ function AssignPointsModal(props) {
             initialValues={{
               reason: 'Praca na zajęciach',
               points: '',
-              activityType: ''
+              activityType: '',
+              role: ''
             }}
             validate={(values) => {
               const errors = {}
               if (!values.points) errors.points = FIELD_REQUIRED
-              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 10)
+              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 100)
               if (!values.activityType) errors.activityType = FIELD_REQUIRED
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-              ProfessorService.sendBonusPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, Date.now())
+              ProfessorService.sendPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, values.activityType,values.role, Date.now())
                 .then(() => {
                   setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
                 })
@@ -48,7 +49,7 @@ function AssignPointsModal(props) {
               setSubmitting(false)
             }}
           >
-            {({ isSubmitting, handleSubmit, setFieldValue }) => (
+            {({ isSubmitting, handleSubmit,values }) => (
               <Form onSubmit={handleSubmit}>
                 <Container>
                   <Row className='mx-auto'>
@@ -57,6 +58,7 @@ function AssignPointsModal(props) {
                     })}
                     {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
                     {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
+                    {values.activityType === 'laboratory_points' && FormCol('Role', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
                     <Col sm={12} className='d-flex justify-content-center mb-2'>

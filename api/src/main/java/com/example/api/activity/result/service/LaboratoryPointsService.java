@@ -48,6 +48,7 @@ public class LaboratoryPointsService {
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
+                form.getRole(),
                 user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             laboratoryPoints.setDescription(form.getDescription());

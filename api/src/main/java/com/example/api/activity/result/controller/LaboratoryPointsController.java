@@ -17,14 +17,14 @@ public class LaboratoryPointsController {
     private final LaboratoryPointsService laboratoryPointsService;
 
     @PostMapping("/add")
-    public ResponseEntity<?> addColloquiumPoints(@RequestBody AddLaboratoryPointsForm form)
+    public ResponseEntity<?> addLaboratoryPoints(@RequestBody AddLaboratoryPointsForm form)
             throws RequestValidationException {
         laboratoryPointsService.saveLaboratoryPoints(form);
         return ResponseEntity.ok().body(null);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAdditionalPoints(@RequestParam Long courseId) throws EntityNotFoundException {
+    public ResponseEntity<?> getLaboratoryPoints(@RequestParam Long courseId) throws EntityNotFoundException {
         return ResponseEntity.ok().body(laboratoryPointsService.getLaboratoryPoints(courseId));
     }
 }
