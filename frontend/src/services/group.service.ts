@@ -4,7 +4,8 @@ import {
   GET_GROUP_STUDENTS,
   GET_STUDENTS_WITH_GROUP_ALL,
   POST_GROUP,
-  POST_USER_GROUP
+  POST_USER_GROUP,
+  GET_GROUP_STUDENTS_EXTENDED
 } from './urls'
 import { axiosApiGet, axiosApiPost } from '../utils/axios'
 
@@ -36,6 +37,11 @@ class GroupService {
       throw error
     })
   }
+  getGroupStudentsExtended(groupId: number) {
+    return axiosApiGet(GET_GROUP_STUDENTS_EXTENDED, { groupId }).catch((error) => {
+      throw error
+    })
+  }
 
   changeStudentGroup(studentId: number, newGroupId: number) {
     return axiosApiPost(POST_USER_GROUP, {
@@ -45,6 +51,8 @@ class GroupService {
       throw error
     })
   }
+
+  
 }
 
 export default new GroupService()

@@ -36,4 +36,15 @@ public class CourseMemberService {
     public List<CourseMember> getAll(Long courseId) {
         return repository.findAllByCourse_Id(courseId);
     }
+
+    public void updateSubgroup(CourseMember member, Long subgroup) {
+        log.info("Changing subgroup for user {} from {} to {}", member.getUser(), member.getGroup(), subgroup);
+        
+        groupService.removeUser(member, member.getGroup());
+        //groupService.addUser(member, group);
+        //member.setGroup(group);
+        member.setSubgroup(subgroup);
+        repository.save(member);
+    }
+
 }

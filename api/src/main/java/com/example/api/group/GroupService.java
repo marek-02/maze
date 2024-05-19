@@ -4,6 +4,7 @@ import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.CourseService;
 import com.example.api.user.dto.response.BasicUser;
+import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -101,7 +102,16 @@ public class GroupService {
                 .filter(user -> user.getAccountType() == AccountType.STUDENT)
                 .map(BasicUser::new)
                 .toList();
-
+    }
+    public List<BasicStudent> getGroupStudentExtendedList(Long id) throws EntityNotFoundException {
+        log.info("Fetching users from group with id {}", id);
+        Group group = groupRepository.findGroupById(id);
+        groupValidator.validateGroupIsNotNull(group, id);
+        return group.getMembers()
+                .stream()
+                .filter(member -> member.getUser().getAccountType() == AccountType.STUDENT)
+                .map(BasicStudent::new)
+                .toList();
     }
 
     public List<BasicUser> getGroupProfessorList(Long id) throws EntityNotFoundException {

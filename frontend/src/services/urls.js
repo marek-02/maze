@@ -16,6 +16,7 @@ export const POST_LOGIN = `${BASE_URL}/login`
 export const PUT_PASSWORD_EDITION = `${BASE_URL}/password-edition`
 export const POST_USER_INDEX = `${BASE_URL}/user/index/set`
 export const POST_USER_GROUP = `${BASE_URL}/user/group/set`
+export const POST_USER_SUBGROUP = `${BASE_URL}/user/subgroup/set`
 export const POST_REGISTER = `${BASE_URL}/register`
 export const GET_USER_GROUP = `${BASE_URL}/user/group`
 export const GET_USER_CURRENT = `${BASE_URL}/user/current`
@@ -111,8 +112,10 @@ export const POST_INFO_CREATE = `${GET_INFO}/create`
 export const POST_GROUP = `${BASE_URL}/group`
 export const GET_GROUP_USERS = `${POST_GROUP}/users`
 export const GET_GROUP_STUDENTS = `${POST_GROUP}/students`
+export const GET_GROUP_STUDENTS_EXTENDED = `${POST_GROUP}/students-extended` 
 export const GET_GROUP_PROFESSORS = `${POST_GROUP}/professors`
 export const GET_GROUP_INVITATION_CODE_LIST = `${POST_GROUP}/invitation-code/list`
+
 
 // User Feedback Controller
 export const POST_FEEDBACK_USER = `${BASE_URL}/feedback/user`

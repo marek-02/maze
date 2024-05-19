@@ -97,6 +97,13 @@ public class UserController {
         return ResponseEntity.ok().body(new GroupNameDTO(userService.updateStudentGroup(setStudentGroupForm).getName()));
     }
 
+    @PostMapping("/user/subgroup/set")
+    public ResponseEntity<Long> setUserSubgroup(@RequestParam Long userId, @RequestParam Long newSubgroupId, @RequestParam Long courseId)
+            throws WrongUserTypeException, EntityNotFoundException {
+        //return ResponseEntity.ok().body(2L);
+        return ResponseEntity.ok().body(userService.updateStudentSubGroup(userId,newSubgroupId,courseId));
+    }
+
     @PostMapping("/user/group/join")
     public ResponseEntity<?> joinGroup(@RequestBody JoinGroupDTO dto)
             throws WrongUserTypeException, EntityNotFoundException {

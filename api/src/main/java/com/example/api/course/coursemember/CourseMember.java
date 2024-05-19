@@ -37,6 +37,7 @@ public class CourseMember {
 
     private Integer level;
     private Double points;
+    private Long subgroup;
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -87,5 +88,8 @@ public class CourseMember {
 
     public User getUser(){
         return this.user;
+    }
+    public Long getSubgroup(){
+        return this.subgroup;
     }
 }

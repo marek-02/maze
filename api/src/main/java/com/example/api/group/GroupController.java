@@ -1,6 +1,7 @@
 package com.example.api.group;
 
 import com.example.api.user.dto.response.BasicUser;
+import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.error.exception.WrongUserTypeException;
@@ -38,6 +39,11 @@ public class GroupController {
     public ResponseEntity<List<BasicUser>> getGroupStudentsList(@RequestParam Long groupId)
             throws EntityNotFoundException {
         return ResponseEntity.ok().body(groupService.getGroupStudentList(groupId));
+    }
+    @GetMapping("/students-extended")
+    public ResponseEntity<List<BasicStudent>> getGroupStudentsExtendedList(@RequestParam Long groupId)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok().body(groupService.getGroupStudentExtendedList(groupId));
     }
 
     @GetMapping("/professors")
