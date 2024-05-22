@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddAdditionalPointsForm {
+public class AddColloquiumPointsForm {
     @Schema(required = true) private Long studentId;
     @Schema(required = true) private Long courseId;
     @Schema(required = true) private Double points;
+    @Schema(required = true) private Long colloquiumNumber;
     @Schema(required = false) private String description;
     @Schema(required = true) private Long dateInMillis;
 }

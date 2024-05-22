@@ -7,34 +7,39 @@ import { connect } from 'react-redux'
 import ProfessorService from '../../../services/professor.service'
 import { FIELD_REQUIRED, NUMBER_FROM_RANGE } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
+import { useAppSelector } from '../../../hooks/hooks'
 
 
-function BonusPointsModal(props) {
+function AssignPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   return (
     <>
       <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="lg">
         <ModalHeader>
-          <h4 className="text-center w-100">Przyznaj dodatkowe punkty</h4>
+          <h4 className="text-center w-100">Przyznaj punkty</h4>
         </ModalHeader>
         <ModalBody>
           <Formik
             initialValues={{
               reason: 'Praca na zajęciach',
-              points: ''
+              points: '',
+              activityType: '',
+              role: ''
             }}
             validate={(values) => {
               const errors = {}
               if (!values.points) errors.points = FIELD_REQUIRED
-              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 10)
+              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 100)
+              if (!values.activityType) errors.activityType = FIELD_REQUIRED
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-              ProfessorService.sendBonusPoints(props?.studentId, parseInt(values.points, 10), values.reason, Date.now())
+              ProfessorService.sendPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, values.activityType,values.role, Date.now())
                 .then(() => {
-                  setFinishModalDescription('Proces przyznawania dodatkowych punktów zakończył się pomyślnie.')
+                  setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
                 })
                 .catch((error) => {
                   setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
@@ -44,7 +49,7 @@ function BonusPointsModal(props) {
               setSubmitting(false)
             }}
           >
-            {({ isSubmitting, handleSubmit }) => (
+            {({ isSubmitting, handleSubmit,values }) => (
               <Form onSubmit={handleSubmit}>
                 <Container>
                   <Row className='mx-auto'>
@@ -52,6 +57,8 @@ function BonusPointsModal(props) {
                       errorColor: props.theme.danger
                     })}
                     {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
+                    {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
+                    {values.activityType === 'laboratory_points' && FormCol('Role', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
                     <Col sm={12} className='d-flex justify-content-center mb-2'>
@@ -104,4 +111,4 @@ function mapStateToProps(state) {
     theme
   }
 }
-export default connect(mapStateToProps)(BonusPointsModal)
+export default connect(mapStateToProps)(AssignPointsModal)

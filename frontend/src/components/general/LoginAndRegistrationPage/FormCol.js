@@ -34,6 +34,22 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
         <Field className='form-control' as="textarea" type="text" name={colName} />
       ) : type === 'file' ? (
         <input type="file" accept='image/png, image/jpeg' name={colName} />
+      ): type === 'dropdown' && colName === 'activityType' ? (
+        <Field className='form-control' name={colName} as="select">
+          <option value=""></option>
+          <option value="first_colloquium">Gon Listopadowy</option>
+          <option value="second_colloquium">Wielki Mróz</option>
+          <option value="laboratory_points">Spacer</option>
+          <option value="additional-points">Dodatkowe punkty</option>
+        </Field>
+      ) : type === 'dropdown' && colName === 'role' ? (
+        <Field className="form-control" name={colName} as="select">
+          <option value=""></option>
+          <option value="economist">Ekonom</option>
+          <option value="cablemaster">Kabelmajster</option>
+          <option value="scribe">Skyba</option>
+          <option value="oboe">Obój</option>
+        </Field>
       ) : (
         <Field
           className='form-control'

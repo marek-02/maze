@@ -9,8 +9,8 @@ import {
   GET_SUMMARY,
   GET_TASK_EVALUATE_ALL,
   GET_TASK_EVALUATE_FIRST,
-  POST_ADDITIONAL_POINTS,
-  POST_FEEDBACK_PROFESSOR,
+  POST_ADDITIONAL_POINTS, POST_COLLOQUIUM_POINTS,
+  POST_FEEDBACK_PROFESSOR, POST_LABORATORY_POINTS,
   POST_TASK_RESULT_CSV,
   PUT_HERO
 } from './urls'
@@ -66,11 +66,53 @@ class ProfessorService {
     })
   }
 
-  sendBonusPoints(studentId: number, points: number, description: string, dateInMillis: number) {
+  sendPoints(studentId: number,courseId: number, points: number, description: string, activityType: string,role:string, dateInMillis: number) {
+      switch (activityType) {
+        case 'first_colloquium':
+          return this.sendColloquiumPoints(studentId, courseId, points, description, 1 ,dateInMillis);
+        case 'second_colloquium':
+          return this.sendColloquiumPoints(studentId, courseId, points, description, 2 ,dateInMillis);
+        case 'laboratory_points':
+          return this.sendLaboratoryPoints(studentId, courseId, points, description, role, dateInMillis);
+        case 'additional-points':
+          return this.sendBonusPoints(studentId, courseId, points, description, dateInMillis);
+        default:
+          throw new Error(`Invalid activity type: ${activityType}`);
+      }
+  }
+
+  sendBonusPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number) {
     return axiosApiPost(POST_ADDITIONAL_POINTS, {
       studentId,
+      courseId,
       points,
       description,
+      dateInMillis
+    }).catch((error) => {
+      throw error
+    })
+  }
+
+  sendLaboratoryPoints(studentId: number,courseId: number, points: number, description: string, role:string, dateInMillis: number) {
+    return axiosApiPost(POST_LABORATORY_POINTS, {
+      studentId,
+      courseId,
+      points,
+      description,
+      role,
+      dateInMillis
+    }).catch((error) => {
+      throw error
+    })
+  }
+
+  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, colloquiumNumber: number, dateInMillis: number) {
+    return axiosApiPost(POST_COLLOQUIUM_POINTS, {
+      studentId,
+      courseId,
+      points,
+      description,
+      colloquiumNumber,
       dateInMillis
     }).catch((error) => {
       throw error
@@ -112,16 +154,6 @@ class ProfessorService {
       throw error
     })
   }
-
-  // editHeroSuperPower(heroType: any, powerBaseValue: number, coolDownMs: number) {
-  //   return axiosApiPut(PUT_HERO, {
-  //     type: heroType,
-  //     value: powerBaseValue,
-  //     coolDownMillis: coolDownMs
-  //   }).catch((error) => {
-  //     throw error
-  //   })
-  // }
 
   getLogsFile() {
     return axiosApiGet(GET_FILE_LOG).catch((error) => {

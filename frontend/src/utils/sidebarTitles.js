@@ -125,7 +125,7 @@ export const professorSubtitles = [
     ]
   },
   {
-    name: 'Uczestnicy',
+    name: 'Ocenianie',
     icon: faUsers,
     navigateTo: TeacherRoutes.PARTICIPANTS
   },
@@ -136,7 +136,7 @@ export const professorSubtitles = [
     action: 'BADGE'
   },
   {
-    name: 'Oceny',
+    name: 'Uczestnicy',
     icon: fa5,
     navigateTo: TeacherRoutes.GRADES
   }

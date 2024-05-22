@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import BonusPointsModal from './BonusPointsModal'
+import AssignPointsModal from './AssignPointsModal'
 import ChangeGroupModal from './ChangeGroupModal'
 import { TableContainer } from './ParticipantsStyles'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -16,7 +16,7 @@ function ParticipantsTable(props) {
   const isMobileDisplay = isMobileView()
 
   const [changeGroupModalOpen, setChangeGroupModalOpen] = useState(false)
-  const [bonusPointsModalOpen, setBonusPointsModalOpen] = useState(false)
+  const [assignPointsModalOpen, setAssignPointsModalOpen] = useState(false)
   const [chosenStudent, setChosenStudent] = useState()
   const [studentsList, setStudentsList] = useState([])
 
@@ -83,7 +83,7 @@ function ParticipantsTable(props) {
                     style={{ backgroundColor: props.theme.success, border: 'none' }}
                     onClick={() => {
                       setChosenStudent(student)
-                      setBonusPointsModalOpen(true)
+                      setAssignPointsModalOpen(true)
                     }}
                   >
                     Przyznaj punkty
@@ -101,9 +101,9 @@ function ParticipantsTable(props) {
         </tbody>
       </TableContainer>
       <ChangeGroupModal show={changeGroupModalOpen} setModalOpen={setChangeGroupModalOpen} student={chosenStudent} />
-      <BonusPointsModal
-        show={bonusPointsModalOpen}
-        setModalOpen={setBonusPointsModalOpen}
+      <AssignPointsModal
+        show={assignPointsModalOpen}
+        setModalOpen={setAssignPointsModalOpen}
         studentId={chosenStudent?.id}
       />
     </GameCardOptionPick>
