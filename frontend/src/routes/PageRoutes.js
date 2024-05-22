@@ -41,6 +41,7 @@ export const StudentRoutes = {
   POINTS: '/points',
   RANKING: '/ranking',
   BADGES: '/badges-achievements',
+  ALL_STATS: '/all-stats',
   PROFILE: '/profile'
 }
 

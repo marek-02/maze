@@ -9,6 +9,9 @@ import {
   GradesStatsContent,
   PersonalRankingInfoContent,
   PersonalOverallRankingInfoContent,
+  HeroStatsContent,
+  KillerAuctionsContent,
+  KillerHeroStatsContent
 } from '../gameCardContents'
 import { useAppSelector } from '../../../../hooks/hooks'
 import StudentService from '../../../../services/student.service'
@@ -43,16 +46,16 @@ function GameCardKiller(props) {
               <GameCard
                 headerText='Statystyki bohatera'
                 content={
-                  <GradesStatsContent
-                    stats={dashboardStats.heroStatsDTO}
+                  <KillerHeroStatsContent
+                    stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')} heroTypeStats={dashboardStats.heroTypeStatsDTO}
                   />
                 }
               />
             </Col>
             <Col md={7}>
-              <GameCard
-                headerText='Statystyki ocen'
-                content={<GradesStatsContent stats={dashboardStats.generalStats} />}
+            <GameCard
+                headerText='Licytacje'
+                content={<KillerAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>
