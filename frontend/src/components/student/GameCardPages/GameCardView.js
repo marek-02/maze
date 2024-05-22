@@ -14,14 +14,14 @@ function GameCardView(props) {
   useEffect(() => {}, [studentPersonality])
 
   function getCardByPersonality() {
-    // if (Object.keys(studentPersonality).length === 0)
-    //   return <GameCardKiller props={props}></GameCardKiller>
+    if (Object.keys(studentPersonality).length === 0)
+      return <GameCardKiller props={props}></GameCardKiller>
 
-    // const currentPersonality = Object.entries(studentPersonality).reduce(
-    //   (maxEntry, currentEntry) => (currentEntry[1] > maxEntry[1] ? currentEntry : maxEntry)
-    // )[0]
+    const currentPersonality = Object.entries(studentPersonality).reduce(
+      (maxEntry, currentEntry) => (currentEntry[1] > maxEntry[1] ? currentEntry : maxEntry)
+    )[0]
 
-    let currentPersonality = "ACHIEVER"
+    //let currentPersonality = "ACHIEVER"
     
     if (currentPersonality == "EXPLORER")
       return <GameCardExplorer props={props}></GameCardExplorer> 

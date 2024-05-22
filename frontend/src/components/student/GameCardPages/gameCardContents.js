@@ -233,8 +233,6 @@ export function AchieverAuctionsContent(props) {
 }
 
 export function CollectiblesInfoContent(props){
-  console.log("W contents")
-  console.log(props.currentRankNr)
     return (
       <Row
           className={`h-100 d-flex justify-content-center align-items-center ${

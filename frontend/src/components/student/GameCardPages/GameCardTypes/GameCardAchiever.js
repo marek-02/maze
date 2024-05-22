@@ -89,7 +89,6 @@ function GameCardAchiever(props) {
     let allRanksForHeroType = allRanksList[heroType === "SHEUNFORTUNATE"? 0 : 1 ]["ranks"];
 
     for(let i =0 ; i<allRanksForHeroType.length; i++){
-      console.log(allRanksForHeroType[i].name)
       if(allRanksForHeroType[i].name === currentRank){
         setCurrentRankNr(i+1);
       }
