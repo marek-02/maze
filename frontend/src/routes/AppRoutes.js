@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 
 import BadgesAndAchievementsRoutes from './modules/studentRoutes/BadgesAndAchievementsRoutes'
+import AllStatsRoutes from './modules/studentRoutes/AllStatsRoutes'
 import GameCardRoutes from './modules/studentRoutes/GameCardRoutes'
 import GameMapRoutes from './modules/studentRoutes/GameMapRoutes'
 import MapRoutes from './modules/studentRoutes/MapRoutes'
@@ -82,6 +83,8 @@ export default function AppRoutes({ showNavbar, isStudent, isProfessor }) {
       <Route path={'/ranking/*'} element={<StudentRankingRoutes />} />
 
       <Route path={'/badges-achievements/*'} element={<BadgesAndAchievementsRoutes />} />
+
+      <Route path={'/all-stats'} element={<AllStatsRoutes/>}/>
 
       <Route path={'/profile/*'} element={<ProfileRoutes />} />
 

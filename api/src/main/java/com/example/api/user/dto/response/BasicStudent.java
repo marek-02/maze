@@ -12,11 +12,13 @@ public class BasicStudent {
     @Schema(required = true) private String firstName;
     @Schema(required = true) private String lastName;
     @Schema(required = true) private String groupName;
+    @Schema(required = true) private Long subgroup;
 
     public BasicStudent(CourseMember courseMember) {
         this.id = courseMember.getUser().getId();
         this.firstName = courseMember.getUser().getFirstName();
         this.lastName = courseMember.getUser().getLastName();
         this.groupName = courseMember.getGroup().getName();
+        this.subgroup = courseMember.getSubgroup();
     }
 }

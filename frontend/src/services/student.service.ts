@@ -6,7 +6,8 @@ import {
   GET_DASHBOARD,
   GET_SOMEONES_DASHBOARD,
   DELETE_USER_STUDENT,
-  GET_ALL_MEMBERS
+  GET_ALL_MEMBERS,
+  POST_USER_SUBGROUP,
 
 } from './urls'
 import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
@@ -49,7 +50,7 @@ class StudentService {
     })
   }
 
-  getSpecifiedStudentsDashboardStats(userId:Long,courseId: number) {
+  getSpecifiedStudentsDashboardStats(userId:number,courseId: number) {
     return axiosApiGet(`${GET_SOMEONES_DASHBOARD}?userId=${userId}&courseId=${courseId}`).catch((error) => {
       throw error
     })
@@ -57,6 +58,13 @@ class StudentService {
 
   deleteAccount() {
     return axiosApiDelete(DELETE_USER_STUDENT).catch((error) => {
+      throw error
+    })
+  }
+
+  changeStudentSubgroup(userId: number, newSubgroupId :number, courseId : number){
+    return axiosApiPost(`${POST_USER_SUBGROUP}?userId=${userId}&newSubgroupId=${newSubgroupId}&courseId=${courseId}`)   
+    .catch((error) => {
       throw error
     })
   }

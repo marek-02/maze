@@ -10,6 +10,7 @@ import {
   PersonalRankingInfoContent,
   SubmitStatsContent,
   AchieverAuctionsContent,
+  LastActivitiesContent
 } from '../gameCardContents'
 import StudentService from '../../../../services/student.service'
 import { useAppSelector } from '../../../../hooks/hooks'
@@ -28,6 +29,9 @@ function GameCardExplorer(props) {
       })
       .catch(() => setDashboardStats(null))
   }, [])
+
+  console.log("WSZYSTKIE DASHBOARDY")
+  console.log(dashboardStats)
 
   return (
     <Container>
@@ -54,23 +58,20 @@ function GameCardExplorer(props) {
           <Row className='m-0 gy-2'>
             <Col md={5}>
               <GameCard
-                headerText='Statystyki bohatera'
+                headerText='Statystyki ocen'
                 content={
                   <GradesStatsContent
-                    stats={dashboardStats.heroStatsDTO}
+                    stats={dashboardStats.generalStats}
                   />
                 }
               />
             </Col>
             <Col md={7}>
               <GameCard
-                  headerText='Miejsce w rankingu'
+                  headerText='Ostatnio dodane aktywności'
                   content={
-                    <PersonalRankingInfoContent
-                      stats={{
-                        ...dashboardStats.heroTypeStatsDTO,
-                        userPoints: dashboardStats.generalStats.allPoints
-                      }}
+                    <LastActivitiesContent
+                      stats={dashboardStats.lastAddedActivities} theme={props.theme}
                     />
                   }
                 />

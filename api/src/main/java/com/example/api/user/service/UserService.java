@@ -171,6 +171,14 @@ public class UserService implements UserDetailsService {
         return newGroup;
     }
 
+    public Long updateStudentSubGroup(Long userID, Long newSubgroupId, Long courseId) {
+        User user = getUser(userID);
+        Optional<CourseMember> courseMember = user.getCourseMember(courseId);
+            courseMemberService.updateSubgroup(courseMember.orElseThrow(), newSubgroupId);
+        return newSubgroupId;
+    }
+
+
     public void addUserToGroup(String invitationCode, HeroType heroType) throws WrongUserTypeException, EntityNotFoundException {
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import GameCard from '../GameCard'
 import {
   GradesStatsContent,
+  HeroStatsContent,
   PersonalRankingInfoContent,
   SearchOthersStatsContent,
   SubmitStatsContent,
@@ -75,8 +76,8 @@ function GameCardSocializer(props) {
               <GameCard
                 headerText='Statystyki bohatera'
                 content={
-                  <GradesStatsContent
-                    stats={dashboardStats.heroStatsDTO}
+                  <HeroStatsContent
+                    stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')}
                   />
                 }
               />

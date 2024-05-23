@@ -151,6 +151,11 @@ function GameManagement(props) {
             />
           </Col>
           <Col md={4} className='py-2'>
+            <ManagementCard
+                header='Podgrupy'
+                description='Sprawdź lub przypisz studentow do zespolow wewnatrz grup.'
+                routePath={TeacherRoutes.GAME_MANAGEMENT.SUBGROUPS}
+            />
             {/* <ManagementCard */}
             {/*  header={'Ustawienia gry'} */}
             {/*  description={'Dopasuj temat fabuły i wygląd całej gry oraz całego systemu.'} */}
