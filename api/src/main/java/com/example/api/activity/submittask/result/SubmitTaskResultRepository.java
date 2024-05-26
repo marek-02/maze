@@ -14,4 +14,5 @@ public interface SubmitTaskResultRepository  extends JpaRepository<SubmitTaskRes
     List<SubmitTaskResult> findAllByActivityAndEvaluatedIs(Activity activity, boolean evaluated);
     Long countSubmitTaskResultByMember(CourseMember member);
     Long countSubmitTaskResultByMemberAndStatus(CourseMember member, SubmitTaskStatus status);
+    List<SubmitTaskResult> findAllByMember(CourseMember member);
 }

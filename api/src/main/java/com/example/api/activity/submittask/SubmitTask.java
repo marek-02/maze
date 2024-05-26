@@ -20,9 +20,11 @@ import javax.validation.constraints.NotNull;
 public class SubmitTask extends Activity {
     private ActivityType activityType = ActivityType.SUBMIT;
     @NotNull private int percentageForAuthor;
+    @NotNull private double maxPointsForAuthor;
 
     public SubmitTask(CreateSubmitTaskForm form, User professor, Course course) {
         super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor, course, form.getMaxPointsForAuthor());
         this.percentageForAuthor = form.getPercentageForAuthor();
+        this.maxPointsForAuthor = form.getMaxPointsForAuthor();
     }
 }
