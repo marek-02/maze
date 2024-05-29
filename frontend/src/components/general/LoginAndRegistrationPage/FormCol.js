@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap'
 
 export function FormCol(name, type, colName, size = 12, additionalOptions) {
   return (
-    <Col className='form-group' md={size}>
+    <Col className='form-group m-1' md={size}>
       <h6>{name}</h6>
       {type === 'select' ? (
         <Field className='form-control' name={colName} as="select" multiple={additionalOptions?.multiple ?? false}>
@@ -35,10 +35,12 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
       ) : type === 'file' ? (
         <input type="file" accept='image/png, image/jpeg' name={colName} />
       ): type === 'dropdown' && colName === 'activityType' ? (
-        <Field className='form-control' name={colName} as="select">
+        <Field className="form-control" name={colName} as="select">
           <option value=""></option>
           <option value="first_colloquium">Gon Listopadowy</option>
           <option value="second_colloquium">Wielki Mróz</option>
+          <option value="hands-on-colloquium">Kolokwium praktyczne</option>
+          <option value="hands-on-colloquium-theory">Kolokwium praktyczne - teoria</option>
           <option value="laboratory_points">Spacer</option>
           <option value="additional-points">Dodatkowe punkty</option>
         </Field>
@@ -50,6 +52,21 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
           <option value="scribe">Skyba</option>
           <option value="oboe">Obój</option>
         </Field>
+      ) : type === 'dropdown' && colName === 'anihilatedQuestions' ? (
+          <Field className="form-control" name={colName} as="select">
+            {Array.from({ length: 4}, (_, i) => i).map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </Field>
+      ) : type === 'dropdown' && colName === 'anihilatedPoints' ? (
+        <Field
+          className='form-control ml-2'
+          type='number'
+          name={`${colName}_points`}
+          min={0}
+        />
       ) : (
         <Field
           className='form-control'

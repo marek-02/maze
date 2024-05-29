@@ -27,7 +27,9 @@ function AssignPointsModal(props) {
               reason: 'Praca na zajęciach',
               points: '',
               activityType: '',
-              role: ''
+              role: '',
+              anihilatedQuestions: '',
+              anihilatedPoints: ''
             }}
             validate={(values) => {
               const errors = {}
@@ -58,7 +60,9 @@ function AssignPointsModal(props) {
                     })}
                     {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
                     {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
-                    {values.activityType === 'laboratory_points' && FormCol('Role', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && FormCol('Anihilowane pytania', 'dropdown', 'anihilatedQuestions', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && FormCol('Anihilowane punkty', 'number', 'anihilatedPoints', 12, { errorColor: props.theme.danger })}
+                    {values.activityType === 'laboratory_points' && FormCol('Rola', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
                     <Col sm={12} className='d-flex justify-content-center mb-2'>

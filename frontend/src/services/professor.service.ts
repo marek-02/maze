@@ -72,6 +72,10 @@ class ProfessorService {
           return this.sendColloquiumPoints(studentId, courseId, points, description, 1 ,dateInMillis);
         case 'second_colloquium':
           return this.sendColloquiumPoints(studentId, courseId, points, description, 2 ,dateInMillis);
+        case 'hands-on-colloquium':
+          return this.sendColloquiumPoints(studentId, courseId, points, description, 3 ,dateInMillis);
+        case 'hands-on-colloquium-theory':
+          return this.sendColloquiumPoints(studentId, courseId, points, description, 4 ,dateInMillis);
         case 'laboratory_points':
           return this.sendLaboratoryPoints(studentId, courseId, points, description, role, dateInMillis);
         case 'additional-points':
