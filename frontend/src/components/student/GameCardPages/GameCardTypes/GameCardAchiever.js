@@ -85,8 +85,7 @@ function GameCardAchiever(props) {
 
   useEffect(() => {
     if(heroType == undefined || currentRank == undefined || allRanksList == undefined) return;
-
-    let allRanksForHeroType = allRanksList[heroType === "SHEUNFORTUNATE"? 0 : 1 ]["ranks"];
+    let allRanksForHeroType = allRanksList[heroType === "SHEUNFORTUNATE"? 1 : 0 ]["ranks"];
 
     for(let i =0 ; i<allRanksForHeroType.length; i++){
       if(allRanksForHeroType[i].name === currentRank){

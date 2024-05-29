@@ -3,6 +3,9 @@ import StudentService from '../../../services/student.service'
 import { useEffect, useState } from 'react'
 import {TableContainer} from './AllStatsPageStyles'
 import {connect} from 'react-redux'
+import UserService from '../../../services/user.service'
+import RankService from '../../../services/rank.service'
+import ActivityService from '../../../services/activity.service'
 
 
 function AllStatsPage(props){
@@ -10,38 +13,66 @@ function AllStatsPage(props){
     const courseId = useAppSelector((state) => state.user.courseId)
 
     useEffect(() => {
-        StudentService.getDashboardStats(courseId)
+      StudentService.getDashboardStats(courseId)
         .then((response) => {
-            setDashboardStats(response)
-            localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
+          setDashboardStats(response)
+          localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
+          setHeroType(response.heroTypeStatsDTO.heroType)
         })
         .catch(() => setDashboardStats(null))
+      
     }, [])
 
+    //Ten efekt jest do wyjazdu po testach
     useEffect(() => {
         console.log("DashBoardStats")
         console.log(dashboardStats)
-        console.log("HeroStatsDTO")
-        console.log(dashboardStats?.heroTypeStatsDTO)
-        console.log("General stats")
-        console.log(dashboardStats?.generalStats)
+        
     },[dashboardStats])
 
-    {/* <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
-        <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints}</p>
-        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
-        <p className='pb-1'>Zdobytych medali: {props.stats.badgesNumber}</p>
-        <p>Wykonanych aktywności: {props.stats.completedActivities}</p> */}
+    const rows_auctionStats = [
+      ["Miejsce w rankingu licytacji",dashboardStats?.auctionStats.auctionRanking],
+      ["Liczba wszystkich licytacji",dashboardStats?.auctionStats.auctionsCount],
+      ["Liczba udziałów w licytacjach",dashboardStats?.auctionsParticipations],
+      ["Wygrane punkty", dashboardStats?.auctionStats.auctionsPoints],
+      ["Rozwiązane zadania z licytacji", dashboardStats?.auctionStats.auctionsResolvedCount],
+      ["Wygrane",dashboardStats?.auctionStats.auctionsWon],
+      ["Najlepszy licytator",dashboardStats?.auctionStats.bestAuctioner]
+    ]
 
-    const row_titles_heroTypeStatsDTO = ["Miejsce w rankingu","Liczba osób w rankingu","", "Punkty doświadczenia", "Punkty do kolejnej rangi", "Ranga", "Zdobytych medali", "Wykonanych aktywnosci"]
+    const rows_activityStats = [
+      ["Punkty z aktywności:",dashboardStats?.generalStats.allPoints],
+      ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities]
+      ["Średnia (Ekspedycje)", dashboardStats?.generalStats.avgGraphTask!=0 ? dashboardStats?.generalStats.avgGraphTask : 0],
+      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=0 ? dashboardStats?.generalStats.avgFileTask  : 0],
+      ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
+      ["Punkty (Ekspedycje)",dashboardStats?.generalStats.graphTaskPoints],
+      ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints]
+    ]
+
+    const rows_heroStats = [
+      ["Punkty",dashboardStats?.heroStatsDTO.experiencePoints],
+      ["Następny poziom za:",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
+      ["Ranga",dashboardStats?.heroStatsDTO.rankName],
+      ["Typ postaci", dashboardStats?.heroTypeStatsDTO.heroType == "UNFORTUNATE" ? "Nieszczęśnik" : "Nieszczęśnica"],
+      ["Zdobyte glejty",dashboardStats?.heroStats.badgesNumber]
+    ]
+
+    const rows_ranking = [
+      ["Punkty najbliższego rywala",dashboardStats?.heroTypeStatsDTO.betterPlayerPointsOverall != null
+         ? dashboardStats?.heroTypeStatsDTO.betterPlayerPointsOverall : "PROWADZISZ"],
+      ["Liczba osób w rankingu", dashboardStats?.heroTypeStatsDTO.rankLength],
+      ["Miejsce w rankingu", dashboardStats?.heroTypeStatsDTO.rankPosition],
+      ["Miejsce w rankingu", dashboardStats?.heroTypeStatsDTO.rankPosition]
+    ]
+
+    const rows_confidant = [
+      ["Punkty zausznika",dashboardStats?.submitStats.submitPoints],
+      ["Złożone propozycje", dashboardStats?.submitTaskResultCount],
+      ["Przyjęte propozycje", dashboardStats?.fileTaskResultCount]
+    ]
     
-    const row_titles_heroStatsDTO = ["Liczba odznak","Ukończone aktywności","Punkty doświadczenia","Punkty do następnej rangi","Aktualna ranga"]
-
-    //GeneralStats
-    //const row_titles_generalStats = ["Punkty",""] Tu sie zdaja byc dosyc nieaktualne statystyki
     
-    const row_titles_auctionStats = ["Miejsce w rankingu licytacji?","Liczba wszystkich licytacji", "Liczba udziałów w licytacjach","Wygrane punkty","Rozwiązane zadania z licytacji", "Wygrane","Najlepszy licytator"]
-
     return(
     <>
       <TableContainer

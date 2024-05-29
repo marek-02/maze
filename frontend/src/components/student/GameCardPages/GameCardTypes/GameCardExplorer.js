@@ -30,9 +30,6 @@ function GameCardExplorer(props) {
       .catch(() => setDashboardStats(null))
   }, [])
 
-  console.log("WSZYSTKIE DASHBOARDY")
-  console.log(dashboardStats)
-
   return (
     <Container>
       {dashboardStats === undefined ? (

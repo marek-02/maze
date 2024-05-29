@@ -392,7 +392,7 @@ public class DatabaseConfig {
             group1course2.setCourse(course2);
             groupService.saveGroup(group1course2);
 
-            addToGroup(students1.get(0), group1course2, Unfortunate2);
+            addToGroup(students1.get(0), group1course2, Unfortunate);
 
             addToGroup(students1.get(0), group, Unfortunate);
             addToGroup(students1.get(1), group, SheUnfortunate);

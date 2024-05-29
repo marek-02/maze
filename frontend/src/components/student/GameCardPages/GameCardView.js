@@ -14,7 +14,7 @@ function GameCardView(props) {
   useEffect(() => {}, [studentPersonality])
 
   function getCardByPersonality() {
-    if (Object.keys(studentPersonality).length === 0)
+    if (studentPersonality==undefined || Object.keys(studentPersonality).length === 0)
       return <GameCardKiller props={props}></GameCardKiller>
 
     const currentPersonality = Object.entries(studentPersonality).reduce(

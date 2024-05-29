@@ -39,7 +39,7 @@ function GameCardSocializer(props) {
     StudentService.getSpecifiedStudentsDashboardStats(selectedUserId,courseId)
     .then((response) => {
       setSelectedUsersDashboardStats(response)
-      localStorage.setItem('heroType', response?.heroTypeStatsDTO?.heroType)
+      //localStorage.setItem('someones_heroType', response?.heroTypeStatsDTO?.heroType)
     })
     .catch(((err) => {
       console.log(err)
