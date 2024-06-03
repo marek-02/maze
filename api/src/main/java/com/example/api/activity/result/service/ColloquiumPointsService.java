@@ -1,6 +1,8 @@
 package com.example.api.activity.result.service;
 
 import com.example.api.activity.result.dto.request.AddColloquiumPointsForm;
+import com.example.api.activity.result.model.AnnihilatedPoints;
+import com.example.api.activity.result.repository.AnnihilatedPointsRepository;
 import com.example.api.activity.result.repository.ColloquiumPointsRepository;
 import com.example.api.activity.task.dto.response.result.ColloquiumPointsResponse;
 import com.example.api.course.Course;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -27,12 +30,21 @@ import java.util.List;
 @Transactional
 public class ColloquiumPointsService {
     private final ColloquiumPointsRepository colloquiumPointsRepository;
+    private final AnnihilatedPointsRepository annihilatedPointsRepository;
     private final UserRepository userRepository;
     private final LoggedInUserService authService;
     private final BadgeService badgeService;
     private final UserValidator userValidator;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
+
+    public double calculateColloquiumPoints(double points, double annihilatedPoints) {
+        final int maxPoints = 72;
+        double newMax = maxPoints - annihilatedPoints;
+        double calculatePercentage = points / newMax;
+        DecimalFormat df = new DecimalFormat("#.00");
+        return Double.parseDouble(df.format(maxPoints * calculatePercentage));
+    }
 
     public void saveColloquiumPoints(AddColloquiumPointsForm form)
             throws RequestValidationException {
@@ -42,9 +54,33 @@ public class ColloquiumPointsService {
         User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
+        Double points = form.getPoints();
+        System.out.println("ZXXXX");
+        System.out.println(form.getAnnihilatedPoints());
+        System.out.println(form.getAnnihilatedQuestions());
+
+        if (form != null && form.getAnnihilatedPoints() != null) {
+            if (form.getAnnihilatedPoints() > 0) {
+                points = calculateColloquiumPoints(form.getPoints(), form.getAnnihilatedPoints());
+                double deductedPoints = -(form.getAnnihilatedQuestions() * 20);
+
+                AnnihilatedPoints annihilatedPoints = new AnnihilatedPoints(
+                        deductedPoints,
+                        form.getDateInMillis(),
+                        professor.getEmail(),
+                        "",
+                        form.getColloquiumNumber(),
+                        user.getCourseMember(course).orElseThrow());
+                if (form.getDescription() != null) {
+                    annihilatedPoints.setDescription(form.getDescription());
+                }
+                annihilatedPointsRepository.save(annihilatedPoints);
+
+            }
+        }
 
         ColloquiumPoints colloquiumPoints = new ColloquiumPoints(
-                form.getPoints(),
+                points,
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
