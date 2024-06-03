@@ -14,5 +14,7 @@ public class AddColloquiumPointsForm {
     @Schema(required = true) private Double points;
     @Schema(required = true) private Long colloquiumNumber;
     @Schema(required = false) private String description;
+    @Schema(required = true) private Long annihilatedQuestions;
+    @Schema(required = true) private Long annihilatedPoints;
     @Schema(required = true) private Long dateInMillis;
 }
