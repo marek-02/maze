@@ -14,26 +14,17 @@ function AllStatsPage(props){
 
     useEffect(() => {
       StudentService.getDashboardStats(courseId)
-        .then((response) => {
-          setDashboardStats(response)
-          localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
-          setHeroType(response.heroTypeStatsDTO.heroType)
-        })
-        .catch(() => setDashboardStats(null))
+      .then((response) => {
+        setDashboardStats(response)
+      })
+      .catch(() => setDashboardStats(null))
       
     }, [])
-
-    //Ten efekt jest do wyjazdu po testach
-    useEffect(() => {
-        console.log("DashBoardStats")
-        console.log(dashboardStats)
-        
-    },[dashboardStats])
 
     const rows_auctionStats = [
       ["Miejsce w rankingu licytacji",dashboardStats?.auctionStats.auctionRanking],
       ["Liczba wszystkich licytacji",dashboardStats?.auctionStats.auctionsCount],
-      ["Liczba udziałów w licytacjach",dashboardStats?.auctionsParticipations],
+      ["Liczba udziałów w licytacjach",dashboardStats?.auctionsParticipations != undefined ? dashboardStats?.auctionsParticipations : 0],
       ["Wygrane punkty", dashboardStats?.auctionStats.auctionsPoints],
       ["Rozwiązane zadania z licytacji", dashboardStats?.auctionStats.auctionsResolvedCount],
       ["Wygrane",dashboardStats?.auctionStats.auctionsWon],
@@ -42,9 +33,9 @@ function AllStatsPage(props){
 
     const rows_activityStats = [
       ["Punkty z aktywności:",dashboardStats?.generalStats.allPoints],
-      ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities]
-      ["Średnia (Ekspedycje)", dashboardStats?.generalStats.avgGraphTask!=0 ? dashboardStats?.generalStats.avgGraphTask : 0],
-      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=0 ? dashboardStats?.generalStats.avgFileTask  : 0],
+      ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities],
+      ["Średnia (Ekspedycje)", dashboardStats?.generalStats.avgGraphTask!=undefined ? dashboardStats?.generalStats.avgGraphTask : 0],
+      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask  : 0],
       ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
       ["Punkty (Ekspedycje)",dashboardStats?.generalStats.graphTaskPoints],
       ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints]
@@ -52,10 +43,10 @@ function AllStatsPage(props){
 
     const rows_heroStats = [
       ["Punkty",dashboardStats?.heroStatsDTO.experiencePoints],
-      ["Następny poziom za:",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
+      ["Następny poziom za",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
       ["Ranga",dashboardStats?.heroStatsDTO.rankName],
       ["Typ postaci", dashboardStats?.heroTypeStatsDTO.heroType == "UNFORTUNATE" ? "Nieszczęśnik" : "Nieszczęśnica"],
-      ["Zdobyte glejty",dashboardStats?.heroStats.badgesNumber]
+      ["Zdobyte glejty",dashboardStats?.heroStatsDTO.badgesNumber]
     ]
 
     const rows_ranking = [
@@ -68,69 +59,46 @@ function AllStatsPage(props){
 
     const rows_confidant = [
       ["Punkty zausznika",dashboardStats?.submitStats.submitPoints],
-      ["Złożone propozycje", dashboardStats?.submitTaskResultCount],
-      ["Przyjęte propozycje", dashboardStats?.fileTaskResultCount]
+      ["Złożone propozycje", dashboardStats?.submitTaskResultCount != undefined ? dashboardStats?.submitTaskResultCount : 0],
+      ["Przyjęte propozycje", dashboardStats?.fileTaskResultCount != undefined ? dashboardStats?.fileTaskResultCount : 0]
     ]
-    
-    
-    return(
-    <>
-      <TableContainer
-        style={{ width: '25%' }}
-        $fontColor={props.theme.font}
-        $background={props.theme.primary}
-        $tdColor={props.theme.secondary}
-      >
-        <thead>
-          <tr>
-            <th>Nazwa</th>
-            <th>Wartość</th>
-          </tr>
-        </thead>
-        <tbody className="mh-100">
-        
-          {/* {dashboardStats.heroTypeStatsDTO.map()}
 
-          {studentsList?.length > 0 ? (
-            studentsList.map((student, index) => (
-              <tr key={index + student.groupName}>
-                <td className="py-2">{student.groupName}</td>
-                <td className="py-2">
-                  {student.firstName} {student.lastName}
-                </td>
-                <td className="py-2 text-center">
-                  <Button
-                    style={{ backgroundColor: props.theme.success, border: 'none' }}
-                    onClick={() => {
-                      setChosenStudent(student)
-                      setChangeGroupModalOpen(true)
-                    }}
-                  >
-                    Zmień grupę
-                  </Button>
-                  <Button
-                    className="ms-2"
-                    style={{ backgroundColor: props.theme.success, border: 'none' }}
-                    onClick={() => {
-                      setChosenStudent(student)
-                      setBonusPointsModalOpen(true)
-                    }}
-                  >
-                    Przyznaj punkty
-                  </Button>
-                </td>
-              </tr>
-            ))
-          ) : (
+    const all_rows = [rows_auctionStats,rows_activityStats, rows_heroStats, rows_ranking, rows_confidant]
+    return(
+    <div style={{display: "flex", padding: "0px 10% 0px 10%", overflow: "wrap", flexWrap: "wrap", justifyContent: "center"}} >
+      {
+      all_rows?.map((row,index) => {
+        return (
+          <TableContainer
+          style={{ width: '20%', textAlign: "center", marginRight: "8%", width: "20%", marginBottom: "5%"}}
+          $fontColor={props.theme.font}
+          $background={props.theme.primary}
+          $tdColor={props.theme.secondary}
+          >
+          <thead style={{height: "50px"}}>
             <tr>
-              <td colSpan='100%' className="text-center">
-                <p>{studentsList == null ? ERROR_OCCURRED : 'Brak członków'}</p>
-              </td>
+              <th>Nazwa</th>
+              <th>Wartość</th>
             </tr>
-          )}*/}
-        </tbody> 
-      </TableContainer>
-    </>
+          </thead>
+          <tbody className="mh-100">
+            {              
+              row?.map((entry,index)=> {
+                return(
+                <tr key={index}>
+                  <td>{entry[0]}</td>
+                  <td>{entry[1]}</td>
+                </tr>
+                )
+              })          
+            }
+          </tbody> 
+        </TableContainer>
+        )
+      })
+    }
+      
+    </div>
     )
 }
 

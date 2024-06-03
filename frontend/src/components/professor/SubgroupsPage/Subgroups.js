@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react'
-import styled from 'styled-components'
 import { Button, Row,Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { TeacherRoutes } from '../../../routes/PageRoutes'
@@ -9,45 +8,9 @@ import GoBackButton from '../../general/GoBackButton/GoBackButton'
 import GroupAdditionModal from '../GroupAdditionPage/GroupAdditionModal'
 import { useAppSelector } from '../../../hooks/hooks'
 import GroupService from '../../../services/group.service'
-import { Table} from 'react-bootstrap'
+import {TableContainer,Title} from './SubgroupStyles'
 import StudentService from '../../../services/student.service'
 
-const Title = styled.div`
-  font-size: 48px;
-  font-weight: 500;
-  text-align: center !important;
-  margin: 0 auto;
-`
-const TableContainer = styled(Table)`
-  color: ${(props) => props.$fontColor};
-  margin-bottom: 0;
-
-  th {
-    background-color: ${(props) => props.$background};
-    border: ${(props) => props.$background} 1px solid;
-  }
-
-  tr {
-    border: ${(props) => props.$background} 1px solid;
-  }
-  td {
-    background-color: ${(props) => props.$tdColor}; // light
-    border: ${(props) => props.$background} 1px solid;
-  }
-
-  thead {
-    position: sticky;
-    top: 0; /* Don't forget this, required for the stickiness */
-  }
-
-  & tbody tr td {
-    vertical-align: middle;
-  }
-
-  td:hover{
-    background-color: lightblue;
-  }
-`
 
 function Subgroups(props) {
   const [modalOpen, setModalOpen] = useState(false)
@@ -60,9 +23,7 @@ function Subgroups(props) {
   const [allGroupIds, setAllGroupIds] = useState([]) //pary (idGrupy,nazwaGrupy)
   const [selectedGroupId, setSelectedGroupId] = useState(-1)
   const [studentsInSubgroups,setStudentsInSubgroups] = useState([]) 
-
   let [addGroupEffectInvoker,setAddGroupEffectInvoker] = useState(0)
-  //let [renderStudentsInvoker,setRenderStudentsInvoker] = useState(0)
 
   const addSubgroup = () => {
     setAddGroupEffectInvoker(addGroupEffectInvoker+1);
@@ -119,6 +80,8 @@ function Subgroups(props) {
           else studentsInSubgroups_local[student.subgroup].push(entry)
         }
 
+        console.log("StudentsinSubgroups")
+        console.log(studentsInSubgroups_local)
         setStudentsInSubgroups(studentsInSubgroups_local)
       })
       .catch(() => {
@@ -137,8 +100,7 @@ function Subgroups(props) {
     for(let i =0; i<studentsInSubgroups.length;i++){
       let arr = studentsInSubgroups[i].slice().filter(item => item.id != student.id)
       if(i == subgroupId){
-        student.subgroup = subgroupId
-        
+        student.subgroup = subgroupId        
         arr.push(student)
       } 
       tmp.push(arr)
@@ -193,7 +155,7 @@ function Subgroups(props) {
                         {
                           subgroup.length>0 && subgroup?.map((student, index) => {
                             return(
-                            <tr draggable key={index+student.id} 
+                            <tr draggable key={student.id} 
                               onDragStart={(e)=>handleOnDrag(e,student)}>
                               <td className="py-2">
                                 {student.firstName} {student.lastName}
