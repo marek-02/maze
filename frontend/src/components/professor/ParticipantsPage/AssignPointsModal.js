@@ -15,6 +15,14 @@ function AssignPointsModal(props) {
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
 
+  function parseFloatWithPrecision(value) {
+    const parsedValue = parseFloat(value);
+    if (isNaN(parsedValue)) {
+      return NaN;  // Handle non-numeric input
+    }
+    return parsedValue.toFixed(2);
+  }
+
   return (
     <>
       <Modal show={props.show} onHide={() => props.setModalOpen(false)} size="lg">
@@ -28,28 +36,39 @@ function AssignPointsModal(props) {
               points: '',
               activityType: '',
               role: '',
-              anihilatedQuestions: '',
-              anihilatedPoints: ''
+              annihilatedQuestions: '',
+              annihilatedPoints: ''
             }}
             validate={(values) => {
               const errors = {}
               if (!values.points) errors.points = FIELD_REQUIRED
               if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 100)
               if (!values.activityType) errors.activityType = FIELD_REQUIRED
+              if (values.annihilatedPoints === 0) errors.points = NUMBER_FROM_RANGE(1, 72)
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-              ProfessorService.sendPoints(props?.studentId, courseId, parseInt(values.points, 10), values.reason, values.activityType,values.role, Date.now())
-                .then(() => {
-                  setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
-                })
-                .catch((error) => {
-                  setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
-                })
-              props.setModalOpen(false)
-              setIsFinishModalOpen(true)
-              setSubmitting(false)
-            }}
+                ProfessorService.sendPoints(
+                  props?.studentId,
+                  courseId,
+                  parseFloatWithPrecision(values.points),
+                  values.reason,
+                  values.activityType,
+                  values.role,
+                  values.annihilatedQuestions,
+                  values.annihilatedPoints,
+                  Date.now())
+                  .then(() => {
+                    setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
+                  })
+                  .catch((error) => {
+                    setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
+                  })
+                props.setModalOpen(false)
+                setIsFinishModalOpen(true)
+                setSubmitting(false)
+              }
+            }
           >
             {({ isSubmitting, handleSubmit,values }) => (
               <Form onSubmit={handleSubmit}>
@@ -60,8 +79,8 @@ function AssignPointsModal(props) {
                     })}
                     {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
                     {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && FormCol('Anihilowane pytania', 'dropdown', 'anihilatedQuestions', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && FormCol('Anihilowane punkty', 'number', 'anihilatedPoints', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') && FormCol('Anihilowane pytania', 'dropdown', 'annihilatedQuestions', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') &&  FormCol('Anihilowane punkty', 'number', 'annihilatedPoints', 12, { errorColor: props.theme.danger })}
                     {values.activityType === 'laboratory_points' && FormCol('Rola', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
