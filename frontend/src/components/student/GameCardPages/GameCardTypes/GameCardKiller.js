@@ -29,6 +29,7 @@ function GameCardKiller(props) {
       .then((response) => {
         setDashboardStats(response)
         localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
+        console.log(response);
       })
       .catch(() => setDashboardStats(null))
   }, [])
@@ -42,7 +43,7 @@ function GameCardKiller(props) {
       ) : (
         <>
           <Row className='m-0 gy-2'>
-            <Col md={5}>
+            <Col md={6}>
               <GameCard
                 headerText='Statystyki bohatera'
                 content={
@@ -52,39 +53,53 @@ function GameCardKiller(props) {
                 }
               />
             </Col>
-            <Col md={7}>
-            <GameCard
+            <Col md={6}>
+              <GameCard
                 headerText='Licytacje'
                 content={<KillerAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>
           <Row className='m-0 mb-5 m-md-0 pt-3'>
-            <Col md={5}>
-            <GameCard
-                  headerText='Miejsce w rankingu'
-                  content={
-                    <PersonalRankingInfoContent
-                      stats={{
-                        ...dashboardStats.heroTypeStatsDTO,
-                        userPoints: dashboardStats.generalStats.allPoints
-                      }}
-                    />
+            <Col md={6}>
+              <GameCard
+                headerText='Ranking roczny'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      rankPosition: dashboardStats.heroTypeStatsDTO.rankPosition,
+                      rankLength: dashboardStats.heroTypeStatsDTO.rankLength,
+                      userPoints: dashboardStats.heroTypeStatsDTO.userPoints,
+                      betterPlayerPoints: dashboardStats.heroTypeStatsDTO.betterPlayerPoints,
+                      worsePlayerPoints: dashboardStats.heroTypeStatsDTO.worsePlayerPoints,
+                      ranking: dashboardStats.heroTypeStatsDTO.ranking,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }} 
+                    email={dashboardStats.email}
+                    id={"year"}
+                  />
                   }
                 />
             </Col>
-            <Col md={7}>
-            <GameCard
-                  headerText='Miejsce w rankingu wszechczasów'
-                  content={
-                    <PersonalOverallRankingInfoContent
-                      stats={{
-                        ...dashboardStats.heroTypeStatsDTO,
-                        userPoints: dashboardStats.generalStats.allPoints
-                      }}
-                    />
-                  }
-                />
+            <Col md={6}>
+              <GameCard
+                headerText='Ranking wszechczasów'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      rankPosition: dashboardStats.heroTypeStatsDTO.overallRankPosition,
+                      rankLength: dashboardStats.heroTypeStatsDTO.overallRankLength,
+                      userPoints: dashboardStats.heroTypeStatsDTO.userPoints,
+                      betterPlayerPoints: dashboardStats.heroTypeStatsDTO.betterPlayerPointsOverall,
+                      worsePlayerPoints: dashboardStats.heroTypeStatsDTO.worsePlayerPointsOverall,
+                      ranking: dashboardStats.heroTypeStatsDTO.overallRanking,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
+                    email={dashboardStats.email}
+                    id={"overall"}
+                  />
+                }
+              />
             </Col>
           </Row>
         </>

@@ -1,9 +1,15 @@
 import React, {useState,useEffect} from 'react'
+import './gameCardContentsStyles.css'
 
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js'
 import moment from 'moment'
 import { Col, Row } from 'react-bootstrap'
 import { Bar, Pie } from 'react-chartjs-2'
+
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Form from 'react-bootstrap/Form';
 
 import { ChartCol, CustomTable } from './gameCardContentsStyle'
 import { barConfig, pieConfig } from '../../../utils/chartConfig'
@@ -34,12 +40,12 @@ export function GradesStatsContent(props) {
 
   return (
     <Row className='h-100 d-flex justify-content-center align-items-center'>
-      <Col md={7} style={{width:"58%"}}>
-        <p className='pb-3'>Średnia (Ekspedycje):{avgGraphTask ?? 0}%</p>
-        <p className='pb-3'>Średnia (Zadania bojowe):{avgFileTask ?? 0}%</p>
-        <p className='pb-3'>Ilość wykonanych sondaży:{surveysNumber}</p>
-        <p className='pb-3'>Punkty (Ekspedycje):{graphTaskPoints}</p>
-        <p className='pb-3'>Punkty (Zadania bojowe):{fileTaskPoints}</p>
+      <Col md={12} style={{width:"100%"}}>
+        <p className='pb-2'>Średnia (Ekspedycje): {avgGraphTask ?? 0}%</p>
+        <p className='pb-2'>Średnia (Zadania bojowe): {avgFileTask ?? 0}%</p>
+        <p className='pb-2'>Ilość wykonanych sondaży: {surveysNumber}</p>
+        <p className='pb-2'>Punkty (Ekspedycje): {graphTaskPoints}</p>
+        <p className='pb-2'>Punkty (Zadania bojowe): {fileTaskPoints}</p>
       </Col>
       <Col md={5}>
         <PercentageCircle percentageValue={percentageValue} points={allPoints} maxPoints={maxPoints} />
@@ -112,11 +118,11 @@ export function KillerHeroStatsContent(props) {
       </Col>
       <Col md={7}>
 
+        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
+        <p className='pb-1'>Punkty rywala: {betterPlayerPts}</p>
+        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
         <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
         <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
-        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
-        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
-        <p className='pb-1'>Punkty rywala: {betterPlayerPts}</p>
       </Col>
     </Row>
   )
@@ -141,11 +147,11 @@ export function SearchOthersStatsContent(props){
           <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[props.heroType]} alt='Your hero' />
         </Col>
         <Col md={7}>
-          <select id="selectMember" value={selectedMemberId} onChange={(event) => {setSelectedMemberId(event.target.value)}}>
+          <Form.Select id="selectMember" value={selectedMemberId} onChange={(event) => {setSelectedMemberId(event.target.value)}} className="custom-select">
             {
-                props?.members?.map((member) => <option key={member?.id} value={member?.id}>{`${member?.firstName} ${member?.lastName}`}</option>)
+              props?.members?.map((member) => <option key={member?.id} value={member?.id}>{`${member?.firstName} ${member?.lastName}`}</option>)
             }
-          </select>
+          </Form.Select>
           {/* <button onClick={() => props.handler(userId)}>Szukaj</button> */}
           <p className='pb-1'>Punkty doświadczenia: {props?.stats?.experiencePoints}</p>
           <p className='pb-1'>Punkty do kolejnej rangi: {props?.stats?.nextLvlPoints}</p>
@@ -193,7 +199,7 @@ export function KillerAuctionsContent(props) {
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+          <img style={{ maxWidth: '100%' }} className='mt-3' height='70%' src={BidImg} alt='Bid image' />
         </Col>
         <Col md={7}>
           <p className='pb-1'>Najlepszy licytant: {bestAuctioner}</p>
@@ -221,7 +227,7 @@ export function AchieverAuctionsContent(props) {
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{ maxWidth: '100%' }} height='90%' src={BidImg} alt='Bid image' />
+          <img style={{ maxWidth: '100%' }} className='mt-3' height='70%' src={BidImg} alt='Bid image' />
         </Col>
         <Col md={7}>
           <p className='pb-1'>Zlicytowane punkty: {auctionsPoints}</p>
@@ -240,7 +246,7 @@ export function CollectiblesInfoContent(props){
           }`}
       >
         <Col md={4} className='h-100'>
-          <img style={{ maxWidth: '100%' }} height='90%' src={CoinImg} alt='Collectible image' />
+          <img style={{ maxWidth: '100%' }} className='mt-3' height='70%' src={CoinImg} alt='Collectible image' />
         </Col>
         <Col md={7}>
           {/* [FK] Stworzylem prototyp kafelka na szybko bo nie mamy funkcji wszystkich do tego jeszcze */}
@@ -254,73 +260,93 @@ export function CollectiblesInfoContent(props){
     )
 }
 
-export function PersonalRankingInfoContent(props) {
-  const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
-  const playerType = convertHeroTypeToPlayerType(props.stats.heroType)
-  const chartType = playerType === PlayerType.CHALLENGING ? 'BAR' : 'PIE'
-
-  const rankComment = getGameCardInfo(playerType, {
-    rankPosition: props.stats.rankPosition,
-    rankLength: props.stats.rankLength,
-    userPoints: userPointsGroup
-  })
-
-  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
-
-  const getChartInfo = () => {
-    if (chartType === 'BAR') {
-      const barLabels = [
-        props.stats.betterPlayerPoints != null ? 'Punkty gracza przed Tobą' : '',
-        'Twój wynik',
-        props.stats.worsePlayerPoints != null ? 'Punkty gracza za Tobą' : ''
-      ].filter((label) => !!label)
-
-      const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
-        (points) => points != null
-      )
-      return barConfig(barLabels, barPoints, colorPalette(barLabels.length))
+export function RankingTable(props)  {
+  const recordsPerPage = 4
+  
+  const newRankingData = props.ranking
+  const newRankingDataLength = newRankingData.length
+  if(newRankingDataLength % recordsPerPage != 0) {
+    console.log(newRankingDataLength % recordsPerPage);
+    for(let i = 0; i < recordsPerPage - (newRankingDataLength % recordsPerPage); i++) {
+      newRankingData.push({email:'', firstName:"", lastName:"", groupName:'', heroType:'', points:0, position:newRankingDataLength + 1 + i, studentAnswer: null, unblockedBadges: 0})
     }
-
-    return pieConfig(
-      ['Grupa graczy, w której jesteś', 'Pozostali gracze'],
-      [props.stats.rankPosition, props.stats.rankLength],
-      colorPalette(2)
-    )
   }
+  const [rankingData, setRankingData] = useState(newRankingData)
+  
+  
+  const index = rankingData.findIndex(record => record.email === props.email)
+  const [currentPage, setCurrentPage] = useState(Math.ceil((index + 1) / recordsPerPage))
 
-  const { data, options } = getChartInfo()
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = rankingData.slice(indexOfFirstRecord, indexOfLastRecord);
+  const totalPages = Math.ceil(rankingData.length / recordsPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Row className='h-100 d-flex justify-content-center align-items-center'>
-      <ChartCol md={12}>
-        {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
-      </ChartCol>
-      <Col md={12}>
-        <p className='text-center w-100'>{rankComment}</p>
-      </Col>
-    </Row>
-  )
+    
+    <div className="container">
+      <table className="table table-striped table-container">
+        <thead>
+          <tr>
+            <th>Miejsce</th>
+            <th style={{'width':'100%'}}>Nazwa</th>
+            <th>Punkty</th>
+          </tr>
+        </thead>
+        <tbody>
+          {currentRecords.map((ranking, index) => (
+            <tr key={index}>
+              <td>{ranking.position}</td>
+              <td>{ranking.lastName != '' ? ranking.firstName + " " + ranking.lastName[0] + "." : ""}</td>
+              <td>{ranking.points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <nav>
+        <ul className="pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+              <Button onClick={() => paginate(index + 1)} className="page-link">
+                {index + 1}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  );
 }
 
-export function PersonalOverallRankingInfoContent(props) {
+export function PersonalRankingInfoContent(props) {
   const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
-  const playerType = convertHeroTypeToPlayerType(props.stats.heroType)
-  const chartType = playerType === PlayerType.CHALLENGING ? 'BAR' : 'PIE'
 
-  const rankComment = getGameCardInfo(playerType, {
-    rankPosition: props.stats.overallRankPosition,
-    rankLength: props.stats.overallRankLength,
-    userPoints: userPointsGroup
+  const [viewType, setViewType] = useState('Tabela');
+  const viewTypes = [
+    { name: 'Tabela' },
+    { name: 'Wykres' },
+    { name: 'Rywal' },
+  ];
+  
+  const rankComment = getGameCardInfo(viewType, {
+    rankPosition: props.stats.rankPosition,
+    rankLength: props.stats.rankLength,
+    userPointsGroup: userPointsGroup,
+    userPoints: props.stats.userPoints,
+    betterPlayerPoints: props.stats.betterPlayerPoints,
+    worsePlayerPoints: props.stats.worsePlayerPoints
   })
 
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
 
   const getChartInfo = () => {
-    if (chartType === 'BAR') {
+    if (viewType === 'Rywal') {
       const barLabels = [
-        props.stats.betterPlayerPointsOverall != null ? 'Punkty gracza przed Tobą' : '',
+        props.stats.betterPlayerPoints != null ? 'Gracz przed Tobą' : '',
         'Twój wynik',
-        props.stats.worsePlayerPointsOverall != null ? 'Punkty gracza za Tobą' : ''
+        props.stats.worsePlayerPoints != null ? 'Gracz za Tobą' : ''
       ].filter((label) => !!label)
 
       const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
@@ -328,20 +354,43 @@ export function PersonalOverallRankingInfoContent(props) {
       )
       return barConfig(barLabels, barPoints, colorPalette(barLabels.length))
     }
-
     return pieConfig(
-      ['Grupa graczy, w której jesteś', 'Pozostali gracze'],
+      ['Równi i lepsi', 'Słabsi'],
       [props.stats.rankPosition, props.stats.rankLength],
       colorPalette(2)
-    )
+    )    
   }
 
   const { data, options } = getChartInfo()
 
+  const changeView = (newView) => {
+    setViewType(newView)
+  }
+
   return (
-    <Row className='h-100 d-flex justify-content-center align-items-center'>
+    <Row className='h-120 d-flex justify-content-center align-items-center'>
+      <ButtonGroup className='mb-2'>
+        {viewTypes.map((radio, idx) => (
+          <ToggleButton
+            key={idx}
+            id={`radio-${idx}-${props.id}`}
+            type="radio"
+            variant={'dark'}
+            name="radio"
+            value={radio.name}
+            checked={viewType === radio.name}
+            onChange={(e) => changeView(e.currentTarget.value)}
+          >
+            {radio.name}
+          </ToggleButton>
+        ))}
+      </ButtonGroup>
       <ChartCol md={12}>
-        {chartType === 'BAR' ? <Bar data={data} options={options} /> : <Pie data={data} options={options} />}
+        {
+          viewType === 'Rywal' ? <Bar data={data} options={options} /> : 
+          viewType === 'Wykres' ? <Pie data={data} options={options}/> : 
+          <RankingTable email={props.email} ranking={props.stats.ranking}></RankingTable>
+        }
       </ChartCol>
       <Col md={12}>
         <p className='text-center w-100'>{rankComment}</p>

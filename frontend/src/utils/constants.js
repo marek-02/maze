@@ -337,19 +337,39 @@ export const convertHeroTypeToPlayerType = (heroType) => {
   return PlayerType.CALM
 }
 
-export const getGameCardInfo = (playerType, data) => {
-  if (playerType === PlayerType.CHALLENGING) {
+export const getGameCardInfo = (viewType, data) => {
+  if (viewType === 'Tabela') {
     return (
       <span>
         Zajmujesz <strong>{data.rankPosition}</strong> miejsce na <strong>{data.rankLength}</strong>!
       </span>
     )
+  } else if (viewType === 'Wykres') {
+    return (
+      <span>
+        Jesteś w grupie <strong>{data.userPointsGroup}</strong>% najlepszych graczy.
+      </span>
+    )
+  } else if (data.betterPlayerPoints != null) {
+    return (
+    <span>
+      Brakuje Ci <strong>{data.betterPlayerPoints - data.userPoints} punktów</strong> do kolejnego gracza.
+    </span>
+    )
+  } else if (data.worsePlayerPoints != null) {
+    return (
+      <span>
+        Masz <strong>{data.userPoints - data.worsePlayerPoints} punktów</strong> więcej od drugiego gracza.
+      </span>
+    )
   }
   return (
     <span>
-      Jesteś w grupie <strong>{data.userPoints}</strong>% najlepszych graczy.
+      Nie masz <strong>żadnego</strong> rywala.
     </span>
   )
+  
+  
 }
 
 export const INVALID_DATE_MESSAGE = 'Invalid date object given'

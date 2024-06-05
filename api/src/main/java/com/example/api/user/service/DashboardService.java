@@ -100,7 +100,8 @@ public class DashboardService {
                 getLastAddedActivities(course),
                 getHeroStats(member),
                 getSubmitStats(member),
-                getAuctionStats(member,courseId)
+                getAuctionStats(member,courseId),
+                member.getUser().getEmail()
         );
     }
 
@@ -118,11 +119,29 @@ public class DashboardService {
                 getLastAddedActivities(course),
                 getHeroStats(member),
                 getSubmitStats(member),
-                getAuctionStats(member,courseId)
+                getAuctionStats(member,courseId),
+                member.getUser().getEmail()
         );
     }
 
+    private List<RankingResponse> getRanking(CourseMember member) throws EntityNotFoundException {
+        log.info("getRanking");
 
+        List<RankingResponse> ranking = rankingService.getRanking(member.getCourse().getId());
+
+        return ranking;
+    }
+
+    private List<RankingResponse> getOverallRanking(CourseMember member) throws EntityNotFoundException {
+        log.info("getOverallRanking");
+        if(member.getCourse().getCourseType() == null) return  getRanking(member);
+
+        List<Course> coursesForOverallRanking = courseService.getCoursesByCourseType(member.getCourse().getCourseType());
+        List<RankingResponse> overallRanking = coursesForOverallRanking.stream()
+                .flatMap(course -> rankingService.getRanking(course.getId()).stream()).toList();
+
+        return overallRanking;
+    }
 
     private HeroTypeStatsDTO getHeroTypeStats(CourseMember member) throws EntityNotFoundException {
         log.info("getHeroTypeStats");
@@ -139,31 +158,20 @@ public class DashboardService {
         Integer rankPosition = rank.getPosition();
         Long rankLength = (long) ranking.size();
 
-        Integer overallRankPosition = rankPosition;
-        Long overallRankLength = rankLength;
-
         Double betterPlayerPoints = rankPosition > 1 ? ranking.get(rankPosition - 2).getPoints() : null;
         Double worsePlayerPoints = rankPosition < rankLength ? ranking.get(rankPosition).getPoints() : null;
 
-        Double betterPlayerPointsOverall = betterPlayerPoints;
-        Double worsePlayerPointsOvearll = worsePlayerPoints;
+        List<RankingResponse> overallRanking = getOverallRanking(member);
+        RankingResponse overallRank = getRank(member.getUser(), overallRanking);
 
-        if(member.getCourse().getCourseType() != null) {
-            List<Course> coursesForOverallRanking = courseService.getCoursesByCourseType(member.getCourse().getCourseType());
-            List<RankingResponse> overallRanking = coursesForOverallRanking.stream()
-                    .flatMap(course -> rankingService.getRanking(course.getId()).stream()).toList();
-            RankingResponse overallRank = getRank(member.getUser(), overallRanking);
+        Integer overallRankPosition = overallRank.getPosition();
+        Long overallRankLength = (long) overallRanking.size();
 
-            overallRankPosition = overallRank.getPosition();
-            overallRankLength = (long) overallRanking.size();
-
-            betterPlayerPointsOverall = overallRankPosition > 1 ? overallRanking.get(overallRankPosition - 2).getPoints() : null;
-            worsePlayerPointsOvearll = overallRankPosition < overallRankLength ? overallRanking.get(overallRankPosition).getPoints() : null;
-        }
+        Double betterPlayerPointsOverall = overallRankPosition > 1 ? overallRanking.get(overallRankPosition - 2).getPoints() : null;
+        Double worsePlayerPointsOvearll = overallRankPosition < overallRankLength ? overallRanking.get(overallRankPosition).getPoints() : null;
 
 
-
-        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll);
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll, ranking, overallRanking);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {

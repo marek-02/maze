@@ -107,32 +107,33 @@ function GameCardAchiever(props) {
       ) : (
         <>
           <Row className='m-0 gy-2'>
-            <Col md={5}>
-                <GameCard
-                    headerText='Statystyki bohatera'
-                    content={
-                    <HeroStatsContent
-                        stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')}
-                    />
-                    }
-                />
-            </Col>
-            <Col md={7}>
+            <Col md={6}>
               <GameCard
-                  headerText='Miejsce w rankingu'
-                  content={
-                    <PersonalRankingInfoContent
-                      stats={{
-                        ...dashboardStats.heroTypeStatsDTO,
-                        userPoints: dashboardStats.generalStats.allPoints
-                      }}
-                    />
-                  }
+                headerText='Statystyki bohatera'
+                content={
+                <HeroStatsContent
+                    stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')}
                 />
+                }
+              />
+            </Col>
+            <Col md={6}>
+              <GameCard
+                headerText='Miejsce w rankingu'
+                content={
+                  <PersonalRankingInfoContent
+                    stats={{
+                      ...dashboardStats.heroTypeStatsDTO,
+                      userPoints: dashboardStats.generalStats.allPoints
+                    }}
+                    email={dashboardStats.email}
+                  />
+                }
+              />
             </Col>
           </Row>
           <Row className='m-0 gy-2'>
-            <Col md={5}>
+            <Col md={6}>
               <GameCard
                 headerText='Informacje kolekcjonerskie'
                 content={
@@ -147,8 +148,8 @@ function GameCardAchiever(props) {
                 }
               />
             </Col>
-            <Col md={7}>
-            <GameCard
+            <Col md={6}>
+              <GameCard
                 headerText='Licytacje'
                 content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
               />
