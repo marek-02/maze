@@ -20,6 +20,7 @@ import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
 import com.example.api.activity.submittask.SubmitTask;
 import com.example.api.activity.submittask.SubmitTaskService;
+import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.submittask.result.SubmitTaskStatus;
 import com.example.api.activity.survey.Survey;
@@ -282,7 +283,7 @@ public class DashboardService {
         return new SubmitStats(
                 submitTaskResultRepository.countSubmitTaskResultByMember(member),
                 submitTaskResultRepository.countSubmitTaskResultByMemberAndStatus(member, SubmitTaskStatus.ACCEPTED),
-                getFileTaskPoints(member)
+                submitTaskResultRepository.findAllByMember(member).stream().mapToDouble(SubmitTaskResult:: getPoints).sum()
         );
     }
 

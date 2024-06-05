@@ -60,7 +60,7 @@ public class SubmitTaskResult extends ActivityResult {
     @Override
     public void setPoints(Double fullPoints) {
         Double pointPercentage = Math.round(fullPoints * getSubmitTask().getPercentageForAuthor()) / 100D;
-        Double newPoints = Math.min( pointPercentage, getSubmitTask().getMaxPoints() - points);
+        Double newPoints = Math.min( pointPercentage + points, getSubmitTask().getMaxPointsForAuthor());
         super.setPoints(newPoints);
     }
 
