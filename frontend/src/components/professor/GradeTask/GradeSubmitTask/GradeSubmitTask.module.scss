@@ -71,7 +71,7 @@ span {
   }
 
   .rejectButton {
-   background-color: #E8E8E8;
+    background-color: #E8E8E8;
   }
 }
 
@@ -110,14 +110,31 @@ span {
 }
 
 .formContainer {
-  margin: 0 auto;
+  margin: 20px;
+  width: calc(90%);
 }
 
 .form {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem; /* Większy odstęp między polami */
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  width: calc(90%); /* Dostosowanie szerokości elementów w wierszu */
+}
+
+.formLabel {
+  margin-bottom: 0.25rem; /* Mniejszy odstęp między tytułem a textarea */
+}
+
+.formControl {
+  width: 100%;
+  margin-bottom: 1rem; /* Większy odstęp między polami */
 }
 
 .editorContainer {
