@@ -72,7 +72,7 @@ function GameCardSocializer(props) {
       ) : (
         <>
           <Row className='m-0 gy-2'>
-          <Col md={5}>
+          <Col md={6}>
               <GameCard
                 headerText='Statystyki bohatera'
                 content={
@@ -82,7 +82,7 @@ function GameCardSocializer(props) {
                 }
               />
             </Col>
-            <Col md={7}>
+            <Col md={6}>
               <GameCard
                   headerText='Miejsce w rankingu'
                   content={
@@ -91,23 +91,29 @@ function GameCardSocializer(props) {
                         ...dashboardStats.heroTypeStatsDTO,
                         userPoints: dashboardStats.generalStats.allPoints
                       }}
+                      email={dashboardStats.email}
                     />
                   }
                 />
             </Col>
           </Row>
           <Row className='m-0 gy-2'>
-          <Col md={5}>
+          <Col md={6}>
               <GameCard
                   headerText='Statystyki zausznika'
                   content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
               />
             </Col>
-            <Col md={7}>
+            <Col md={6}>
               <GameCard
                 headerText='Podgląd statystyk innego gracza'
-                content={<SearchOthersStatsContent stats={selectedUsersDashboardStats?.heroStatsDTO} members={members}
-                  heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} handler={changeSelectedUserId}/>}
+                content={
+                <SearchOthersStatsContent 
+                  stats={selectedUsersDashboardStats?.heroStatsDTO} 
+                  members={members}
+                  heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} 
+                  handler={changeSelectedUserId}
+                />}
               />
             </Col>
           </Row>

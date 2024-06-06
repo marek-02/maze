@@ -30,6 +30,9 @@ function GameCardExplorer(props) {
       .catch(() => setDashboardStats(null))
   }, [])
 
+  console.log("WSZYSTKIE DASHBOARDY")
+  console.log(dashboardStats)
+
   return (
     <Container>
       {dashboardStats === undefined ? (
@@ -39,21 +42,7 @@ function GameCardExplorer(props) {
       ) : (
         <>
           <Row className='m-0 gy-2'>
-            <Col md={5}>
-              <GameCard
-                  headerText='Statystyki zausznika'
-                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
-              />
-            </Col>
-            <Col md={7}>
-            <GameCard
-                headerText='Licytacje'
-                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
-              />
-            </Col>
-          </Row>
-          <Row className='m-0 gy-2'>
-            <Col md={5}>
+            <Col md={6}>
               <GameCard
                 headerText='Statystyki ocen'
                 content={
@@ -63,15 +52,29 @@ function GameCardExplorer(props) {
                 }
               />
             </Col>
+            <Col md={6}>
+              <GameCard
+                headerText='Licytacje'
+                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
+              />
+            </Col>
+          </Row>
+          <Row className='m-0 gy-2'>
+            <Col md={5}>
+              <GameCard
+                  headerText='Statystyki zausznika'
+                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
+              />
+            </Col>
             <Col md={7}>
               <GameCard
-                  headerText='Ostatnio dodane aktywności'
-                  content={
-                    <LastActivitiesContent
-                      stats={dashboardStats.lastAddedActivities} theme={props.theme}
-                    />
-                  }
-                />
+                headerText='Ostatnio dodane aktywności'
+                content={
+                  <LastActivitiesContent
+                    stats={dashboardStats.lastAddedActivities} theme={props.theme}
+                  />
+                }
+              />
             </Col>
           </Row>
         </>

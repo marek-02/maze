@@ -1,9 +1,12 @@
 package com.example.api.user.hero;
 
+import com.example.api.activity.result.dto.response.RankingResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +22,6 @@ public class HeroTypeStatsDTO {
     private Double worsePlayerPoints;
     private Double betterPlayerPointsOverall;
     private Double worsePlayerPointsOverall;
+    private List<RankingResponse> ranking;
+    private List<RankingResponse> overallRanking;
 }

@@ -1,5 +1,6 @@
 package com.example.api.user.dto.response.dashboard;
 
+import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
 import lombok.AllArgsConstructor;
@@ -20,4 +21,5 @@ public class DashboardResponse {
     private HeroStatsDTO heroStatsDTO;
     private SubmitStats submitStats;
     private AuctionStats auctionStats;
+    private String email;
 }
