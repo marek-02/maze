@@ -1,5 +1,6 @@
 import { ErrorMessage, Field } from 'formik'
 import { Col } from 'react-bootstrap'
+import { FIRST_COLLOQUIUM, HANDS_ON_COLLOQUIUM, ORAL_COLLOQUIUM, SECOND_COLLOQUIUM } from '../../../utils/constants'
 
 export function FormCol(name, type, colName, size = 12, additionalOptions) {
   return (
@@ -37,10 +38,10 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
       ): type === 'dropdown' && colName === 'activityType' ? (
         <Field className="form-control" name={colName} as="select">
           <option value=""></option>
-          <option value="first_colloquium">Gon Listopadowy</option>
-          <option value="second_colloquium">Wielki Mróz</option>
-          <option value="hands-on-colloquium">Kolokwium praktyczne</option>
-          <option value="oral-colloquium">Kolokwium ustne - teoria</option>
+          <option value="first_colloquium">{FIRST_COLLOQUIUM}</option>
+          <option value="second_colloquium">{SECOND_COLLOQUIUM}</option>
+          <option value="hands-on-colloquium">{HANDS_ON_COLLOQUIUM}</option>
+          <option value="oral-colloquium">{ORAL_COLLOQUIUM}</option>
           <option value="laboratory_points">Spacer</option>
           <option value="additional-points">Dodatkowe punkty</option>
         </Field>

@@ -1,15 +1,15 @@
 import React, { useState,useEffect } from 'react'
 import { Button, Row,Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
-import { TeacherRoutes } from '../../../routes/PageRoutes'
-import { isMobileView } from '../../../utils/mobileHelper'
-import { Content } from '../../App/AppGeneralStyles'
-import GoBackButton from '../../general/GoBackButton/GoBackButton'
-import GroupAdditionModal from '../GroupAdditionPage/GroupAdditionModal'
-import { useAppSelector } from '../../../hooks/hooks'
-import GroupService from '../../../services/group.service'
+import { TeacherRoutes } from '../../../../routes/PageRoutes'
+import { isMobileView } from '../../../../utils/mobileHelper'
+import { Content } from '../../../App/AppGeneralStyles'
+import GoBackButton from '../../../general/GoBackButton/GoBackButton'
+import GroupAdditionModal from '../../GroupAdditionPage/GroupAdditionModal'
+import { useAppSelector } from '../../../../hooks/hooks'
+import GroupService from '../../../../services/group.service'
 import {TableContainer,Title} from './SubgroupStyles'
-import StudentService from '../../../services/student.service'
+import StudentService from '../../../../services/student.service'
 
 
 function Subgroups(props) {

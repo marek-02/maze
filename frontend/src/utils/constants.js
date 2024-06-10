@@ -82,6 +82,11 @@ export const Activity = {
   ADDITIONAL: 'ADDITIONAL'
 }
 
+export const FIRST_COLLOQUIUM = "Gon Listopadowy"
+export const SECOND_COLLOQUIUM = "Wielki Mróz"
+export const HANDS_ON_COLLOQUIUM = "Kolokwium praktyczne"
+export const ORAL_COLLOQUIUM = "Kolokwium ustne - teoria"
+
 export const QuestionType = {
   SINGLE_CHOICE: 'SINGLE_CHOICE',
   MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
