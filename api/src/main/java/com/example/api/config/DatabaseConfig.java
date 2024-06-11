@@ -11,6 +11,8 @@ import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.task.graphtask.GraphTaskService;
 import com.example.api.chapter.requirement.model.*;
+import com.example.api.colloquium.ColloquiumDetails;
+import com.example.api.colloquium.ColloquiumDetailsRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberRepository;
@@ -90,6 +92,7 @@ public class DatabaseConfig {
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
+    private final ColloquiumDetailsRepository colloquiumDetailsRepository;
     private final CourseTypeRepository courseTypeRepository;
     private final CourseMemberRepository courseMemberRepository;
     private final long week = TimeUnit.DAYS.toMillis(7);
@@ -729,17 +732,11 @@ public class DatabaseConfig {
             addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPoints());
             additionalPointsRepository.save(additionalPoints);
 
-//            ColloquiumPoints colloquiumPoints = new ColloquiumPoints();
-//            colloquiumPoints.setId(1L);
-//            CourseMember colloquiumPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
-//            colloquiumPoints.setMember(colloquiumPointsMember);
-//            colloquiumPoints.setPoints(72D);
-//            colloquiumPoints.setSendDateMillis(calendar.getTimeInMillis());
-//            colloquiumPoints.setProfessorEmail(professor1.getEmail());
-//            colloquiumPoints.setDescription("Good job");
-//            colloquiumPoints.setColloquiumNumber(1);
-//            addReceivedPointsForUser(colloquiumPointsMember, colloquiumPoints.getPoints());
-//            colloquiumPointsRepository.save(colloquiumPoints);
+
+            colloquiumDetailsRepository.save(new ColloquiumDetails(1, "FIRST_COLLOQUIUM",4, new int[] {4, 5, 6, 5, 6, 7, 8, 9, 7, 8, 9, 5}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(2, "SECOND_COLLOQUIUM",4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(3, "HANDS_ON_COLLOQUIUM",0, new int[] {10,12,14}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(4, "ORAL_COLLOQUIUM",1, new int[] {12,12}));
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
