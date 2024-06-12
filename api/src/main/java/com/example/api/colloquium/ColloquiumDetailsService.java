@@ -1,7 +1,10 @@
 package com.example.api.colloquium;
 
+import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.security.LoggedInUserService;
+import com.example.api.user.model.User;
+import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ColloquiumDetailsService {
     private final ColloquiumDetailsRepository colloquiumDetailsRepository;
+    private final LoggedInUserService authService;
+    private final UserValidator userValidator;
 
     public List<ColloquiumDetails> getAllDetails() {
         return colloquiumDetailsRepository.findAll();
@@ -22,5 +27,12 @@ public class ColloquiumDetailsService {
 
     public ColloquiumDetails getDetailsByName(String name){
         return colloquiumDetailsRepository.findByName(name);
+    }
+
+    public void editDetails(EditColloquiumDetailsForm form) throws WrongUserTypeException {
+        User professor = authService.getCurrentUser();
+        userValidator.validateProfessorAccount(professor);
+
+        //todo
     }
 }

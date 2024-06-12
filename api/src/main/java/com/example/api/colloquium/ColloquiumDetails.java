@@ -25,7 +25,7 @@ public class ColloquiumDetails {
     @Id
     private int id;
     private String name;
-    private Integer annihilationLimit;
+    private int annihilationLimit;
 
     @Column(
             name = "question_points",

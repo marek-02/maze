@@ -129,9 +129,11 @@ export const GET_FEEDBACK_PROFESSOR_GET_BY_FILE_TASK_RESULT_ID = `${POST_FEEDBAC
 export const GET_ADDITIONAL_POINTS = `${BASE_URL}/additional/points`
 export const POST_ADDITIONAL_POINTS = `${GET_ADDITIONAL_POINTS}/add`
 
-// Colloquium Points Controller
+// Colloquium Controller
 export const GET_COLLOQUIUM_POINTS = `${BASE_URL}/colloquium/points`
 export const POST_COLLOQUIUM_POINTS = `${GET_COLLOQUIUM_POINTS}/add`
+export const GET_COLLOQUIUM_DETAILS = `${BASE_URL}/colloquium/details`
+export const PUT_COLLOQUIUM_POINTS = `${GET_COLLOQUIUM_DETAILS}`
 
 // Laboratory Points Controller
 export const GET_LABORATORY_POINTS = `${BASE_URL}/lab/points`

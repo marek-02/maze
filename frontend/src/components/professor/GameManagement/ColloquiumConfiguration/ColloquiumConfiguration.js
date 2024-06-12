@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
 import { FIRST_COLLOQUIUM, HANDS_ON_COLLOQUIUM, ORAL_COLLOQUIUM, SECOND_COLLOQUIUM } from '../../../../utils/constants'
 import ColloquiumTable from './ColloquiumTable'
+import ConfigService from '../../../../services/config.service'
 import { connect } from 'react-redux'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
+
 
 function ColloquiumConfiguration(props) {
+
   const tests = [
-    { name: FIRST_COLLOQUIUM },
-    { name: SECOND_COLLOQUIUM },
-    { name: HANDS_ON_COLLOQUIUM },
-    { name: ORAL_COLLOQUIUM },
+    { name: "FIRST_COLLOQUIUM" },
+    { name: "SECOND_COLLOQUIUM" },
+    { name: "HANDS_ON_COLLOQUIUM" },
+    { name: "ORAL_COLLOQUIUM" },
   ];
 
   const [selectedTest, setSelectedTest] = useState(tests[0]);
   const [questions, setQuestions] = useState([]);
+  const [annihilatedLimit, setAnnihilatedLimit] = useState(0);
+  const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
+  const [finishModalDescription, setFinishModalDescription] = useState(undefined)
+
+
 
   const handleConfigure = () => {
-    // Handle configuration logic here
+    console.log(questions)
+    ConfigService.editColloquiumDetails(selectedTest.name, annihilatedLimit, [1,2,3]).then(() => {
+      setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
+    })
+      .catch((error) => {
+        setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
+      })
   };
   
   const addQuestion = () => {
@@ -43,6 +58,18 @@ function ColloquiumConfiguration(props) {
       </div>
 
       <button onClick={handleConfigure}>Zapisz</button>
+
+      <Modal show={isFinishModalOpen} onHide={() => setFinishModalDescription(false)}>
+        <ModalHeader>
+          <h4 className="text-center">Zakończono proces.</h4>
+        </ModalHeader>
+        <ModalBody>
+          <p>{finishModalDescription}</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={() => setIsFinishModalOpen(false)}>Zakończ</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 
