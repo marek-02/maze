@@ -25,9 +25,10 @@ class ConfigService {
     })
   }
 
-  editColloquiumDetails(colloquiumName: string, annihilatedLimit: number, questionPoints: number[]) {
+  editColloquiumDetails(colloquiumName: string, maxPoints:number, annihilationLimit: number, questionPoints: number[]) {
     return axiosApiPut(`${PUT_COLLOQUIUM_POINTS}/${colloquiumName}`, {
-      annihilatedLimit,
+      maxPoints,
+      annihilationLimit,
       questionPoints
     }).catch((error) => {
       throw error

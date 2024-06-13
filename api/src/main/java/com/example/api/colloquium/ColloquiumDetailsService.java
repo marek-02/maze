@@ -29,10 +29,15 @@ public class ColloquiumDetailsService {
         return colloquiumDetailsRepository.findByName(name);
     }
 
-    public void editDetails(EditColloquiumDetailsForm form) throws WrongUserTypeException {
+    public void editDetails(String name, EditColloquiumDetailsForm form) throws WrongUserTypeException {
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
-        //todo
+        ColloquiumDetails details = colloquiumDetailsRepository.findByName(name);
+        details.setMaxPoints(form.getMaxPoints());
+        details.setAnnihilationLimit(form.getAnnihilationLimit());
+        details.setQuestionPoints(form.getQuestionPoints());
+
+        colloquiumDetailsRepository.save(details);
     }
 }

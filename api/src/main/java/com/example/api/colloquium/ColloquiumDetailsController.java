@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +20,11 @@ public class ColloquiumDetailsController {
 
     @GetMapping
     public ResponseEntity<List<ColloquiumDetails>> getAllDetails() {
-        return ResponseEntity.ok().body(colloquiumDetailsService.getAllDetails());
+        List<ColloquiumDetails> sortedDetails = colloquiumDetailsService.getAllDetails()
+                .stream()
+                .sorted(Comparator.comparing(ColloquiumDetails::getId))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(sortedDetails);
     }
 
     @GetMapping("/{id}")
@@ -33,7 +39,7 @@ public class ColloquiumDetailsController {
 
     @PutMapping("/{name}")
     public ResponseEntity<?> editDetails(@PathVariable String name, @RequestBody EditColloquiumDetailsForm form) throws WrongUserTypeException {
-        colloquiumDetailsService.editDetails(form);
+        colloquiumDetailsService.editDetails(name,form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -4,9 +4,12 @@ import { connect } from 'react-redux'
 import { TableContainer, TableRow } from '../../../general/Ranking/RankingStyle'
 
 function ColloquiumTable({ questions, setQuestions, theme }) {
+
+
   const handleMaxPointsChange = (index, event) => {
     const newQuestions = [...questions];
-    newQuestions[index].maxPoints = event.target.value;
+    const newValue = parseInt(event.target.value);
+    newQuestions[index] = isNaN(newValue) ? 0 : newValue;
     setQuestions(newQuestions);
   };
 
@@ -27,17 +30,17 @@ function ColloquiumTable({ questions, setQuestions, theme }) {
       </tr>
       </thead>
       <tbody>
-      {questions.map((question, index) => (
+      {questions.map((points, index) => (
         <TableRow
           key={index + Date.now()}
           $backgroundColor={theme.secondary}
           $hoverColor={theme.primary}
         >
-          <td>{question.number}</td>
+          <td>{index}</td>
           <td>
             <input
               type="number"
-              value={question.maxPoints}
+              value={points}
               onChange={(event) => handleMaxPointsChange(index, event)}
             />
           </td>

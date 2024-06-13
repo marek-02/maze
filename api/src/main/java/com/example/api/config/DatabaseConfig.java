@@ -733,10 +733,10 @@ public class DatabaseConfig {
             additionalPointsRepository.save(additionalPoints);
 
 
-            colloquiumDetailsRepository.save(new ColloquiumDetails(1, "FIRST_COLLOQUIUM",4, new int[] {4, 5, 6, 5, 6, 7, 8, 9, 7, 8, 9, 5}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(2, "SECOND_COLLOQUIUM",4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(3, "HANDS_ON_COLLOQUIUM",0, new int[] {10,12,14}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(4, "ORAL_COLLOQUIUM",1, new int[] {12,12}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(1, "Gon Listopadowy",72,4, new int[] {4, 5, 6, 5, 6, 5, 8, 4, 7, 8, 9, 5}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(2, "Wielki Mróz",72,4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9,2}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(3, "Kolokwium praktyczne",56,0, new int[] {24,20,12}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(4, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
 
             SurveyResult surveyResult1 = new SurveyResult();
             surveyResult1.setSurvey(survey);
