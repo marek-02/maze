@@ -8,12 +8,15 @@ import ProfessorService from '../../../services/professor.service'
 import { FIELD_REQUIRED, NUMBER_FROM_RANGE } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
 import { useAppSelector } from '../../../hooks/hooks'
+import { GridCol } from '../../general/LoginAndRegistrationPage/GridCol'
 
 
 function AssignPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
+  const [annihilatedQuestions,setAnnihilatedQuestions] = useState(0)
+  const [annihilatedPoints,setAnnihilatedPoints] = useState(0)
 
   function parseFloatWithPrecision(value) {
     const parsedValue = parseFloat(value);
@@ -22,6 +25,11 @@ function AssignPointsModal(props) {
     }
     return parsedValue.toFixed(2);
   }
+
+  const handleGridColUpdate = (annihilatedQuestions, annihilatedPoints) => {
+    setAnnihilatedPoints(annihilatedPoints)
+    setAnnihilatedQuestions(annihilatedQuestions)
+  };
 
   return (
     <>
@@ -36,8 +44,6 @@ function AssignPointsModal(props) {
               points: '',
               activityType: '',
               role: '',
-              annihilatedQuestions: '',
-              annihilatedPoints: ''
             }}
             validate={(values) => {
               const errors = {}
@@ -48,27 +54,37 @@ function AssignPointsModal(props) {
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-                ProfessorService.sendPoints(
-                  props?.studentId,
-                  courseId,
-                  parseFloatWithPrecision(values.points),
-                  values.reason,
-                  values.activityType,
-                  values.role,
-                  values.annihilatedQuestions,
-                  values.annihilatedPoints,
-                  Date.now())
-                  .then(() => {
-                    setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
-                  })
-                  .catch((error) => {
-                    setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
-                  })
-                props.setModalOpen(false)
-                setIsFinishModalOpen(true)
-                setSubmitting(false)
+              const { activityType, points, reason, role } = values;
+              const studentId = props?.studentId;
+              const parsedPoints = parseFloatWithPrecision(points);
+              const timestamp = Date.now();
+            
+              let serviceMethod;
+              let methodArgs = [studentId, courseId, parsedPoints, reason, timestamp];
+
+              if (activityType.includes('colloquium')) {
+                const colloquiumId = activityType.charAt(activityType.length - 1);
+                serviceMethod = ProfessorService.sendColloquiumPoints;
+                methodArgs.splice(4, 0, parseInt(colloquiumId), 0, 0);
+              } else if (activityType === 'laboratory_points') {
+                serviceMethod = ProfessorService.sendLaboratoryPoints;
+                methodArgs.splice(4, 0, role);
+              } else {
+                serviceMethod = ProfessorService.sendBonusPoints;
               }
-            }
+            
+              serviceMethod(...methodArgs)
+                .then(() => {
+                  setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
+                })
+                .catch((error) => {
+                  setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
+                });
+            
+              props.setModalOpen(false);
+              setIsFinishModalOpen(true);
+              setSubmitting(false);
+            }}
           >
             {({ isSubmitting, handleSubmit,values }) => (
               <Form onSubmit={handleSubmit}>
@@ -77,10 +93,9 @@ function AssignPointsModal(props) {
                     {FormCol('Informacja zwrotna (opcjonalnie)', 'textarea', 'reason', 12, {
                       errorColor: props.theme.danger
                     })}
-                    {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
+                    {!values.activityType.includes('colloquium') && FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
                     {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') && FormCol('Anihilowane pytania', 'dropdown', 'annihilatedQuestions', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') &&  FormCol('Anihilowane punkty', 'number', 'annihilatedPoints', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && <GridCol name={"Ocenianie kolokwium"} colName={'annihilatedPoints'} onUpdate={handleGridColUpdate}/>}
                     {values.activityType === 'laboratory_points' && FormCol('Rola', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>

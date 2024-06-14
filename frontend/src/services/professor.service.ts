@@ -67,27 +67,6 @@ class ProfessorService {
   }
 
 
-
-  sendPoints(studentId: number,courseId: number, points: number, description: string, activityType: string,role:string,annihilatedPoints:number, annihilatedQuestions:number,dateInMillis: number) {
-      switch (activityType) {
-        case 'first_colloquium':
-          return this.sendColloquiumPoints(studentId, courseId, points, description, 1 ,annihilatedPoints,annihilatedQuestions,dateInMillis);
-        case 'second_colloquium':
-          return this.sendColloquiumPoints(studentId, courseId, points, description, 2 ,annihilatedPoints,annihilatedQuestions,dateInMillis);
-        case 'hands-on-colloquium':
-          return this.sendColloquiumPoints(studentId, courseId, points, description, 3 ,0,0,dateInMillis);
-        case 'oral-colloquium':
-          return this.sendColloquiumPoints(studentId, courseId, points, description, 4 ,annihilatedPoints,annihilatedQuestions,dateInMillis);
-        case 'laboratory_points':
-          return this.sendLaboratoryPoints(studentId, courseId, points, description, role, dateInMillis);
-        case 'additional-points':
-          return this.sendBonusPoints(studentId, courseId, points, description, dateInMillis);
-        default:
-          throw new Error(`Invalid activity type: ${activityType}`);
-      }
-  }
-
-
   sendBonusPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number) {
     return axiosApiPost(POST_ADDITIONAL_POINTS, {
       studentId,
@@ -113,13 +92,13 @@ class ProfessorService {
     })
   }
 
-  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, colloquiumNumber: number,annihilatedQuestions:number, annihilatedPoints:number, dateInMillis: number) {
+  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, colloquiumId: number,annihilatedQuestions:number, annihilatedPoints:number, dateInMillis: number) {
     return axiosApiPost(POST_COLLOQUIUM_POINTS, {
       studentId,
       courseId,
       points,
       description,
-      colloquiumNumber,
+      colloquiumId,
       annihilatedQuestions,
       annihilatedPoints,
       dateInMillis

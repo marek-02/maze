@@ -19,20 +19,20 @@ import javax.persistence.Entity;
 public class AnnihilatedPoints extends ActivityResult {
     private String professorEmail;
     private String description;
-    private Long colloquiumNumber;
+    private Long colloquiumId;
 
     public AnnihilatedPoints(
             Double points,
             Long sendDateMillis,
             String professorEmail,
             String description,
-            Long colloquiumNumber,
+            Long colloquiumId,
             CourseMember courseMember)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         super(points, sendDateMillis, courseMember);
         this.professorEmail = professorEmail;
         this.description = description;
-        this.colloquiumNumber = colloquiumNumber;
+        this.colloquiumId = colloquiumId;
     }
 
     @Override
