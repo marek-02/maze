@@ -52,6 +52,7 @@ export const TeacherRoutes = {
     MAIN: '/game-management',
     GROUPS: '/game-management/groups',
     SUBGROUPS: '/game-management/subgroups',
+    COLLOQUIUM: '/game-management/colloquium',
     CHAPTER: {
       MAIN: '/game-management/chapter',
       REQUIREMENTS: '/game-management/chapter/:name/:id/requirements'

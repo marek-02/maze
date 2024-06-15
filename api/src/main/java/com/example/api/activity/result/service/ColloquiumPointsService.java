@@ -55,9 +55,6 @@ public class ColloquiumPointsService {
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
         Double points = form.getPoints();
-        System.out.println("ZXXXX");
-        System.out.println(form.getAnnihilatedPoints());
-        System.out.println(form.getAnnihilatedQuestions());
 
         if (form != null && form.getAnnihilatedPoints() != null) {
             if (form.getAnnihilatedPoints() > 0) {
@@ -69,7 +66,7 @@ public class ColloquiumPointsService {
                         form.getDateInMillis(),
                         professor.getEmail(),
                         "",
-                        form.getColloquiumNumber(),
+                        form.getColloquiumId(),
                         user.getCourseMember(course).orElseThrow());
                 if (form.getDescription() != null) {
                     annihilatedPoints.setDescription(form.getDescription());
@@ -84,7 +81,7 @@ public class ColloquiumPointsService {
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                form.getColloquiumNumber(),
+                form.getColloquiumId(),
                 user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             colloquiumPoints.setDescription(form.getDescription());

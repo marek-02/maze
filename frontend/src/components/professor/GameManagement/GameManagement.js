@@ -138,9 +138,9 @@ function GameManagement(props) {
         <Row className='py-2 text-center'>
           <Col md={4} className='py-2'>
             <ManagementCard
-              header='Grupy'
-              description='Sprawdź listę grup zajęciowych i ich kody dostępu.'
-              routePath={TeacherRoutes.GAME_MANAGEMENT.GROUPS}
+              header='Kolokwia'
+              description='Skonfiguruj kolokwia'
+              routePath={TeacherRoutes.GAME_MANAGEMENT.COLLOQUIUM}
             />
           </Col>
           <Col md={4} className='py-2'>
@@ -156,16 +156,7 @@ function GameManagement(props) {
                 description='Sprawdź lub przypisz studentow do zespolow wewnatrz grup.'
                 routePath={TeacherRoutes.GAME_MANAGEMENT.SUBGROUPS}
             />
-            {/* <ManagementCard */}
-            {/*  header={'Ustawienia gry'} */}
-            {/*  description={'Dopasuj temat fabuły i wygląd całej gry oraz całego systemu.'} */}
-            {/*  routePath={TeacherRoutes.GAME_MANAGEMENT.GAME_SETTINGS} */}
-            {/* /> */}
-            {/* <ManagementCard
-              header='Umiejętności postaci'
-              description='Zmiana ustawienia umiejętności postaci .'
-              callback={() => setIsSuperpowerModalVisible(true)}
-            /> */}
+
           </Col>
           <Col md={4} className='py-2'>
             <ManagementCard

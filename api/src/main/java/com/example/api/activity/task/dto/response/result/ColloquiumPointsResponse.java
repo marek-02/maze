@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ColloquiumPointsResponse {
-    //todo
     private Long dateMillis;
     private String professor;
     private Double points;

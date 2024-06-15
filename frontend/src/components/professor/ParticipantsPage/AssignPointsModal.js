@@ -8,12 +8,17 @@ import ProfessorService from '../../../services/professor.service'
 import { FIELD_REQUIRED, NUMBER_FROM_RANGE } from '../../../utils/constants'
 import { FormCol } from '../../general/LoginAndRegistrationPage/FormCol'
 import { useAppSelector } from '../../../hooks/hooks'
+import { GridCol } from '../../general/LoginAndRegistrationPage/GridCol'
 
 
 function AssignPointsModal(props) {
   const [isFinishModalOpen, setIsFinishModalOpen] = useState(false)
   const [finishModalDescription, setFinishModalDescription] = useState(undefined)
   const courseId = useAppSelector((state) => state.user.courseId)
+  const [annihilatedQuestions,setAnnihilatedQuestions] = useState(0)
+  const [annihilatedPoints,setAnnihilatedPoints] = useState(0)
+  const [colloquiumPoints,setColloquiumPoints] = useState(0)
+  const [colloquium,setColloquium] = useState(undefined)
 
   function parseFloatWithPrecision(value) {
     const parsedValue = parseFloat(value);
@@ -21,6 +26,26 @@ function AssignPointsModal(props) {
       return NaN;  // Handle non-numeric input
     }
     return parsedValue.toFixed(2);
+  }
+
+  const handleGridColUpdate = (annihilatedQuestions, annihilatedPoints, colloquiumPoints, colloquium) => {
+    setAnnihilatedPoints(annihilatedPoints)
+    setAnnihilatedQuestions(annihilatedQuestions)
+    setColloquiumPoints(colloquiumPoints)
+    setColloquium(colloquium)
+  };
+
+  const validateForm = () => {
+    if(annihilatedQuestions > colloquium.annihilationLimit){
+      setFinishModalDescription('Przekroczono limit anihilowanych pytań')
+      return false;
+    }
+    if(colloquiumPoints>colloquium.maxPoints){
+      setFinishModalDescription('Ilość przyznanych punktów przekracza liczbę dozwolonych punktów')
+      return false;
+    }
+
+    return true
   }
 
   return (
@@ -33,42 +58,51 @@ function AssignPointsModal(props) {
           <Formik
             initialValues={{
               reason: 'Praca na zajęciach',
-              points: '',
+              points: 0,
               activityType: '',
               role: '',
-              annihilatedQuestions: '',
-              annihilatedPoints: ''
             }}
             validate={(values) => {
               const errors = {}
-              if (!values.points) errors.points = FIELD_REQUIRED
-              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 100)
+              if (values.points < 0) errors.points = NUMBER_FROM_RANGE(0, 100)
               if (!values.activityType) errors.activityType = FIELD_REQUIRED
               if (values.annihilatedPoints === 0) errors.points = NUMBER_FROM_RANGE(1, 72)
+              if (values.activityType ==='laboratory_points' && !values.role) errors.role = FIELD_REQUIRED
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
-                ProfessorService.sendPoints(
-                  props?.studentId,
-                  courseId,
-                  parseFloatWithPrecision(values.points),
-                  values.reason,
-                  values.activityType,
-                  values.role,
-                  values.annihilatedQuestions,
-                  values.annihilatedPoints,
-                  Date.now())
+              const { activityType, points, reason, role } = values;
+              const studentId = props?.studentId;
+              const parsedPoints = parseFloatWithPrecision(points);
+              const timestamp = Date.now();
+            
+              let serviceMethod;
+              let methodArgs = [studentId, courseId, parsedPoints, reason, timestamp];
+
+              if (activityType.includes('colloquium')) {
+                methodArgs = [studentId, courseId, colloquiumPoints, reason, timestamp, parseInt(colloquium.id), annihilatedQuestions, annihilatedPoints];
+                serviceMethod = ProfessorService.sendColloquiumPoints;
+              } else if (activityType === 'laboratory_points') {
+                serviceMethod = ProfessorService.sendLaboratoryPoints;
+                methodArgs.splice(studentId, courseId, parsedPoints, reason, timestamp, role);
+              } else {
+                serviceMethod = ProfessorService.sendBonusPoints;
+              }
+
+              if(validateForm()) {
+                serviceMethod(...methodArgs)
                   .then(() => {
                     setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
                   })
                   .catch((error) => {
                     setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
-                  })
-                props.setModalOpen(false)
-                setIsFinishModalOpen(true)
-                setSubmitting(false)
+                  });
               }
-            }
+            
+              props.setModalOpen(false);
+              setIsFinishModalOpen(true);
+              setSubmitting(false);
+            }}
           >
             {({ isSubmitting, handleSubmit,values }) => (
               <Form onSubmit={handleSubmit}>
@@ -77,10 +111,9 @@ function AssignPointsModal(props) {
                     {FormCol('Informacja zwrotna (opcjonalnie)', 'textarea', 'reason', 12, {
                       errorColor: props.theme.danger
                     })}
-                    {FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
+                    {!values.activityType.includes('colloquium') && FormCol('Punkty', 'number', 'points', 12, { errorColor: props.theme.danger })}
                     {FormCol('Typ aktywności', 'dropdown', 'activityType', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') && FormCol('Anihilowane pytania', 'dropdown', 'annihilatedQuestions', 12, { errorColor: props.theme.danger })}
-                    {values.activityType.includes('colloquium') && !values.activityType.includes('hands-on') &&  FormCol('Anihilowane punkty', 'number', 'annihilatedPoints', 12, { errorColor: props.theme.danger })}
+                    {values.activityType.includes('colloquium') && <GridCol name={"Ocenianie kolokwium"} colName={'annihilatedPoints'} onUpdate={handleGridColUpdate}/>}
                     {values.activityType === 'laboratory_points' && FormCol('Rola', 'dropdown', 'role', 12, { errorColor: props.theme.danger })}
                   </Row>
                   <Row className='mt-4 d-flex justify-content-center'>
