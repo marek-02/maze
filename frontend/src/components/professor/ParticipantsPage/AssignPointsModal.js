@@ -17,6 +17,8 @@ function AssignPointsModal(props) {
   const courseId = useAppSelector((state) => state.user.courseId)
   const [annihilatedQuestions,setAnnihilatedQuestions] = useState(0)
   const [annihilatedPoints,setAnnihilatedPoints] = useState(0)
+  const [colloquiumPoints,setColloquiumPoints] = useState(0)
+  const [colloquium,setColloquium] = useState(undefined)
 
   function parseFloatWithPrecision(value) {
     const parsedValue = parseFloat(value);
@@ -26,10 +28,25 @@ function AssignPointsModal(props) {
     return parsedValue.toFixed(2);
   }
 
-  const handleGridColUpdate = (annihilatedQuestions, annihilatedPoints) => {
+  const handleGridColUpdate = (annihilatedQuestions, annihilatedPoints, colloquiumPoints, colloquium) => {
     setAnnihilatedPoints(annihilatedPoints)
     setAnnihilatedQuestions(annihilatedQuestions)
+    setColloquiumPoints(colloquiumPoints)
+    setColloquium(colloquium)
   };
+
+  const validateForm = () => {
+    if(annihilatedQuestions > colloquium.annihilationLimit){
+      setFinishModalDescription('Przekroczono limit anihilowanych pytań')
+      return false;
+    }
+    if(colloquiumPoints>colloquium.maxPoints){
+      setFinishModalDescription('Ilość przyznanych punktów przekracza liczbę dozwolonych punktów')
+      return false;
+    }
+
+    return true
+  }
 
   return (
     <>
@@ -41,16 +58,16 @@ function AssignPointsModal(props) {
           <Formik
             initialValues={{
               reason: 'Praca na zajęciach',
-              points: '',
+              points: 0,
               activityType: '',
               role: '',
             }}
             validate={(values) => {
               const errors = {}
-              if (!values.points) errors.points = FIELD_REQUIRED
-              if (values.points === 0) errors.points = NUMBER_FROM_RANGE(1, 100)
+              if (values.points < 0) errors.points = NUMBER_FROM_RANGE(0, 100)
               if (!values.activityType) errors.activityType = FIELD_REQUIRED
               if (values.annihilatedPoints === 0) errors.points = NUMBER_FROM_RANGE(1, 72)
+              if (values.activityType ==='laboratory_points' && !values.role) errors.role = FIELD_REQUIRED
               return errors
             }}
             onSubmit={(values, { setSubmitting }) => {
@@ -63,23 +80,24 @@ function AssignPointsModal(props) {
               let methodArgs = [studentId, courseId, parsedPoints, reason, timestamp];
 
               if (activityType.includes('colloquium')) {
-                const colloquiumId = activityType.charAt(activityType.length - 1);
+                methodArgs = [studentId, courseId, colloquiumPoints, reason, timestamp, parseInt(colloquium.id), annihilatedQuestions, annihilatedPoints];
                 serviceMethod = ProfessorService.sendColloquiumPoints;
-                methodArgs.splice(4, 0, parseInt(colloquiumId), 0, 0);
               } else if (activityType === 'laboratory_points') {
                 serviceMethod = ProfessorService.sendLaboratoryPoints;
-                methodArgs.splice(4, 0, role);
+                methodArgs.splice(studentId, courseId, parsedPoints, reason, timestamp, role);
               } else {
                 serviceMethod = ProfessorService.sendBonusPoints;
               }
-            
-              serviceMethod(...methodArgs)
-                .then(() => {
-                  setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
-                })
-                .catch((error) => {
-                  setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
-                });
+
+              if(validateForm()) {
+                serviceMethod(...methodArgs)
+                  .then(() => {
+                    setFinishModalDescription('Proces przyznawania punktów zakończył się pomyślnie.')
+                  })
+                  .catch((error) => {
+                    setFinishModalDescription(`Napotkano pewne problemy. Punkty nie zostały przyznane. <br/> ${error}`)
+                  });
+              }
             
               props.setModalOpen(false);
               setIsFinishModalOpen(true);

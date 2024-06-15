@@ -79,7 +79,7 @@ class ProfessorService {
     })
   }
 
-  sendLaboratoryPoints(studentId: number,courseId: number, points: number, description: string, role:string, dateInMillis: number) {
+  sendLaboratoryPoints(studentId: number,courseId: number, points: number, description: string,dateInMillis: number, role:string) {
     return axiosApiPost(POST_LABORATORY_POINTS, {
       studentId,
       courseId,
@@ -92,7 +92,7 @@ class ProfessorService {
     })
   }
 
-  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, colloquiumId: number,annihilatedQuestions:number, annihilatedPoints:number, dateInMillis: number) {
+  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number, colloquiumId: number,annihilatedQuestions:number, annihilatedPoints:number) {
     return axiosApiPost(POST_COLLOQUIUM_POINTS, {
       studentId,
       courseId,
