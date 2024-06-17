@@ -711,7 +711,7 @@ public class DatabaseConfig {
             fileTaskResultService.saveFileTaskResult(fileResult);
 
             Chapter chapter = new Chapter();
-            chapter.setName("Rozdział 1");
+            chapter.setName("Lab4 - STP");
             chapter.setPosX(2);
             chapter.setPosY(2);
             chapter.setActivityMap(activityMap1);

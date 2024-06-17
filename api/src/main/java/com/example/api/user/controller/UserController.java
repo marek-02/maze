@@ -100,10 +100,13 @@ public class UserController {
     @PostMapping("/user/subgroup/set")
     public ResponseEntity<Long> setUserSubgroup(@RequestParam Long userId, @RequestParam Long newSubgroupId, @RequestParam Long courseId)
             throws WrongUserTypeException, EntityNotFoundException {
-        //return ResponseEntity.ok().body(2L);
         return ResponseEntity.ok().body(userService.updateStudentSubGroup(userId,newSubgroupId,courseId));
     }
-
+    @PostMapping("/user/role/set")
+    public ResponseEntity<String> setUserRole(@RequestParam Long userId, @RequestParam String newRoleId, @RequestParam Long courseId)
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.updateStudentRole(userId,newRoleId,courseId));
+    }
     @PostMapping("/user/group/join")
     public ResponseEntity<?> joinGroup(@RequestBody JoinGroupDTO dto)
             throws WrongUserTypeException, EntityNotFoundException {

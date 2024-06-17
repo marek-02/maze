@@ -8,6 +8,7 @@ import {
   DELETE_USER_STUDENT,
   GET_ALL_MEMBERS,
   POST_USER_SUBGROUP,
+  POST_USER_ROLE,
 
 } from './urls'
 import { axiosApiDelete, axiosApiGet, axiosApiPost } from '../utils/axios'
@@ -64,6 +65,12 @@ class StudentService {
 
   changeStudentSubgroup(userId: number, newSubgroupId :number, courseId : number){
     return axiosApiPost(`${POST_USER_SUBGROUP}?userId=${userId}&newSubgroupId=${newSubgroupId}&courseId=${courseId}`)   
+    .catch((error) => {
+      throw error
+    })
+  }
+  changeStudentRole(userId: number, newRoleId :string, courseId : number){
+    return axiosApiPost(`${POST_USER_ROLE}?userId=${userId}&newRoleId=${newRoleId}&courseId=${courseId}`)   
     .catch((error) => {
       throw error
     })

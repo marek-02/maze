@@ -40,6 +40,10 @@ import warrior6 from './resources/warrior/5.png'
 import warrior7 from './resources/warrior/6.png'
 import warrior8 from './resources/warrior/7.png'
 import warrior10 from './resources/warrior/9.png'
+import scribeImg from './resources/roles/scribe.png'
+import economistImg from './resources/roles/economist.png'
+import soakImg from './resources/roles/soak.png'
+import cablemasterImg from './resources/roles/cablemaster.png'
 import { HeroType, PlayerType } from './userRole'
 import { GeneralRoutes, StudentRoutes } from '../routes/PageRoutes'
 
@@ -72,6 +76,12 @@ export const base64Header = 'data:image/jpeg;base64,'
 export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
 export const BidImg = bidImg
 export const CoinImg = coinImg
+
+export const SoakImg = soakImg
+export const CableMasterImg = cablemasterImg
+export const EconomistImg = economistImg
+export const ScribeImg = scribeImg
+
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
   INFO: 'INFO',

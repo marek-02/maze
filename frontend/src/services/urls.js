@@ -17,6 +17,7 @@ export const PUT_PASSWORD_EDITION = `${BASE_URL}/password-edition`
 export const POST_USER_INDEX = `${BASE_URL}/user/index/set`
 export const POST_USER_GROUP = `${BASE_URL}/user/group/set`
 export const POST_USER_SUBGROUP = `${BASE_URL}/user/subgroup/set`
+export const POST_USER_ROLE = `${BASE_URL}/user/role/set`
 export const POST_REGISTER = `${BASE_URL}/register`
 export const GET_USER_GROUP = `${BASE_URL}/user/group`
 export const GET_USER_CURRENT = `${BASE_URL}/user/current`

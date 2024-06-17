@@ -4,7 +4,6 @@ import com.example.api.course.coursemember.CourseMember;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 @Data
 @AllArgsConstructor
 public class BasicStudent {
@@ -13,6 +12,7 @@ public class BasicStudent {
     @Schema(required = true) private String lastName;
     @Schema(required = true) private String groupName;
     @Schema(required = true) private Long subgroup;
+    @Schema(required = true) private String role;
 
     public BasicStudent(CourseMember courseMember) {
         this.id = courseMember.getUser().getId();
@@ -20,5 +20,6 @@ public class BasicStudent {
         this.lastName = courseMember.getUser().getLastName();
         this.groupName = courseMember.getGroup().getName();
         this.subgroup = courseMember.getSubgroup();
+        this.role = courseMember.getRole();
     }
 }

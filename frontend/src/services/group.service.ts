@@ -51,6 +51,14 @@ class GroupService {
       throw error
     })
   }
+  changeStudentRole(studentId: number, newRoleId: string) {
+    return axiosApiPost(POST_USER_GROUP, {
+      studentId,
+      newRoleId
+    }).catch((error) => {
+      throw error
+    })
+  }
 
   
 }

@@ -7,7 +7,7 @@ import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import com.example.api.course.coursemember.SubgroupRole;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -44,6 +44,14 @@ public class CourseMemberService {
         //groupService.addUser(member, group);
         //member.setGroup(group);
         member.setSubgroup(subgroup);
+        repository.save(member);
+    }
+
+    public void updateRole(CourseMember member, String role){
+        log.info("Changing role for user {} from {} to {}", member.getUser(), member.getRole(), role);
+
+        groupService.removeUser(member, member.getGroup());
+        member.setRole(role);
         repository.save(member);
     }
 

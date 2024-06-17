@@ -10,6 +10,7 @@ import { useAppSelector } from '../../../../hooks/hooks'
 import GroupService from '../../../../services/group.service'
 import {TableContainer,Title} from './SubgroupStyles'
 import StudentService from '../../../../services/student.service'
+import {ScribeImg,SoakImg,EconomistImg,CableMasterImg} from '../../../../utils/constants'
 
 
 function Subgroups(props) {
@@ -23,7 +24,7 @@ function Subgroups(props) {
   const [allGroupIds, setAllGroupIds] = useState([]) //pary (idGrupy,nazwaGrupy)
   const [selectedGroupId, setSelectedGroupId] = useState(-1)
   const [studentsInSubgroups,setStudentsInSubgroups] = useState([]) 
-  let [addGroupEffectInvoker,setAddGroupEffectInvoker] = useState(0)
+  const [addGroupEffectInvoker,setAddGroupEffectInvoker] = useState(0)
 
   const addSubgroup = () => {
     setAddGroupEffectInvoker(addGroupEffectInvoker+1);
@@ -75,13 +76,12 @@ function Subgroups(props) {
         for(let i = 0;i<=maxSubgroup; i++) studentsInSubgroups_local.push([]);
         
         for(let student of studentsOfGroupArr){
-          let entry = {id:student.id,firstName: student.firstName, lastName: student.lastName, subgroup:student.subgroup==null?0:student.subgroup}
+          let entry = {id:student.id,firstName: student.firstName, lastName: student.lastName,
+             subgroup:student.subgroup==null?0:student.subgroup, role:student.role}
           if(student.subgroup == null) studentsInSubgroups_local[0].push(entry)
           else studentsInSubgroups_local[student.subgroup].push(entry)
         }
 
-        console.log("StudentsinSubgroups")
-        console.log(studentsInSubgroups_local)
         setStudentsInSubgroups(studentsInSubgroups_local)
       })
       .catch(() => {
@@ -92,9 +92,16 @@ function Subgroups(props) {
   function handleOnDrag(event, student){
     event.dataTransfer.setData("student",JSON.stringify(student) )
   }
+  function handleOnDragImg(event,roleKey){
+    event.dataTransfer.setData("role",roleKey);
+  }
 
   function handleOnDrop(event,subgroupId){
     let tmp = []
+    if(event.dataTransfer.getData("student")===""){ //img was dragged instead of student, the other fired event will handle it
+      return;
+    }
+
     const student = JSON.parse(event.dataTransfer.getData("student"))
 
     for(let i =0; i<studentsInSubgroups.length;i++){
@@ -111,9 +118,43 @@ function Subgroups(props) {
     setStudentsInSubgroups(tmp)
   }
 
+  function handleOnDropImg(event,indices){
+    let role = event.dataTransfer.getData("role")
+    if(role===""){ //student was dropped instead of img, we call the other onDrop func
+      return;
+    }
+
+    const [subgroupIdx,studentIdx] = indices.split(" ");
+    const student = studentsInSubgroups[subgroupIdx][studentIdx];    
+    student.role = role
+
+    let tmp = []
+    for(let i =0; i<studentsInSubgroups.length;i++){
+      let arr = studentsInSubgroups[i].slice()
+      if(i == subgroupIdx){
+        student.subgroup = subgroupIdx    
+      } 
+      tmp.push(arr)
+    }
+
+    StudentService.changeStudentRole(student.id,role,courseId);
+    setStudentsInSubgroups(tmp)
+  }
+
   function handleDragOver(event){
     event.preventDefault()
   }
+
+  function getClassImgSrcById(id){
+    switch(id){
+      case "S": return ScribeImg
+      case "E": return EconomistImg
+      case "O": return SoakImg
+      case "K": return CableMasterImg
+      case "": return null;
+    }
+  }
+    
 
   return (
     <>
@@ -149,17 +190,22 @@ function Subgroups(props) {
                       <thead onDrop = {(e) => {handleOnDrop(e,subgroupIndex)}} onDragOver = {handleDragOver}>
                         <tr>
                           <th className="text-center">{subgroupIndex}</th>
+                          <th>Role</th>
                         </tr>
                       </thead>
+                      
                       <tbody className="mh-100" onDrop = {(e) => {handleOnDrop(e,subgroupIndex)}} onDragOver = {handleDragOver}>
                         {
                           subgroup.length>0 && subgroup?.map((student, index) => {
                             return(
                             <tr draggable key={student.id} 
-                              onDragStart={(e)=>handleOnDrag(e,student)}>
+                              onDragStart={(e)=>handleOnDrag(e,student)} onDrop = {(e) => {handleOnDropImg(e,subgroupIndex+" "+index)}} onDragOver = {handleDragOver}>
                               <td className="py-2">
                                 {student.firstName} {student.lastName}
-                              </td>                              
+                              </td>            
+                              <td>
+                                <img style={{ maxWidth: '50px' }} src={getClassImgSrcById(student.role)} alt='Brak roli'/>
+                              </td>   
                             </tr>
                             )
                           })
@@ -170,7 +216,42 @@ function Subgroups(props) {
                     </Col>
                   )
                 })
+
+                
             }
+              <TableContainer
+              style={{ width: isMobileDisplay ? '200%' : '100px' ,marginLeft:"100px"}}
+              $fontColor={props.theme.font}
+              $background={props.theme.primary}
+              $tdColor={props.theme.secondary}>
+              <thead>
+                <tr>
+                  <th className="text-center">Role</th>
+                </tr>
+              </thead>
+              <tbody onDrop = {(e) => {e=1}} onDragOver = {handleDragOver}> {/*This onDrop is useless but it doesnt work without onDrop prop*/}
+                <tr draggable key={'E'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'E')}>
+                  <td><img style={{ maxWidth: '100px' }} src={EconomistImg} alt='Econom img'/></td>
+                </tr>
+  
+                <tr draggable key={'K'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'K')}>
+                  <td><img style={{ maxWidth: '100px' }} src={CableMasterImg} alt='Cable img'/></td>
+                </tr>
+  
+                <tr draggable key={'S'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'S')}>
+                  <td><img style={{ maxWidth: '100px' }} src={ScribeImg} alt='Scribe img'/></td>
+                </tr>
+  
+                <tr draggable key={'O'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'O')}>
+                  <td><img style={{ maxWidth: '100px' }} src={SoakImg} alt='Soak img'/></td>
+                </tr>
+              </tbody>
+              
+              </TableContainer>         
+            
+          
+            
+            
         </Row>
 
         <div
