@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class HeroVisitor {
-    private final TimeCalculator timeCalculator;
+    // private final TimeCalculator timeCalculator;
     // public SuperPowerResponse<Long> visitUnfortunate(Unfortunate Unfortunate,
     //                                             GraphTaskResult result) throws RequestValidationException {
     //     checkIfHeroPowerCanBeUsed(Unfortunate, result);

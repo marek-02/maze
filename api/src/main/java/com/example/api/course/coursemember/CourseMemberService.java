@@ -7,9 +7,11 @@ import com.example.api.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.example.api.course.coursemember.SubgroupRole;
+
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;;
 
 @Service
 @AllArgsConstructor
@@ -36,6 +38,14 @@ public class CourseMemberService {
     public List<CourseMember> getAll(Long courseId) {
         return repository.findAllByCourse_Id(courseId);
     }
+
+    // public CourseMember getCourseMember(Long courseId,Long courseMemberId){
+    //     List<CourseMember> courseMembers = this.getAll(courseId);
+    //     CourseMember courseMember = courseMembers.stream().
+    //         filter(member -> member.getUser().getId() == courseMemberId).findFirst()
+    //         .orElseThrow(() -> new EntityNotFoundException("CourseMember not found with id="+courseMemberId ));
+    //         return courseMember;
+    // }
 
     public void updateSubgroup(CourseMember member, Long subgroup) {
         log.info("Changing subgroup for user {} from {} to {}", member.getUser(), member.getGroup(), subgroup);

@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class HeroFactory {
     public Hero getHero(HeroType type, Double value, Long coolDownMillis, Course course) {
-        Hero hero = switch (type) {
-            case UNFORTUNATE -> new Unfortunate(type, coolDownMillis, course);
-            case SHEUNFORTUNATE ->  new SheUnfortunate(type, coolDownMillis, course);
-        };
+        return new Hero(type,course);
+        // Hero hero = switch (type) {
+        //     case UNFORTUNATE -> new Hero(type, course);
+        //     case SHEUNFORTUNATE ->  new Hero(type, course);
+        // };
 
-        if (value != null) {hero.changeValue(value);}
-        return hero;
+        // // if (value != null) {hero.changeValue(value);}
+        // return hero;
     }
 }

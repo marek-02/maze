@@ -1,51 +1,51 @@
-package com.example.api.user.hero.model;
+// package com.example.api.user.hero.model;
 
-// import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.course.Course;
-import com.example.api.error.exception.RequestValidationException;
-import com.example.api.question.Question;
-import com.example.api.user.hero.HeroType;
-import com.example.api.user.model.User;
-import com.example.api.user.hero.HeroVisitor;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+// // import com.example.api.activity.result.dto.response.SuperPowerResponse;
+// import com.example.api.activity.result.model.GraphTaskResult;
+// import com.example.api.course.Course;
+// import com.example.api.error.exception.RequestValidationException;
+// import com.example.api.question.Question;
+// import com.example.api.user.hero.HeroType;
+// import com.example.api.user.model.User;
+// import com.example.api.user.hero.HeroVisitor;
+// import lombok.AllArgsConstructor;
+// import lombok.Getter;
+// import lombok.NoArgsConstructor;
+// import lombok.Setter;
 
-import javax.persistence.Entity;
-import java.util.concurrent.TimeUnit;
+// import javax.persistence.Entity;
+// import java.util.concurrent.TimeUnit;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class Unfortunate extends Hero{
-    private int healValue = 20;
+// @Getter
+// @Setter
+// @NoArgsConstructor
+// @AllArgsConstructor
+// @Entity
+// public class Unfortunate extends Hero{
+//     private int healValue = 20;
 
-    public Unfortunate(HeroType type, Long coolDownTimeMillis, Course course) {
-        super(type, coolDownTimeMillis, course);
-    }
+//     public Unfortunate(HeroType type, Long coolDownTimeMillis, Course course) {
+//         super(type, coolDownTimeMillis, course);
+//     }
 
-    // @Override
-    // public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
-    //                                            User user, GraphTaskResult result,
-    //                                            Question question) throws RequestValidationException {
-    //     return visitor.visitUnfortunate(this, result);
-    // }
+//     // @Override
+//     // public SuperPowerResponse<?> useSuperPower(HeroVisitor visitor,
+//     //                                            User user, GraphTaskResult result,
+//     //                                            Question question) throws RequestValidationException {
+//     //     return visitor.visitUnfortunate(this, result);
+//     // }
 
-    @Override
-    public void changeValue(Double value) {
-        setHealValue(value.intValue());
-    }
+//     @Override
+//     public void changeValue(Double value) {
+//         setHealValue(value.intValue());
+//     }
 
-    @Override
-    public Boolean isResultStatusCorrect(GraphTaskResult result) {
-        return true;
-    }
+//     @Override
+//     public Boolean isResultStatusCorrect(GraphTaskResult result) {
+//         return true;
+//     }
 
-    public long getHealValueForLevel(int level) {
-        return TimeUnit.SECONDS.toMillis(healValue) * level;
-    }
-}
+//     public long getHealValueForLevel(int level) {
+//         return TimeUnit.SECONDS.toMillis(healValue) * level;
+//     }
+// }

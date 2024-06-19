@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import com.example.api.course.coursemember.SubgroupRole;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -39,7 +38,7 @@ public class CourseMember {
     private Integer level;
     private Double points;
     private Long subgroup;
-    private String role; //'E','K','S','O',''
+    private String role; //'E','K','S','O','', This field will be moved to ChapterRoles later
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)

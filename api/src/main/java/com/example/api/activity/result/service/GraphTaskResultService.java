@@ -22,7 +22,7 @@ import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.calculator.PointsCalculator;
 import com.example.api.util.calculator.TimeCalculator;
-import com.example.api.user.hero.HeroVisitor;
+// import com.example.api.user.hero.HeroVisitor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -47,7 +47,7 @@ public class GraphTaskResultService {
     private final LoggedInUserService authService;
     private final UserService userService;
     private final ActivityValidator activityValidator;
-    private final HeroVisitor heroVisitor;
+    // private final HeroVisitor heroVisitor;
     private final ActivityResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)

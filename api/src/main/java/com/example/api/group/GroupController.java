@@ -45,6 +45,11 @@ public class GroupController {
             throws EntityNotFoundException {
         return ResponseEntity.ok().body(groupService.getGroupStudentExtendedList(groupId));
     }
+    @GetMapping("/students-extended/subgroup")
+    public ResponseEntity<List<BasicStudent>> getSubgroupStudentsExtendedList(@RequestParam Long groupId, @RequestParam Long subgroupId)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok().body(groupService.getSubgroupStudentExtendedList(groupId, subgroupId));
+    }
 
     @GetMapping("/professors")
     public ResponseEntity<List<BasicUser>> getGroupProfessorList(@RequestParam Long groupId)

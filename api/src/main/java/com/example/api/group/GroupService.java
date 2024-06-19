@@ -114,6 +114,18 @@ public class GroupService {
                 .toList();
     }
 
+    //Dorobic odfiltrowanie ludzi nie ze swoich
+    public List<BasicStudent> getSubgroupStudentExtendedList(Long groupId, Long subgroupId) throws EntityNotFoundException {
+        log.info("Fetching users from group with id {} and subgroup {}", groupId, subgroupId);
+        Group group = groupRepository.findGroupById(groupId);
+        groupValidator.validateGroupIsNotNull(group, groupId);
+        return group.getMembers()
+                .stream()
+                .filter(member -> member.getUser().getAccountType() == AccountType.STUDENT && member.getSubgroup() == subgroupId)
+                .map(BasicStudent::new)
+                .toList();
+    }
+
     public List<BasicUser> getGroupProfessorList(Long id) throws EntityNotFoundException {
         log.info("Fetching users from group with id {}", id);
         Group group = groupRepository.findGroupById(id);

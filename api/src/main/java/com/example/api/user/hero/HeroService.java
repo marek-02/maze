@@ -20,22 +20,23 @@ import java.util.List;
 @Transactional
 public class HeroService {
     private final HeroRepository heroRepository;
-    private final LoggedInUserService userService;
-    private final UserValidator userValidator;
-    private final CourseService courseService;
+    // private final LoggedInUserService userService;
+    // private final UserValidator userValidator;
+    // private final CourseService courseService;
 
-    public void updateHero(UpdateHeroForm form) throws WrongUserTypeException, EntityNotFoundException {
-        userValidator.validateProfessorAccount(userService.getCurrentUser());
-        Hero hero = heroRepository.findHeroByTypeAndCourse(form.getType(), courseService.getCourse(form.getCourseId()));
-        Long coolDown = form.getCoolDownMillis();
-        if (coolDown != null) {
-            hero.setCoolDownTimeMillis(coolDown);
-        }
-        Double value = form.getValue();
-        if (value != null) {
-            hero.changeValue(value);
-        }
-    }
+    //This method perhaps should be deleted?
+    // public void updateHero(UpdateHeroForm form) throws WrongUserTypeException, EntityNotFoundException {
+    //     userValidator.validateProfessorAccount(userService.getCurrentUser());
+    //     Hero hero = heroRepository.findHeroByTypeAndCourse(form.getType(), courseService.getCourse(form.getCourseId()));
+    //     Long coolDown = form.getCoolDownMillis();
+    //     if (coolDown != null) {
+    //         //hero.setCoolDownTimeMillis(coolDown);
+    //     }
+    //     Double value = form.getValue();
+    //     if (value != null) {
+    //         //hero.changeValue(value);
+    //     }
+    // }
 
     public void addHeroes(List<Hero> heroes) {
         heroRepository.saveAll(heroes);
