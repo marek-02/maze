@@ -84,7 +84,15 @@ function GameCardSocializer(props) {
             </Col>
             <Col md={6}>
               <GameCard
-                  headerText='Miejsce w rankingu'
+                  headerText='Statystyki zausznika'
+                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
+              />
+            </Col>
+          </Row>
+          <Row className='m-0 gy-2'>
+            <Col md={6}>
+              <GameCard
+                  headerText='Ranking roczny'
                   content={
                     <PersonalRankingInfoContent
                       stats={{
@@ -92,17 +100,10 @@ function GameCardSocializer(props) {
                         userPoints: dashboardStats.generalStats.allPoints
                       }}
                       email={dashboardStats.email}
+                      theme={props.theme}
                     />
                   }
                 />
-            </Col>
-          </Row>
-          <Row className='m-0 gy-2'>
-          <Col md={6}>
-              <GameCard
-                  headerText='Statystyki zausznika'
-                  content={<SubmitStatsContent stats={dashboardStats.submitStats} />}
-              />
             </Col>
             <Col md={6}>
               <GameCard

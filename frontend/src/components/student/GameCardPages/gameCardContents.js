@@ -284,10 +284,9 @@ export function RankingTable(props)  {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  return (
-    
+  return (  
     <div className="container">
-      <table className="table table-striped table-container">
+      <CustomTable $fontColor={props.theme.font} $borderColor={props.theme.primary} $background={props.theme.secondary}>
         <thead>
           <tr>
             <th>Miejsce</th>
@@ -304,8 +303,8 @@ export function RankingTable(props)  {
             </tr>
           ))}
         </tbody>
-      </table>
-      <nav>
+      </CustomTable>
+      <nav className='mt-1'>
         <ul className="pagination">
           {Array.from({ length: totalPages }, (_, index) => (
             <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -366,7 +365,7 @@ export function PersonalRankingInfoContent(props) {
   const changeView = (newView) => {
     setViewType(newView)
   }
-
+  
   return (
     <Row className='h-120 d-flex justify-content-center align-items-center'>
       <ButtonGroup className='mb-2'>
@@ -389,7 +388,7 @@ export function PersonalRankingInfoContent(props) {
         {
           viewType === 'Rywal' ? <Bar data={data} options={options} /> : 
           viewType === 'Wykres' ? <Pie data={data} options={options}/> : 
-          <RankingTable email={props.email} ranking={props.stats.ranking}></RankingTable>
+          <RankingTable email={props.email} ranking={props.stats.ranking} theme={props.theme}></RankingTable>
         }
       </ChartCol>
       <Col md={12}>

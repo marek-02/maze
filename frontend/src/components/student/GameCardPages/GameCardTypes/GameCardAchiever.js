@@ -119,7 +119,15 @@ function GameCardAchiever(props) {
             </Col>
             <Col md={6}>
               <GameCard
-                headerText='Miejsce w rankingu'
+                headerText='Licytacje'
+                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
+              />
+            </Col>
+          </Row>
+          <Row className='m-0 gy-2'>
+          <Col md={6}>
+              <GameCard
+                headerText='Ranking roczny'
                 content={
                   <PersonalRankingInfoContent
                     stats={{
@@ -127,12 +135,11 @@ function GameCardAchiever(props) {
                       userPoints: dashboardStats.generalStats.allPoints
                     }}
                     email={dashboardStats.email}
+                    theme={props.theme}
                   />
                 }
               />
             </Col>
-          </Row>
-          <Row className='m-0 gy-2'>
             <Col md={6}>
               <GameCard
                 headerText='Informacje kolekcjonerskie'
@@ -143,15 +150,8 @@ function GameCardAchiever(props) {
                     currentRankNr = {currentRankNr}
                     allActivitiesNr = {allActivitiesNr}
                     completedActivitiesNr = {dashboardStats.heroStatsDTO.completedActivities}
-                    // stats={dashboardStats.heroStatsDTO}
                   />
                 }
-              />
-            </Col>
-            <Col md={6}>
-              <GameCard
-                headerText='Licytacje'
-                content={<AchieverAuctionsContent stats={dashboardStats.auctionStats} />}
               />
             </Col>
           </Row>

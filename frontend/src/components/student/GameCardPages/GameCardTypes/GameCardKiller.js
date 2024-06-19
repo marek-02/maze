@@ -61,7 +61,7 @@ function GameCardKiller(props) {
             </Col>
           </Row>
           <Row className='m-0 mb-5 m-md-0 pt-3'>
-            <Col md={6}>
+          <Col md={6}>
               <GameCard
                 headerText='Ranking roczny'
                 content={
@@ -77,6 +77,7 @@ function GameCardKiller(props) {
                     }} 
                     email={dashboardStats.email}
                     id={"year"}
+                    theme={props.theme}
                   />
                   }
                 />
@@ -97,6 +98,7 @@ function GameCardKiller(props) {
                     }}
                     email={dashboardStats.email}
                     id={"overall"}
+                    theme={props.theme}
                   />
                 }
               />
