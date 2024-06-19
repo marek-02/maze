@@ -114,6 +114,7 @@ export const POST_GROUP = `${BASE_URL}/group`
 export const GET_GROUP_USERS = `${POST_GROUP}/users`
 export const GET_GROUP_STUDENTS = `${POST_GROUP}/students`
 export const GET_GROUP_STUDENTS_EXTENDED = `${POST_GROUP}/students-extended` 
+export const GET_SUBGROUP_STUDENTS_EXTENDED = `${POST_GROUP}/students-extended/subgroup`
 export const GET_GROUP_PROFESSORS = `${POST_GROUP}/professors`
 export const GET_GROUP_INVITATION_CODE_LIST = `${POST_GROUP}/invitation-code/list`
 

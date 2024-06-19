@@ -229,7 +229,7 @@ function Subgroups(props) {
                   <th className="text-center">Role</th>
                 </tr>
               </thead>
-              <tbody onDrop = {(e) => {'E'.charCodeAt(0)}} onDragOver = {handleDragOver}> {/*This onDrop is useless but it doesnt work without onDrop prop*/}
+              <tbody onDrop = {(e) => {e=1}} onDragOver = {handleDragOver}> {/*This onDrop is useless but it doesnt work without onDrop prop*/}
                 <tr draggable key={'E'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'E')}>
                   <td><img style={{ maxWidth: '100px' }} src={EconomistImg} alt='Econom img'/></td>
                 </tr>

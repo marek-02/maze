@@ -1,90 +1,90 @@
-import { Col, Offcanvas } from 'react-bootstrap'
-import styled from 'styled-components'
+// import { Col, Offcanvas } from 'react-bootstrap'
+// import styled from 'styled-components'
 
-export const ActivityCol = styled(Col)`
-  border: 2px black solid;
-  border-radius: 5px;
-  margin: 1px;
-  padding: 0;
-  flex-basis: auto;
-  flex-grow: 0;
-  width: ${(props) => `${props.$colSize  }px`};
-  height: ${(props) => `${props.$colSize  }px`};
+// export const ActivityCol = styled(Col)`
+//   border: 2px black solid;
+//   border-radius: 5px;
+//   margin: 1px;
+//   padding: 0;
+//   flex-basis: auto;
+//   flex-grow: 0;
+//   width: ${(props) => `${props.$colSize  }px`};
+//   height: ${(props) => `${props.$colSize  }px`};
 
-  & img {
-    width: 85%;
-    height: 85%;
-    border-radius: 5px;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+//   & img {
+//     width: 85%;
+//     height: 85%;
+//     border-radius: 5px;
+//     position: relative;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//   }
 
-  & div {
-    width: 100%;
-    height: 100%;
-    border-radius: 5px;
-  }
+//   & div {
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 5px;
+//   }
 
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-  }
-`
+//   &:hover {
+//     cursor: pointer;
+//     transform: scale(1.1);
+//   }
+// `
 
-export const CustomOffcanvas = styled(Offcanvas)`
-  background-color: ${(props) => props.$background};
-  color: ${(props) => props.$fontColor};
-  width: 50vw !important;
-  z-index: 2000;
+// export const CustomOffcanvas = styled(Offcanvas)`
+//   background-color: ${(props) => props.$background};
+//   color: ${(props) => props.$fontColor};
+//   width: 50vw !important;
+//   z-index: 2000;
 
-  .btn-close {
-    filter: ${(props) => props.$filter};
-  }
+//   .btn-close {
+//     filter: ${(props) => props.$filter};
+//   }
 
-  table {
-    border-top: 1px solid ${(props) => props.$fontColor};
-    border-spacing: 5px;
-    width: 100%;
+//   table {
+//     border-top: 1px solid ${(props) => props.$fontColor};
+//     border-spacing: 5px;
+//     width: 100%;
 
-    tbody {
-      tr {
-        word-break: break-word;
-      }
+//     tbody {
+//       tr {
+//         word-break: break-word;
+//       }
 
-      th,
-      td {
-        padding: 10px 0;
-        color: lightgrey;
-      }
+//       th,
+//       td {
+//         padding: 10px 0;
+//         color: lightgrey;
+//       }
 
-      td:first-child {
-        width: 55%;
-      }
+//       td:first-child {
+//         width: 55%;
+//       }
 
-      tr:nth-of-type(6) {
-        border-bottom: 1px solid ${(props) => props.$fontColor};
-      }
+//       tr:nth-of-type(6) {
+//         border-bottom: 1px solid ${(props) => props.$fontColor};
+//       }
 
-      td:nth-child(odd) {
-        color: ${(props) => props.$fontColor};
-      }
+//       td:nth-child(odd) {
+//         color: ${(props) => props.$fontColor};
+//       }
 
-      td:nth-child(even) {
-        text-align: right;
-      }
+//       td:nth-child(even) {
+//         text-align: right;
+//       }
 
-      th {
-        padding-top: 15px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: ${(props) => props.$fontColor};
-      }
-    }
-  }
+//       th {
+//         padding-top: 15px;
+//         font-size: 1.1rem;
+//         font-weight: 700;
+//         color: ${(props) => props.$fontColor};
+//       }
+//     }
+//   }
 
-  @media (max-width: 575px) {
-    width: 100vw !important;
-  }
-`
+//   @media (max-width: 575px) {
+//     width: 100vw !important;
+//   }
+// `

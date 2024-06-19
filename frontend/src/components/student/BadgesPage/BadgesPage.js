@@ -103,7 +103,7 @@ function BadgesPage(props) {
 
             const tooltipText = badgeUnlockedDate
                 ? `Odblokowano: ${moment(badgeUnlockedDate).format('DD.MM.YYYY, HH:mm')}`
-                : 'Odznaka nadal nie została zdobyta.'
+                : 'Glejt nadal nie został zdobyty.'
 
             return (
                 <Col md={4} className='text-center d-flex flex-column align-items-center' key={index + Date.now()}>
@@ -167,7 +167,7 @@ function BadgesPage(props) {
                                                 <div className='rankInfo'>
                                                     <div className='left-arrow'/>
                                                     <p>
-                                                        <strong>{rank?.name ?? 'Brak odznaki'}</strong>
+                                                        <strong>{rank?.name ?? 'Brak glejtu'}</strong>
                                                     </p>
                                                     {rank?.image ? (
                                                         <img width={100} src={base64Header + rank.image}
@@ -192,7 +192,7 @@ function BadgesPage(props) {
                 <Col md={9} className={isMobileDisplay ? 'mb-3' : 'm-auto'}>
                     <ContentCard
                         maxHeight='53vh'
-                        header='Odznaki'
+                        header='Glejty'
                         body={
                             allBadgesList === undefined ? (
                                 <Loader/>
@@ -219,7 +219,7 @@ function BadgesPage(props) {
                         / {allBadgesList?.length ?? 0}
                       </span>
                                             <br/>
-                                            <span>odznak</span>
+                                            <span>glejtów</span>
                                         </p>
                                         <p className='text-center m-0'>
                                             Co stanowi
@@ -230,7 +230,7 @@ function BadgesPage(props) {
                                                     : 0}
                                                 %{' '}
                                             </strong>
-                                            wszystkich odznak.
+                                            wszystkich glejtów.
                                         </p>
                                     </Bounce>
                                 </div>
@@ -240,12 +240,12 @@ function BadgesPage(props) {
 
                     <Row className={`m-0 pr-2 ${isMobileDisplay ? '' : 'h-50'}`}>
                         <ContentCard
-                            header='Ostatnio zdobyta'
+                            header='Ostatnio zdobyty'
                             body={
                                 <div className='h-100 w-100 text-center'>
                                     <Bounce delay={LATER_ITEM_DELAY}>
                                         {!lastUnlockedBadge ? (
-                                            <p>Nie zdobyto jeszcze żadnej odznaki.</p>
+                                            <p>Nie zdobyto jeszcze żadnego glejtu.</p>
                                         ) : (
                                             <div
                                                 className='d-flex justify-content-center align-items-center flex-column'>
