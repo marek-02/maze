@@ -227,23 +227,23 @@ public class DatabaseConfig {
             colloquiumDetailsRepository.save(new ColloquiumDetails(4, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
 
 
-            //GRAPH TASKS (EXPEDITIONS)
+            //GRAPH TASKS (EXPEDITIONS, NIESPODZIANKI)
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_1,
-                "Dżungla kabli",
-                "Skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą",
-                "Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!",
+                "Niespodzianka I",
+                "model OSI, funkcje warstwy II oraz zasady przełączania.",
+                "model OSI, funkcje warstwy II oraz zasady przełączania",
                 5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
             );
 
             List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_2 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_2,
-                "Dżungla kabli",
-                "Skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą",
-                "Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!",
-                5,4,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,12L,graphTaskService
+                "Niespodzianka II",
+                "model OSI, funkcje warstwy II oraz zasady przełączania.",
+                "Zapraszam chętnych...",
+                5,5,professor1,10.0,course1,requirementService.getDefaultRequirements(true),questions2,12L,graphTaskService
             );
 
 
@@ -338,7 +338,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
-            setActivityMapAndSave(activityMap4, List.of(graphTask4_1),List.of(fileTask4_1), List.of(info4_1,info4_2),
+            setActivityMapAndSave(activityMap4, List.of(graphTask4_1,graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
         
@@ -445,7 +445,7 @@ public class DatabaseConfig {
         setBasicTaskData(graphTask, title,taskContent, description, posX, posY, professor, maxPoints, course,requirements);        
         graphTask.setQuestions(questions);
         graphTask.setTimeToSolveMillis(timeToSolveMinutes * 60 * 1000L);
-        graphTask.setId(1L);
+        // graphTask.setId(1L);
         graphTaskService.saveGraphTask(graphTask);      
     }    
 
@@ -827,47 +827,93 @@ public class DatabaseConfig {
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {
-        Option option = new Option("hub z routerem", true, null);
-        Option option1 = new Option("komputer z komputerem", false, null);
-        Option option2 = new Option("switch z routerem", true, null);
-        Option option3 = new Option("hub ze switchem", false, null);
+        // Option option = new Option("hub z routerem", true, null);
+        // Option option1 = new Option("komputer z komputerem", false, null);
+        // Option option2 = new Option("switch z routerem", true, null);
+        // Option option3 = new Option("hub ze switchem", false, null);
 
-        Option option4 = new Option("Tak", true, null);
-        Option option5 = new Option("Nie", false, null);
+        // Option option4 = new Option("Tak", true, null);
+        // Option option5 = new Option("Nie", false, null);
 
-        List<Option> options = List.of(option, option1, option2, option3, option4, option5);
+        // List<Option> options = List.of(option, option1, option2, option3, option4, option5);
+
+        // Question startQuestion = new Question();
+        // Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
+        //         Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
+        // Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
+        //         "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
+        // Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
+        //         "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
+        // Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
+        //         "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
+        // Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
+        //         "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
+
+        // List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
+
+        // questionService.saveQuestions(questions);
+
+        // startQuestion.getNext().addAll(List.of(question1, question2, question3));
+
+        // question1.getNext().addAll(List.of(question2, question4));
+        // question3.getNext().addAll(List.of(question5));
+
+        // questionService.saveQuestions(questions);
+        // optionService.saveAll(options);
+
+        // option.setQuestion(question1);
+        // option1.setQuestion(question1);
+        // option2.setQuestion(question1);
+        // option3.setQuestion(question1);
+        // option4.setQuestion(question2);
+        // option5.setQuestion(question2);
+        // optionService.saveAll(options);
 
         Question startQuestion = new Question();
-        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
-        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
-        Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
-        Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
-        Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
+        Option option1_1 = new Option("MTU", true, null);
+        Option option1_2 = new Option("mostek", true, null);
+        Option option1_3 = new Option("WAN", true, null);
+        Option option1_4 = new Option("drukarka sieciowa", false, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Spośród poniższych wybierz pojęcia warstwy łącza danych", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4), 3.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
 
-        List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
+        
+        Option option2_1 = new Option("Prawda", false, null);
+        Option option2_2 = new Option("Fałsz", true, null);
+        List<Option> options_q2 = List.of(option2_1,option2_2);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy z uwagi na wymaganie minimalizacji opóźnienia dla ruchu głosowego szybsze porty switcha asymetrycznego powinny być wykorzystywane do podłączania telefonów IP?",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 2.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
 
+        Option option3_1 = new Option("Dopełnianie (sztuczne wydłużanie) ramek", true, null);
+        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG przy wysyłaniu serii ramek", true, null);
+        Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
+        Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5e:",
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 2.0, new LinkedList<>(), null);
+        question2.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("dla zapewnienia samosynchronizacji", true, null);
+        Option option4_2 = new Option("dla zmniejszenia zapotrzebowania na przepustowość", false, null);
+        Option option4_3 = new Option("dla umożliwienia korekcji błędów przez odbiorcę", false, null);
+        Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "W jakim celu stosuje się kodowanie dwuetapowe?",
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 3.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4);
         questionService.saveQuestions(questions);
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option2_1,option2_2,option3_1,option3_2,
+            option3_3,option3_4,option4_1,option4_2,option4_3,option4_4));
 
-        startQuestion.getNext().addAll(List.of(question1, question2, question3));
-
-        question1.getNext().addAll(List.of(question2, question4));
-        question3.getNext().addAll(List.of(question5));
-
-        questionService.saveQuestions(questions);
-        optionService.saveAll(options);
-
-        option.setQuestion(question1);
-        option1.setQuestion(question1);
-        option2.setQuestion(question1);
-        option3.setQuestion(question1);
-        option4.setQuestion(question2);
-        option5.setQuestion(question2);
-        optionService.saveAll(options);
 
         return questions;
     }
