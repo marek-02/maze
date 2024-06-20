@@ -3,7 +3,6 @@ import { Col } from 'react-bootstrap'
 
 
 export function FormCol(name, type, colName, size = 12, additionalOptions) {
-
   return (
     <Col className='form-group m-1' md={size}>
       <h6>{name}</h6>
@@ -51,15 +50,15 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
           <option value="scribe">Skyba</option>
           <option value="oboe">Obój</option>
         </Field>
-      ) : (
+      ) : (        
         <Field
           className='form-control'
           type={type}
           name={colName}
           min={type === 'number' ? additionalOptions?.min ?? 0 : 'none'}
+          style={{backgroundColor: additionalOptions?.backgroundColor ?? "", color: additionalOptions?.fontColor ?? ""}}
         />
       )}
-
       <ErrorMessage name={colName} component='div'>
         {(msg) => <div style={{ color: additionalOptions.errorColor }}>{msg}</div>}
       </ErrorMessage>

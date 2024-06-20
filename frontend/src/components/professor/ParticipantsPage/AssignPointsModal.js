@@ -36,11 +36,11 @@ function AssignPointsModal(props) {
   };
 
   const validateForm = () => {
-    if(annihilatedQuestions > colloquium.annihilationLimit){
+    if(colloquium !== undefined && annihilatedQuestions > colloquium.annihilationLimit){
       setFinishModalDescription('Przekroczono limit anihilowanych pytań')
       return false;
     }
-    if(colloquiumPoints>colloquium.maxPoints){
+    if(colloquium !== undefined && colloquiumPoints>colloquium.maxPoints){
       setFinishModalDescription('Ilość przyznanych punktów przekracza liczbę dozwolonych punktów')
       return false;
     }
@@ -84,7 +84,7 @@ function AssignPointsModal(props) {
                 serviceMethod = ProfessorService.sendColloquiumPoints;
               } else if (activityType === 'laboratory_points') {
                 serviceMethod = ProfessorService.sendLaboratoryPoints;
-                methodArgs.splice(studentId, courseId, parsedPoints, reason, timestamp, role);
+                methodArgs.splice(3, 0, role);
               } else {
                 serviceMethod = ProfessorService.sendBonusPoints;
               }
