@@ -63,11 +63,12 @@ function Points(props) {
               <strong>Twój wynik to: {totalPointsData.totalPointsReceived}pkt</strong>
             </h5>
             <h5>
-              <strong>{`Co stanowi: ${  calculatedPercentageValue()}`}%</strong>
+                {/* Tymczasowo wycinam te linijke bo to nie dziala w ogole */}
+              {/* <strong>{`Co stanowi: ${  calculatedPercentageValue()}`}%</strong> */}
             </h5>
             <h5>
               {/* not yet here */}
-              <strong>Do kolejnego poziomu wymagane jest: {pointsToNextRank}pkt</strong>
+              {/* <strong>Do kolejnego poziomu wymagane jest: {pointsToNextRank}pkt</strong> */}
             </h5>
           </Col>
         </Row>

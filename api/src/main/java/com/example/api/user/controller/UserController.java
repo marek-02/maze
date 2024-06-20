@@ -59,6 +59,16 @@ public class UserController {
         return ResponseEntity.ok().body(new GroupNameDTO(userService.getCurrentUserGroup(courseId).getName()));
     }
 
+    @GetMapping("/user/groupId")
+    public ResponseEntity<Long> getUserGroupId(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.getCurrentUserGroupId(courseId));
+    }
+
+    @GetMapping("/user/subgroupId")
+    public ResponseEntity<Long> getUserSubgroup(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.getCurrentUserSubgroupId(courseId));
+    }
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws BadRequestHeadersException, IOException {

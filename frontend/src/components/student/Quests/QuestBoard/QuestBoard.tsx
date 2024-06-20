@@ -12,6 +12,8 @@ import {TableContainer,Title} from '../../../professor/GameManagement/SubgroupsP
 import { isMobileView } from '../../../../utils/mobileHelper'
 import {ScribeImg,SoakImg,EconomistImg,CableMasterImg} from '../../../../utils/constants'
 import StudentService from '../../../../services/student.service'
+import authService from '../../../../services/auth.service'
+import userService from '../../../../services/user.service'
 
 const emptyMapResponse: ActivityMapResponse = {
   id: 0,
@@ -45,50 +47,52 @@ const QuestBoard = () => {
   }, [selectedChapterId])
 
   useEffect(() => { //grabs students from this students subgroup
-    let userGroup = 1;
-    let userSubgroup = 0;
-    GroupService.getSubgroupStudentsExtended(userGroup, userSubgroup)
-      .then((response) => {
-        const studentsOfSubgroupResponse= response?.map((student : any) => ({...student}))
+    let userGroup =-1;
+    let userSubgroup = -1;
+    userService.getUserGroupId(courseId)
+    .then((response) => {
+        userGroup = response;
 
-        console.log("studentsOfSubgroup:", studentsOfSubgroupResponse);
+        userService.getUserSubgroupId(courseId)
+        .then((response) => {
+            userSubgroup = response;
 
-        let studentsOfSubgroup_local = []
-        
-        let count = 0;
-        for(let student of studentsOfSubgroupResponse){
-            if(count == 4) break;
-            let entry = {id:student.id,firstName: student.firstName, lastName: student.lastName,
-                subgroup:student.subgroup==null?0:student.subgroup, role:student.role}
-            
-            studentsOfSubgroup_local.push(entry);
-            count++;
-        }
-        setStudentsOfSubgroup(studentsOfSubgroup_local);
-        // setStudentsInSubgroups(studentsOfSubgroups_local)
-      })
-      .catch(() => {
-        console.log("Wywalilo errora")
-        setStudentsOfSubgroup(null)
-      })
+            GroupService.getSubgroupStudentsExtended(userGroup, userSubgroup)
+            .then((response) => {
+                const studentsOfSubgroupResponse= response?.map((student : any) => ({...student}))
+                let studentsOfSubgroup_local = []        
+                let count = 0;
+                for(let student of studentsOfSubgroupResponse){
+                    if(count == 4) break;
+                    let entry = {id:student.id,firstName: student.firstName, lastName: student.lastName,
+                        subgroup:student.subgroup==null?0:student.subgroup, role:student.role}
+                    
+                    studentsOfSubgroup_local.push(entry);
+                    count++;
+                }
+                setStudentsOfSubgroup(studentsOfSubgroup_local);
+
+            })
+            .catch(() => {
+                setStudentsOfSubgroup(null)
+            })
+        })    
+    })
+    .catch(() => {
+        console.log("Nie udalo sie pobrac grupy")
+    })    
   },[]) 
 
   function handleOnDragImg(event : any,roleKey : string){
-    console.log("handleondrag")
     event.dataTransfer.setData("role",roleKey);
-    console.log('done')
   }
 
 
   function handleOnDrop(event :any,index : number){
-    console.log("HandleOnDrop")
     let role = event.dataTransfer.getData("role")
     if(role===""){ //student was dropped instead of img, we call the other onDrop func
       return;
     }
-
-    console.log("rola:",role)
-    console.log("index:",index)
 
     // const [subgroupIdx,studentIdx] = indices.split(" ");
     const student = studentsOfSubgroup[index];    
@@ -97,14 +101,12 @@ const QuestBoard = () => {
     let tmp = studentsOfSubgroup.slice();
     tmp[index] = student;
 
-    console.log("tmp:",tmp)
 
     StudentService.changeStudentRole(student.id,role,courseId);
     setStudentsOfSubgroup(tmp)
   }
 
   function handleDragOver(event :any){
-    console.log("handledragover")
     event.preventDefault()
   }
 
@@ -129,7 +131,7 @@ const QuestBoard = () => {
                             studentsOfSubgroup.length>0 && studentsOfSubgroup?.map((student :any, index:number) => {
                                 return(
                                     <div onDrop = {(e) => {handleOnDrop(e,index)}} onDragOver = {handleDragOver}
-                                         style={{width: '80px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center'}}>
+                                         style={{width: '100px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center', justifyContent:"center"}}>
                                         <img style={{ maxWidth: '80px' }} src={getClassImgSrcById(student.role)} alt='Brak roli'/>
                                     </div>
                                 )
@@ -140,7 +142,7 @@ const QuestBoard = () => {
                         {
                             studentsOfSubgroup.length>0 && studentsOfSubgroup?.map((student :any, index:number) => {
                                 return(
-                                    <div style={{width: '80px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center'}}>
+                                    <div style={{width: '100px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center', wordBreak:"break-word"}}>
                                         {student.firstName} {student.lastName}
                                     </div>
                                 )

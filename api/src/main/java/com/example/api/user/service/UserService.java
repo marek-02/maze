@@ -143,6 +143,18 @@ public class UserService implements UserDetailsService {
         return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();
     }
 
+    public Long getCurrentUserGroupId(Long courseId) throws StudentNotEnrolledException {
+        User user = authService.getCurrentUser();
+        log.info("Fetching group for user {}", user.getEmail());
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup().getId();
+    }
+
+    public Long getCurrentUserSubgroupId(Long courseId) throws StudentNotEnrolledException {
+        User user = authService.getCurrentUser();
+        log.info("Fetching subgroup for user {}", user.getEmail());
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getSubgroup();
+    }
+
     public List<BasicStudent> getAllStudentsWithGroup(Long courseId) {
         log.info("Fetching all students with group for course {}", courseId);
 

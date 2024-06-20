@@ -234,7 +234,7 @@ public class DatabaseConfig {
                 "Dżungla kabli",
                 "Skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą",
                 "Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!",
-                5,4,professor1,60.0,course1,null,questions,12L,graphTaskService
+                5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
             );
 
             List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
@@ -243,7 +243,7 @@ public class DatabaseConfig {
                 "Dżungla kabli",
                 "Skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą",
                 "Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!",
-                5,4,professor1,60.0,course1,requirementService.getDefaultRequirements(true),questions2,12L,graphTaskService
+                5,4,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,12L,graphTaskService
             );
 
 
@@ -338,7 +338,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
-            setActivityMapAndSave(activityMap4, null,null, List.of(info4_1,info4_2),
+            setActivityMapAndSave(activityMap4, List.of(graphTask4_1),List.of(fileTask4_1), List.of(info4_1,info4_2),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
         
@@ -387,7 +387,6 @@ public class DatabaseConfig {
             }
             
             //ADDITIONAL POINTS
-            // calendar.set(2022, Calendar.JUNE, 15);
             // AdditionalPoints additionalPoints = new AdditionalPoints();
             // additionalPoints.setId(1L);
             // CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
@@ -446,6 +445,7 @@ public class DatabaseConfig {
         setBasicTaskData(graphTask, title,taskContent, description, posX, posY, professor, maxPoints, course,requirements);        
         graphTask.setQuestions(questions);
         graphTask.setTimeToSolveMillis(timeToSolveMinutes * 60 * 1000L);
+        graphTask.setId(1L);
         graphTaskService.saveGraphTask(graphTask);      
     }    
 
@@ -518,9 +518,10 @@ public class DatabaseConfig {
         result.setTimeSpentSec(timeSpentSec);
         result.setStartDateMillis(startTimeMillis);
         result.setSendDateMillis(  startTimeMillis + timeSpentSec/1000 );
-        addReceivedPointsForUser(member, points);
+        //addReceivedPointsForUser(member, points);
         
         resultService.saveGraphTaskResult(result);        
+        courseMemberRepository.save(member);
     }
 
     public void setFileTaskResAndSave(CourseMember member,FileTaskResult result,FileTask fileTask, Long taskId,
@@ -804,6 +805,7 @@ public class DatabaseConfig {
 
     private void addReceivedPointsForUser(CourseMember student, Double points){
         student.changePoints(points);
+        courseMemberRepository.save(student);
     }
 
     private User createStudent(String email,

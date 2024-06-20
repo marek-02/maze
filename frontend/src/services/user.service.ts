@@ -3,7 +3,7 @@ import {
   DELETE_BADGE,
   GET_BADGE_ALL,
   GET_BADGE_UNLOCKED_ALL,
-  GET_PASSWORD_RESET_EMAIL, GET_USER_CURRENT, GET_USER_GROUP,
+  GET_PASSWORD_RESET_EMAIL, GET_USER_CURRENT, GET_USER_GROUP,GET_USER_SUBGROUP_ID,GET_USER_GROUP_ID,
   PUT_BADGE_UPDATE,
   PUT_PASSWORD_RESET
 } from './urls'
@@ -28,6 +28,18 @@ class UserService {
 
   getUserGroup(courseId: number) {
     return axiosApiGet(`${GET_USER_GROUP}?courseId=${courseId}`).catch((error) => {
+      throw error
+    })
+  }
+
+  getUserGroupId(courseId: number) {
+    return axiosApiGet(`${GET_USER_GROUP_ID}?courseId=${courseId}`).catch((error) => {
+      throw error
+    })
+  }
+
+  getUserSubgroupId(courseId: number) {
+    return axiosApiGet(`${GET_USER_SUBGROUP_ID}?courseId=${courseId}`).catch((error) => {
       throw error
     })
   }

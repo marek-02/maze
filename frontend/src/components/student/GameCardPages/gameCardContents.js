@@ -44,7 +44,7 @@ export function GradesStatsContent(props) {
         <p className='pb-2'>Średnia (Ekspedycje): {avgGraphTask ?? 0}%</p>
         <p className='pb-2'>Średnia (Zadania bojowe): {avgFileTask ?? 0}%</p>
         <p className='pb-2'>Ilość wykonanych sondaży: {surveysNumber}</p>
-        <p className='pb-2'>Punkty (Ekspedycje): {graphTaskPoints}</p>
+        <p className='pb-2'>Punkty (Niespodzianki): {graphTaskPoints}</p>
         <p className='pb-2'>Punkty (Zadania bojowe): {fileTaskPoints}</p>
       </Col>
       <Col md={5}>

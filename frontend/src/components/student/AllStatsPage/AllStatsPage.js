@@ -34,10 +34,10 @@ function AllStatsPage(props){
     const rows_activityStats = [
       ["Punkty z aktywności:",dashboardStats?.generalStats.allPoints],
       ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities],
-      ["Średnia (Ekspedycje)", dashboardStats?.generalStats.avgGraphTask!=undefined ? dashboardStats?.generalStats.avgGraphTask : 0],
+      ["Średnia (Niespodzianki)", dashboardStats?.generalStats.avgGraphTask!=undefined ? dashboardStats?.generalStats.avgGraphTask : 0],
       ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask  : 0],
       ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
-      ["Punkty (Ekspedycje)",dashboardStats?.generalStats.graphTaskPoints],
+      ["Punkty (Niespodzianki)",dashboardStats?.generalStats.graphTaskPoints],
       ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints]
     ]
 

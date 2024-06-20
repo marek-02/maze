@@ -1,5 +1,6 @@
 package com.example.api.course.coursemember;
 
+import com.example.api.course.Course;
 import com.example.api.group.Group;
 import com.example.api.group.GroupService;
 import com.example.api.user.hero.model.UserHero;
@@ -50,7 +51,7 @@ public class CourseMemberService {
     public void updateSubgroup(CourseMember member, Long subgroup) {
         log.info("Changing subgroup for user {} from {} to {}", member.getUser(), member.getGroup(), subgroup);
         
-        groupService.removeUser(member, member.getGroup());
+        //groupService.removeUser(member, member.getGroup()); //?
         //groupService.addUser(member, group);
         //member.setGroup(group);
         member.setSubgroup(subgroup);
@@ -60,9 +61,14 @@ public class CourseMemberService {
     public void updateRole(CourseMember member, String role){
         log.info("Changing role for user {} from {} to {}", member.getUser(), member.getRole(), role);
 
-        groupService.removeUser(member, member.getGroup());
+        //groupService.removeUser(member, member.getGroup());
         member.setRole(role);
         repository.save(member);
     }
+
+    // public void addPoints(CourseMember member, Double points){
+    //     member.changePoints(points);
+    //     repository.save(member);
+    // }
 
 }
