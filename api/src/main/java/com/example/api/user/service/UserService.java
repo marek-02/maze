@@ -179,8 +179,10 @@ public class UserService implements UserDetailsService {
     }
     public String updateStudentRole(Long userID, String newRoleId, Long courseId) {
         User user = getUser(userID);
-        Optional<CourseMember> courseMember = user.getCourseMember(courseId);
-            courseMemberService.updateRole(courseMember.orElseThrow(), newRoleId);
+        CourseMember courseMember = user.getCourseMember(courseId).orElseThrow();
+
+        log.info("Updating user: {} role from: {} to {}",user.getId(), courseMember.getRole(),newRoleId);
+        courseMemberService.updateRole(courseMember, newRoleId);
         return newRoleId;
     }
 

@@ -87,12 +87,17 @@ const QuestBoard = () => {
       return;
     }
 
+    console.log("rola:",role)
+    console.log("index:",index)
+
     // const [subgroupIdx,studentIdx] = indices.split(" ");
     const student = studentsOfSubgroup[index];    
     student.role = role
 
     let tmp = studentsOfSubgroup.slice();
     tmp[index] = student;
+
+    console.log("tmp:",tmp)
 
     StudentService.changeStudentRole(student.id,role,courseId);
     setStudentsOfSubgroup(tmp)
@@ -124,7 +129,7 @@ const QuestBoard = () => {
                             studentsOfSubgroup.length>0 && studentsOfSubgroup?.map((student :any, index:number) => {
                                 return(
                                     <div onDrop = {(e) => {handleOnDrop(e,index)}} onDragOver = {handleDragOver}
-                                         style={{width: '80px', height:'80px', border:"1px solid yellow", textAlign:'center', display:'flex', alignItems:'center'}}>
+                                         style={{width: '80px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center'}}>
                                         <img style={{ maxWidth: '80px' }} src={getClassImgSrcById(student.role)} alt='Brak roli'/>
                                     </div>
                                 )
@@ -135,7 +140,7 @@ const QuestBoard = () => {
                         {
                             studentsOfSubgroup.length>0 && studentsOfSubgroup?.map((student :any, index:number) => {
                                 return(
-                                    <div style={{width: '80px', height:'80px', border:"1px solid yellow", textAlign:'center', display:'flex', alignItems:'center'}}>
+                                    <div style={{width: '80px', height:'80px', border:"1px solid white", textAlign:'center', display:'flex', alignItems:'center'}}>
                                         {student.firstName} {student.lastName}
                                     </div>
                                 )
@@ -145,19 +150,19 @@ const QuestBoard = () => {
                 </div>
 
                 <div style={{display: "flex"}} onDrop = {(e) => {}} onDragOver = {handleDragOver}>
-                    <div style={{border: '1px solid yellow', marginRight: '10px'}} draggable key={'E'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'E')}>
+                    <div style={{border: '1px solid white', marginRight: '10px'}} draggable key={'E'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'E')}>
                         <img style={{ maxWidth: '80px' }} src={EconomistImg} alt='Econom img'/>
                     </div>
                     
-                    <div style={{border: '1px solid yellow', marginRight: '10px'}} draggable key={'S'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'S')} >
+                    <div style={{border: '1px solid white', marginRight: '10px'}} draggable key={'S'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'S')} >
                         <img style={{ maxWidth: '80px' }} src={ScribeImg} alt='Scribe img'/>
                     </div>
 
-                    <div style={{border: '1px solid yellow', marginRight: '10px'}} draggable key={'O'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'O')}>
+                    <div style={{border: '1px solid white', marginRight: '10px'}} draggable key={'O'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'O')}>
                         <img style={{ maxWidth: '80px' }} src={SoakImg} alt='Soak img'/>
                     </div>
 
-                    <div style={{border: '1px solid yellow', marginRight: '10px'}} draggable key={'K'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'K')}>
+                    <div style={{border: '1px solid white', marginRight: '10px'}} draggable key={'K'.charCodeAt(0)} onDragStart={(e)=>handleOnDragImg(e,'K')}>
                         <img style={{ maxWidth: '80px' }} src={CableMasterImg} alt='Cable img'/>
                     </div>
                 </div>
