@@ -88,14 +88,4 @@ public class CourseMember {
         }
         points = points - decreaseValue;
     }
-
-    public User getUser(){
-        return this.user;
-    }
-    public Long getSubgroup(){
-        return this.subgroup;
-    }
-    public String getRole(){
-        return this.role;
-    }
 }
