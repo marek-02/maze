@@ -1,44 +1,40 @@
-package com.example.api.chapter.role;
-
-import com.example.api.group.Group;
-import com.example.api.group.GroupService;
-import com.example.api.user.hero.model.UserHero;
-import com.example.api.user.model.User;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
-import com.example.api.chapter.Chapter;
-import com.example.api.chapter.ChapterService;
-import com.example.api.course.coursemember.CourseMember;
-import com.example.api.course.coursemember.CourseMemberService;
-import com.example.api.error.exception.EntityNotFoundException;
-
-@Service
-@AllArgsConstructor
-@Slf4j
-@Transactional
-public class ChapterRoleService {
-    @Autowired
-    ChapterService chapterService;
-
-    @Autowired
-    CourseMemberService courseMemberService;
-
-    @Autowired
-    ChapterRoleRepository repository;
-
-    public void createOrUpdateRole(Long courseId, Long chapterId, Long courseMemberId, String role) throws EntityNotFoundException {
-        CourseMember courseMember = courseMemberService.getCourseMember(courseId, courseMemberId);
-        log.info("Changing role for memberId {} to {}", courseMember.getUser(), role);
-
-        Chapter chapter = chapterService.getChapter(chapterId);
-
-        ChapterRole chapterRole = repository.findByChapterAndCourseMember(chapter, courseMember)
-            .orElse(new ChapterRole(chapter, courseMember, role));
-        chapterRole.setRole(role);
-        repository.save(chapterRole);
-    }
-}
+//package com.example.api.chapter.role;
+//
+//import com.example.api.chapter.Chapter;
+//import com.example.api.chapter.ChapterRepository;
+//import com.example.api.course.coursemember.CourseMember;
+//import com.example.api.course.coursemember.CourseMemberRepository;
+//import lombok.RequiredArgsConstructor;
+//import org.springframework.stereotype.Service;
+//
+//import java.util.List;
+//import java.util.NoSuchElementException;
+//
+//@Service
+//@RequiredArgsConstructor
+//public class ChapterRoleService {
+//    private final ChapterRoleRepository chapterRoleRepository;
+//    private final ChapterRepository chapterRepository;
+//    private final CourseMemberRepository courseMemberRepository;
+//
+//    public ChapterRole assignRoleToMember(Long chapterId, Long memberId, String role) {
+//        Chapter chapter = chapterRepository.findById(chapterId)
+//                .orElseThrow(() -> new NoSuchElementException("Chapter not found"));
+//        CourseMember courseMember = courseMemberRepository.findById(memberId)
+//                .orElseThrow(() -> new NoSuchElementException("CourseMember not found"));
+//        ChapterRole chapterRole = new ChapterRole(chapter, courseMember, role);
+//        return chapterRoleRepository.save(chapterRole);
+//    }
+//
+//    public List<ChapterRole> getRolesForChapter(Long chapterId) {
+//        Chapter chapter = chapterRepository.findById(chapterId)
+//                .orElseThrow(() -> new NoSuchElementException("Chapter not found"));
+//        return chapterRoleRepository.findByChapter(chapter);
+//    }
+//
+//    public List<ChapterRole> getRolesForMember(Long memberId) {
+//        CourseMember courseMember = courseMemberRepository.findById(memberId)
+//                .orElseThrow(() -> new NoSuchElementException("CourseMember not found"));
+//        return chapterRoleRepository.findByCourseMember(courseMember);
+//    }
+//}
