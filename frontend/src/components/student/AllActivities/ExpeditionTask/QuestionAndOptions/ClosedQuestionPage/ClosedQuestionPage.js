@@ -13,11 +13,17 @@ function ClosedQuestionPage(props) {
   const [userAnswers, setUserAnswers] = useState([])
 
   const updateUserAnswers = () => {
-    // remove last element using slice, it's the confirm answer button
-    const answers = Array.from(answersParent.current.children).slice(0, -1)
-    const answersInputs = answers.map((answer) => answer.children[0].children[0])
+   
+    const answersUpperRow = Array.from(answersParent.current.children[0].children)
+    const answersLowerRow = Array.from(answersParent.current.children[1].children)
 
-    const chosenAnswers = answersInputs.filter((input) => input.checked).map((element) => ({ id: +element.value }))
+    const answersInputsUpperRow = answersUpperRow.map((answer) => answer.children[0].children[0].children[0]);
+    const answersInputsLowerRow = answersLowerRow.map((answer) => answer.children[0].children[0].children[0]);
+
+    const chosenAnswersUR = answersInputsUpperRow.filter((input) => input.checked).map((element) => ({ id: +element.value }));
+    const choseAnswersLR = answersInputsLowerRow.filter((input) => input.checked).map((element) => ({ id: +element.value }));
+
+    const chosenAnswers = [...chosenAnswersUR, ...choseAnswersLR];
 
     setUserAnswers(chosenAnswers)
   }
@@ -27,48 +33,96 @@ function ClosedQuestionPage(props) {
   }
 
   return (
+    <>
     <Row
       style={{
-        margin: 0
+        margin: 50,
+        marginTop: 0,
+        // marginBottom: 100,
+        height: '50%',
+        // border: '2px solid red'
       }}
     >
-      <Col lg={8}>
-        <QuestionCard $fontColor={props.theme.font} $background={props.theme.primary}>
-          <div>{props.question.hint}</div>
-          <div>
-            <p>{props.question.content}</p>
-          </div>
-          <div>Punkty: {props.question.points}</div>
-        </QuestionCard>
-      </Col>
-      <Col lg={4} className='py-lg-0 py-3' ref={answersParent}>
-        {props.question.options.map((answer) => (
-          <Answer
-            $background={props.theme.primary}
-            $fontColor={props.theme.font}
-            key={answer.id}
-            className='mx-lg-0 mx-auto'
-          >
-            <Col xxl={1} xs={2} onChange={() => updateUserAnswers()}>
-              <input
-                name='answer'
-                type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
-                value={answer.id}
-              />
-              {/* <span className='checkmark'/> */}
-            </Col>
-            <Col xxl={11} xs={10}>
-              {answer.content}
-            </Col>
-          </Answer>
-        ))}
-        <ButtonRow $background={props.theme.success}>
-          <button style={{ marginBottom: '50px' }} onClick={() => saveAnswer()}>
-            Wyślij
-          </button>
-        </ButtonRow>
-      </Col>
+      {/* <Col lg={8}> */}
+    <QuestionCard $fontColor={props.theme.font} $background={props.theme.primary}>
+        <div>{props.question.hint}</div>
+        <div>
+        <p>{props.question.content}</p>
+        </div>
+        <div>Punkty: {props.question.points}</div>
+    </QuestionCard>    
     </Row>
+
+    <Row
+        style={{
+            margin: 30,
+            // height: '40%',
+            // border: '2px solid blue'
+        }}
+        ref={answersParent}
+    >
+        <Row>
+        {props.question.options.map((answer,index) => (
+            index % 2 === 0 && (
+                <Col lg={4} className='py-lg-0 py-3' >
+                <Answer
+                $background={props.theme.primary}
+                $fontColor={props.theme.font}
+                key={answer.id}
+                className='mx-lg-0 mx-auto'
+            >
+                <Col xxl={1} xs={2} onChange={() => updateUserAnswers()}>
+                <input
+                    name='answer'
+                    type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
+                    value={answer.id}
+                />
+        
+                </Col>
+                <Col xxl={11} xs={10}>
+                {answer.content}
+                </Col>
+            </Answer>
+            </Col>
+            )
+        ))}
+        </Row>
+
+        <Row>
+        {props.question.options.map((answer,index) => (
+            index % 2 === 1 && (
+                <Col lg={4} className='py-lg-0 py-3'>  
+                <Answer
+                $background={props.theme.primary}
+                $fontColor={props.theme.font}
+                key={answer.id}
+                className='mx-lg-0 mx-auto'
+            >
+                <Col xxl={1} xs={2} onChange={() => updateUserAnswers()}>
+                <input
+                    name='answer'
+                    type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
+                    value={answer.id}
+                />
+        
+                </Col>
+                <Col xxl={11} xs={10}>
+                {answer.content}
+                </Col>
+            </Answer>
+            </Col>
+            )
+        ))}
+        </Row>        
+    </Row>
+    <Row>
+        <ButtonRow $background={props.theme.success}>
+            <button onClick={() => saveAnswer()}>
+            Wyślij
+            </button>
+        </ButtonRow>
+    </Row>
+    </>
   )
 }
 

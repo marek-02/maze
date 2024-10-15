@@ -79,7 +79,7 @@ const QuestBoard = () => {
         })    
     })
     .catch(() => {
-        console.log("Nie udalo sie pobrac grupy")
+        // console.log("Nie udalo sie pobrac grupy")
     })    
   },[]) 
 

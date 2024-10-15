@@ -227,11 +227,11 @@ public class DatabaseConfig {
             colloquiumDetailsRepository.save(new ColloquiumDetails(4, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
 
 
-            //GRAPH TASKS (EXPEDITIONS, NIESPODZIANKI)
+            //GRAPH TASKS (EXPEDITIONS, NIESPODZIANKI ONLINE)
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_1,
-                "Niespodzianka I",
+                "(Nie)spodzianka I",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "model OSI, funkcje warstwy II oraz zasady przełączania",
                 5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
@@ -240,10 +240,19 @@ public class DatabaseConfig {
             List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_2 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_2,
-                "Niespodzianka II",
+                "Spodziewana Niespodzianka",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "Zapraszam chętnych...",
-                5,5,professor1,10.0,course1,requirementService.getDefaultRequirements(true),questions2,12L,graphTaskService
+                5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,20L,graphTaskService
+            );
+
+            List<Question> questions3 = addQuestionSet2(course1, questionService, optionService);
+            GraphTask graphTask3_1 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask3_1,
+                "(Nie)spodzianka",
+                "model OSI, funkcje warstwy III oraz zasady przełączania.",
+                "Zapraszam chętnych...",
+                5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
             );
 
 
@@ -334,12 +343,20 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap3 = new ActivityMap();
-            setActivityMapAndSave(activityMap3, null,null, List.of(info3_1),
+            setActivityMapAndSave(activityMap3, List.of(graphTask3_1),null, List.of(info3_1),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
             setActivityMapAndSave(activityMap4, List.of(graphTask4_1,graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
+
+            // ActivityMap activityMap5 = new ActivityMap();
+            // setActivityMapAndSave(activityMap4, List.of(),List.of(), List.of(),
+            // null,"src/main/resources/images/chapter_image.png", activityMapService);
+
+            // ActivityMap activityMap6 = new ActivityMap();
+            // setActivityMapAndSave(activityMap4, List.of(),List.of(), List.of(),
+            // null,"src/main/resources/images/chapter_image.png", activityMapService);
 
         
 
@@ -355,18 +372,70 @@ public class DatabaseConfig {
             
             Chapter chapter4 = new Chapter();
             setChapterDataAndSave(chapter4,"Lab4 - STP",0,3,activityMap4,null,false,course1);
+
+            // Chapter chapter5 = new Chapter();
+            // setChapterDataAndSave(chapter5,"Lab5 - ARP",0,3,activityMap5,null,false,course1);
+
+            // Chapter chapter6 = new Chapter();
+            // setChapterDataAndSave(chapter6,"Lab6 - Routing statyczny",0,3,activityMap6,null,false,course1);
              
 
             //GRAPHTASK RESULTS
             Calendar calendar = Calendar.getInstance();   
             calendar.set(2024, Calendar.JUNE, 15);         
+            List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
+            List<Double> graphTask3_1_points_students2 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 5.0, 15.0, 19.5));
+            List<Double> graphTask3_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 18.0, 2.0, 19.0, 15.0, 19.5));
+
             List<Double> graphTask4_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 12.0, 10.0, 5.0, 2.0, 13.0, 15.0, 7.5));
+            List<Double> graphTask4_1_points_students2 = new ArrayList<Double>(Arrays.asList(2.0, 2.0, 10.0, 15.0, 20.0, 3.0, 5.0, 7.5));
+            List<Double> graphTask4_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 16.0, 20.0, 20.0, 15.0, 17.5));
+
+            List<Double> graphTask4_2_points_students2 = new ArrayList<Double>(Arrays.asList(5.0, 3.0, 12.0, 15.0, 20.0, 3.0, 5.0, 17.5));
+            List<Double> graphTask4_2_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 15.0, 20.0, 20.0, 19.0, 17.5));
+
+            
             int students1Len = 8; //for some reason students1.size() returns 16!? Fix it if you know how
             for(int i=0; i<students1Len; i++){
-                GraphTaskResult result4_1 = new GraphTaskResult();
+                GraphTaskResult result3_1_students1 = new GraphTaskResult();
                 setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
-                    result4_1,graphTask4_1,graphTask4_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                    result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
                 );
+
+                GraphTaskResult result3_1_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students2,graphTask3_1,graphTask3_1_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result3_1_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students3,graphTask3_1,graphTask3_1_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_1_students1 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students1,graphTask4_1,graphTask4_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_1_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students2,graphTask4_1,graphTask4_1_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_1_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students3,graphTask4_1,graphTask4_1_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_2_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_2_students2,graphTask4_2,graphTask4_2_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_2_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_2_students3,graphTask4_2,graphTask4_2_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );                
             }
 
            
@@ -659,7 +728,7 @@ public class DatabaseConfig {
                 "Dzierżymorda",
                 "Dzierżymordą zostaje Nieszczęśnik, który najwięcej razy uzyskał maksymalną nagrodę pełniąc rolę Ekonoma",
                 badgeImage1,
-                0.0,
+                30.0,
                 true,
                 course
         );
@@ -669,7 +738,7 @@ public class DatabaseConfig {
                 "Tropiciel",
                 "Każdy, kto znalazl przynajmniej trzy wilcze doły.",
                 badgeImage2,
-                0.0,
+                60.0,
                 true,
                 course
         );
@@ -679,7 +748,7 @@ public class DatabaseConfig {
                 "Kronikarz",
                 "Każdy, który będąc skrybą wykonał przynajmniej trzy bardzo dobre (100% nagrody) dokumentacje",
                 badgeImage3,
-                0.0,
+                90.0,
                 true,
                 course
         );
@@ -689,7 +758,7 @@ public class DatabaseConfig {
                 "Arcymotacz",
                 "Każdy, który będąc kabelmistrzem wykonał przynajmniej trzy bardzo dobre (100% nagrody) topologie",
                 badgeImage4,
-                0.0,
+                300.0,
                 true,
                 course
         );
@@ -699,7 +768,7 @@ public class DatabaseConfig {
                 "E.U.geniusz",
                 "Ten, który najwięcej razy wskutek udzielonej w czasie spaceru pomocy został do tego glejtu nominowany przez nie swoją grupę",
                 badgeImage5,
-                0.0,
+                30.0,
                 true,
                 course
         );
@@ -709,7 +778,7 @@ public class DatabaseConfig {
                 "A.B.Normal",
                 "Ten, który wygrał i rozwiązał najwięcej licytacji o zadania",
                 badgeImage6,
-                0.0,
+                30.0,
                 true,
                 course
         );
@@ -719,7 +788,7 @@ public class DatabaseConfig {
                 "Grim Reaper",
                 "Każdy, kto co najmniej trzy razy został Zausznikiem Krwiopijcy",
                 badgeImage7,
-                0.0,
+                30.0,
                 true,
                 course
         );       
@@ -827,48 +896,6 @@ public class DatabaseConfig {
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {
-        // Option option = new Option("hub z routerem", true, null);
-        // Option option1 = new Option("komputer z komputerem", false, null);
-        // Option option2 = new Option("switch z routerem", true, null);
-        // Option option3 = new Option("hub ze switchem", false, null);
-
-        // Option option4 = new Option("Tak", true, null);
-        // Option option5 = new Option("Nie", false, null);
-
-        // List<Option> options = List.of(option, option1, option2, option3, option4, option5);
-
-        // Question startQuestion = new Question();
-        // Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-        //         Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
-        // Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-        //         "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
-        // Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-        //         "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
-        // Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-        //         "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
-        // Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-        //         "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
-
-        // List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
-
-        // questionService.saveQuestions(questions);
-
-        // startQuestion.getNext().addAll(List.of(question1, question2, question3));
-
-        // question1.getNext().addAll(List.of(question2, question4));
-        // question3.getNext().addAll(List.of(question5));
-
-        // questionService.saveQuestions(questions);
-        // optionService.saveAll(options);
-
-        // option.setQuestion(question1);
-        // option1.setQuestion(question1);
-        // option2.setQuestion(question1);
-        // option3.setQuestion(question1);
-        // option4.setQuestion(question2);
-        // option5.setQuestion(question2);
-        // optionService.saveAll(options);
-
         Question startQuestion = new Question();
         Option option1_1 = new Option("MTU", true, null);
         Option option1_2 = new Option("mostek", true, null);
@@ -876,7 +903,7 @@ public class DatabaseConfig {
         Option option1_4 = new Option("drukarka sieciowa", false, null);
         List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4);
         Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Spośród poniższych wybierz pojęcia warstwy łącza danych", "",
-                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4), 3.0, new LinkedList<>(), null);
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4), 5.0, new LinkedList<>(), null);
         startQuestion.getNext().addAll(List.of(question1));
         options_q1.forEach((option -> option.setQuestion(question1)));
 
@@ -885,7 +912,7 @@ public class DatabaseConfig {
         Option option2_2 = new Option("Fałsz", true, null);
         List<Option> options_q2 = List.of(option2_1,option2_2);
         Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy z uwagi na wymaganie minimalizacji opóźnienia dla ruchu głosowego szybsze porty switcha asymetrycznego powinny być wykorzystywane do podłączania telefonów IP?",
-                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 2.0, new LinkedList<>(), null);
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 5.0, new LinkedList<>(), null);
         question1.getNext().addAll(List.of(question2));
         options_q2.forEach((option -> option.setQuestion(question2)));
 
@@ -895,7 +922,7 @@ public class DatabaseConfig {
         Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
         List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
         Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5e:",
-                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 2.0, new LinkedList<>(), null);
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
         question2.getNext().addAll(List.of(question3));
         options_q3.forEach((option -> option.setQuestion(question3)));
 
@@ -905,7 +932,7 @@ public class DatabaseConfig {
         Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
         List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
         Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "W jakim celu stosuje się kodowanie dwuetapowe?",
-                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 3.0, new LinkedList<>(), null);
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
         question3.getNext().addAll(List.of(question4));
         options_q4.forEach((option -> option.setQuestion(question4)));
 
@@ -913,8 +940,76 @@ public class DatabaseConfig {
         questionService.saveQuestions(questions);
         optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option2_1,option2_2,option3_1,option3_2,
             option3_3,option3_4,option4_1,option4_2,option4_3,option4_4));
-
-
         return questions;
     }
+
+    private List<Question> addQuestionSet2(Course course, QuestionService questionService, OptionService optionService) {
+        Question startQuestion = new Question();
+        Option option1_1 = new Option("MTU", false, null);
+        Option option1_2 = new Option("mostek", false, null);
+        Option option1_3 = new Option("WAN", false, null);
+        Option option1_4 = new Option("drukarka sieciowa", false, null);
+        Option option1_5 = new Option("router", true, null);
+        Option option1_6 = new Option("laptop", true, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Spośród poniższych wybierz pojęcia warstwy sieciowej", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4,option1_5,option1_6), 5.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
+
+        Option option2_1 = new Option("OSPF nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety HELLO ", true, null);
+        Option option2_2 = new Option("RIP nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety HELLO", false, null);
+        Option option2_3 = new Option("EIGRP nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety AHOY",false,null);
+        Option option2_4 = new Option("BGP jest zewnętrznym protokołem routingu dynamicznego ",true,null);
+        List<Option> options_q2 = List.of(option2_1,option2_2,option2_3,option2_4);
+        Question question2 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz poprawne stwierdzenia odnoszące się do protokołów routingu",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2,option2_3,option2_4), 5.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
+
+        Option option3_1 = new Option("Dopełnianie (sztuczne wydłużanie) ramek", true, null);
+        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG przy wysyłaniu serii ramek", true, null);
+        Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
+        Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5ee:",
+                "", Difficulty.EASY, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("dla zapewnienia samosynchronizacji", true, null);
+        Option option4_2 = new Option("dla zmniejszenia zapotrzebowania na przepustowość", false, null);
+        Option option4_3 = new Option("dla umożliwienia korekcji błędów przez odbiorcę", false, null);
+        Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "W jakim celu stosuje się kodowanie dwuetapowe?",
+                "", Difficulty.MEDIUM, List.of(option4_1, option4_2,option4_3,option4_4), 2.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        Option option5_1 = new Option("Adresy IP i MAC następnego przeskoku, ale tylko wtedy, gdy nie da się podjąć decyzji na podstawie innych kryteriów", false, null);
+        Option option5_2 = new Option("Adres IP routera, który przysłał ostatnią aktualizację", false, null);
+        Option option5_3 = new Option("Dystans administracyjny", true, null);
+        Option option5_4 = new Option("Metryka, posiadająca interpretację zależną od protokołu routingu dynamicznego ", true, null);
+        Option option5_5 = new Option("Aktualne obciążenie bufora na najczęściej wykorzystywanym interfejsie routera", false, null);
+        List<Option> options_q5 = List.of(option5_1,option5_2,option5_3,option5_4,option5_5);
+        Question question5 = new Question(QuestionType.MULTIPLE_CHOICE, "Które z poniższych wartości są brane pod uwagę w procesie wyboru pomiędzy trasami, z których jedna zostanie zainstalowana w tablicy\n" + //
+                        "routingu?",
+                "", Difficulty.MEDIUM, List.of(option5_1, option5_2,option5_3,option5_4,option5_5), 3.0, new LinkedList<>(), null);
+        question4.getNext().addAll(List.of(question5));
+        options_q5.forEach((option -> option.setQuestion(question5)));
+
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4,question5
+        );
+        questionService.saveQuestions(questions);
+        
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6,
+        option2_1,option2_2,option2_3,option2_4,
+        option3_1,option3_2,option3_3,option3_4,
+        option4_1,option4_2,option4_3,option4_4,option5_1,option5_2,option5_3,option5_4,option5_5
+        ));
+        return questions;
+    }
+
 }

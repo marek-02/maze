@@ -341,12 +341,12 @@ export const EXPEDITION_STATUS = {
   CHOOSE: 'CHOOSE'
 }
 
-export const convertHeroTypeToPlayerType = (heroType) => {
-  if (heroType === HeroType.ROGUE || heroType === HeroType.WARRIOR) {
-    return PlayerType.CHALLENGING
-  }
-  return PlayerType.CALM
-}
+// export const convertHeroTypeToPlayerType = (heroType) => {
+//   if (heroType === HeroType.ROGUE || heroType === HeroType.WARRIOR) {
+//     return PlayerType.CHALLENGING
+//   }
+//   return PlayerType.CALM
+// }
 
 export const getGameCardInfo = (viewType, data) => {
   if (viewType === 'Tabela') {
@@ -370,7 +370,7 @@ export const getGameCardInfo = (viewType, data) => {
   } else if (data.worsePlayerPoints != null) {
     return (
       <span>
-        Masz <strong>{data.userPoints - data.worsePlayerPoints} punktów</strong> więcej od drugiego gracza.
+        Masz <strong>{Math.floor( data.userPoints - data.worsePlayerPoints)} punktów</strong> więcej od drugiego gracza.
       </span>
     )
   }

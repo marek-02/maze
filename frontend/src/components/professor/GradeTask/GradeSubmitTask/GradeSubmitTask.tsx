@@ -57,7 +57,7 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
       ...prevDetails,
       ['auction']: null,
     }));
-    console.log(activityDetails);
+    // console.log(activityDetails);
     CombatTaskService.setFileTaskJson({ chapterId, form: activityDetails})
         .then(() => {
           evaluateSubmitTask({
