@@ -62,7 +62,7 @@ function BadgesPage(props) {
             return '-'
         }
 
-        return `${rankInfo.nextRank.minPoints - rankInfo.currentPoints}pkt`
+        return `${Math.floor(rankInfo.nextRank.minPoints - rankInfo.currentPoints)}pkt`
     }
 
     const additionalContent = useCallback(
@@ -147,7 +147,7 @@ function BadgesPage(props) {
                         </Col>
                         <Col md={4}>
                             <strong>Liczba punktów: </strong>
-                            <span>{rankInfo.currentPoints}</span>
+                            <span>{Math.floor( rankInfo.currentPoints )}</span>
                         </Col>
                         <Col md={4}>
                             <strong>Do następnej rangi brakuje: </strong>
@@ -163,7 +163,7 @@ function BadgesPage(props) {
                                         <li key={index + Date.now()}>
                                             <div>
                                                 <div
-                                                    className='pointsInfo'>{rank ? `> ${rank.minPoints} pkt` : '-'}</div>
+                                                    className='pointsInfo'>{rank ? `>= ${rank.minPoints} pkt` : '-'}</div>
                                                 <div className='rankInfo'>
                                                     <div className='left-arrow'/>
                                                     <p>

@@ -94,8 +94,8 @@ export function HeroStatsContent(props) {
       </Col>
       <Col md={7}>
 
-        <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
-        <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "Brak"}</p>
+        <p className='pb-1'>Punkty doświadczenia: {Math.floor( props.stats.experiencePoints )}</p>
+        <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "Brak"}</p>
         <p className='pb-1'>Ranga: {props.stats.rankName}</p>
         <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
         <p>Wykonanych aktywności: {props.stats.completedActivities}</p>
@@ -121,8 +121,8 @@ export function KillerHeroStatsContent(props) {
         <p className='pb-1'>Ranga: {props.stats.rankName}</p>
         <p className='pb-1'>Punkty rywala: {betterPlayerPts}</p>
         <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
-        <p className='pb-1'>Punkty doświadczenia: {props.stats.experiencePoints}</p>
-        <p className='pb-1'>Punkty do kolejnej rangi: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
+        <p className='pb-1'>Punkty doświadczenia: {Math.floor( props.stats.experiencePoints )}</p>
+        <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
       </Col>
     </Row>
   )
@@ -153,8 +153,8 @@ export function SearchOthersStatsContent(props){
             }
           </Form.Select>
           {/* <button onClick={() => props.handler(userId)}>Szukaj</button> */}
-          <p className='pb-1'>Punkty doświadczenia: {props?.stats?.experiencePoints}</p>
-          <p className='pb-1'>Punkty do kolejnej rangi: {props?.stats?.nextLvlPoints}</p>
+          <p className='pb-1'>Punkty doświadczenia: {Math.floor( props?.stats?.experiencePoints )}</p>
+          <p className='pb-1'>Następna ranga od: {props?.stats?.nextLvlPoints}</p>
           <p className='pb-1'>Ranga: {props?.stats?.rankName}</p>
           <p className='pb-1'>Zdobytych medali: {props?.stats?.badgesNumber}</p>
           <p>Wykonanych aktywności: {props?.stats?.completedActivities}</p>
@@ -266,7 +266,7 @@ export function RankingTable(props)  {
   const newRankingData = props.ranking
   const newRankingDataLength = newRankingData.length
   if(newRankingDataLength % recordsPerPage != 0) {
-    console.log(newRankingDataLength % recordsPerPage);
+    // console.log(newRankingDataLength % recordsPerPage);
     for(let i = 0; i < recordsPerPage - (newRankingDataLength % recordsPerPage); i++) {
       newRankingData.push({email:'', firstName:"", lastName:"", groupName:'', heroType:'', points:0, position:newRankingDataLength + 1 + i, studentAnswer: null, unblockedBadges: 0})
     }

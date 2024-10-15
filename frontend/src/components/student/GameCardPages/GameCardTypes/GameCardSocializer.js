@@ -42,7 +42,7 @@ function GameCardSocializer(props) {
       //localStorage.setItem('someones_heroType', response?.heroTypeStatsDTO?.heroType)
     })
     .catch(((err) => {
-      console.log(err)
+    //   console.log(err)
       setSelectedUsersDashboardStats(null)
     }))
   },[selectedUserId])
@@ -53,7 +53,7 @@ function GameCardSocializer(props) {
       setMembers(response)
     })
     .catch(((err) => {
-      console.log(err)
+    //   console.log(err)
       setMembers(null)
     }
   ))

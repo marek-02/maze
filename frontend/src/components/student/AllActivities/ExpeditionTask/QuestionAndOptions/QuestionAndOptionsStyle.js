@@ -21,8 +21,11 @@ export const QuestionCard = styled.div`
   height: 80vh;
 
   background-color: ${(props) => props.$background};
+  border-radius: 100px;
+  border: 4px solid ${(props) => props.$fontColor};
   color: ${(props) => props.$fontColor};
-  margin: 0;
+//   margin: 0;
+  height: 100%;
   text-align: center;
   /* width: calc(100% - var(--margin)); */
 
@@ -59,6 +62,8 @@ export const QuestionCard = styled.div`
 export const Answer = styled(Row)`
   padding: 20px 10px;
   font-size: 23px;
+  border-radius: 50px;
+  border: 2px solid ${(props) => props.$fontColor};
   background-color: ${(props) => props.$background};
   color: ${(props) => props.$fontColor};
   max-width: 95%;

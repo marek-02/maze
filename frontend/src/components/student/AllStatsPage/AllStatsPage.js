@@ -25,26 +25,25 @@ function AllStatsPage(props){
       ["Miejsce w rankingu licytacji",dashboardStats?.auctionStats.auctionRanking],
       ["Liczba wszystkich licytacji",dashboardStats?.auctionStats.auctionsCount],
       ["Liczba udziałów w licytacjach",dashboardStats?.auctionsParticipations != undefined ? dashboardStats?.auctionsParticipations : 0],
-      ["Wygrane punkty", dashboardStats?.auctionStats.auctionsPoints],
+      ["Wygrane punkty", Math.floor( dashboardStats?.auctionStats.auctionsPoints )],
       ["Rozwiązane zadania z licytacji", dashboardStats?.auctionStats.auctionsResolvedCount],
       ["Wygrane",dashboardStats?.auctionStats.auctionsWon],
       ["Najlepszy licytator",dashboardStats?.auctionStats.bestAuctioner]
     ]
 
     const rows_activityStats = [
-      ["Punkty z aktywności:",dashboardStats?.generalStats.allPoints],
+      ["Punkty z aktywności:",Math.floor( dashboardStats?.generalStats.allPoints )],
       ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities],
-      ["Średnia (Niespodzianki)", dashboardStats?.generalStats.avgGraphTask!=undefined ? dashboardStats?.generalStats.avgGraphTask : 0],
-      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask  : 0],
+      ["Średnia (Niespodzianki)", dashboardStats?.generalStats.avgGraphTask!=undefined ? Math.floor( dashboardStats?.generalStats.avgGraphTask ): 0],
+      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? Math.floor( dashboardStats?.generalStats.avgFileTask )  : 0],
       ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
-      ["Punkty (Niespodzianki)",dashboardStats?.generalStats.graphTaskPoints],
-      ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints],
-      ["Punkty bonusowe",dashboardStats?.generalStats.bonusPoints],
+      ["Punkty (Niespodzianki)",Math.floor( dashboardStats?.generalStats.graphTaskPoints )],
+      ["Punkty (Zadania bojowe)",Math.floor( dashboardStats?.generalStats.fileTaskPoints )]
     ]
 
     const rows_heroStats = [
-      ["Punkty",dashboardStats?.heroStatsDTO.experiencePoints],
-      ["Następny poziom za",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
+      ["Punkty",Math.floor( dashboardStats?.heroStatsDTO.experiencePoints)],
+      ["Następny poziom od",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
       ["Ranga",dashboardStats?.heroStatsDTO.rankName],
       ["Typ postaci", dashboardStats?.heroTypeStatsDTO.heroType == "UNFORTUNATE" ? "Nieszczęśnik" : "Nieszczęśnica"],
       ["Zdobyte glejty",dashboardStats?.heroStatsDTO.badgesNumber]
@@ -52,7 +51,7 @@ function AllStatsPage(props){
 
     const rows_ranking = [
       ["Punkty najbliższego rywala",dashboardStats?.heroTypeStatsDTO.betterPlayerPointsOverall != null
-         ? dashboardStats?.heroTypeStatsDTO.betterPlayerPointsOverall : "PROWADZISZ"],
+         ? Math.floor( dashboardStats?.heroTypeStatsDTO.betterPlayerPointsOverall ) : "PROWADZISZ"],
       ["Liczba osób w rankingu", dashboardStats?.heroTypeStatsDTO.rankLength],
       ["Miejsce w rankingu", dashboardStats?.heroTypeStatsDTO.rankPosition],
       ["Miejsce w rankingu", dashboardStats?.heroTypeStatsDTO.rankPosition]

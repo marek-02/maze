@@ -69,7 +69,8 @@ public class QuestionService {
         if (timeRemaining < 0) {
             throw new TimeLimitExceededException(ExceptionMessage.TIME_REMAINING_IS_UP);
         }
-
+        log.info("Performing action");
+        log.info("Status:",status);
         switch (status) {
             case CHOOSE -> {
                 resultValidator.validateGraphTaskResultStatusIsChoose(result);

@@ -29,7 +29,7 @@ function GameCardKiller(props) {
       .then((response) => {
         setDashboardStats(response)
         localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
-        console.log(response);
+        // console.log(response);
       })
       .catch(() => setDashboardStats(null))
   }, [])
