@@ -38,7 +38,8 @@ function AllStatsPage(props){
       ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask  : 0],
       ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
       ["Punkty (Niespodzianki)",dashboardStats?.generalStats.graphTaskPoints],
-      ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints]
+      ["Punkty (Zadania bojowe)",dashboardStats?.generalStats.fileTaskPoints],
+      ["Punkty bonusowe",dashboardStats?.generalStats.bonusPoints],
     ]
 
     const rows_heroStats = [

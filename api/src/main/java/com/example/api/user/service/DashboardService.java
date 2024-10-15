@@ -273,6 +273,9 @@ public class DashboardService {
         Long surveysNumber = getSurveysNumber(member);
         Double graphTaskPoints = getGraphTaskPoints(member);
         Double fileTaskPoints = getFileTaskPoints(member);
+        Double bestGraphTaskPoints = getBestGraphTaskPoints(member, 3);
+        Double bestFileTaskPoints = getBestFileTaskPoints(member, 3);
+        Double bonusPoints = fileTaskPoints - bestFileTaskPoints + graphTaskPoints - bestGraphTaskPoints;
         Double userPoints = member.getPoints();
         Double maxPoints = getMaxPoints(student, course);
 
@@ -283,7 +286,8 @@ public class DashboardService {
                 graphTaskPoints,
                 fileTaskPoints,
                 userPoints,
-                maxPoints
+                maxPoints,
+                bonusPoints
         );
     }
 
@@ -393,6 +397,35 @@ public class DashboardService {
 
     private Double getSurveyPoints(CourseMember member) {
         return getTaskPoints(surveyResultRepository.findAllByMember(member));
+    }
+
+
+    private Double getBestFileTaskPoints(CourseMember member, int count) {
+        List<? extends ActivityResult> taskResults = fileTaskResultRepository.findAllByMember(member);
+
+        return taskResults
+                .stream()
+                .filter(ActivityResult::isEvaluated) // Filtrowanie ocenionych wyników
+                .mapToDouble(ActivityResult::getPoints) // Pobieranie punktów
+                .boxed() // Konwersja na Double, aby można było sortować
+                .sorted(Comparator.reverseOrder()) // Sortowanie malejąco
+                .limit(count) // Ograniczenie do najlepszych 'count' wyników
+                .mapToDouble(Double::doubleValue) // Powrót do strumienia double
+                .sum(); // Sumowanie wyników
+    }
+
+    private Double getBestGraphTaskPoints(CourseMember member, int count) {
+        List<? extends ActivityResult> taskResults = graphTaskResultRepository.findAllByMember(member);
+
+        return taskResults
+                .stream()
+                .filter(ActivityResult::isEvaluated) // Filtrowanie ocenionych wyników
+                .mapToDouble(ActivityResult::getPoints) // Pobieranie punktów
+                .boxed() // Konwersja na Double, aby można było sortować
+                .sorted(Comparator.reverseOrder()) // Sortowanie malejąco
+                .limit(count) // Ograniczenie do najlepszych 'count' wyników
+                .mapToDouble(Double::doubleValue) // Powrót do strumienia double
+                .sum(); // Sumowanie wyników
     }
 
     private Double getTaskPoints(List<? extends ActivityResult> taskResults) {
