@@ -59,23 +59,27 @@ export const QuestionCard = styled.div`
   }
 `
 
-export const Answer = styled(Row)`
+export const Answer = styled.div`
   padding: 20px 10px;
   font-size: 23px;
   border-radius: 50px;
   border: 2px solid ${(props) => props.$fontColor};
   background-color: ${(props) => props.$background};
   color: ${(props) => props.$fontColor};
-  max-width: 95%;
+  min-height: 20
   margin: 0 0 10px;
+  display: flex;
+
 
   & > * {
     padding: 5px;
   }
 
   & input {
+    padding: 0px;
     width: 100%;
     height: 100%;
+    // height: 30px;
     accent-color: green;
   }
 `

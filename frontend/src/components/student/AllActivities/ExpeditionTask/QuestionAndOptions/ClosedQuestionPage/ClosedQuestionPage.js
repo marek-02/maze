@@ -14,16 +14,12 @@ function ClosedQuestionPage(props) {
 
   const updateUserAnswers = () => {
    
-    const answersUpperRow = Array.from(answersParent.current.children[0].children)
-    const answersLowerRow = Array.from(answersParent.current.children[1].children)
+    const answers= Array.from(answersParent.current.children[0].children)
 
-    const answersInputsUpperRow = answersUpperRow.map((answer) => answer.children[0].children[0].children[0]);
-    const answersInputsLowerRow = answersLowerRow.map((answer) => answer.children[0].children[0].children[0]);
+    const answerInputs = answers.map((answer) => answer.children[0].children[0].children[0]);
 
-    const chosenAnswersUR = answersInputsUpperRow.filter((input) => input.checked).map((element) => ({ id: +element.value }));
-    const choseAnswersLR = answersInputsLowerRow.filter((input) => input.checked).map((element) => ({ id: +element.value }));
+    const chosenAnswers = answerInputs.filter((input) => input.checked).map((element) => ({ id: +element.value }));
 
-    const chosenAnswers = [...chosenAnswersUR, ...choseAnswersLR];
 
     setUserAnswers(chosenAnswers)
   }
@@ -39,7 +35,8 @@ function ClosedQuestionPage(props) {
         margin: 50,
         marginTop: 0,
         // marginBottom: 100,
-        height: '50%',
+        // height: '40%',
+        minWidth: "200px", 
         // border: '2px solid red'
       }}
     >
@@ -53,68 +50,45 @@ function ClosedQuestionPage(props) {
     </QuestionCard>    
     </Row>
 
-    <Row
+    <div
         style={{
             margin: 30,
-            // height: '40%',
-            // border: '2px solid blue'
+            // border: '2px solid blue',
+            display: "flex",
+            justifyContent: "center",
         }}
         ref={answersParent}
     >
-        <Row>
-        {props.question.options.map((answer,index) => (
-            index % 2 === 0 && (
-                <Col lg={4} className='py-lg-0 py-3' >
-                <Answer
+        <div>
+        {props.question.options.map((answer) => (
+            
+            <Col lg={4} className='py-lg-0 py-3'
+            style = {{
+                // border: '2px solid red',
+                width: "auto",
+                minWidth: "400px"
+            }}>  
+            <Answer
                 $background={props.theme.primary}
                 $fontColor={props.theme.font}
                 key={answer.id}
                 className='mx-lg-0 mx-auto'
             >
-                <Col xxl={1} xs={2} onChange={() => updateUserAnswers()}>
-                <input
-                    name='answer'
-                    type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
-                    value={answer.id}
-                />
-        
-                </Col>
-                <Col xxl={11} xs={10}>
-                {answer.content}
-                </Col>
-            </Answer>
-            </Col>
-            )
-        ))}
-        </Row>
+                <div xxl={1} xs={2} onChange={() => updateUserAnswers()}>
+                    <input name='answer' type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
+                        value={answer.id}
+                    />        
+                </div>
 
-        <Row>
-        {props.question.options.map((answer,index) => (
-            index % 2 === 1 && (
-                <Col lg={4} className='py-lg-0 py-3'>  
-                <Answer
-                $background={props.theme.primary}
-                $fontColor={props.theme.font}
-                key={answer.id}
-                className='mx-lg-0 mx-auto'
-            >
-                <Col xxl={1} xs={2} onChange={() => updateUserAnswers()}>
-                <input
-                    name='answer'
-                    type={props.question.type === 'MULTIPLE_CHOICE' ? 'checkbox' : 'radio'}
-                    value={answer.id}
-                />
-        
-                </Col>
-                <Col xxl={11} xs={10}>
+                <div xxl={11} xs={10}>
                 {answer.content}
-                </Col>
+                </div>
             </Answer>
-            </Col>
-            )
+         </Col>
+            
         ))}
-        </Row>        
-    </Row>
+        </div>        
+    </div>
     <Row>
         <ButtonRow $background={props.theme.success}>
             <button onClick={() => saveAnswer()}>
