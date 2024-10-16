@@ -259,10 +259,10 @@ public class DatabaseConfig {
             //FILE TASKS (ZADANIA BOJOWE)
             FileTask fileTask4_1 = new FileTask();
             setFileTaskDataAndSave(fileTask4_1,
-                "Niszczator kabli",
+                "Pochwal się wiedzą na temat okablowania szkieletowego",
                 "NA",
-                "Jak złamałbyś kabel światłowodowy? Czym?",
-                3,3,professor1,30.0,course1,null,fileTaskService
+                "Pochwal się wiedzą na temat okablowania szkieletowego",
+                3,3,professor1,20.0,course1,null,fileTaskService
             );
 
 
@@ -339,7 +339,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap2 = new ActivityMap();
-            setActivityMapAndSave(activityMap2, null,null, List.of(info2_1),
+            setActivityMapAndSave(activityMap2, List.of(graphTask4_1),null, List.of(info2_1),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap3 = new ActivityMap();
@@ -347,7 +347,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
-            setActivityMapAndSave(activityMap4, List.of(graphTask4_1,graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
+            setActivityMapAndSave(activityMap4, List.of(graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             // ActivityMap activityMap5 = new ActivityMap();
@@ -916,8 +916,8 @@ public class DatabaseConfig {
         question1.getNext().addAll(List.of(question2));
         options_q2.forEach((option -> option.setQuestion(question2)));
 
-        Option option3_1 = new Option("Dopełnianie (sztuczne wydłużanie) ramek", true, null);
-        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG przy wysyłaniu serii ramek", true, null);
+        Option option3_1 = new Option("Dopełnianie ramek", true, null);
+        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG", true, null);
         Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
         Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
         List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
@@ -926,7 +926,7 @@ public class DatabaseConfig {
         question2.getNext().addAll(List.of(question3));
         options_q3.forEach((option -> option.setQuestion(question3)));
 
-        Option option4_1 = new Option("dla zapewnienia samosynchronizacji", true, null);
+        Option option4_1 = new Option("dla zapewnienia samosynchronizacji sygnałów", true, null);
         Option option4_2 = new Option("dla zmniejszenia zapotrzebowania na przepustowość", false, null);
         Option option4_3 = new Option("dla umożliwienia korekcji błędów przez odbiorcę", false, null);
         Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
