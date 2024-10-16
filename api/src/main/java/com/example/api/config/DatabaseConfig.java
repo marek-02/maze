@@ -259,9 +259,9 @@ public class DatabaseConfig {
             //FILE TASKS (ZADANIA BOJOWE)
             FileTask fileTask4_1 = new FileTask();
             setFileTaskDataAndSave(fileTask4_1,
+                "Niespodzianka",
                 "Pochwal się wiedzą na temat okablowania szkieletowego",
-                "NA",
-                "Pochwal się wiedzą na temat okablowania szkieletowego",
+                "",
                 3,3,professor1,20.0,course1,null,fileTaskService
             );
 

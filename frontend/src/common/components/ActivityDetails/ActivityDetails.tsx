@@ -48,9 +48,6 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               <p>
                 <span>Nazwa:</span> {props.name}
               </p>
-              <p>
-                <span>Typ:</span> {getActivityTypeName(props.type)}
-              </p>
             </div>
             <div className={styles.dateInfo}>
               <img
