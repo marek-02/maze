@@ -33,7 +33,7 @@ public class EmailService {
                         .put(new JSONObject()
                                 .put(Emailv31.Message.FROM, new JSONObject()
                                         .put("Email", "wlodarskibartek2@gmail.com")
-                                        .put("Name", "Systematic Chaos"))
+                                        .put("Name", "Maze"))
                                 .put(Emailv31.Message.TO, new JSONArray()
                                         .put(new JSONObject()
                                                 .put("Email", user.getEmail())

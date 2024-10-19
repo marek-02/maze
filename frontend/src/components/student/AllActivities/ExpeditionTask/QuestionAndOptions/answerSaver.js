@@ -7,13 +7,13 @@ const getAnswerForm = (questionType, userAnswer) => {
     case QuestionType.OPEN_QUESTION:
       return { optionIds: idList, openAnswer: userAnswer }
     case QuestionType.SINGLE_CHOICE:
-      idList = [userAnswer[0].id]
+      idList = userAnswer[0] !== undefined ? [userAnswer[0].id] : []
       return { optionIds: idList, openAnswer: null }
     case QuestionType.MULTIPLE_CHOICE:
       idList = userAnswer.map((answer) => answer.id)
       return { optionIds: idList, openAnswer: null }
     default:
-
+ 
   }
 }
 
@@ -32,7 +32,6 @@ export default function answerSaver(userAnswer, questionType, expeditionId, ques
       questionId,
       answerForm: getAnswerForm(questionType, userAnswer)
     }
-
     ExpeditionService.sendAction(result).then(() => reloadInfo())
   }
 }

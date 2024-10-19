@@ -266,7 +266,6 @@ export function RankingTable(props)  {
   const newRankingData = props.ranking
   const newRankingDataLength = newRankingData.length
   if(newRankingDataLength % recordsPerPage != 0) {
-    // console.log(newRankingDataLength % recordsPerPage);
     for(let i = 0; i < recordsPerPage - (newRankingDataLength % recordsPerPage); i++) {
       newRankingData.push({email:'', firstName:"", lastName:"", groupName:'', heroType:'', points:0, position:newRankingDataLength + 1 + i, studentAnswer: null, unblockedBadges: 0})
     }
@@ -299,7 +298,7 @@ export function RankingTable(props)  {
             <tr key={index}>
               <td>{ranking.position}</td>
               <td>{ranking.lastName != '' ? ranking.firstName + " " + ranking.lastName[0] + "." : ""}</td>
-              <td>{ranking.points}</td>
+              <td>{Math.floor(ranking.points)}</td>
             </tr>
           ))}
         </tbody>
@@ -320,20 +319,20 @@ export function RankingTable(props)  {
 }
 
 export function PersonalRankingInfoContent(props) {
-  const userPointsGroup = Math.ceil((props.stats.rankPosition / props.stats.rankLength) * 100)
+  const userPointsGroup = Math.floor((props.stats.rankPosition / props.stats.rankLength) * 100)
 
   const [viewType, setViewType] = useState('Tabela');
   const viewTypes = [
     { name: 'Tabela' },
     { name: 'Wykres' },
     { name: 'Rywal' },
-  ];
-  
+  ]; 
+
   const rankComment = getGameCardInfo(viewType, {
     rankPosition: props.stats.rankPosition,
     rankLength: props.stats.rankLength,
     userPointsGroup: userPointsGroup,
-    userPoints: props.stats.userPoints,
+    userPoints: Math.floor( props.stats.userPoints ),
     betterPlayerPoints: props.stats.betterPlayerPoints,
     worsePlayerPoints: props.stats.worsePlayerPoints
   })
@@ -348,7 +347,7 @@ export function PersonalRankingInfoContent(props) {
         props.stats.worsePlayerPoints != null ? 'Gracz za Tobą' : ''
       ].filter((label) => !!label)
 
-      const barPoints = [props.stats.betterPlayerPoints, props.stats.userPoints, props.stats.worsePlayerPoints].filter(
+      const barPoints = [props.stats.betterPlayerPoints, Math.floor( props.stats.userPoints ), props.stats.worsePlayerPoints].filter(
         (points) => points != null
       )
       return barConfig(barLabels, barPoints, colorPalette(barLabels.length))

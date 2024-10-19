@@ -84,7 +84,6 @@ export function GridCol({name, colName, onUpdate}) {
       newChecks[index] = false;
       setCheckedIndexes(newChecks);
     }
-    // console.log(checkedIndexes)
   }
 
   const handleSelectChange = (event) => {

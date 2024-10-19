@@ -116,7 +116,7 @@ function Ranking(props) {
                 <td>{getHeroName(student.heroType)}</td>
                 <td>{student.rank}</td>
                 <td>{student.unblockedBadges}</td>
-                <td>{student.points ?? props.noPointsMessage ?? 'Brak danych'}</td>
+                <td>{Math.floor( student.points ) ?? props.noPointsMessage ?? 'Brak danych'}</td>
                 {!!props.iconCallback && (
                   <td>
                     <FontAwesomeIcon

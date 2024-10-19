@@ -105,7 +105,7 @@ function RegistrationForm(props) {
                             Nieszczęśnica
                           </option>
                         </Field>
-                        <Info $buttonColor={props.theme.success}>
+                        {/* <Info $buttonColor={props.theme.success}>
                           <span>i</span>
                           <Description
                             $background={props.theme.success}
@@ -117,7 +117,7 @@ function RegistrationForm(props) {
                             {HeroDescriptions[character]}
                             <img src={HeroImg[character]} alt={character} />
                           </Description>
-                        </Info>
+                        </Info> */}
                       </div>
                     ) : (
                       <Field className='form-control' name={key} type={RegistrationLabelsAndTypes[key][1]} />

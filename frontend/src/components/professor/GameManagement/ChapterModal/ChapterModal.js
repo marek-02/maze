@@ -145,7 +145,7 @@ function ChapterModal(props) {
     setGraphPreviewNode({ ...graphPreviewNode, label: labelValue, position: { x: positionX, y: positionY } })
   }
 
-  console.log("Images:",images);
+
   return (
     images && (
       <>

@@ -18,7 +18,7 @@ function ResetPassword(props) {
           <Logo $logoColor={props.theme.font} className="p-5">
             <FontAwesomeIcon icon={faFire} />
             <br />
-            Systematic Chaos
+            Maze
           </Logo>
 
           <ResetPasswordForm />

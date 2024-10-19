@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState,useEffect } from 'react'
 
 import { Col, Row } from 'react-bootstrap'
 import { connect } from 'react-redux'
@@ -27,6 +27,14 @@ function ClosedQuestionPage(props) {
   const saveAnswer = () => {
     answerSaver(userAnswers, props.question.type, props.expeditionId, props.question.id, props.reloadInfo)
   }
+
+  useEffect(() => { //This effect silently selects first answer for SINGLE_CHOICE questions or otherwise if user doesnt provide any answer, error will pop
+    if(props.question.type === "SINGLE_CHOICE"){
+        const firstInput = answersParent.current.children[0].children[0].children[0].children[0].children[0];
+
+        setUserAnswers([{id: +firstInput.value}])
+    }
+  },[answersParent])
 
   return (
     <>

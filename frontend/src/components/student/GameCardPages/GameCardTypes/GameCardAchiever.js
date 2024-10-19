@@ -132,7 +132,7 @@ function GameCardAchiever(props) {
                   <PersonalRankingInfoContent
                     stats={{
                       ...dashboardStats.heroTypeStatsDTO,
-                      userPoints: dashboardStats.generalStats.allPoints
+                      userPoints: Math.floor(dashboardStats.generalStats.allPoints )
                     }}
                     email={dashboardStats.email}
                     theme={props.theme}

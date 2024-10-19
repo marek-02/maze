@@ -9,23 +9,23 @@ export const useStudentsOfSubgroup = (courseId: number) => {
     let userGroup = -1;
     let userSubgroup = -1;
 
-    console.log(`Fetching user group ID for courseId: ${courseId}`);
+    // console.log(`Fetching user group ID for courseId: ${courseId}`);
     userService.getUserGroupId(courseId)
       .then((response) => {
         userGroup = response;
-        console.log(`Fetched user group ID: ${userGroup}`);
+        // console.log(`Fetched user group ID: ${userGroup}`);
 
-        console.log(`Fetching user subgroup ID for courseId: ${courseId}`);
+        // console.log(`Fetching user subgroup ID for courseId: ${courseId}`);
         userService.getUserSubgroupId(courseId)
           .then((response) => {
             userSubgroup = response;
-            console.log(`Fetched user subgroup ID: ${userSubgroup}`);
+            // console.log(`Fetched user subgroup ID: ${userSubgroup}`);
 
-            console.log(`Fetching students for userGroup: ${userGroup}, userSubgroup: ${userSubgroup}`);
+            // console.log(`Fetching students for userGroup: ${userGroup}, userSubgroup: ${userSubgroup}`);
             GroupService.getSubgroupStudentsExtended(userGroup, userSubgroup)
               .then((response) => {
                 const studentsOfSubgroupResponse = response?.map((student: any) => ({ ...student }));
-                console.log(`Fetched students: ${JSON.stringify(studentsOfSubgroupResponse)}`);
+                // console.log(`Fetched students: ${JSON.stringify(studentsOfSubgroupResponse)}`);
 
                 let studentsOfSubgroup_local = [];
                 let count = 0;
@@ -42,7 +42,7 @@ export const useStudentsOfSubgroup = (courseId: number) => {
                   studentsOfSubgroup_local.push(entry);
                   count++;
                 }
-                console.log(`Processed students: ${JSON.stringify(studentsOfSubgroup_local)}`);
+                // console.log(`Processed students: ${JSON.stringify(studentsOfSubgroup_local)}`);
                 setStudentsOfSubgroup(studentsOfSubgroup_local);
               })
               .catch((error) => {
