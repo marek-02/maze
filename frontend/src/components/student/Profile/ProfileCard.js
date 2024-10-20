@@ -8,7 +8,8 @@ import { CustomCard } from '../GameCardPages/GameCardStyles'
 
 function ProfileCard(props) {
   const buttonColor = props.customButton ?? props.theme.warning
-  return (
+  console.log("Body:",props.body)
+  return (    
     <CustomCard $fontColor={props.theme.font} $background={props.theme.primary} $bodyColor={props.theme.secondary}>
       <CardHeader>
         <h5>{props.header}</h5>

@@ -128,7 +128,7 @@ public class DatabaseConfig {
             Hero sheUnfortunate1 = new Hero(HeroType.SHEUNFORTUNATE, course1);
             heroRepository.saveAll(List.of(unfortunate1, sheUnfortunate1));
 
-
+ 
             //STUDENT CREATION (1 LIST == 1 GROUP)
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
             students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456));
