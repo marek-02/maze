@@ -68,6 +68,15 @@ function RateGroupModal(props) {
     if(role === studentRole) return props.theme.font
     return null
   }
+  const getFullStudentRoleName = (roleName) => {
+    if(roleName === "O")
+      return "Opój"
+    if(roleName === "S")
+      return "Skryba"
+    if(roleName === "K")
+      return "Kabelmistrz"
+    return "Ekonom"    
+  }
 
   return (
     <>
@@ -94,13 +103,13 @@ function RateGroupModal(props) {
                         return (
                         <Row className='mx-auto d-flex align-items-center'>
                             <div className='m-2' className={isDifferentSubgroup && index !== 0 ? 'border border-dark' : '' }/>
-                            <Col md={2}>
-                            <h6>{student.firstName} {student.lastName}</h6>
+                            <Col md={4}>
+                            <h6>{student.firstName} {student.lastName} </h6>
                             </Col>
-                            {FormCol('Ekonom', 'number', student.id + '.econom', 2, { min: 0, errorColor: props.theme.danger, backgroundColor: getFieldBackground('E', student.role), fontColor: getFieldFontColor('E', student.role) })}
-                            {FormCol('Kabelmistrz', 'number', student.id + '.cablemaster', 3, { min: 0, errorColor: props.theme.danger, backgroundColor: getFieldBackground('K', student.role), fontColor: getFieldFontColor('K', student.role) })}
-                            {FormCol('Skryba', 'number', student.id + '.scribe', 2, { min: 0, errorColor: props.theme.danger, backgroundColor: getFieldBackground('S', student.role), fontColor: getFieldFontColor('S', student.role) })}
-                            {FormCol('Opój', 'number', student.id + '.oboe', 2, { min: 0, errorColor: props.theme.danger, backgroundColor: getFieldBackground('O', student.role), fontColor: getFieldFontColor('O', student.role)})}
+                            <Col md={4}>
+                            <h6><b>{getFullStudentRoleName(student.role)}</b></h6>
+                            </Col>
+                            {FormCol('Ocena', 'number', student.id + '.econom', 2, { min: 0, errorColor: props.theme.danger })}
                         </Row>
                     )})
                 }
