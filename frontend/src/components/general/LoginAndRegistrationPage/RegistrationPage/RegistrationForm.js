@@ -14,7 +14,7 @@ import { AccountType, HeroType } from '../../../../utils/userRole'
 function RegistrationForm(props) {
   const [errorMessage, setErrorMessage] = useState()
   const [isFetching, setIsFetching] = useState(false)
-  const [character, setCharacter] = useState(HeroType.WARRIOR)
+  const [character, setCharacter] = useState(HeroType.UNFORTUNATE)
   const description = useRef(null)
   const initialValues = {
     firstName: '',
@@ -31,6 +31,13 @@ function RegistrationForm(props) {
 
   const changeCharacter = (event) => {
     setCharacter(event.target.value)
+  }
+
+
+  //potrzebne, bo inaczej na backendzie nie ogarnie o co chodzi przy rejestracji
+  const getEnglishName = (character) => {
+    if (character === "Nieszczęśnik") return "UNFORTUNATE"
+    return "SHEUNFORTUNATE"
   }
 
   useEffect(() => {
@@ -66,7 +73,7 @@ function RegistrationForm(props) {
       onSubmit={(values, { setSubmitting }) => {
         setIsFetching(true)
         values.accountType = props.isStudent ? AccountType.STUDENT : AccountType.PROFESSOR
-        values.heroType = props.isStudent ? character : null
+        values.heroType = props.isStudent ? getEnglishName(character) : null
         const registerPromise = new Promise((resolve) => {
           resolve(props.dispatch(register(values)))
         })
@@ -93,7 +100,7 @@ function RegistrationForm(props) {
                         <Field
                           className='form-control'
                           as='select'
-                          name='heroType'
+                          name={key}
                           onChange={changeCharacter}
                           value={character}
                         >

@@ -12,10 +12,8 @@ export const AccountType = {
 }
 
 export const HeroType = {
-  WIZARD: 'WIZARD',
-  WARRIOR: 'WARRIOR',
-  PRIEST: 'PRIEST',
-  ROGUE: 'ROGUE'
+  UNFORTUNATE: 'Nieszczęśnik',
+  SHEUNFORTUNATE: 'Nieszczęśnica',
 }
 
 export const PlayerType = {
