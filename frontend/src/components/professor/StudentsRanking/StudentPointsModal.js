@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'react-bootstrap'
 import { connect } from 'react-redux'
-
+import { useAppSelector } from '../../../hooks/hooks'
 import ProfessorService from '../../../services/professor.service'
 import LastPointsTable from '../../student/PointsPage/Tables/LastPointsTable'
 
 function StudentPointsModal(props) {
   const [studentPoints, setStudentPoints] = useState(undefined)
+  const courseId = useAppSelector((state) => state.user.courseId);
 
   useEffect(() => {
     if (props.show) {
-      ProfessorService.getStudentPointsList(props.studentEmail)
+      ProfessorService.getStudentPointsList(courseId,props.studentEmail)
         .then((response) => {
           setStudentPoints(response)
         })

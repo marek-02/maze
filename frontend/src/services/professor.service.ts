@@ -107,8 +107,8 @@ class ProfessorService {
     })
   }
 
-  getStudentPointsList(studentEmail: string) {
-    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, { studentEmail }).catch((error) => {
+  getStudentPointsList(courseId: number, studentEmail: string) {
+    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, {courseId, studentEmail }).catch((error) => {
       throw error
     })
   }
