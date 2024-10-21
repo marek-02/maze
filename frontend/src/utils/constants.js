@@ -156,13 +156,13 @@ export const getActivityImg = (type) => {
 export const getActivityTypeName = (type) => {
   switch (type) {
     case Activity.EXPEDITION:
-      return 'Ekspedycja'
+      return 'Niespodzianka ONLINE'
     case Activity.INFO:
       return 'Wytyczne'
     case Activity.SURVEY:
       return 'Sondaż'
     case Activity.TASK:
-      return 'Zadanie bojowe'
+      return 'Niespodzianka OFFLINE'
     case Activity.AUCTION:
       return 'Licytacja'
     case Activity.SUBMIT:
