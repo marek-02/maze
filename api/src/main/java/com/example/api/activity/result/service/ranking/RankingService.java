@@ -9,6 +9,7 @@ import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
+import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
@@ -51,6 +52,7 @@ public class RankingService {
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
     private final LoggedInUserService authService;
+    private final SubmitTaskResultRepository submitTaskResultRepository;
 
     public List<RankingResponse> getRanking(Long courseId) {
         List<RankingResponse> rankingList = courseMemberService.getAll(courseId)
@@ -224,12 +226,21 @@ public class RankingService {
                 .sum();
     }
 
+    private Double getSubmitPoints(CourseMember member) {
+        return submitTaskResultRepository.findAllByMember(member)
+                .stream()
+                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
+                .mapToDouble(d -> d)
+                .sum();
+    }
+
     private Double getStudentPoints(CourseMember student) {
         Double graphTaskPoints = getGraphTaskPoints(student);
         Double fileTaskPoints = getFileTaskPoints(student);
         Double additionalPoints = getAdditionalPoints(student);
         Double surveyPoints = getSurveyPoints(student);
-        return DoubleStream.of(graphTaskPoints, fileTaskPoints, additionalPoints, surveyPoints).sum();
+        Double submitPoints = getSubmitPoints(student);
+        return DoubleStream.of(graphTaskPoints, fileTaskPoints, additionalPoints, surveyPoints, submitPoints).sum();
     }
 
 }

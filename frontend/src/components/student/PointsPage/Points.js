@@ -54,13 +54,13 @@ function Points(props) {
           <Col className='p-0'>
             <PercentageCircle
               percentageValue={calculatedPercentageValue()}
-              points={totalPointsData.totalPointsReceived}
+              points={totalPointsData.totalPointsReceived.toFixed(2)}
               maxPoints={totalPointsData.totalPointsPossibleToReceive}
             />
           </Col>
           <Col className='p-0 justify-content-center d-flex flex-column'>
             <h5>
-              <strong>Twój wynik to: {totalPointsData.totalPointsReceived}pkt</strong>
+              <strong>Twój wynik to: {totalPointsData.totalPointsReceived.toFixed(2)}pkt</strong>
             </h5>
             <h5>
                 {/* Tymczasowo wycinam te linijke bo to nie dziala w ogole */}
