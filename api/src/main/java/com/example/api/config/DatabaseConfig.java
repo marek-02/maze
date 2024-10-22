@@ -231,7 +231,7 @@ public class DatabaseConfig {
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_1,
-                "(Nie)spodzianka I",
+                "(Nie)spodzianka II",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "model OSI, funkcje warstwy II oraz zasady przełączania",
                 5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
@@ -249,7 +249,7 @@ public class DatabaseConfig {
             List<Question> questions3 = addQuestionSet2(course1, questionService, optionService);
             GraphTask graphTask3_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask3_1,
-                "(Nie)spodzianka",
+                "(Nie)spodzianka I",
                 "model OSI, funkcje warstwy III oraz zasady przełączania.",
                 "Zapraszam chętnych...",
                 5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
@@ -397,18 +397,18 @@ public class DatabaseConfig {
             
             int students1Len = 8; //for some reason students1.size() returns 16!? Fix it if you know how
             for(int i=0; i<students1Len; i++){
-                GraphTaskResult result3_1_students1 = new GraphTaskResult();
-                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
-                    result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
-                );
+                // GraphTaskResult result3_1_students1 = new GraphTaskResult();
+                // setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                //     result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                // );
 
                 GraphTaskResult result3_1_students2 = new GraphTaskResult();
-                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
                     result3_1_students2,graphTask3_1,graphTask3_1_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
                 );
 
                 GraphTaskResult result3_1_students3 = new GraphTaskResult();
-                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
                     result3_1_students3,graphTask3_1,graphTask3_1_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
                 );
 
@@ -972,9 +972,9 @@ public class DatabaseConfig {
         Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
         Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
         List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
-        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5ee:",
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5e:",
                 "", Difficulty.EASY, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
-        question1.getNext().addAll(List.of(question3));
+        question2.getNext().addAll(List.of(question3));
         options_q3.forEach((option -> option.setQuestion(question3)));
 
         Option option4_1 = new Option("dla zapewnienia samosynchronizacji", true, null);
