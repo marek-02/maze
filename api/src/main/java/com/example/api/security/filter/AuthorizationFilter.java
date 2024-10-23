@@ -36,13 +36,16 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                DecodedJWT decodedJWT = null;
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
-                    DecodedJWT decodedJWT = verifier.verify(token);
+                    decodedJWT = verifier.verify(token);
                     String email = decodedJWT.getSubject();
+                    log.info("Decoded email: {}", email);
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
+                    log.info("Decoded roles: {}", (Object) roles);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
@@ -51,7 +54,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
-                    log.error("Error while authenticating: {}", e.getMessage());
+                    log.error("Error while authenticating: {}", e.getMessage(), e);
+                    log.error("Token: {}", authorizationHeader);
+                    log.error("Decoded email: {}", decodedJWT != null ? decodedJWT.getSubject() : "N/A");
+                    log.error("Decoded roles: {}", decodedJWT != null ? String.join(", ", decodedJWT.getClaim("roles").asArray(String.class)) : "N/A");
                     response.setHeader("Error", e.getMessage());
                     response.setStatus(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();

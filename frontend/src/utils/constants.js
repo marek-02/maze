@@ -43,6 +43,7 @@ import warrior10 from './resources/warrior/9.png'
 import scribeImg from './resources/roles/scribe.png'
 import economistImg from './resources/roles/economist.png'
 import soakImg from './resources/roles/soak.png'
+import placeholderImg from './resources/roles/placeholder.png'
 import cablemasterImg from './resources/roles/cablemaster.png'
 import { HeroType, PlayerType } from './userRole'
 import { GeneralRoutes, StudentRoutes } from '../routes/PageRoutes'
@@ -81,6 +82,8 @@ export const SoakImg = soakImg
 export const CableMasterImg = cablemasterImg
 export const EconomistImg = economistImg
 export const ScribeImg = scribeImg
+export const PlaceholderImg = placeholderImg
+
 
 export const Activity = {
   EXPEDITION: 'EXPEDITION',

@@ -1,5 +1,4 @@
 .questStack {
-  background-image: url('../../../../../public/map/questboard.png');
   background-size: cover;
   background-repeat: no-repeat;
   padding: 3em;
@@ -9,4 +8,25 @@
   align-items: stretch;
   flex: 3;
   flex-wrap: wrap;
+  overflow: clip;
+}
+
+.board {
+  background-image: url('../../../../../public/map/questboard.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wood{
+  padding-top: 1em;
+  padding-bottom: 20px;
+  border-bottom: 8px solid #8B4513;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.icon{
+  border: 3px solid #8B4513;
+  margin-right: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.6);
 }
