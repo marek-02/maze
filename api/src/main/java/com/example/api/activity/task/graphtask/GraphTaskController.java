@@ -32,21 +32,25 @@ public class GraphTaskController {
         List<OptionForm> optionForms1 = List.of(
                 new OptionForm(MessageManager.ANS_1, true),
                 new OptionForm(MessageManager.ANS_2, false),
-                new OptionForm(MessageManager.ANS_3, false));
+                new OptionForm(MessageManager.ANS_3, false)
+        );
         List<OptionForm> optionForms2 = List.of(
                 new OptionForm(MessageManager.ANS_4, true),
                 new OptionForm(MessageManager.ANS_5, true),
                 new OptionForm(MessageManager.ANS_6, true),
-                new OptionForm(MessageManager.ANS_7, false));
-        List<QuestionForm> questionForms = List.of(
-                new QuestionForm(0, List.of(1, 2)),
-                new QuestionForm(1, "OPENED", MessageManager.QUESTION_1,
-                        MessageManager.HINT_1, "EASY", List.of(), 10.0, List.of(3), "1410"),
-                new QuestionForm(2, "SINGLE_CHOICE", MessageManager.QUESTION_2,
-                        MessageManager.HINT_2, "MEDIUM", optionForms1, 20.0, List.of(3), ""),
-                new QuestionForm(3, "MULTIPLE_CHOICE", MessageManager.QUESTION_3,
-                        MessageManager.HINT_3, "HARD", optionForms2, 30.0, List.of(), "")
+                new OptionForm(MessageManager.ANS_7, false)
         );
+        List<QuestionForm> questionForms = List.of(
+                new QuestionForm(0, List.of(1)),
+                // new QuestionForm(1, "OPENED", MessageManager.QUESTION_1,
+                //         MessageManager.HINT_1, "EASY", List.of(), 10.0, List.of(3), "1410"),
+                new QuestionForm(1, "SINGLE_CHOICE", MessageManager.QUESTION_2,
+                        MessageManager.HINT_2, "MEDIUM", optionForms1, 20.0, List.of(2), ""),
+                new QuestionForm(2, "MULTIPLE_CHOICE", MessageManager.QUESTION_3,
+                        MessageManager.HINT_3, "HARD", optionForms2, 30.0, List.of(3), ""),
+                new QuestionForm(3, "MULTIPLE_CHOICE", MessageManager.QUESTION_3,
+                        MessageManager.HINT_3, "HARD", optionForms2, 25.0, List.of(), "")
+        );      
         CreateGraphTaskForm form = new CreateGraphTaskForm(
                 MessageManager.TITLE,
                 MessageManager.DESC,
