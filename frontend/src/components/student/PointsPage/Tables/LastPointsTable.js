@@ -13,7 +13,7 @@ function LastPointsTable(props) {
       {title}
     </th>
   ))
-
+  
   return (
     <TableContainer
       className='mb-md-0 mb-5'
@@ -38,7 +38,7 @@ function LastPointsTable(props) {
           <tr>
             <td colSpan='100%'>
               <p className="text-center h6" style={{ color: props.theme.warning }}>
-                {props.pointsList?.toFixed(2) ? 'Brak punktów' : ERROR_OCCURRED}
+                {props.pointsList ? 'Brak punktów' : ERROR_OCCURRED}
               </p>
             </td>
           </tr>
