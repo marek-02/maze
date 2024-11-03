@@ -170,7 +170,7 @@ function BadgesPage(props) {
                                                         <strong>{rank?.name ?? 'Brak glejtu'}</strong>
                                                     </p>
                                                     {rank?.image ? (
-                                                        <img width={100} src={base64Header + rank.image}
+                                                        <img height={128} src={base64Header + rank.image}
                                                              alt='rank-profile'/>
                                                     ) : (
                                                         <p>Brak obrazka</p>

@@ -114,7 +114,7 @@ function RankAndBadgesManagement(props) {
                 body={rank.ranks.map((listElements) => [
                   <img width={100} src={base64Header + listElements.image} alt='rank-icon' />,
                   <span>{listElements.name}</span>,
-                  <span>{`> ${listElements.minPoints}`}</span>
+                  <span>{`>= ${listElements.minPoints}`}</span>
                 ])}
                 deleteIconCallback={(idx) => {
                   setIsDeleteModalOpen(true)

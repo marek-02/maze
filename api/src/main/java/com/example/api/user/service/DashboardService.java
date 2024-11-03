@@ -18,8 +18,6 @@ import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
-import com.example.api.activity.submittask.SubmitTask;
-import com.example.api.activity.submittask.SubmitTaskService;
 import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.submittask.result.SubmitTaskStatus;
@@ -57,6 +55,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -326,17 +325,23 @@ public class DashboardService {
     }
 
     private Integer getStudentAuctionsWonCount(CourseMember member, Long courseId) {
-        int count = 0;
+        AtomicInteger count = new AtomicInteger();
         List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
-        if(!resolvedAuctions.isEmpty()) {
+        if (!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {
-                if (auction.getHighestBid().get().getMember().getId().equals(member.getId())) {
-                    count = count + 1;
+                try {
+                    auction.getHighestBid().ifPresent(bid -> {
+                        if (bid.getMember().getId().equals(member.getId())) {
+                            count.getAndIncrement();
+                        }
+                    });
+                } catch (Exception e) {
+                    log.error("Error processing auction {}: {}", auction.getId(), e.getMessage(), e);
                 }
             }
         }
-        return count;
+        return count.get();
     }
 
     private Integer getAuctionsResolvedCount(Long courseId) {

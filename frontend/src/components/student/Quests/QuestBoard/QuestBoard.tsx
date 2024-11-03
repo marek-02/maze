@@ -3,7 +3,7 @@ import { Button, Row, Stack, Modal, ModalHeader, ModalBody, ModalFooter } from '
 import style from './QuestBoard.module.scss';
 import { useAppSelector } from '../../../../hooks/hooks';
 import { isMobileView } from '../../../../utils/mobileHelper';
-import { ScribeImg, SoakImg, EconomistImg, CableMasterImg } from '../../../../utils/constants';
+import { ScribeImg, SoakImg, EconomistImg, CableMasterImg, PlaceholderImg } from '../../../../utils/constants';
 import StudentService from '../../../../services/student.service';
 import styles from '../../../../common/components/ActivityDetails/ActivityDetails.module.scss';
 import { useActivities } from '../../../../hooks/useActivities';
@@ -76,27 +76,27 @@ const QuestBoard = () => {
   }
 
   return (
-    <div style={{ height: '100%', position: 'relative' }}>
-      <Row style={{ height: "20%", width: '100%' }}>
+    <div style={{ height: '100%', position: 'relative', }} className={style.board}>
+      <Row style={{ height: "20%", width: '100%', paddingTop:"7px" }} >
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <div style={{ marginRight: '100px' }}>
             <div style={{ display: "flex", justifyContent: 'center' }}>
               {
                 studentsOfSubgroup.length > 0 && studentsOfSubgroup?.map((student: any, index: number) => {
                   return (
-                    <div onDrop={(e) => { handleOnDrop(e, index) }} onDragOver={handleDragOver}
-                      style={{ width: '100px', height: '80px', border: "1px solid white", textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: "center" }}>
-                      <img style={{ maxWidth: '80px' }} src={getClassImgSrcById(student.role)} alt='Brak roli' />
+                    <div className={style.icon} onDrop={(e) => { handleOnDrop(e, index) }} onDragOver={handleDragOver}
+                      style={{ width: '100px', height: '80px', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: "center", marginBottom:"5px"}}>
+                      <img style={{maxWidth: '80px'}} src={getClassImgSrcById(student.role) || PlaceholderImg}/>
                     </div>
                   );
-                })
+                  })
               }
             </div>
             <div style={{ display: "flex", justifyContent: 'center' }}>
               {
                 studentsOfSubgroup.length > 0 && studentsOfSubgroup?.map((student: any, index: number) => {
                   return (
-                    <div style={{ width: '100px', height: '80px', border: "1px solid white", textAlign: 'center', display: 'flex', alignItems: 'center', wordBreak: "break-word" }}>
+                    <div className={style.icon} style={{ width: '100px', height: '80px', textAlign: 'center', display: 'flex', alignItems: 'center', wordBreak: "break-word" }}>
                       {student.firstName} {student.lastName}
                     </div>
                   );
@@ -106,19 +106,19 @@ const QuestBoard = () => {
           </div>
 
           <div style={{ display: "flex" }} onDrop={(e) => { }} onDragOver={handleDragOver}>
-            <div style={{ border: '1px solid white', marginRight: '10px' }} draggable key={'E'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'E')}>
+            <div className={style.icon} draggable key={'E'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'E')}>
               <img style={{ maxWidth: '80px' }} src={EconomistImg} alt='Econom img' />
             </div>
 
-            <div style={{ border: '1px solid white', marginRight: '10px' }} draggable key={'S'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'S')}>
+            <div className={style.icon} draggable key={'S'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'S')}>
               <img style={{ maxWidth: '80px' }} src={ScribeImg} alt='Scribe img' />
             </div>
 
-            <div style={{ border: '1px solid white', marginRight: '10px' }} draggable key={'O'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'O')}>
+            <div className={style.icon} draggable key={'O'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'O')}>
               <img style={{ maxWidth: '80px' }} src={SoakImg} alt='Soak img' />
             </div>
 
-            <div style={{ border: '1px solid white', marginRight: '10px' }} draggable key={'K'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'K')}>
+            <div className={style.icon} draggable key={'K'.charCodeAt(0)} onDragStart={(e) => handleOnDragImg(e, 'K')}>
               <img style={{ maxWidth: '80px' }} src={CableMasterImg} alt='Cable img' />
             </div>
           </div>
@@ -139,7 +139,8 @@ const QuestBoard = () => {
           </Modal>
         </div>
       </Row>
-      <Row style={{ height: "90%" }}>
+      <div className={style.wood}></div>
+      <Row style={{ height: "80%" }}>
         <Stack direction='horizontal' gap={5} className={style.questStack}>
           {activities.tasks
             .filter((activity) => activity.isFulfilled)
