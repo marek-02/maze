@@ -255,6 +255,15 @@ public class DatabaseConfig {
                 5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
             );
 
+            List<Question> questions4 = addQuestionSet3(course1, questionService, optionService);
+            GraphTask graphTask3_2 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask3_2,
+                "(Nie)spodzianka II",
+                "Zadania sprawdzające wiedzę z warstwy łącza danych",
+                "Zapraszam",
+                5,3,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions4,20L,graphTaskService
+            );
+
 
             //FILE TASKS (ZADANIA BOJOWE)
             FileTask fileTask4_1 = new FileTask();
@@ -307,30 +316,30 @@ public class DatabaseConfig {
                 List.of("https://upel.agh.edu.pl/pluginfile.php/70583/mod_resource/content/0/stp-komendy.txt")
             );
 
-            Info info5_1 = new Info();
-            setInfoDataAndSave(info5_1,
-                "DHCP - Slajdy",
-                "Przebieg laboratorium z DHCP",
-                0,0,professor1,0.0,course1,null,infoService,
-                List.of("https://upel.agh.edu.pl/pluginfile.php/70586/mod_resource/content/0/DHCP-lab.pdf")
-            );
+            // Info info5_1 = new Info();
+            // setInfoDataAndSave(info5_1,
+            //     "DHCP - Slajdy",
+            //     "Przebieg laboratorium z DHCP",
+            //     0,0,professor1,0.0,course1,null,infoService,
+            //     List.of("https://upel.agh.edu.pl/pluginfile.php/70586/mod_resource/content/0/DHCP-lab.pdf")
+            // );
 
-            Info info6_1 = new Info();
-            setInfoDataAndSave(info6_1,
-                "ARP - Slajdy",
-                "Przebieg laboratorium z ARP",
-                0,0,professor1,0.0,course1,null,infoService,
-                List.of("https://upel.agh.edu.pl/pluginfile.php/70585/mod_resource/content/1/ARP-lab.pdf")
-            );
+            // Info info6_1 = new Info();
+            // setInfoDataAndSave(info6_1,
+            //     "ARP - Slajdy",
+            //     "Przebieg laboratorium z ARP",
+            //     0,0,professor1,0.0,course1,null,infoService,
+            //     List.of("https://upel.agh.edu.pl/pluginfile.php/70585/mod_resource/content/1/ARP-lab.pdf")
+            // );
             
 
             //SURVEYS
-            Survey survey4_1 = new Survey();
-            setSurveyDataAndSave(survey4_1,
-                "Tytul ankietki",
-                "Pomóż nam polepszyć kurs dzieląc się swoją opinią!",
-                7,3,null,2.0,course1,null,surveyService
-            );
+            // Survey survey4_1 = new Survey();
+            // setSurveyDataAndSave(survey4_1,
+            //     "Tytul ankietki",
+            //     "Pomóż nam polepszyć kurs dzieląc się swoją opinią!",
+            //     7,3,null,2.0,course1,null,surveyService
+            // );
 
             
             //ACTIVITY MAPS
@@ -343,7 +352,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap3 = new ActivityMap();
-            setActivityMapAndSave(activityMap3, List.of(graphTask3_1),null, List.of(info3_1),
+            setActivityMapAndSave(activityMap3, List.of(graphTask3_1,graphTask3_2),null, List.of(info3_1),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
@@ -449,11 +458,11 @@ public class DatabaseConfig {
 
 
             //SURVEY RESULTS (WE DONT GIVE POINTS FOR THEM)
-            for(int i=0; i<students1Len/2;i++){
-                SurveyResult surveyResult4_1 = new SurveyResult();
-                setSurveyResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
-                    surveyResult4_1, survey4_1, Long.valueOf(i), calendar.getTimeInMillis());
-            }
+            // for(int i=0; i<students1Len/2;i++){
+            //     SurveyResult surveyResult4_1 = new SurveyResult();
+            //     setSurveyResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+            //         surveyResult4_1, survey4_1, Long.valueOf(i), calendar.getTimeInMillis());
+            // }
             
             //ADDITIONAL POINTS
             // AdditionalPoints additionalPoints = new AdditionalPoints();
@@ -1011,5 +1020,76 @@ public class DatabaseConfig {
         ));
         return questions;
     }
+
+    //For lab2
+    private List<Question> addQuestionSet3(Course course, QuestionService questionService, OptionService optionService) {
+        Question startQuestion = new Question();
+        Option option1_1 = new Option("wykrywanie błędów transmisji", true, null);
+        Option option1_2 = new Option("nadawanie adresacji fizycznej", true, null);
+        Option option1_3 = new Option("komunikacja w ramach segmentu fizycznego sieci", true, null);
+        Option option1_4 = new Option("budowa drzewa rozpinającego", true, null);
+        Option option1_5 = new Option("wybór kodowania danych", false, null);
+        Option option1_6 = new Option("taktowanie wysyłania danych", false, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Zadaniem warstwy drugiej modelu OSI/ISO jest", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4,option1_5,option1_6), 5.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
+
+        Option option2_1 = new Option("Prawda", false, null);
+        Option option2_2 = new Option("Fałsz", true, null);
+        List<Option> options_q2 = List.of(option2_1,option2_2);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Domena rozgłoszeniowa to część sieci, gdzie transmitować może tylko jedno urządzenie naraz. Granicę wyznaczają switche",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 2.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
+
+        Option option3_1 = new Option("512b", true, null);
+        Option option3_2 = new Option("51,2ms", false, null);
+        Option option3_3 = new Option("5,12us", false, null);
+        Option option3_4 = new Option("64B", true, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "W Ethernecie 100Mbps szczelina czasowa wynosi:",
+                "", Difficulty.EASY, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question2.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("10", false, null);
+        Option option4_2 = new Option("12", false, null);
+        Option option4_3 = new Option("16", true, null);
+        Option option4_4 = new Option("14", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "Maksymalna liczba prób nadawania podejmowanych przez stację w CSMA/CD wynosi",
+                "", Difficulty.MEDIUM, List.of(option4_1, option4_2,option4_3,option4_4), 3.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        Option option5_1 = new Option("Jest stosowany zawsze, jeśli używany jest UTP 5e", false, null);
+        Option option5_2 = new Option("Zapewnia transmisję full-duplex", false, null);
+        Option option5_3 = new Option("Nie ogranicza długości światłowodu jednomodowego", false, null);
+        Option option5_4 = new Option("Wymusza transmisję half-duplex", true, null);
+        Option option5_5 = new Option("Wpływa na zmniejszenie przepustowości medium", true, null);
+        Option option5_6 = new Option("Jest stosowany w mediach bezprzewodowych", false, null);
+        Option option5_7 = new Option("Jest stosowany w mediach przewodowych", true, null);
+        List<Option> options_q5 = List.of(option5_1,option5_2,option5_3,option5_4,option5_5,option5_6,option5_7);
+        Question question5 = new Question(QuestionType.MULTIPLE_CHOICE, "Protokół CSMA/CD",
+                "", Difficulty.MEDIUM, List.of(option5_1, option5_2,option5_3,option5_4,option5_5), 5.0, new LinkedList<>(), null);
+        question4.getNext().addAll(List.of(question5));
+        options_q5.forEach((option -> option.setQuestion(question5)));
+
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4,question5
+        );
+        questionService.saveQuestions(questions);
+        
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6,
+        option2_1,option2_2,
+        option3_1,option3_2,option3_3,option3_4,
+        option4_1,option4_2,option4_3,option4_4,option5_1,option5_2,option5_3,option5_4,option5_5,option5_6,option5_7
+        ));
+        return questions;
+    }
+
+
 
 }

@@ -41,11 +41,11 @@ export function GradesStatsContent(props) {
   return (
     <Row className='h-100 d-flex justify-content-center align-items-center'>
       <Col md={12} style={{width:"100%"}}>
-        <p className='pb-2'>Średnia (Ekspedycje): {avgGraphTask ?? 0}%</p>
-        <p className='pb-2'>Średnia (Zadania bojowe): {avgFileTask ?? 0}%</p>
+        <p className='pb-2'>Średnia (Niespodzianki online): {avgGraphTask ?? 0}%</p>
+        <p className='pb-2'>Średnia (Niespodzianki offline): {avgFileTask ?? 0}%</p>
         <p className='pb-2'>Ilość wykonanych sondaży: {surveysNumber}</p>
-        <p className='pb-2'>Punkty (Niespodzianki): {graphTaskPoints}</p>
-        <p className='pb-2'>Punkty (Zadania bojowe): {fileTaskPoints}</p>
+        <p className='pb-2'>Punkty (Niespodzianki online): {Math.floor(graphTaskPoints)}</p>
+        <p className='pb-2'>Punkty (Niespodzianki offline): {Math.floor(fileTaskPoints)}</p>
       </Col>
       <Col md={5}>
         <PercentageCircle percentageValue={percentageValue} points={allPoints} maxPoints={maxPoints} />
@@ -156,7 +156,7 @@ export function SearchOthersStatsContent(props){
           <p className='pb-1'>Punkty doświadczenia: {Math.floor( props?.stats?.experiencePoints )}</p>
           <p className='pb-1'>Następna ranga od: {props?.stats?.nextLvlPoints}</p>
           <p className='pb-1'>Ranga: {props?.stats?.rankName}</p>
-          <p className='pb-1'>Zdobytych medali: {props?.stats?.badgesNumber}</p>
+          <p className='pb-1'>Zdobyte glejty: {props?.stats?.badgesNumber}</p>
           <p>Wykonanych aktywności: {props?.stats?.completedActivities}</p>
         </Col>
       </Row>
