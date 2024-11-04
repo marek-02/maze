@@ -60,25 +60,25 @@ const CustomModal = (props: CustomModalProps) => {
         description,
         heroes: [
           {
-            type: 'WARRIOR',
+            type: 'SHEUNFORTUNATE',
             value: 42,
             coolDownMillis: 1000
           },
           {
-            type: 'WIZARD',
+            type: 'UNFORTUNATE',
             value: 37,
             coolDownMillis: 1500
           },
-          {
-            type: 'PRIEST',
-            value: 37,
-            coolDownMillis: 1500
-          },
-          {
-            type: 'ROGUE',
-            value: 37,
-            coolDownMillis: 1500
-          }
+          // {
+          //   type: 'PRIEST',
+          //   value: 37,
+          //   coolDownMillis: 1500
+          // },
+          // {
+          //   type: 'ROGUE',
+          //   value: 37,
+          //   coolDownMillis: 1500
+          // }
         ]
       })
     } else if (props.userRole === Role.LOGGED_IN_AS_STUDENT) {
