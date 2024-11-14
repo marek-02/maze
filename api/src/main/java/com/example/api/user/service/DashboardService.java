@@ -10,11 +10,13 @@ import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.LaboratoryPoints;
 import com.example.api.activity.result.model.SurveyResult;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.LaboratoryPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
@@ -83,6 +85,7 @@ public class DashboardService {
     private final UserService userService;
     private final CourseService courseService;
     private final ActivityResultService activityResultService;
+    private final LaboratoryPointsRepository laboratoryPointsRepository;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
@@ -510,13 +513,15 @@ public class DashboardService {
         String rankName = rank != null ? rank.getName() : null;
         Long badgesNumber = (long) member.getUnlockedBadges().size();
         Long completedActivities = activityResultService.countCompletedActivities(member);
+        Long foundWolfHoles = getFoundWolfHoles(member);
 
         return new HeroStatsDTO(
                 experiencePoints,
                 nextLvlPoints,
                 rankName,
                 badgesNumber,
-                completedActivities
+                completedActivities,
+                foundWolfHoles
         );
     }
 
@@ -530,4 +535,16 @@ public class DashboardService {
         }
         return null;
     }
+
+    private Long getFoundWolfHoles(CourseMember member){
+        Course course = member.getCourse();
+        User user = member.getUser();
+        List<LaboratoryPoints> laboratoryPoints = laboratoryPointsRepository.findAllByUserAndCourse(user, course);
+
+        Long totalWolfHoles = Long.valueOf(0);
+        for(LaboratoryPoints labPoints : laboratoryPoints){
+            totalWolfHoles += labPoints.getFoundWolfHoles();
+        }
+        return totalWolfHoles;
+    }    
 }

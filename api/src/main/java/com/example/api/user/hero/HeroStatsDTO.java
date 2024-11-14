@@ -15,4 +15,5 @@ public class HeroStatsDTO {
     private String rankName;
     private Long badgesNumber;
     private Long completedActivities;
+    private Long foundWolfHoles;
 }

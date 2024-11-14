@@ -46,9 +46,9 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
         <Field className="form-control" name={colName} as="select">
           <option value=""></option>
           <option value="economist">Ekonom</option>
-          <option value="cablemaster">Kabelmajster</option>
-          <option value="scribe">Skyba</option>
-          <option value="oboe">Obój</option>
+          <option value="cablemaster">Kabelmistrz</option>
+          <option value="scribe">Skryba</option>
+          <option value="oboe">Opój</option>
         </Field>
       ) : (        
         <Field

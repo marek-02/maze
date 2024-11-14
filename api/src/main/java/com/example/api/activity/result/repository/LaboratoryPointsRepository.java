@@ -17,4 +17,7 @@ public interface LaboratoryPointsRepository extends JpaRepository<LaboratoryPoin
 
     @Query("SELECT lp FROM LaboratoryPoints lp WHERE lp.member.user = ?1 AND lp.member.course = ?2")
     List<LaboratoryPoints> findAllByUserAndCourse(User user, Course course);
+
+    @Query("SELECT lp FROM LaboratoryPoints lp WHERE lp.member.course = ?1")
+    List<LaboratoryPoints> findAllByCourse(Course course);
 }

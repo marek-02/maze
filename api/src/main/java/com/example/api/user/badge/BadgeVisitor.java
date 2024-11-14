@@ -1,30 +1,45 @@
 package com.example.api.user.badge;
 
 import com.example.api.error.exception.EntityNotFoundException;
+import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
+import com.example.api.activity.result.model.LaboratoryPoints;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.types.*;
+import com.example.api.user.dto.response.dashboard.DashboardResponse;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.FileTaskResultService;
 import com.example.api.activity.result.service.GraphTaskResultService;
+import com.example.api.activity.result.service.LaboratoryPointsService;
 import com.example.api.activity.result.service.TaskResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
+import com.example.api.activity.task.dto.response.result.LaboratoryPointsResponse;
+import com.example.api.course.Course;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BadgeVisitor {
     private final TaskResultService taskResultService;
     private final GraphTaskResultService graphTaskResultService;
@@ -32,6 +47,96 @@ public class BadgeVisitor {
     private final UserService userService;
     private final RankingService rankingService;
     private final LoggedInUserService authService;
+    private final LaboratoryPointsService labPointsService;
+    private final AuctionRepository auctionRepository;
+
+    // private final DashboardService dashboardService;
+
+    public boolean visitGeneralBadge(Badge badge){
+        log.info("Visiting general badge {}",badge.getTitle());
+
+        if(badge.getTitle().equals("Kronikarz") || badge.getTitle().equals("Arcymotacz") ){
+            String targetRoleName = badge.getTitle().equals("Kronikarz") ? "scribe" : "cablemaster"; //which role is important for the badge
+            User student = authService.getCurrentUser();
+            try {
+                List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplified(student, badge.getCourse().getId());
+
+                int occurrences = 0;
+                for(LaboratoryPoints labPoints : allLabPoints){
+                    if(labPoints.getRole().equals(targetRoleName) && labPoints.getPoints().equals(Double.valueOf(3.0)) ){
+                        occurrences++;
+                    }
+                }
+
+                return occurrences >= 3;
+            } catch (EntityNotFoundException e) {                
+                e.printStackTrace();
+            }           
+        }
+        else if(badge.getTitle().equals("Dzierżymorda")){
+            User student = authService.getCurrentUser();
+            try{
+                List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplifiedForAllUsers( badge.getCourse().getId());
+                int othersBestScore = 0;
+                int userScore = 0;
+                Map<Long,Integer> allOccurances = new HashMap<>();
+                for(LaboratoryPoints labPoints : allLabPoints){
+                    // log.info("role: {} {}",labPoints.getRole(), labPoints.getPoints() );
+                    // log.info("{} {}",!labPoints.getRole().equals("econom"),!labPoints.getPoints().equals(Double.valueOf(3.0)));
+                    if(!labPoints.getRole().equals("econom") || !labPoints.getPoints().equals(Double.valueOf(3.0))) continue;
+                    Long responseUserId = labPoints.getMember().getUser().getId();
+                    allOccurances.put(responseUserId, allOccurances.getOrDefault(responseUserId,0)+1);
+
+                    if(responseUserId == student.getId()) userScore++;
+                    else othersBestScore = Math.max(allOccurances.get(responseUserId), othersBestScore);
+                }
+                // log.info("Wynik gorskiego: {}", userScore);
+                // log.info("Wynik reszty: {}",othersBestScore);
+                return userScore > othersBestScore;
+            }catch(EntityNotFoundException e){
+
+            }
+            
+        }
+        else if(badge.getTitle().equals("A.B.Normal")){
+            CourseMember member = authService.getCurrentUser().getCourseMember(badge.getCourse().getId()).orElseThrow();
+
+            List<Auction> resolvedAuctions = auctionRepository.findAllResolvedByCourseId(badge.getCourse().getId());
+            log.info("Ilość aukcji {}", resolvedAuctions.size());
+            Map<Long,Integer> allOccurances = new HashMap<>();
+            int[] bestScore = {0}; //to make Java happy, int is wrapped in an array to be used in lambda
+            if (!resolvedAuctions.isEmpty()) {
+                for (Auction auction : resolvedAuctions) {                    
+                    auction.getHighestBid().ifPresent(bid -> {
+                        Long auctionMemberId = bid.getMember().getId();
+                        int numOccurancesBefore = allOccurances.getOrDefault(auctionMemberId,0);
+
+                        allOccurances.put(auctionMemberId, numOccurancesBefore+1);
+                        bestScore[0] = Math.max(bestScore[0],numOccurancesBefore);                       
+                    });                   
+                }
+            }
+
+            int thisMemberBestScore =  allOccurances.getOrDefault(member.getId(),0);
+            log.info("Aukcje jerzego {}, reszty {}",thisMemberBestScore,bestScore[0]);
+            return thisMemberBestScore > bestScore[0];
+        }
+        else if(badge.getTitle().equals("Tropiciel")){
+            User student = authService.getCurrentUser();
+            try{
+                List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplified(student, badge.getCourse().getId());
+                int totalWolfHoles = 0;
+                for(LaboratoryPoints labPoints : allLabPoints){
+                    totalWolfHoles += labPoints.getFoundWolfHoles();
+                }
+                return totalWolfHoles >= 3;
+            }catch(EntityNotFoundException e){
+
+            }
+        }
+        
+        return false;
+    }
 
     public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
         User student = authService.getCurrentUser();

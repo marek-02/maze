@@ -73,7 +73,7 @@ function GameCardAchiever(props) {
       setCurrentRank(null)
     })        
 
-    ActivityService.getActivitiesList(courseId) //To trzeban pozniej na spokojnie naprawic bo liczy tylko aktualne aktywnosci a nie wszystkie
+    ActivityService.getActivitiesList(courseId) //To trzeba pozniej naprawic bo liczy tylko aktualne aktywnosci a nie wszystkie
     .then((response) => {
       setAllActivitiesNr(response.length)
     })
@@ -151,6 +151,8 @@ function GameCardAchiever(props) {
                     currentRankNr = {currentRankNr}
                     allActivitiesNr = {allActivitiesNr}
                     submitStats = {dashboardStats.submitStats}
+                    completedActivitiesNr = {dashboardStats.heroStatsDTO.completedActivities}
+                    foundWolfHoles = {dashboardStats.heroStatsDTO.foundWolfHoles}
                   />
                 }
               />

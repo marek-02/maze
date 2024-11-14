@@ -40,10 +40,18 @@ function RateGroupModal(props) {
   )
 
   const sendAction = async (setSubmitting, values, afterSendAction) => {
+    console.log("Role:",values);
     for(const studentId in values) {
-        for(const role in values[studentId]) {
+      // console.log("Imie studenta:", studentId)
+      // console.log("Role:",values[studentId]);
+      const studentGrades = values[studentId]["grades"];      
+      const foundWolfHoles = values[studentId]["wolfHoles"];
+        for(const role in studentGrades) {
+            if((studentGrades[role] == 0 && role!="econom") || (studentGrades[role] == 0  && (studentGrades["oboe"] || studentGrades["scribe"]
+               || studentGrades["cablemaster"] || studentGrades["econom"]))) continue; //ungraded students get only 0 points for econom
+              // console.log("Przeszlo:",role);
             try {
-                await professorService.sendLaboratoryPoints(studentId, courseId, values[studentId][role], "Spacer", role, Date.now())
+                await professorService.sendLaboratoryPoints(studentId, courseId, studentGrades[role],role, "Spacer", Date.now(),foundWolfHoles)
             } catch(error) {
                 setSubmitting(false)
                 setErrorMessage(error)
@@ -54,22 +62,23 @@ function RateGroupModal(props) {
   }   
 
   const initialValues = studentList.sort((a, b) => a.subgroup - b.subgroup).reduce((acc, student) => {
-        acc[student.id] = { econom: 0, scribe: 0, cablemaster: 0, oboe: 0 };
+        acc[student.id] = {grades : { econom: 0, scribe: 0, cablemaster: 0, oboe: 0 }, wolfHoles : 0};
         return acc;
     }, {});
      
   let previousSubgroup = -1;
 
-  const getFieldBackground = (role, studentRole) => {
-    if(role === studentRole) return props.theme.success
-    return null
-  }
-  const getFieldFontColor = (role, studentRole) => {
-    if(role === studentRole) return props.theme.font
-    return null
+  const getFullStudentRoleName = (roleName) => {
+    if(roleName === "O")
+      return "oboe"
+    if(roleName === "S")
+      return "scribe"
+    if(roleName === "K")
+      return "cablemaster"
+    return "econom"    
   }
 
-  const getFullStudentRoleName = (roleName) => {
+  const getPolishFullStudentRoleName = (roleName) => {
     if(roleName === "O")
       return "Opój"
     if(roleName === "S")
@@ -104,13 +113,15 @@ function RateGroupModal(props) {
                         return (
                         <Row className='mx-auto d-flex align-items-center'>
                             <div className='m-2' className={isDifferentSubgroup && index !== 0 ? 'border border-dark' : '' }/>
-                            <Col md={4}>
+                            <Col md={2}>
                             <h6>{student.firstName} {student.lastName} </h6>
                             </Col>
-                            <Col md={4}>
-                            <h6><b>{getFullStudentRoleName(student.role)}</b></h6>
+                            <Col md={2}>
+                            <h6><b>{getPolishFullStudentRoleName(student.role)}</b></h6>
                             </Col>
-                            {FormCol('Ocena', 'number', student.id + '.econom', 2, { min: 0, errorColor: props.theme.danger })}
+                            {FormCol('Ocena', 'number', student.id + '.' + 'grades'+'.'+getFullStudentRoleName(student.role), 2, { min: 0, errorColor: props.theme.danger })}
+                            <Col md={3}></Col>
+                            {FormCol('Wilcze doły', 'number', student.id + '.' + 'wolfHoles', 2)}
                         </Row>
                     )})
                 }

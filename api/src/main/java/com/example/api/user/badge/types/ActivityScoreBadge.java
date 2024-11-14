@@ -38,7 +38,7 @@ public class ActivityScoreBadge extends Badge{
 
     @Override
     public boolean isGranted(BadgeVisitor visitor) {
-        return visitor.visitActivityScoreBadge(this);
+        return visitor.visitGeneralBadge(this);
     }
 
     @Override
