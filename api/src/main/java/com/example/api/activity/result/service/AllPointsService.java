@@ -8,11 +8,13 @@ import com.example.api.course.CourseService;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.activity.result.controller.LaboratoryPointsController;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
+import com.example.api.activity.result.repository.LaboratoryPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
@@ -42,6 +44,7 @@ public class AllPointsService {
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final AdditionalPointsRepository additionalPointsRepository;
+    private final LaboratoryPointsRepository laboratoryPointsRepository;
     private final UserService userService;
     private final CourseService courseService;
 
@@ -87,6 +90,11 @@ public class AllPointsService {
                 });
         additionalPointsRepository.findAllByUserAndCourse(student, course)
                 .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPoints()));
+
+        laboratoryPointsRepository.findAllByUserAndCourse(student,course)
+                .forEach(laboratoryPoints -> {
+                    totalPointsToReceive.updateAndGet(v -> v + 3);
+                });
 
         return new TotalPointsResponse(member.getPoints(), totalPointsToReceive.get());
     }
