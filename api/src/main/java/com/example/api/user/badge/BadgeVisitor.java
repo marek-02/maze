@@ -138,144 +138,144 @@ public class BadgeVisitor {
         return false;
     }
 
-    public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
-        User student = authService.getCurrentUser();
-        List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
-                .stream()
-                .filter(ActivityResult::isEvaluated)
-                .toList();
-        int activityNumber = results.size();
-        return activityNumber >= badge.getActivityNumber();
-    }
+    // public boolean visitActivityNumberBadge(ActivityNumberBadge badge) {
+    //     User student = authService.getCurrentUser();
+    //     List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse())
+    //             .stream()
+    //             .filter(ActivityResult::isEvaluated)
+    //             .toList();
+    //     int activityNumber = results.size();
+    //     return activityNumber >= badge.getActivityNumber();
+    // }
 
-    public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
-        User student = authService.getCurrentUser();
-        List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
-                .stream()
-                .filter(ActivityResult::isEvaluated)
-                .toList();
+    // public boolean visitActivityScoreBadge(ActivityScoreBadge badge) {
+    //     User student = authService.getCurrentUser();
+    //     List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
+    //             .stream()
+    //             .filter(ActivityResult::isEvaluated)
+    //             .toList();
 
-        Boolean forOneActivity = badge.getForOneActivity();
-        if (forOneActivity!= null && forOneActivity) {
-            BigDecimal activityScore = BigDecimal.valueOf(badge.getActivityScore());
-            return results.stream().anyMatch(result -> {
-                Activity activity = result.getActivity();
-                BigDecimal maxPoints = BigDecimal.valueOf(activity.getMaxPoints());
-                BigDecimal resultPoints = BigDecimal.valueOf(result.getPoints());
-                BigDecimal score = resultPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
-                return score.compareTo(activityScore) >= 0;
-            });
-        }
+    //     Boolean forOneActivity = badge.getForOneActivity();
+    //     if (forOneActivity!= null && forOneActivity) {
+    //         BigDecimal activityScore = BigDecimal.valueOf(badge.getActivityScore());
+    //         return results.stream().anyMatch(result -> {
+    //             Activity activity = result.getActivity();
+    //             BigDecimal maxPoints = BigDecimal.valueOf(activity.getMaxPoints());
+    //             BigDecimal resultPoints = BigDecimal.valueOf(result.getPoints());
+    //             BigDecimal score = resultPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
+    //             return score.compareTo(activityScore) >= 0;
+    //         });
+    //     }
 
-        if (results.size() < 3) {
-            return false;
-        }
-        List<Activity> activities = results.stream()
-                .map(ActivityResult::getActivity)
-                .toList();
+    //     if (results.size() < 3) {
+    //         return false;
+    //     }
+    //     List<Activity> activities = results.stream()
+    //             .map(ActivityResult::getActivity)
+    //             .toList();
 
-        BigDecimal currentPoints = BigDecimal.valueOf(results.stream()
-                .mapToDouble(ActivityResult::getPoints)
-                .sum());
-        BigDecimal maxPoints = BigDecimal.valueOf(activities.stream()
-                .mapToDouble(Activity::getMaxPoints)
-                .sum());
+    //     BigDecimal currentPoints = BigDecimal.valueOf(results.stream()
+    //             .mapToDouble(ActivityResult::getPoints)
+    //             .sum());
+    //     BigDecimal maxPoints = BigDecimal.valueOf(activities.stream()
+    //             .mapToDouble(Activity::getMaxPoints)
+    //             .sum());
 
-        if (maxPoints.compareTo(BigDecimal.valueOf(0)) == 0) {
-            return badge.getActivityScore() == 0.0;
-        }
-        BigDecimal score = currentPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
-        return score.compareTo(BigDecimal.valueOf(badge.getActivityScore())) >= 0;
-    }
+    //     if (maxPoints.compareTo(BigDecimal.valueOf(0)) == 0) {
+    //         return badge.getActivityScore() == 0.0;
+    //     }
+    //     BigDecimal score = currentPoints.divide(maxPoints, 2, RoundingMode.HALF_UP);
+    //     return score.compareTo(BigDecimal.valueOf(badge.getActivityScore())) >= 0;
+    // }
 
-    public boolean visitConsistencyBadge(ConsistencyBadge badge) {
-        User student = authService.getCurrentUser();
-        List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
-        Long[] datesInMillis = results.stream()
-                .filter(ActivityResult::isEvaluated)
-                .map(ActivityResult::getSendDateMillis)
-                .sorted()
-                .toArray(Long[]::new);
+    // public boolean visitConsistencyBadge(ConsistencyBadge badge) {
+    //     User student = authService.getCurrentUser();
+    //     List<? extends ActivityResult> results = taskResultService.getAllResultsForStudent(student, badge.getCourse());
+    //     Long[] datesInMillis = results.stream()
+    //             .filter(ActivityResult::isEvaluated)
+    //             .map(ActivityResult::getSendDateMillis)
+    //             .sorted()
+    //             .toArray(Long[]::new);
 
-        int weeksInRow = badge.getWeeksInRow();
-        int counter = 1;
-        for (int i=0; i < datesInMillis.length-1; i++) {
-            long diff = Math.abs(datesInMillis[i] - datesInMillis[i + 1]);
-            long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    //     int weeksInRow = badge.getWeeksInRow();
+    //     int counter = 1;
+    //     for (int i=0; i < datesInMillis.length-1; i++) {
+    //         long diff = Math.abs(datesInMillis[i] - datesInMillis[i + 1]);
+    //         long daysDiff = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-            if (daysDiff < 7) {
-                counter++;
-            } else {
-                counter = 0;
-            }
+    //         if (daysDiff < 7) {
+    //             counter++;
+    //         } else {
+    //             counter = 0;
+    //         }
 
-            if (counter >= weeksInRow) {
-                return true;
-            }
-        }
-        return false;
-    }
+    //         if (counter >= weeksInRow) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
-    public boolean visitFileTaskNumberBadge(FileTaskNumberBadge badge) {
-        User student = authService.getCurrentUser();
-        List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student, badge.getCourse())
-                .stream()
-                .filter(FileTaskResult::isEvaluated)
-                .toList();
-        int fileTaskNumber = results.size();
-        return fileTaskNumber >= badge.getFileTaskNumber();
-    }
+    // public boolean visitFileTaskNumberBadge(FileTaskNumberBadge badge) {
+    //     User student = authService.getCurrentUser();
+    //     List<FileTaskResult> results = fileTaskResultService.getAllFileTaskResultsForStudent(student, badge.getCourse())
+    //             .stream()
+    //             .filter(FileTaskResult::isEvaluated)
+    //             .toList();
+    //     int fileTaskNumber = results.size();
+    //     return fileTaskNumber >= badge.getFileTaskNumber();
+    // }
 
-    public boolean visitGraphTaskNumberBadge(GraphTaskNumberBadge badge) {
-        User student = authService.getCurrentUser();
-        List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudentAndCourse(student, badge.getCourse())
-                .stream()
-                .filter(GraphTaskResult::isEvaluated)
-                .toList();
-        int graphTaskNumber = results.size();
-        return graphTaskNumber >= badge.getGraphTaskNumber();
-    }
+    // public boolean visitGraphTaskNumberBadge(GraphTaskNumberBadge badge) {
+    //     User student = authService.getCurrentUser();
+    //     List<GraphTaskResult> results = graphTaskResultService.getAllGraphTaskResultsForStudentAndCourse(student, badge.getCourse())
+    //             .stream()
+    //             .filter(GraphTaskResult::isEvaluated)
+    //             .toList();
+    //     int graphTaskNumber = results.size();
+    //     return graphTaskNumber >= badge.getGraphTaskNumber();
+    // }
 
-    public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
-        User student = authService.getCurrentUser();
-        List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
-                .stream()
-                .filter(ActivityResult::isEvaluated)
-                .toList();
+    // public boolean visitTopScoreBadge(TopScoreBadge badge) throws WrongUserTypeException, EntityNotFoundException {
+    //     User student = authService.getCurrentUser();
+    //     List<? extends ActivityResult> results = taskResultService.getGraphAndFileResultsForStudent(student, badge.getCourse())
+    //             .stream()
+    //             .filter(ActivityResult::isEvaluated)
+    //             .toList();
 
-        if (results.size() < 5) {
-            return false;
-        }
+    //     if (results.size() < 5) {
+    //         return false;
+    //     }
 
-        Boolean forGroup = badge.getForGroup();
-        Long courseId = badge.getCourse().getId();
+    //     Boolean forGroup = badge.getForGroup();
+    //     Long courseId = badge.getCourse().getId();
 
-        if (forGroup != null && forGroup) {
-            BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
+    //     if (forGroup != null && forGroup) {
+    //         BigDecimal rankingInGroupPosition = BigDecimal.valueOf(rankingService.getGroupRankingPosition(courseId));
 
-            if (badge.getTopScore() == 0) {
-                return rankingInGroupPosition.equals(BigDecimal.ONE);
-            }
-            BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getCurrentUserGroup(courseId)
-                    .getUsers()
-                    .stream()
-                    .filter(user -> user.getAccountType() == AccountType.STUDENT)
-                    .count());
+    //         if (badge.getTopScore() == 0) {
+    //             return rankingInGroupPosition.equals(BigDecimal.ONE);
+    //         }
+    //         BigDecimal numStudentsInGroup = BigDecimal.valueOf(userService.getCurrentUserGroup(courseId)
+    //                 .getUsers()
+    //                 .stream()
+    //                 .filter(user -> user.getAccountType() == AccountType.STUDENT)
+    //                 .count());
 
-            BigDecimal topScore = rankingInGroupPosition.divide(numStudentsInGroup, 2, RoundingMode.HALF_UP);
-            return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
-        } else {
-            BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition(courseId));
+    //         BigDecimal topScore = rankingInGroupPosition.divide(numStudentsInGroup, 2, RoundingMode.HALF_UP);
+    //         return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
+    //     } else {
+    //         BigDecimal rankingPosition = BigDecimal.valueOf(rankingService.getRankingPosition(courseId));
 
-            if (badge.getTopScore() == 0) {
-                return rankingPosition.equals(BigDecimal.ONE);
-            }
+    //         if (badge.getTopScore() == 0) {
+    //             return rankingPosition.equals(BigDecimal.ONE);
+    //         }
 
-            BigDecimal numOfStudents = BigDecimal.valueOf(badge.getCourse().getCourseMembers().size());
+    //         BigDecimal numOfStudents = BigDecimal.valueOf(badge.getCourse().getCourseMembers().size());
 
-            BigDecimal topScore = rankingPosition.divide(numOfStudents, 2, RoundingMode.HALF_UP);
-            return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
-        }
-    }
+    //         BigDecimal topScore = rankingPosition.divide(numOfStudents, 2, RoundingMode.HALF_UP);
+    //         return topScore.compareTo(BigDecimal.valueOf(badge.getTopScore())) <= 0;
+    //     }
+    // }
 }
 

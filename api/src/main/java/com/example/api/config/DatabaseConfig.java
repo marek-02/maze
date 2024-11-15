@@ -732,151 +732,61 @@ public class DatabaseConfig {
         Image badgeImage6 = createImageForBadge("src/main/resources/images/badge/abnormal.png");
         Image badgeImage7 = createImageForBadge("src/main/resources/images/badge/grimreaper.png");
 
-        Badge badge1 = new ActivityScoreBadge(
+        Badge badge1 = new Badge(
                 null,
                 "Dzierżymorda",
                 "Dzierżymordą zostaje Nieszczęśnik, który najwięcej razy uzyskał maksymalną nagrodę pełniąc rolę Ekonoma",
                 badgeImage1,
-                30.0,
-                true,
                 course
         );
 
-        Badge badge2 = new ActivityScoreBadge(
+        Badge badge2 = new Badge(
                 null,
                 "Tropiciel",
                 "Każdy, kto znalazl przynajmniej trzy wilcze doły.",
                 badgeImage2,
-                60.0,
-                true,
                 course
         );
 
-        Badge badge3 = new ActivityScoreBadge(
+        Badge badge3 = new Badge(
                 null,
                 "Kronikarz",
                 "Każdy, który będąc skrybą wykonał przynajmniej trzy bardzo dobre (100% nagrody) dokumentacje",
                 badgeImage3,
-                90.0,
-                true,
                 course
         );
 
-        Badge badge4 = new ActivityScoreBadge(
+        Badge badge4 = new Badge(
                 null,
                 "Arcymotacz",
                 "Każdy, który będąc kabelmistrzem wykonał przynajmniej trzy bardzo dobre (100% nagrody) topologie",
                 badgeImage4,
-                300.0,
-                true,
                 course
         );
         
-        Badge badge5 = new ActivityScoreBadge(
+        Badge badge5 = new Badge(
                 null,
                 "E.U.geniusz",
                 "Ten, który najwięcej razy wskutek udzielonej w czasie spaceru pomocy został do tego glejtu nominowany przez nie swoją grupę",
                 badgeImage5,
-                30.0,
-                true,
                 course
         );
 
-        Badge badge6 = new ActivityScoreBadge(
+        Badge badge6 = new Badge(
                 null,
                 "A.B.Normal",
                 "Ten, który wygrał i rozwiązał najwięcej licytacji o zadania",
                 badgeImage6,
-                30.0,
-                true,
                 course
         );
 
-        Badge badge7 = new ActivityScoreBadge(
+        Badge badge7 = new Badge(
                 null,
                 "Grim Reaper",
                 "Każdy, kto co najmniej trzy razy został Zausznikiem Krwiopijcy",
                 badgeImage7,
-                30.0,
-                true,
                 course
         );       
-
-        // Badge badge8 = new ConsistencyBadge( 
-        //         null,
-        //         "To dopiero początek",
-        //         "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres miesiąca",
-        //         badgeImage1,
-        //         4,
-        //         course
-        // );
-
-        // Badge badge9 = new TopScoreBadge(
-        //         null,
-        //         "Topowowa dwudziestka",
-        //         "Bądź w 20% najepszych użytkowników (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
-        //         badgeImage2,
-        //         0.2,
-        //         false,
-        //         course
-        // );
-
-        // Badge badge10 = new GraphTaskNumberBadge(
-        //         null,
-        //         "Pierwsze kroki w ekspedycji",
-        //         "Wykonaj swoją pierwszą ekspedycję",
-        //         badgeImage1,
-        //         1,
-        //         course
-        // );
-
-        // Badge badge11 = new FileTaskNumberBadge(
-        //         null,
-        //         "Pierwsze kroki w zadaniu bojowym",
-        //         "Wykonaj swoje pierwsze zadanie bojowe",
-        //         badgeImage2,
-        //         1,
-        //         null
-        // );
-
-        // Badge badge12 = new ActivityNumberBadge(
-        //         null,
-        //         "Doświadczony w aktywnościach",
-        //         "Wykonaj 30 aktywności",
-        //         badgeImage1,
-        //         30,
-        //         course
-        // );  
-
-        // Badge badge13 = new ActivityScoreBadge(
-        //         null,
-        //         "Uśmiech prowadzącego",
-        //         "Posiadaj ponad 80% ze wszystkich punktów z wykonanych ekspedycji oraz zadań bojowych (liczone po wykonaniu 3 ekspedycji lub zadań bojowych)",
-        //         badgeImage1,
-        //         0.8,
-        //         false,
-        //         course
-        // );
-
-        // Badge badge14 = new ActivityScoreBadge(
-        //         null,
-        //         "Uścisk dłoni prowadzącego",
-        //         "Posiadaj ponad 95% ze wszystkich punktów z wykonanych ekspedycji oraz zadań bojowych (liczone po wykonaniu 3 ekspedycji lub zadań bojowych)",
-        //         badgeImage2,
-        //         0.95,
-        //         false,
-        //         course
-        // );
-
-        // Badge badge15 = new ActivityScoreBadge(
-        //         null,
-        //         "W sam środek tarczy",
-        //         "Posiadaj 100% z ekspedycji lub zadania bojowego",
-        //         badgeImage1,
-        //         1.0,
-        //         true,
-        //         course
-        // );
 
         badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7));
     }

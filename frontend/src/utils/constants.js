@@ -388,14 +388,14 @@ export const getGameCardInfo = (viewType, data) => {
 
 export const INVALID_DATE_MESSAGE = 'Invalid date object given'
 
-export const BadgeType = {
-  ACTIVITY_NUMBER: 'ACTIVITY_NUMBER',
-  ACTIVITY_SCORE: 'ACTIVITY_SCORE',
-  CONSISTENCY: 'CONSISTENCY',
-  FILE_TASK_NUMBER: 'FILE_TASK_NUMBER',
-  GRAPH_TASK_NUMBER: 'GRAPH_TASK_NUMBER',
-  TOP_SCORE: 'TOP_SCORE'
-}
+// export const BadgeType = {
+//   ACTIVITY_NUMBER: 'ACTIVITY_NUMBER',
+//   ACTIVITY_SCORE: 'ACTIVITY_SCORE',
+//   CONSISTENCY: 'CONSISTENCY',
+//   FILE_TASK_NUMBER: 'FILE_TASK_NUMBER',
+//   GRAPH_TASK_NUMBER: 'GRAPH_TASK_NUMBER',
+//   TOP_SCORE: 'TOP_SCORE'
+// }
 
 export const sidebarExcludedPaths = [GeneralRoutes.HOME, GeneralRoutes.PASSWORD_RESET]
 

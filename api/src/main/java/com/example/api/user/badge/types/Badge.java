@@ -28,7 +28,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public abstract class Badge {
+public class Badge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -54,10 +54,15 @@ public abstract class Badge {
         this.course = course;
     }
 
-    public abstract boolean isGranted(BadgeVisitor visitor)
-            throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException;
+    public boolean isGranted(BadgeVisitor visitor) {
+        return visitor.visitGeneralBadge(this);
+    }            
 
-    public abstract BadgeResponse<?> getResponse();
+    public BadgeResponse<?> getResponse() {
+        BadgeResponse<Double> response = new BadgeResponse<>(this);
+        response.setValue(Double.valueOf(0)); //idk
+        return response;
+    }
 
     public void update(BadgeUpdateForm form, BadgeValidator validator) throws IOException, RequestValidationException {
         validator.validateBadgeForm(form);

@@ -90,7 +90,7 @@ function EditionForm(props) {
       setEditFormInitialValues({
         title: ['text', 'Nazwa odznaki'],
         image: ['file', 'Ikona dla odznaki'],
-        customValue: ['text', 'Wartość odblokowania'],
+        // customValue: ['text', 'Wartość odblokowania'],
         description: ['textarea', 'Opis'],
         forGroup: ['checkbox', 'Zastosuj tylko dla grupy, do której należy student']
       })
