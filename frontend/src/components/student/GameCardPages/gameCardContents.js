@@ -253,7 +253,7 @@ export function CollectiblesInfoContent(props){
           <p className='pb-2'>Zdobyte glejty: {props.unlockedBadgesNr}/{props.allBadgesNr}</p>
           <p className='pb-2'>Osiągnięte rangi: {props.currentRankNr}/{props.allRanksNr} </p>
           <p className='pb-2'>Wykonane aktywności: {props.completedActivitiesNr}/{props.allActivitiesNr}</p>
-          <p className='pb-2'>Przyjęte propozycje: 0/0</p>
+          <p className='pb-2'>Przyjęte propozycje: {props.submitStats.fileTaskResultCount}/{props.submitStats.submitTaskResultCount}</p>
         </Col>
       </Row>
 

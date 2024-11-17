@@ -145,11 +145,12 @@ function GameCardAchiever(props) {
                 headerText='Informacje kolekcjonerskie'
                 content={
                   <CollectiblesInfoContent 
-                    allBadgesNr = {allBadgesList?.length} unlockedBadgesNr = {unlockedBadgesList?.length}
+                    allBadgesNr = {allBadgesList?.length}
+                    unlockedBadgesNr = {unlockedBadgesList?.length}
                     allRanksNr = {allRanksList[localStorage.getItem('heroType') === "SHEUNFORTUNATE"? 0 : 1 ]["ranks"]?.length}  
                     currentRankNr = {currentRankNr}
                     allActivitiesNr = {allActivitiesNr}
-                    completedActivitiesNr = {dashboardStats.heroStatsDTO.completedActivities}
+                    submitStats = {dashboardStats.submitStats}
                   />
                 }
               />
