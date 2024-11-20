@@ -45,35 +45,19 @@ function ColloquiumConfiguration(props) {
     return questions.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   }
 
+  const setError = (message) => {
+    setFinishModalDescription(message);
+    return false;
+  };
+
   const validateForm = () => {
-    if (annihilationLimit < 0) {
-      setFinishModalDescription('Ilość pytań do anihilacji nie może być mniejsza od 0.')
-      return false;
-    }
-
-    if(totalPossiblePoints < 0){
-      setFinishModalDescription('Ilość punktów do zdobycia nie może być mniejsza od 0.')
-      return false;
-    }
-
-    if (questions.some(question => question < 0)) {
-      setFinishModalDescription('Ilość punktów w pytaniach nie może być mniejsza od 0.');
-      return false;
-    }
-  
-    if (annihilationLimit > questions.length) {
-      setFinishModalDescription('Ilość pytań do anihilacji nie może być większa od ilości pytań.')
-      return false;
-    }
-  
-    const sumOfQuestions = questions.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    if (sumOfQuestions !== totalPossiblePoints) {
-      setFinishModalDescription('Suma punktów w pytaniach nie zgadza się z ilością punktów do zdobycia.')
-      return false;
-    }
-  
+    if (annihilationLimit < 0) return setError('Ilość pytań do anihilacji nie może być mniejsza od 0.');
+    if (totalPossiblePoints < 0) return setError('Ilość punktów do zdobycia nie może być mniejsza od 0.');
+    if (questions.some(question => question < 0)) return setError('Ilość punktów w pytaniach nie może być mniejsza od 0.');
+    if (annihilationLimit > questions.length) return setError('Ilość pytań do anihilacji nie może być większa od ilości pytań.');
+    if (calculateTotalMaxPoints() !== totalPossiblePoints) return setError('Suma punktów w pytaniach nie zgadza się z ilością punktów do zdobycia.');
     return true;
-  }
+  };
 
   const handleConfigure = () => {
     setIsFinishModalOpen(true);

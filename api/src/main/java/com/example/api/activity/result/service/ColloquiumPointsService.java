@@ -5,6 +5,8 @@ import com.example.api.activity.result.model.AnnihilatedPoints;
 import com.example.api.activity.result.repository.AnnihilatedPointsRepository;
 import com.example.api.activity.result.repository.ColloquiumPointsRepository;
 import com.example.api.activity.task.dto.response.result.ColloquiumPointsResponse;
+import com.example.api.colloquium.ColloquiumDetails;
+import com.example.api.colloquium.ColloquiumDetailsRepository;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
@@ -30,6 +32,7 @@ import java.util.List;
 @Transactional
 public class ColloquiumPointsService {
     private final ColloquiumPointsRepository colloquiumPointsRepository;
+    private final ColloquiumDetailsRepository colloquiumDetailsRepository;
     private final AnnihilatedPointsRepository annihilatedPointsRepository;
     private final UserRepository userRepository;
     private final LoggedInUserService authService;
@@ -39,7 +42,7 @@ public class ColloquiumPointsService {
     private final CourseValidator courseValidator;
 
     public double calculateColloquiumPoints(double points, double annihilatedPoints) {
-        final int maxPoints = 72;
+        final int maxPoints = 72; //todo make read max points
         double newMax = maxPoints - annihilatedPoints;
         double calculatePercentage = points / newMax;
         DecimalFormat df = new DecimalFormat("#.00");
@@ -54,6 +57,7 @@ public class ColloquiumPointsService {
         User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, professor);
+        ColloquiumDetails colloquiumDetails = colloquiumDetailsRepository.getById(form.getColloquiumId());
         Double points = form.getPoints();
 
         if (form != null && form.getAnnihilatedPoints() != null) {
@@ -66,7 +70,7 @@ public class ColloquiumPointsService {
                         form.getDateInMillis(),
                         professor.getEmail(),
                         "",
-                        form.getColloquiumId(),
+                        colloquiumDetails,
                         user.getCourseMember(course).orElseThrow());
                 if (form.getDescription() != null) {
                     annihilatedPoints.setDescription(form.getDescription());
@@ -81,7 +85,7 @@ public class ColloquiumPointsService {
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
-                form.getColloquiumId(),
+                colloquiumDetails,
                 user.getCourseMember(course).orElseThrow());
         if (form.getDescription() != null) {
             colloquiumPoints.setDescription(form.getDescription());

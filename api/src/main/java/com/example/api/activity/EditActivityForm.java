@@ -1,6 +1,7 @@
 package com.example.api.activity;
 
 import com.example.api.activity.info.EditInfoForm;
+import com.example.api.activity.submittask.CreateSubmitTaskForm;
 import com.example.api.activity.survey.EditSurveyForm;
 import com.example.api.activity.task.filetask.EditFileTaskForm;
 import com.example.api.activity.task.graphtask.EditGraphTaskForm;
@@ -19,9 +20,10 @@ import lombok.*;
         @JsonSubTypes.Type(value = EditGraphTaskForm.class, name = "EXPEDITION"),
         @JsonSubTypes.Type(value = EditFileTaskForm.class, name = "TASK"),
         @JsonSubTypes.Type(value = EditSurveyForm.class, name = "SURVEY"),
-        @JsonSubTypes.Type(value = EditInfoForm.class, name = "INFO")
+        @JsonSubTypes.Type(value = EditInfoForm.class, name = "INFO"),
+        @JsonSubTypes.Type(value = CreateSubmitTaskForm.class, name = "SUBMIT"),
 })
-public abstract class EditActivityForm {
+public class EditActivityForm {
     @Schema(required = true) private Long activityID;
     @Schema(required = true) private ActivityType activityType;
     @Schema(required = true) private CreateActivityForm activityBody;

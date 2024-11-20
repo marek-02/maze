@@ -24,9 +24,20 @@ public class ActivityController {
     }
 
     @PostMapping("/edit")
-    ResponseEntity<?> getActivityEditInfo(@RequestBody EditActivityForm form) throws RequestValidationException, ParseException {
-        activityService.editActivity(form);
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<?> getActivityEditInfo(@RequestBody EditActivityForm form) {
+        try {
+            activityService.editActivity(form); // Call the service to edit the activity
+            return ResponseEntity.ok().body("Activity edited successfully");
+        } catch (RequestValidationException e) {
+            // Handle validation errors
+            return ResponseEntity.badRequest().body("Validation error: " + e.getMessage());
+        } catch (ParseException e) {
+            // Handle parsing errors
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Error parsing data: " + e.getMessage());
+        } catch (Exception e) {
+            // Catch-all for unexpected exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error parsing data: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/delete")
