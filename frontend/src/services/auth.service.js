@@ -73,6 +73,13 @@ class AuthService {
       throw error
     })
   }
+  
+  refreshSessionHandler(user, dispatch, navigate) {
+    return this.refreshToken(user.refresh_token)
+      .catch(() => {
+        dispatch(logout(navigate));
+      });
+  }
 }
 
 export default new AuthService()
