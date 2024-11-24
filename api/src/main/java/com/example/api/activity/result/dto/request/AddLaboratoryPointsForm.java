@@ -16,4 +16,5 @@ public class AddLaboratoryPointsForm {
     @Schema(required = false) private String description;
     @Schema(required = true) private Long dateInMillis;
     @Schema(required = true) private Long foundWolfHoles;
+    @Schema(required = true) private Long receivedNominations;
 }

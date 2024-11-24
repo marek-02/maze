@@ -16,4 +16,5 @@ public class HeroStatsDTO {
     private Long badgesNumber;
     private Long completedActivities;
     private Long foundWolfHoles;
+    private Long receivedNominations;
 }

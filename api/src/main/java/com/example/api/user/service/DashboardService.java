@@ -514,6 +514,7 @@ public class DashboardService {
         Long badgesNumber = (long) member.getUnlockedBadges().size();
         Long completedActivities = activityResultService.countCompletedActivities(member);
         Long foundWolfHoles = getFoundWolfHoles(member);
+        Long receivedNominations = getReceivedNominations(member);
 
         return new HeroStatsDTO(
                 experiencePoints,
@@ -521,7 +522,8 @@ public class DashboardService {
                 rankName,
                 badgesNumber,
                 completedActivities,
-                foundWolfHoles
+                foundWolfHoles,
+                receivedNominations
         );
     }
 
@@ -547,4 +549,16 @@ public class DashboardService {
         }
         return totalWolfHoles;
     }    
+
+    private Long getReceivedNominations(CourseMember member){
+        Course course = member.getCourse();
+        User user = member.getUser();
+        List<LaboratoryPoints> laboratoryPoints = laboratoryPointsRepository.findAllByUserAndCourse(user, course);
+
+        Long totalNominations = Long.valueOf(0);
+        for(LaboratoryPoints labPoints : laboratoryPoints){
+            totalNominations += labPoints.getReceivedNominations();
+        }
+        return totalNominations;
+    }
 }

@@ -46,12 +46,13 @@ function RateGroupModal(props) {
       // console.log("Role:",values[studentId]);
       const studentGrades = values[studentId]["grades"];      
       const foundWolfHoles = values[studentId]["wolfHoles"];
+      const receivedNominations = values[studentId]["nominations"];
         for(const role in studentGrades) {
             if((studentGrades[role] == 0 && role!="econom") || (studentGrades[role] == 0  && (studentGrades["oboe"] || studentGrades["scribe"]
                || studentGrades["cablemaster"] || studentGrades["econom"]))) continue; //ungraded students get only 0 points for econom
               // console.log("Przeszlo:",role);
             try {
-                await professorService.sendLaboratoryPoints(studentId, courseId, studentGrades[role],role, "Spacer", Date.now(),foundWolfHoles)
+                await professorService.sendLaboratoryPoints(studentId, courseId, studentGrades[role],role, "Spacer", Date.now(),foundWolfHoles,receivedNominations)
             } catch(error) {
                 setSubmitting(false)
                 setErrorMessage(error)
@@ -62,7 +63,7 @@ function RateGroupModal(props) {
   }   
 
   const initialValues = studentList.sort((a, b) => a.subgroup - b.subgroup).reduce((acc, student) => {
-        acc[student.id] = {grades : { econom: 0, scribe: 0, cablemaster: 0, oboe: 0 }, wolfHoles : 0};
+        acc[student.id] = {grades : { econom: 0, scribe: 0, cablemaster: 0, oboe: 0 }, wolfHoles : 0, nominations : 0};
         return acc;
     }, {});
      
@@ -120,8 +121,9 @@ function RateGroupModal(props) {
                             <h6><b>{getPolishFullStudentRoleName(student.role)}</b></h6>
                             </Col>
                             {FormCol('Ocena', 'number', student.id + '.' + 'grades'+'.'+getFullStudentRoleName(student.role), 2, { min: 0, errorColor: props.theme.danger })}
-                            <Col md={3}></Col>
+                            <Col md={1}></Col>
                             {FormCol('Wilcze doły', 'number', student.id + '.' + 'wolfHoles', 2)}
+                            {FormCol('Nominacje', 'number', student.id + '.' + 'nominations', 2)}
                         </Row>
                     )})
                 }

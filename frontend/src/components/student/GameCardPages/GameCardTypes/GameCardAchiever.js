@@ -153,6 +153,7 @@ function GameCardAchiever(props) {
                     submitStats = {dashboardStats.submitStats}
                     completedActivitiesNr = {dashboardStats.heroStatsDTO.completedActivities}
                     foundWolfHoles = {dashboardStats.heroStatsDTO.foundWolfHoles}
+                    receivedNominations = {dashboardStats.heroStatsDTO.receivedNominations}
                   />
                 }
               />

@@ -255,6 +255,7 @@ export function CollectiblesInfoContent(props){
           <p className='pb-2'>Wykonane aktywności: {props.completedActivitiesNr}/{props.allActivitiesNr}</p>
           <p className='pb-2'>Przyjęte propozycje: {props.submitStats.fileTaskResultCount}/{props.submitStats.submitTaskResultCount}</p>
           <p className='pb-2'>Wilcze doły: {props.foundWolfHoles}</p>
+          <p className='pb-2'>Nominacje za pomoc: {props.receivedNominations}</p>
         </Col>
       </Row>
 

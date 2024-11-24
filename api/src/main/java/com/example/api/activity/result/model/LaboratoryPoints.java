@@ -21,6 +21,7 @@ public class LaboratoryPoints extends ActivityResult {
     private String description;
     private String role;
     private Long foundWolfHoles;
+    private Long receivedNominations;
 
     public LaboratoryPoints(
             Double points,
@@ -29,13 +30,15 @@ public class LaboratoryPoints extends ActivityResult {
             String description,
             String role,
             CourseMember courseMember,
-            Long foundWolfHoles)
+            Long foundWolfHoles,
+            Long receivedNominations)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException {
         super(points, sendDateMillis, courseMember);
         this.professorEmail = professorEmail;
         this.description = description;
         this.role = role;
         this.foundWolfHoles = foundWolfHoles;
+        this.receivedNominations = receivedNominations;
     }
 
     @Override

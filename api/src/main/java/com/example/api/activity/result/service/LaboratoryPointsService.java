@@ -51,7 +51,9 @@ public class LaboratoryPointsService {
                 "",
                 form.getRole(),
                 user.getCourseMember(course).orElseThrow(),
-                form.getFoundWolfHoles());
+                form.getFoundWolfHoles(),
+                form.getReceivedNominations()
+        );
         if (form.getDescription() != null) {
             laboratoryPoints.setDescription(form.getDescription());
         }

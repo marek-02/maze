@@ -79,7 +79,7 @@ class ProfessorService {
     })
   }
 
-  sendLaboratoryPoints(studentId: number,courseId: number, points: number, role:string, description: string, dateInMillis: number,foundWolfHoles : number) {
+  sendLaboratoryPoints(studentId: number,courseId: number, points: number, role:string, description: string, dateInMillis: number,foundWolfHoles : number, receivedNominations : number) {
     return axiosApiPost(POST_LABORATORY_POINTS, {
       studentId,
       courseId,
@@ -87,7 +87,8 @@ class ProfessorService {
       role,
       description,
       dateInMillis,
-      foundWolfHoles
+      foundWolfHoles,
+      receivedNominations
     }).catch((error) => {
       throw error
     })
