@@ -231,7 +231,7 @@ public class DatabaseConfig {
             List<Question> questions = addQuestionSet(course1, questionService, optionService);
             GraphTask graphTask4_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask4_1,
-                "(Nie)spodzianka II",
+                "(Nie)spodzianka I",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "model OSI, funkcje warstwy II oraz zasady przełączania",
                 5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
@@ -249,7 +249,7 @@ public class DatabaseConfig {
             List<Question> questions3 = addQuestionSet2(course1, questionService, optionService);
             GraphTask graphTask3_1 = new GraphTask();
             setGraphTaskDataAndSave(graphTask3_1,
-                "(Nie)spodzianka I",
+                "(Nie)spodzianka II",
                 "model OSI, funkcje warstwy III oraz zasady przełączania.",
                 "Zapraszam chętnych...",
                 5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
@@ -258,7 +258,7 @@ public class DatabaseConfig {
             List<Question> questions4 = addQuestionSet3(course1, questionService, optionService);
             GraphTask graphTask3_2 = new GraphTask();
             setGraphTaskDataAndSave(graphTask3_2,
-                "(Nie)spodzianka II",
+                "(Nie)spodzianka III",
                 "Zadania sprawdzające wiedzę z warstwy łącza danych",
                 "Zapraszam",
                 5,3,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions4,20L,graphTaskService
