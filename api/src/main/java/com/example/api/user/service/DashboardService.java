@@ -10,13 +10,8 @@ import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.LaboratoryPoints;
-import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.ActivityResult;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.LaboratoryPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.activity.result.service.ranking.RankingService;
@@ -46,7 +41,7 @@ import com.example.api.user.dto.response.dashboard.GeneralStats;
 import com.example.api.user.dto.response.dashboard.AuctionStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;
 import com.example.api.user.dto.response.dashboard.SubmitStats;
-import com.example.api.user.hero.HeroStatsDTO;
+// import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
@@ -70,7 +65,6 @@ public class DashboardService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final FileTaskResultRepository fileTaskResultRepository;
     private final SurveyResultRepository surveyResultRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
     private final CourseMemberRepository courseMemberRepository;
     private final BidRepository bidRepository;
     private final GraphTaskService graphTaskService;
@@ -85,7 +79,6 @@ public class DashboardService {
     private final UserService userService;
     private final CourseService courseService;
     private final ActivityResultService activityResultService;
-    private final LaboratoryPointsRepository laboratoryPointsRepository;
 
     private final long MAX_LAST_ACTIVITIES_IN_DASHBOARD = 8;
 
@@ -101,7 +94,7 @@ public class DashboardService {
                 getHeroTypeStats(member),
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
-                getHeroStats(member),
+                // getHeroStats(member),
                 getSubmitStats(member),
                 getAuctionStats(member,courseId),
                 member.getUser().getEmail()
@@ -120,7 +113,7 @@ public class DashboardService {
                 getHeroTypeStats(member),
                 getGeneralStats(student, course, member),
                 getLastAddedActivities(course),
-                getHeroStats(member),
+                // getHeroStats(member),
                 getSubmitStats(member),
                 getAuctionStats(member,courseId),
                 member.getUser().getEmail()
@@ -270,26 +263,66 @@ public class DashboardService {
     private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
         log.info("getGeneralStats");
 
+        //Avg in percentage
         Double avgGraphTask = getAvgGraphTask(member);
         Double avgFileTask = getAvgFileTask(member);
+
         Long surveysNumber = getSurveysNumber(member);
-        Double graphTaskPoints = getGraphTaskPoints(member);
-        Double fileTaskPoints = getFileTaskPoints(member);
-        Double bestGraphTaskPoints = getBestGraphTaskPoints(member, 3);
-        Double bestFileTaskPoints = getBestFileTaskPoints(member, 3);
-        Double bonusPoints = fileTaskPoints - bestFileTaskPoints + graphTaskPoints - bestGraphTaskPoints;
-        Double userPoints = member.getPoints();
-        Double maxPoints = getMaxPoints(student, course);
+
+        //Antał 1
+        Double trueSurprisesPoints = member.getTrueSurprisesPoints();
+        Double totalGraphTaskPoints = member.getTotalGraphTaskPoints();
+        Double totalFileTaskPoints = member.getTotalFileTaskPoints();     
+        Double totalAnnihilatedPoints = member.getTotalAnnihilatedPoints();
+        
+        Double excessPoints = member.getExcessPoints();//oil excess according to scenario
+
+        //Antał 2 + 3 + 4
+        // Double colloquiumPoints = Double.valueOf(0);
+        // try{
+        //     List<ColloquiumPointsResponse> colloquiumPointsList = colloquiumPointsService.getColloquiumPoints(student,course.getId());
+        //     colloquiumPoints = colloquiumPoints = colloquiumPointsList.stream()
+        //         .map(ColloquiumPointsResponse::getPoints)
+        //         .mapToDouble(Double::doubleValue)
+        //         .sum();
+        // }catch(EntityNotFoundException ex){
+        //     ex.printStackTrace();
+        // }
+        
+
+        Double truePoints = member.getTruePoints();
+        
+        // log.info("totalGraph: {}, totalFile: {}, trueSur:{}, anihilated:{}, excess:{}, total:{}",totalGraphTaskPoints,
+        //     totalFileTaskPoints, trueSurprisesPoints,totalAnnihilatedPoints, excessPoints,totalPoints);
+
+        
+        Double nextLvlPoints = getNextLvlPoints(member);
+        Rank rank = rankService.getCurrentRank(member);
+        String rankName = rank != null ? rank.getName() : null;
+    
+        Long badgesNumber = (long) member.getUnlockedBadges().size();
+        Long completedActivities = activityResultService.countCompletedActivities(member);
+        Long foundWolfHoles = member.getFoundWolfHoles();
+        Long receivedNominations = member.getReceivedNominations();
 
         return new GeneralStats(
                 avgGraphTask,
                 avgFileTask,
                 surveysNumber,
-                graphTaskPoints,
-                fileTaskPoints,
-                userPoints,
-                maxPoints,
-                bonusPoints
+
+                totalGraphTaskPoints, //Niespodzianki online
+                totalFileTaskPoints, //Niespodzianki stacjo
+                trueSurprisesPoints, //Punkty liczace sie do oceny
+                totalAnnihilatedPoints, 
+                excessPoints,
+                truePoints,
+                truePoints + excessPoints,
+                nextLvlPoints,
+                rankName,
+                badgesNumber,
+                completedActivities,
+                foundWolfHoles,
+                receivedNominations
         );
     }
 
@@ -390,85 +423,6 @@ public class DashboardService {
         }
         return points;
     }
-    private Double getGraphTaskPoints(CourseMember member) {
-        return getTaskPoints(graphTaskResultRepository.findAllByMember(member));
-    }
-
-
-    private Double getFileTaskPoints(CourseMember member) {
-        return getTaskPoints(fileTaskResultRepository.findAllByMember(member));
-    }
-
-    private Double getAdditionalPoints(CourseMember member) {
-        return getTaskPoints(additionalPointsRepository.findAllByMember(member));
-    }
-
-    private Double getSurveyPoints(CourseMember member) {
-        return getTaskPoints(surveyResultRepository.findAllByMember(member));
-    }
-
-
-    private Double getBestFileTaskPoints(CourseMember member, int count) {
-        List<? extends ActivityResult> taskResults = fileTaskResultRepository.findAllByMember(member);
-
-        return taskResults
-                .stream()
-                .filter(ActivityResult::isEvaluated) // Filtrowanie ocenionych wyników
-                .mapToDouble(ActivityResult::getPoints) // Pobieranie punktów
-                .boxed() // Konwersja na Double, aby można było sortować
-                .sorted(Comparator.reverseOrder()) // Sortowanie malejąco
-                .limit(count) // Ograniczenie do najlepszych 'count' wyników
-                .mapToDouble(Double::doubleValue) // Powrót do strumienia double
-                .sum(); // Sumowanie wyników
-    }
-
-    private Double getBestGraphTaskPoints(CourseMember member, int count) {
-        List<? extends ActivityResult> taskResults = graphTaskResultRepository.findAllByMember(member);
-
-        return taskResults
-                .stream()
-                .filter(ActivityResult::isEvaluated) // Filtrowanie ocenionych wyników
-                .mapToDouble(ActivityResult::getPoints) // Pobieranie punktów
-                .boxed() // Konwersja na Double, aby można było sortować
-                .sorted(Comparator.reverseOrder()) // Sortowanie malejąco
-                .limit(count) // Ograniczenie do najlepszych 'count' wyników
-                .mapToDouble(Double::doubleValue) // Powrót do strumienia double
-                .sum(); // Sumowanie wyników
-    }
-
-    private Double getTaskPoints(List<? extends ActivityResult> taskResults) {
-        return taskResults
-                .stream()
-                .filter(ActivityResult::isEvaluated)
-                .mapToDouble(ActivityResult::getPoints)
-                .sum();
-    }
-
-    private int getTaskCount(List<? extends ActivityResult> taskResults) {
-        return (int) taskResults
-                .stream()
-                .filter(ActivityResult::isEvaluated)
-                .count();
-    }
-
-    private Double getMaxPoints(User student, Course course) {
-        Double maxPointsGraphTask = graphTaskResultRepository.findAllByUserAndCourse(student, course)
-                .stream()
-                .filter(GraphTaskResult::isEvaluated)
-                .mapToDouble(result -> result.getGraphTask().getMaxPoints())
-                .sum();
-        Double maxPointsFileTask = fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course)
-                .stream()
-                .filter(FileTaskResult::isEvaluated)
-                .mapToDouble(result -> result.getFileTask().getMaxPoints())
-                .sum();
-        Double maxPointsSurvey = surveyResultRepository.findAllByUserAndCourse(student, course)
-                .stream()
-                .filter(SurveyResult::isEvaluated)
-                .mapToDouble(result -> result.getSurvey().getMaxPoints())
-                .sum();
-        return maxPointsGraphTask + maxPointsFileTask + maxPointsSurvey;
-    }
 
     private List<LastAddedActivity> getLastAddedActivities(Course course) {
         log.info("getLastAddedActivities");
@@ -504,61 +458,14 @@ public class DashboardService {
 
     }
 
-    private HeroStatsDTO getHeroStats(CourseMember member) {
-        log.info("getHeroStats");
-        Double experiencePoints = member.getPoints();
-        Double nextLvlPoints = getNexLvlPoints(member);
-
-        Rank rank = rankService.getCurrentRank(member);
-        String rankName = rank != null ? rank.getName() : null;
-        Long badgesNumber = (long) member.getUnlockedBadges().size();
-        Long completedActivities = activityResultService.countCompletedActivities(member);
-        Long foundWolfHoles = getFoundWolfHoles(member);
-        Long receivedNominations = getReceivedNominations(member);
-
-        return new HeroStatsDTO(
-                experiencePoints,
-                nextLvlPoints,
-                rankName,
-                badgesNumber,
-                completedActivities,
-                foundWolfHoles,
-                receivedNominations
-        );
-    }
-
-    private Double getNexLvlPoints(CourseMember member) {
+    private Double getNextLvlPoints(CourseMember member) {
         List<Rank> sortedRanks = rankService.getSortedRanksForHeroType(member);
         for (int i=sortedRanks.size()-1; i >= 0; i--) {
-            if (member.getPoints() >= sortedRanks.get(i).getMinPoints()) {
+            if (member.getTotalPoints() >= sortedRanks.get(i).getMinPoints()) {
                 if (i == sortedRanks.size() - 1) return null;
                 else return sortedRanks.get(i+1).getMinPoints();
             }
         }
         return null;
-    }
-
-    private Long getFoundWolfHoles(CourseMember member){
-        Course course = member.getCourse();
-        User user = member.getUser();
-        List<LaboratoryPoints> laboratoryPoints = laboratoryPointsRepository.findAllByUserAndCourse(user, course);
-
-        Long totalWolfHoles = Long.valueOf(0);
-        for(LaboratoryPoints labPoints : laboratoryPoints){
-            totalWolfHoles += labPoints.getFoundWolfHoles();
-        }
-        return totalWolfHoles;
-    }    
-
-    private Long getReceivedNominations(CourseMember member){
-        Course course = member.getCourse();
-        User user = member.getUser();
-        List<LaboratoryPoints> laboratoryPoints = laboratoryPointsRepository.findAllByUserAndCourse(user, course);
-
-        Long totalNominations = Long.valueOf(0);
-        for(LaboratoryPoints labPoints : laboratoryPoints){
-            totalNominations += labPoints.getReceivedNominations();
-        }
-        return totalNominations;
     }
 }

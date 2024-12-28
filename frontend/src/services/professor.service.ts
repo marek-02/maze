@@ -99,8 +99,8 @@ class ProfessorService {
       studentId,
       courseId,
       points,
-      description,
       colloquiumId,
+      description,      
       annihilatedQuestions,
       annihilatedPoints,
       dateInMillis

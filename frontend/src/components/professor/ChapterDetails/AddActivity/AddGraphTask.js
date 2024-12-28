@@ -55,7 +55,6 @@ function AddGraphTask(props) {
             setPlaceholderJson(response);
             const placeholderJsonLoc = response;            
             
-            console.log("JSON2:",placeholderJsonLoc);
             setTitle(placeholderJsonLoc.title);
             setTopic(placeholderJsonLoc.taskContent);
             setDescription(placeholderJsonLoc.description);

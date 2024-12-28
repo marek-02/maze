@@ -28,8 +28,7 @@ function GameCardKiller(props) {
     StudentService.getDashboardStats(courseId)
       .then((response) => {
         setDashboardStats(response)
-        localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)
-        // console.log(response);
+        localStorage.setItem('heroType', response.heroTypeStatsDTO.heroType)        
       })
       .catch(() => setDashboardStats(null))
   }, [])
@@ -48,7 +47,7 @@ function GameCardKiller(props) {
                 headerText='Statystyki bohatera'
                 content={
                   <KillerHeroStatsContent
-                    stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')} heroTypeStats={dashboardStats.heroTypeStatsDTO}
+                    stats={dashboardStats.generalStats} heroType = {localStorage.getItem('heroType')} heroTypeStats={dashboardStats.heroTypeStatsDTO}
                   />
                 }
               />

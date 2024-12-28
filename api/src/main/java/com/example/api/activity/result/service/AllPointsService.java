@@ -8,14 +8,7 @@ import com.example.api.course.CourseService;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
-import com.example.api.activity.result.controller.LaboratoryPointsController;
-import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.user.model.User;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.LaboratoryPointsRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
@@ -27,7 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+// import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Service
@@ -40,11 +33,6 @@ public class AllPointsService {
     private final UserValidator userValidator;
     private final TaskResultService taskResultService;
     private final AdditionalPointsService additionalPointsService;
-    private final GraphTaskResultRepository graphTaskResultRepository;
-    private final FileTaskResultRepository fileTaskResultRepository;
-    private final SurveyResultRepository surveyResultRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
-    private final LaboratoryPointsRepository laboratoryPointsRepository;
     private final UserService userService;
     private final CourseService courseService;
 
@@ -61,42 +49,12 @@ public class AllPointsService {
         return getAllPointsList(courseId, studentEmail);
     }
 
-    public TotalPointsResponse getAllPointsTotal(Long courseId) throws WrongUserTypeException, EntityNotFoundException {
+    public TotalPointsResponse getAllPointsTotal(Long courseId) throws WrongUserTypeException, EntityNotFoundException {        
         User student = userService.getCurrentUserAndValidateStudentAccount();
-        Course course = courseService.getCourse(courseId);
+        log.info("Fetching student all points total {}", student.getEmail());
         CourseMember member = student.getCourseMember(courseId, true);
 
-        log.info("Fetching student all points total {}", student.getEmail());
-        AtomicReference<Double> totalPointsReceived = new AtomicReference<>(0D);
-        AtomicReference<Double> totalPointsToReceive = new AtomicReference<>(0D);
-        graphTaskResultRepository.findAllByUserAndCourse(student, course)
-                .stream()
-                .filter(graphTaskResult -> graphTaskResult.getPoints() != null)
-                .forEach(graphTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + graphTaskResult.getPoints());
-                    totalPointsToReceive.updateAndGet(v -> v + graphTaskResult.getGraphTask().getMaxPoints());
-                });
-        fileTaskResultRepository.findAllByMember_UserAndMember_Course(student, course)
-                .stream()
-                .filter(FileTaskResult::isEvaluated)
-                .forEach(fileTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + fileTaskResult.getPoints());
-                    totalPointsToReceive.updateAndGet(v -> v + fileTaskResult.getFileTask().getMaxPoints());
-                });
-        surveyResultRepository.findAllByUserAndCourse(student, course)
-                .forEach(surveyTaskResult -> {
-                    totalPointsReceived.updateAndGet(v -> v + surveyTaskResult.getPoints());
-                    totalPointsToReceive.updateAndGet(v -> v + surveyTaskResult.getPoints());
-                });
-        additionalPointsRepository.findAllByUserAndCourse(student, course)
-                .forEach(additionalPoints -> totalPointsReceived.updateAndGet(v -> v + additionalPoints.getPoints()));
-
-        laboratoryPointsRepository.findAllByUserAndCourse(student,course)
-                .forEach(laboratoryPoints -> {
-                    totalPointsToReceive.updateAndGet(v -> v + 3);
-                });
-
-        return new TotalPointsResponse(member.getPoints(), totalPointsToReceive.get());
+        return new TotalPointsResponse(member.getTruePoints(), 288.0D); //total to 4 antały
     }
 
     private List<?> getAllPointsList(Long courseId, String studentEmail) throws WrongUserTypeException, EntityNotFoundException {

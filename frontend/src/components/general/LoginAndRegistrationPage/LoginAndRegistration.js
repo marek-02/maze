@@ -18,7 +18,7 @@ function LoginAndRegistration(props) {
           <Logo $logoColor={props.theme.font}>
             <FontAwesomeIcon icon={faFire} />
             <br />
-            Maze
+            PacketHunt
           </Logo>
           <AuthTabs />
         </AuthFormContainer>

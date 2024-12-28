@@ -22,6 +22,7 @@ public class ProfessorFeedbackController {
     @PostMapping(path="", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProfessorFeedbackInfoResponse> saveProfessorFeedback(@ModelAttribute SaveProfessorFeedbackForm form)
             throws WrongUserTypeException, EntityNotFoundException, IOException, MissingAttributeException, WrongPointsNumberException {
+        
         return ResponseEntity.ok().body(feedbackService.saveProfessorFeedback(form));
     }
 

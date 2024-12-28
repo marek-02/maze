@@ -191,56 +191,6 @@ public class RankingService {
 
     private RankingResponse studentToRankingEntry(CourseMember member) throws EntityNotFoundException {
         String rankName = Optional.ofNullable(rankService.getCurrentRank(member)).map(Rank::getName).orElse(null);
-        return new RankingResponse(rankName, member, getStudentPoints(member));
+        return new RankingResponse(rankName, member, member.getTotalPoints());
     }
-
-    private Double getGraphTaskPoints(CourseMember member) {
-        return graphTaskResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getFileTaskPoints(CourseMember member) {
-        return fileTaskResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getAdditionalPoints(CourseMember member) {
-        return additionalPointsRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getSurveyPoints(CourseMember member) {
-        return surveyResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getSubmitPoints(CourseMember member) {
-        return submitTaskResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getStudentPoints(CourseMember student) {
-        Double graphTaskPoints = getGraphTaskPoints(student);
-        Double fileTaskPoints = getFileTaskPoints(student);
-        Double additionalPoints = getAdditionalPoints(student);
-        Double surveyPoints = getSurveyPoints(student);
-        Double submitPoints = getSubmitPoints(student);
-        return DoubleStream.of(graphTaskPoints, fileTaskPoints, additionalPoints, surveyPoints, submitPoints).sum();
-    }
-
 }

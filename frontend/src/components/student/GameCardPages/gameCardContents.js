@@ -94,10 +94,10 @@ export function HeroStatsContent(props) {
       </Col>
       <Col md={7}>
 
-        <p className='pb-1'>Punkty doświadczenia: {Math.floor( props.stats.experiencePoints )}</p>
-        <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "Brak"}</p>
-        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
-        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
+        <p className='pb-1'>Całkowite punkty: {Math.floor( props.totalPoints )}</p>
+        <p className='pb-1'>Ranga: {props.rankName}</p>
+        <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
+        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>        
         <p>Wykonanych aktywności: {props.stats.completedActivities}</p>
       </Col>
     </Row>
@@ -105,7 +105,6 @@ export function HeroStatsContent(props) {
 }
 
 export function KillerHeroStatsContent(props) {
-
   let betterPlayerPts = props.heroTypeStats.betterPlayerPoints==null ? "Jesteś #1" : props.heroTypeStats.betterPlayerPoints
   return (
     <Row
@@ -117,12 +116,11 @@ export function KillerHeroStatsContent(props) {
         <img style={{ maxWidth: '100%' }} height='90%' src={HeroImg[props.heroType]} alt='Your hero' />
       </Col>
       <Col md={7}>
-
+        <p className='pb-1'>Całkowite Punkty: {Math.floor( props.stats.totalPoints )}</p>
         <p className='pb-1'>Ranga: {props.stats.rankName}</p>
-        <p className='pb-1'>Punkty rywala: {betterPlayerPts}</p>
-        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
-        <p className='pb-1'>Punkty doświadczenia: {Math.floor( props.stats.experiencePoints )}</p>
         <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
+        <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>
+        <p className='pb-1'>Punkty rywala: {betterPlayerPts}</p>        
       </Col>
     </Row>
   )

@@ -10,6 +10,7 @@ import com.example.api.colloquium.ColloquiumDetailsRepository;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.activity.result.model.ColloquiumPoints;
@@ -56,8 +57,10 @@ public class ColloquiumPointsService {
         userValidator.validateStudentAccount(user, form.getStudentId());
         User professor = authService.getCurrentUser();
         Course course = courseService.getCourse(form.getCourseId());
+        CourseMember member = user.getCourseMember(course).orElseThrow();
         courseValidator.validateCourseOwner(course, professor);
         ColloquiumDetails colloquiumDetails = colloquiumDetailsRepository.getById(form.getColloquiumId());
+        String colloquiumName = colloquiumDetails.getName();
         Double points = form.getPoints();
 
         if (form != null && form.getAnnihilatedPoints() != null) {
@@ -75,8 +78,8 @@ public class ColloquiumPointsService {
                 if (form.getDescription() != null) {
                     annihilatedPoints.setDescription(form.getDescription());
                 }
+                member.addAnnihilatedPoints(deductedPoints,colloquiumName);
                 annihilatedPointsRepository.save(annihilatedPoints);
-
             }
         }
 
@@ -90,6 +93,8 @@ public class ColloquiumPointsService {
         if (form.getDescription() != null) {
             colloquiumPoints.setDescription(form.getDescription());
         }
+        member.addColloquiumPoints(points, colloquiumName);
+        
         colloquiumPointsRepository.save(colloquiumPoints);
         badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
     }

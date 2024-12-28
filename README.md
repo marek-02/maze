@@ -26,7 +26,7 @@
     <img src="public/images/maze_logo.jpeg" alt="Logo" width="80" height="80">
   </a>
 
-<h2 align="center">Maze</h2>
+<h2 align="center">PacketHunt</h2>
 
   <p align="center">
     Support for gamification of computer networking classes

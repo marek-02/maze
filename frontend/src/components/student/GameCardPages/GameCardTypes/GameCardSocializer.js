@@ -77,7 +77,7 @@ function GameCardSocializer(props) {
                 headerText='Statystyki bohatera'
                 content={
                   <HeroStatsContent
-                    stats={dashboardStats.heroStatsDTO} heroType = {localStorage.getItem('heroType')}
+                    stats={dashboardStats.generalStats} heroType = {localStorage.getItem('heroType')}
                   />
                 }
               />
