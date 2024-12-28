@@ -58,7 +58,7 @@ public class GraphTaskController {
                 4,
                 MessageManager.REQ_KNOWLEDGE,
                 questionForms,
-                new CreateAuctionDTO(0D, 100D, 0L, 10D),
+                // new CreateAuctionDTO(0D, 100D, 0L, 10D),
                 "00:30:00"
         );
         return ResponseEntity.ok().body(form);

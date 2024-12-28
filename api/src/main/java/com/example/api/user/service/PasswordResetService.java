@@ -55,7 +55,7 @@ public class PasswordResetService {
         userRepository.save(user);
 
         log.info("Sending password reset email to {}", email);
-        emailService.sendEmail(user, "Maze - password reset", getPasswordResetEmailMessage(plainToken));
+        emailService.sendEmail(user, "PacketHunt - password reset", getPasswordResetEmailMessage(plainToken));
     }
 
     public void resetPassword(ResetPasswordForm form) throws RequestValidationException {
@@ -77,7 +77,7 @@ public class PasswordResetService {
     private String getPasswordResetEmailMessage(String token) {
         return String.format("Hello,\n" +
                 "\n" +
-                "Maze website administration here. You are receiving this email because it was provided for password reset on our website.\n" +
+                "PacketHunt website administration here. You are receiving this email because it was provided for password reset on our website.\n" +
                 "\n" +
                 "Your password change token is: %s\n" +
                 "\n" +

@@ -1,6 +1,6 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.activity.auction.CreateAuctionDTO;
+// import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.activity.task.CreateTaskForm;
 import com.example.api.activity.ActivityType;
 import com.example.api.question.QuestionForm;
@@ -30,12 +30,12 @@ public class CreateGraphTaskForm extends CreateTaskForm {
                                Integer posY,
                                String requiredKnowledge,
                                List<QuestionForm> questions,
-                               CreateAuctionDTO auctionDTO,
+                            //    CreateAuctionDTO auctionDTO,
                                String timeToSolve) {
         super(ActivityType.EXPEDITION, title, description, posX, posY, requiredKnowledge);
         this.questions = questions;
         this.timeToSolve = timeToSolve;
-        setAuction(auctionDTO);
+        // setAuction(auctionDTO);
     }
 
     public CreateGraphTaskForm(GraphTask graphTask) {

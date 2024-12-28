@@ -27,7 +27,7 @@ const PrimaryNavbar = (props: PrimaryNavbarProps) => {
           <Nav className={`${styles.upContainer}`}>
             <Nav.Link as={Link} to={props.userSubtitles[0].navigateTo} className={styles.navBrand}>
               <FontAwesomeIcon icon={faFire} size='2x' style={{ color: '#ffb30d' }} />
-              <span>Maze</span>
+              <span>PacketHunt</span>
             </Nav.Link>
             <div className={styles.upContainer}>
               {props.navbarTitles.map((link) => (

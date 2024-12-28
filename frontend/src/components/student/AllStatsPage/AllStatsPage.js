@@ -32,22 +32,26 @@ function AllStatsPage(props){
     ]
 
     const rows_activityStats = [
-      ["Punkty z aktywności:", dashboardStats?.generalStats.allPoints.toFixed(2) ],
-      ["Wykonane aktywności",dashboardStats?.heroStatsDTO.completedActivities],
-      ["Średnia (Niespodzianki)", dashboardStats?.generalStats.avgGraphTask!=undefined ?  dashboardStats?.generalStats.avgGraphTask + '%' : '0%'],
-      ["Średnia (Zadania bojowe)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask + '%' : '0%'],
-      ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
-      ["Punkty (Niespodzianki)", dashboardStats?.generalStats.graphTaskPoints.toFixed(2)],
-      ["Punkty (Zadania bojowe)", dashboardStats?.generalStats.fileTaskPoints.toFixed(2)],
-      ["Punkty bonusowe",dashboardStats?.generalStats.bonusPoints.toFixed(2)]
+      ["Całkowite punkty (Niespodzianki online)", dashboardStats?.generalStats.totalGraphTaskPoints.toFixed(2)],
+      ["Całkowite punkty (Niespodzianki stacjo)", dashboardStats?.generalStats.totalFileTaskPoints.toFixed(2)],
+      ["Rzeczywiste punkty z niespodzianek", dashboardStats?.generalStats.trueSurprisesPoints.toFixed(2) ],
+      ["Wykonane aktywności",dashboardStats?.generalStats.completedActivities],
+      ["Średnia (Niespodzianki online)", dashboardStats?.generalStats.avgGraphTask!=undefined ?  dashboardStats?.generalStats.avgGraphTask + '%' : '0%'],
+      ["Średnia (Niespodzianki stacjo)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask + '%' : '0%'],
+      ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber]
+      // ["Całkowite Punkty (Niespodzianki)", dashboardStats?.generalStats.graphTaskPoints.toFixed(2)],
+      // ["Punkty (Zadania bojowe)", dashboardStats?.generalStats.fileTaskPoints.toFixed(2)],
+      // ["Punkty bonusowe",dashboardStats?.generalStats.bonusPoints.toFixed(2)]
     ]
 
     const rows_heroStats = [
-      ["Punkty",dashboardStats?.heroStatsDTO.experiencePoints.toFixed(2)],
-      ["Następny poziom od",dashboardStats?.heroStatsDTO.nextLvlPoints != null ? dashboardStats?.heroStatsDTO.nextLvlPoints : "MAX"],
-      ["Ranga",dashboardStats?.heroStatsDTO.rankName],
+      ["Wszystkie punkty",dashboardStats?.generalStats.totalPoints.toFixed(2)],
+      ["Nadmiar oleju", dashboardStats?.generalStats.excessPoints.toFixed(2)],
+      ["Punkty do oceny",dashboardStats?.generalStats.truePoints.toFixed(2)],
+      ["Ranga",dashboardStats?.generalStats.rankName],
+      ["Następna ranga od",dashboardStats?.generalStats.nextLvlPoints != null ? dashboardStats?.generalStats.nextLvlPoints : "MAX"],
       ["Typ postaci", dashboardStats?.heroTypeStatsDTO.heroType == "UNFORTUNATE" ? "Nieszczęśnik" : "Nieszczęśnica"],
-      ["Zdobyte glejty",dashboardStats?.heroStatsDTO.badgesNumber]
+      ["Zdobyte glejty",dashboardStats?.generalStats.badgesNumber]
     ]
 
     const rows_ranking = [

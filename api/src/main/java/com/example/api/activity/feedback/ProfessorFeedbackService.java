@@ -2,6 +2,7 @@ package com.example.api.activity.feedback;
 
 
 import com.example.api.file.FileResponse;
+import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
@@ -38,16 +39,21 @@ public class ProfessorFeedbackService {
     private final ActivityValidator activityValidator;
     private final UserValidator userValidator;
 
-    public ProfessorFeedbackInfoResponse saveProfessorFeedback(ProfessorFeedback feedback)
-            throws MissingAttributeException, EntityNotFoundException {
-        return createInfoResponseFromProfessorFeedback(professorFeedbackRepository.save(feedback));
-    }
+    // public ProfessorFeedbackInfoResponse saveProfessorFeedback(ProfessorFeedback feedback)
+    //         throws MissingAttributeException, EntityNotFoundException {
+    //     return createInfoResponseFromProfessorFeedback(professorFeedbackRepository.save(feedback));
+    // }
 
     public ProfessorFeedbackInfoResponse saveProfessorFeedback(SaveProfessorFeedbackForm form)
             throws WrongUserTypeException, EntityNotFoundException, MissingAttributeException, WrongPointsNumberException, IOException {
         log.info("Saving professor feedback to database");
         ProfessorFeedback professorFeedback =
                 feedbackValidator.validateAndSetProfessorFeedbackTaskForm(form);
+
+        FileTaskResult result = professorFeedback.getFileTaskResult();
+        CourseMember member = result.getMember();
+        member.addFileTaskPoints(form.getPoints());
+
         log.debug(professorFeedback.getContent());
 
         return createInfoResponseFromProfessorFeedback(professorFeedbackRepository.save(professorFeedback));

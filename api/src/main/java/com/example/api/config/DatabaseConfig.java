@@ -221,10 +221,10 @@ public class DatabaseConfig {
             accessDateService.saveAccessDate(ac2);
 
             //COLLOQUIMS
-            colloquiumDetailsRepository.save(new ColloquiumDetails(1, "Gon Listopadowy",72,4, new int[] {4, 5, 6, 5, 6, 5, 8, 4, 7, 8, 9, 5}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(2, "Wielki Mróz",72,4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9,2}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(3, "Kolokwium praktyczne",56,0, new int[] {24,20,12}));
-            colloquiumDetailsRepository.save(new ColloquiumDetails(4, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(1L, "Gon Listopadowy",72,4, new int[] {4, 5, 6, 5, 6, 5, 8, 4, 7, 8, 9, 5}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(2L, "Wielki Mróz",72,4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9,2}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(3L, "Kolokwium praktyczne",56,0, new int[] {24,20,12}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(4L, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
 
 
             //GRAPH TASKS (EXPEDITIONS, NIESPODZIANKI ONLINE)
@@ -448,7 +448,7 @@ public class DatabaseConfig {
             }
 
            
-            //FILETASK RESULTS (not important for scenario)
+            //FILETASK RESULTS (Niespodzianki stacjo)
             for(int i=0; i<students1Len; i++){ 
                 FileTaskResult result4_1 = new FileTaskResult();
                 setFileTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
@@ -597,6 +597,7 @@ public class DatabaseConfig {
         result.setStartDateMillis(startTimeMillis);
         result.setSendDateMillis(  startTimeMillis + timeSpentSec/1000 );
         //addReceivedPointsForUser(member, points);
+        member.addGraphTaskPoints(points);
         
         resultService.saveGraphTaskResult(result);        
         courseMemberRepository.save(member);
@@ -610,6 +611,7 @@ public class DatabaseConfig {
         result.setSendDateMillis(sendTimeMillis);
         result.setId(taskId);
         result.setAnswer(answer);
+        // member.addFileTaskPoints();
         resultService.saveFileTaskResult(result);
     }
 
@@ -791,10 +793,10 @@ public class DatabaseConfig {
         badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7));
     }
 
-    private void addReceivedPointsForUser(CourseMember student, Double points){
-        student.changePoints(points);
-        courseMemberRepository.save(student);
-    }
+    // private void addReceivedPointsForUser(CourseMember student, Double points){
+    //     student.changePoints(points);
+    //     courseMemberRepository.save(student);
+    // }
 
     private User createStudent(String email,
                                String name,

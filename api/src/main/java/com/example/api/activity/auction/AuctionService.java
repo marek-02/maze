@@ -61,7 +61,7 @@ public class AuctionService {
                 previousBid.map(Bid::getPoints),
                 auction.currentMinBiddingValue(),
                 auction.getMaxBidding(),
-                courseMember.getPoints() + previousBid.map(Bid::getPoints).orElse(0D),
+                courseMember.getExcessPoints() + previousBid.map(Bid::getPoints).orElse(0D),
                 auction.getResolutionDate().toEpochSecond(ZoneOffset.UTC),
                 auction.getMinScoreToGetPoints()
                 );
@@ -84,7 +84,7 @@ public class AuctionService {
         Bid bid = bidRepository.findByActivityAndMember(auction, courseMember)
                 .orElseGet(() -> new Bid(courseMember, auction, 0D));
 
-        courseMember.decreasePoints(dto.bidValue() - bid.getPoints());
+        // courseMember.decreasePoints(dto.bidValue() - bid.getPoints());
         bid.setPoints(dto.bidValue());
         bidRepository.save(bid);
         auction.setHighestBid(bid);
@@ -116,10 +116,10 @@ public class AuctionService {
         task.setIsBlocked(false);
         task.setRequirements(requirementService.requirementsForAuctionTask(auction, winner.getUser()));
 
-        bidRepository.findAllByActivity(auction)
-                .stream()
-                .filter(bid -> !bid.getId().equals(highestBid.getId()))
-                .forEach(bid -> bid.getMember().changePoints(bid.getPoints()));
+        // bidRepository.findAllByActivity(auction)
+        //         .stream()
+        //         .filter(bid -> !bid.getId().equals(highestBid.getId()))
+        //         .forEach(bid -> bid.getMember().changePoints(bid.getPoints()));
 
         taskRepository.save(task);
     }

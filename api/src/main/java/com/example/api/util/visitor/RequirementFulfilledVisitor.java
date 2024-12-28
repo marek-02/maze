@@ -79,7 +79,7 @@ public class RequirementFulfilledVisitor {
             return true;
         }
         CourseMember member = authService.getCurrentUser().getCourseMember(course).orElseThrow();
-        return member.getPoints() >= requirement.getMinPoints();
+        return member.getTotalPoints() >= requirement.getMinPoints();
     }
 
     public boolean visitStudentsRequirements(StudentsRequirement requirement) {

@@ -6,6 +6,7 @@ import com.example.api.activity.auction.Auction;
 import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.types.*;
+import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.service.LaboratoryPointsService;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
@@ -31,10 +32,12 @@ public class BadgeVisitor {
 
     public boolean visitGeneralBadge(Badge badge){
         log.info("Visiting general badge {}",badge.getTitle());
+        User student = authService.getCurrentUser();
+        if(!student.getAccountType().equals(AccountType.STUDENT)) return false;
 
         if(badge.getTitle().equals("Kronikarz") || badge.getTitle().equals("Arcymotacz") ){
             String targetRoleName = badge.getTitle().equals("Kronikarz") ? "scribe" : "cablemaster"; //which role is important for the badge
-            User student = authService.getCurrentUser();
+            // User student = authService.getCurrentUser();
             try {
                 List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplified(student, badge.getCourse().getId());
 
@@ -51,7 +54,7 @@ public class BadgeVisitor {
             }           
         }
         else if(badge.getTitle().equals("Dzierżymorda")){
-            User student = authService.getCurrentUser();
+            // User student = authService.getCurrentUser();
             try{
                 List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplifiedForAllUsers( badge.getCourse().getId());
                 int othersBestScore = 0;
@@ -94,7 +97,7 @@ public class BadgeVisitor {
             return thisMemberBestScore > bestScore[0];
         }
         else if(badge.getTitle().equals("Tropiciel")){
-            User student = authService.getCurrentUser();
+            // User student = authService.getCurrentUser();
             try{
                 List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplified(student, badge.getCourse().getId());
                 int totalWolfHoles = 0;
@@ -112,7 +115,7 @@ public class BadgeVisitor {
             return res > 2;
         }
         else if(badge.getTitle().equals("E.U.geniusz")){
-            User student = authService.getCurrentUser();
+            // User student = authService.getCurrentUser();
             try{
                 List<LaboratoryPoints> allLabPoints = labPointsService.getLaboratoryPointsSimplifiedForAllUsers( badge.getCourse().getId());
                 Long othersBestScore = Long.valueOf(0);
