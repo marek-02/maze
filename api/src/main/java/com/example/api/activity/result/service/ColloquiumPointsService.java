@@ -45,7 +45,7 @@ public class ColloquiumPointsService {
         final int maxPoints = 72; //todo make read max points
         double newMax = maxPoints - annihilatedPoints;
         double calculatePercentage = points / newMax;
-        DecimalFormat df = new DecimalFormat("#.00");
+        DecimalFormat df = new DecimalFormat("#,00");
         return Double.parseDouble(df.format(maxPoints * calculatePercentage));
     }
 
@@ -91,7 +91,7 @@ public class ColloquiumPointsService {
             colloquiumPoints.setDescription(form.getDescription());
         }
         colloquiumPointsRepository.save(colloquiumPoints);
-        badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
+//        badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
     }
 
     public List<ColloquiumPointsResponse> getColloquiumPoints(Long courseId) throws EntityNotFoundException {

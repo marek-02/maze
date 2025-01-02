@@ -22,7 +22,7 @@ import org.hibernate.annotations.TypeDef;
 )
 public class ColloquiumDetails {
     @Id
-    private int id;
+    private long id;
     private String name;
     private int maxPoints;
     private int annihilationLimit;
