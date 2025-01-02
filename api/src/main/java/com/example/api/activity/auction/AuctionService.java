@@ -83,7 +83,7 @@ public class AuctionService {
 
         Bid bid = bidRepository.findByActivityAndMember(auction, courseMember)
                 .orElseGet(() -> new Bid(courseMember, auction, 0D));
-
+        courseMember.addAuctionBidPoints(dto.bidValue(), auction.getId());
         // courseMember.decreasePoints(dto.bidValue() - bid.getPoints());
         bid.setPoints(dto.bidValue());
         bidRepository.save(bid);

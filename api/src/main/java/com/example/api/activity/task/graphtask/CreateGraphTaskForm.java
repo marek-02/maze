@@ -32,7 +32,7 @@ public class CreateGraphTaskForm extends CreateTaskForm {
                                List<QuestionForm> questions,
                             //    CreateAuctionDTO auctionDTO,
                                String timeToSolve) {
-        super(ActivityType.EXPEDITION, title, description, posX, posY, requiredKnowledge);
+        super(ActivityType.EXPEDITION, title, description, posX, posY, requiredKnowledge,"false");
         this.questions = questions;
         this.timeToSolve = timeToSolve;
         // setAuction(auctionDTO);

@@ -115,7 +115,7 @@ public class FileTaskService {
         fileTaskRepository.save(fileTask);
         chapter.getActivityMap().getFileTasks().add(fileTask);
 
-        if (form.getAuction() != null) {
+        if (form.getAuction() != null && form.getAddAuction().equals("true")) {
             auctionService.createAuction(fileTask, form.getAuction(), chapter.getActivityMap());
         }
 
