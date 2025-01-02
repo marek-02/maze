@@ -1,7 +1,5 @@
 package com.example.api.user.dto.response.dashboard;
 
-import com.example.api.user.model.Rank;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;

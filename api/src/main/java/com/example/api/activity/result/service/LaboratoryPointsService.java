@@ -7,13 +7,11 @@ import com.example.api.activity.task.dto.response.result.LaboratoryPointsRespons
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
-import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.User;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
-// import com.example.api.user.badge.BadgeService;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +28,6 @@ public class LaboratoryPointsService {
     private final LaboratoryPointsRepository laboratoryPointsRepository;
     private final UserRepository userRepository;
     private final LoggedInUserService authService;
-    // private final BadgeService badgeService;
     private final UserValidator userValidator;
     private final CourseService courseService;
     private final CourseValidator courseValidator;

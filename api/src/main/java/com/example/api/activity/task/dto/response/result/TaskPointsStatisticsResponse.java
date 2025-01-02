@@ -1,10 +1,6 @@
 package com.example.api.activity.task.dto.response.result;
 
-import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.ActivityResult;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

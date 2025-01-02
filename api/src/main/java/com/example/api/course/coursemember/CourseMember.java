@@ -1,7 +1,5 @@
 package com.example.api.course.coursemember;
 
-import com.example.api.activity.result.model.AnnihilatedPoints;
-import com.example.api.activity.task.dto.response.result.ColloquiumPointsResponse;
 import com.example.api.course.Course;
 import com.example.api.group.Group;
 import com.example.api.user.hero.HeroType;
@@ -17,15 +15,12 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Getter

@@ -1,6 +1,5 @@
 package com.example.api.validator;
 
-import com.example.api.activity.auction.Auction;
 import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;

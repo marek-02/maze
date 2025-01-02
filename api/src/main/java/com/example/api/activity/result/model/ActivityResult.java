@@ -14,7 +14,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Optional;
 
 @Getter
 @Setter

@@ -4,12 +4,7 @@ import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
-import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
@@ -19,7 +14,6 @@ import com.example.api.course.coursemember.CourseMemberService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.group.Group;
-import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.user.service.RankService;
@@ -34,25 +28,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.DoubleStream;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class RankingService {
-    private final GraphTaskResultRepository graphTaskResultRepository;
-    private final FileTaskResultRepository fileTaskResultRepository;
-    private final SurveyResultRepository surveyResultRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
     private final UserService userService;
     private final RankService rankService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
-    private final LoggedInUserService authService;
-    private final SubmitTaskResultRepository submitTaskResultRepository;
 
     public List<RankingResponse> getRanking(Long courseId) {
         List<RankingResponse> rankingList = courseMemberService.getAll(courseId)
@@ -72,7 +59,6 @@ public class RankingService {
     }
 
     public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
-        CourseMember member = authService.getCurrentUser().getCourseMember(courseId).orElseThrow();
         Group group = userService.getCurrentUserGroup(courseId);
         List<RankingResponse> rankingList = group.getMembers()
                 .stream()

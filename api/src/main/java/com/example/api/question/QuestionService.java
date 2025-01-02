@@ -1,6 +1,5 @@
 package com.example.api.question;
 
-import com.example.api.activity.auction.Auction;
 import com.example.api.activity.result.dto.request.QuestionActionForm;
 import com.example.api.activity.task.dto.response.result.question.QuestionDetails;
 import com.example.api.activity.task.dto.response.result.question.QuestionInfoResponse;

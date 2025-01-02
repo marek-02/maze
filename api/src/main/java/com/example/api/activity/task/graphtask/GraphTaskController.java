@@ -1,6 +1,5 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.activity.auction.CreateAuctionDTO;
 import com.example.api.question.option.OptionForm;
 import com.example.api.question.QuestionForm;
 import com.example.api.error.exception.EntityNotFoundException;

@@ -2,7 +2,6 @@ package com.example.api.user.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
-import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.auction.bid.BidRepository;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
@@ -41,7 +40,6 @@ import com.example.api.user.dto.response.dashboard.GeneralStats;
 import com.example.api.user.dto.response.dashboard.AuctionStats;
 import com.example.api.user.dto.response.dashboard.LastAddedActivity;
 import com.example.api.user.dto.response.dashboard.SubmitStats;
-// import com.example.api.user.hero.HeroStatsDTO;
 import com.example.api.user.hero.HeroTypeStatsDTO;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;

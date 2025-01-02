@@ -8,7 +8,6 @@ import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.Activity;
 import com.example.api.activity.task.filetask.FileTask;
@@ -19,15 +18,11 @@ import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterService;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.User;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.task.graphtask.GraphTaskRepository;
 import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.group.GroupRepository;
 import com.example.api.chapter.ChapterRepository;
-import com.example.api.user.service.UserService;
 import com.example.api.util.calculator.GradesCalculator;
 import com.example.api.util.csv.PointsToGradeMapper;
 import lombok.RequiredArgsConstructor;
@@ -272,15 +267,15 @@ public class SummaryService {
         return notAssessedActivity;
     }
 
-    private List<? extends Activity> getAllActivities(Course course) {
-        List<GraphTask> graphTasks = graphTaskRepository.findAllByCourse(course);
-        List<FileTask> fileTasks = fileTaskRepository.findAllByCourse(course);
-        List<Survey> surveys = surveyRepository.findAllByCourse(course);
+    // private List<? extends Activity> getAllActivities(Course course) {
+    //     List<GraphTask> graphTasks = graphTaskRepository.findAllByCourse(course);
+    //     List<FileTask> fileTasks = fileTaskRepository.findAllByCourse(course);
+    //     List<Survey> surveys = surveyRepository.findAllByCourse(course);
 
-        return Stream.of(graphTasks, fileTasks, surveys)
-                .flatMap(Collection::stream)
-                .toList();
-    }
+    //     return Stream.of(graphTasks, fileTasks, surveys)
+    //             .flatMap(Collection::stream)
+    //             .toList();
+    // }
 
     private List<? extends Activity> getAllProfessorActivities(User professor, Course course) {
         List<GraphTask> graphTasks = graphTaskRepository.findAllByCourseAndProfessor(course, professor);
