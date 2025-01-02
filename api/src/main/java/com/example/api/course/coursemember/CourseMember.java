@@ -44,18 +44,12 @@ public class CourseMember {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // private Integer level; 
-    private Double truePoints; //Points excluding excess points
-    private Double excessPoints; //Points excess from surprises
+    private Double excessPoints; //Excess points from surprises and other activities
     private Long subgroup;
     private String role; //'E','K','S','O','', This field will be moved to ChapterRoles later
 
     private Long foundWolfHoles;
     private Long receivedNominations;
-
-    // private Double totalFileTaskPoints;
-    // private Double totalGraphTaskPoints;
-    // private Double trueSurprisesPoints; //Calculated as specified by scenario
 
     @ElementCollection
     private List<Double> fileTaskPointsList;
@@ -69,6 +63,12 @@ public class CourseMember {
     @ElementCollection
     private Map<String,Double> colloquiumPointsMap;
 
+    @ElementCollection
+    private Map<Long,Double> auctionBidPointsMap;
+
+    Double firstCaskPoints; //Punkty z Antału 1 do oceny
+    Double otherCaskPoints;
+    Double totalAuctionWonPoints; //Punkty z antałów 2-4 (Kolosy minus ewentualna lichwa)
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -92,8 +92,6 @@ public class CourseMember {
         this.group = group;
         this.course = group.getCourse();
         this.userHero = userHero;
-        // this.level = 1;
-        this.truePoints = 0D;
         this.excessPoints = 0D;
         this.subgroup = 0L; 
         this.role = "";
@@ -105,16 +103,11 @@ public class CourseMember {
         this.graphTaskPointsList = new LinkedList<>();
         this.annihilatedPointsMap = new HashMap<>();
         this.colloquiumPointsMap = new HashMap<>();
+        this.auctionBidPointsMap = new HashMap<>();
+        this.totalAuctionWonPoints = 0.0;
+        this.firstCaskPoints = 0.0;
+        this.otherCaskPoints = 0.0;
     }
-
-    // public synchronized void changePoints(Double diff) {
-    //     if (points + diff < 0) return;
-    //     points = points + diff;
-    // }
-
-    // public void setPoints(Double points){
-    //     this.points = points;
-    // }
 
     public String getAlias() {
         return user.getFirstName() + " " + user.getLastName();
@@ -148,21 +141,49 @@ public class CourseMember {
         this.recalculatePoints();
     }
 
+    public void addAuctionBidPoints(Double points, Long auctionId){
+        this.auctionBidPointsMap.put(auctionId,points);
+        this.recalculatePoints();
+    }
+
+    public void addTotalAuctionWonPoints(Double points){
+        this.totalAuctionWonPoints += points;
+        this.recalculatePoints();
+    }
+
+    public void removeAuctionBidPoints(Long auctionId){ //Restores users points after winning auction
+        this.auctionBidPointsMap.remove(auctionId);
+        this.recalculatePoints();
+    }
+
     private void recalculatePoints(){
         //Antał 1
         Double totalGraphTaskPoints = this.getTotalGraphTaskPoints();
         Double totalFileTaskPoints = this.getTotalFileTaskPoints();
-        Double totalAnnihilatedPoints = this.getTotalAnnihilatedPoints();
-        
+        Double totalAnnihilatedPoints = this.getTotalAnnihilatedPoints();        
         Double trueSurprisesPoints = this.getTrueSurprisesPoints();
+        Double totalAuctionBidPoints = this.getTotalAuctionBidPoints(); //Points spent on bidding
         
-        Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints - trueSurprisesPoints - totalAnnihilatedPoints; //oil excess according to scenario
+        Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints 
+            - trueSurprisesPoints - totalAnnihilatedPoints - totalAuctionBidPoints; //oil excess according to scenario
+       
+        Double firstCaskPoints = trueSurprisesPoints + this.totalAuctionWonPoints;
+        if(excessPoints < 0){
+            firstCaskPoints -= Math.abs(excessPoints); //Lichwa (Scenariusz)
+            excessPoints = 0.0;
+        } 
 
         //Antał 2 + 3 + 4
-        Double colloquiumPoints = this.colloquiumPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
+        Double colloquiumPoints = this.getTotalColloquiumPoints();
+        Double otherCaskPoints = colloquiumPoints;
+        if(firstCaskPoints < 0){
+            otherCaskPoints -= Math.ceil(21D/20D * Math.abs(firstCaskPoints)); //Lichwa (Scenariusz)
+            firstCaskPoints = 0.0;
+        } 
  
+        this.firstCaskPoints = firstCaskPoints;
+        this.otherCaskPoints = otherCaskPoints;
         this.excessPoints = excessPoints;
-        this.truePoints = trueSurprisesPoints + colloquiumPoints;
     }
 
     public Double getTotalFileTaskPoints(){
@@ -181,6 +202,14 @@ public class CourseMember {
         return this.colloquiumPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
+    public Double getTotalAuctionBidPoints(){
+        return this.auctionBidPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
+
+    public Double getTotalAuctionWonPoints(){
+        return this.totalAuctionWonPoints;
+    }
+
     public Double getTrueSurprisesPoints(){ //True points from ,,Antał I"
         Double trueSurprisesPoints = Stream.concat(this.fileTaskPointsList.stream(), this.graphTaskPointsList.stream())
             .limit(3)
@@ -189,12 +218,12 @@ public class CourseMember {
         return trueSurprisesPoints;
     }
 
-    public Double getTruePoints(){
-        return this.truePoints;
+    public Double getTruePoints(){ //Punkty do oceny
+        return this.firstCaskPoints + this.otherCaskPoints;
     }
 
-    public Double getTotalPoints(){
-        return this.truePoints + this.excessPoints;
+    public Double getTotalPoints(){ //Punkty do rangi
+        return this.getTruePoints() + Math.max(this.excessPoints,0);
     }
 
     // public void decreasePoints(Double decreaseValue) { ///?

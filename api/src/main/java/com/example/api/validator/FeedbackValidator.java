@@ -73,7 +73,7 @@ public class FeedbackValidator {
             fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
 
-            task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints()));
+            // task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints(), bid.getAuction().getId()));
             task.getAuthoredByStudent().ifPresent(authored -> authored.setPoints(form.getPoints()));
         }
 

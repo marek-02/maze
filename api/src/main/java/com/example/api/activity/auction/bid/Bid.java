@@ -42,9 +42,10 @@ public class Bid extends ActivityResult {
         }
     }
 
-    public void returnPoints(Double taskResult) {
-        if (getAuction().getMinScoreToGetPoints() <= taskResult) {
-            // member.changePoints(points);
+    public void returnPoints(Double points,Long auctionId) {
+        log.info("Returning bid points for auction:{}",auctionId);
+        if (getAuction().getMinScoreToGetPoints() <= points) {
+            // member.removeAuctionBidPoints(points, auctionId);
             points = 0D;
         }
     }

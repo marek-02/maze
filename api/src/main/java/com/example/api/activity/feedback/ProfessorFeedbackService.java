@@ -8,6 +8,7 @@ import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.MissingAttributeException;
 import com.example.api.error.exception.WrongPointsNumberException;
 import com.example.api.error.exception.WrongUserTypeException;
+import com.example.api.activity.auction.Auction;
 import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.user.model.User;
@@ -52,7 +53,25 @@ public class ProfessorFeedbackService {
 
         FileTaskResult result = professorFeedback.getFileTaskResult();
         CourseMember member = result.getMember();
-        member.addFileTaskPoints(form.getPoints());
+        
+        FileTask fileTask = fileTaskRepository.findFileTaskById(result.getActivity().getId());
+
+        if(fileTask.getAuction().isPresent()){
+            log.info("Auction was detected");            
+            Auction auction = fileTask.getAuction().orElseThrow();
+            if (auction.getMinScoreToGetPoints() <= form.getPoints()) {
+                member.removeAuctionBidPoints(auction.getId());
+                member.addTotalAuctionWonPoints(form.getPoints());
+            }
+            else{
+                member.addTotalAuctionWonPoints(0.0);
+            }
+        }
+        else{
+            log.info("Auction was NOT detected");
+            // fileTask.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints(), bid.getAuction().getId()));
+            member.addFileTaskPoints(form.getPoints()); 
+        }        
 
         log.debug(professorFeedback.getContent());
 

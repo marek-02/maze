@@ -263,66 +263,34 @@ public class DashboardService {
     private GeneralStats getGeneralStats(User student, Course course, CourseMember member) {
         log.info("getGeneralStats");
 
-        //Avg in percentage
-        Double avgGraphTask = getAvgGraphTask(member);
-        Double avgFileTask = getAvgFileTask(member);
-
-        Long surveysNumber = getSurveysNumber(member);
-
-        //Antał 1
-        Double trueSurprisesPoints = member.getTrueSurprisesPoints();
-        Double totalGraphTaskPoints = member.getTotalGraphTaskPoints();
-        Double totalFileTaskPoints = member.getTotalFileTaskPoints();     
-        Double totalAnnihilatedPoints = member.getTotalAnnihilatedPoints();
-        
-        Double excessPoints = member.getExcessPoints();//oil excess according to scenario
-
-        //Antał 2 + 3 + 4
-        // Double colloquiumPoints = Double.valueOf(0);
-        // try{
-        //     List<ColloquiumPointsResponse> colloquiumPointsList = colloquiumPointsService.getColloquiumPoints(student,course.getId());
-        //     colloquiumPoints = colloquiumPoints = colloquiumPointsList.stream()
-        //         .map(ColloquiumPointsResponse::getPoints)
-        //         .mapToDouble(Double::doubleValue)
-        //         .sum();
-        // }catch(EntityNotFoundException ex){
-        //     ex.printStackTrace();
-        // }
-        
-
-        Double truePoints = member.getTruePoints();
-        
-        // log.info("totalGraph: {}, totalFile: {}, trueSur:{}, anihilated:{}, excess:{}, total:{}",totalGraphTaskPoints,
-        //     totalFileTaskPoints, trueSurprisesPoints,totalAnnihilatedPoints, excessPoints,totalPoints);
-
-        
-        Double nextLvlPoints = getNextLvlPoints(member);
+        //Antał 2 + 3 + 4               
         Rank rank = rankService.getCurrentRank(member);
-        String rankName = rank != null ? rank.getName() : null;
-    
-        Long badgesNumber = (long) member.getUnlockedBadges().size();
+        String rankName = rank != null ? rank.getName() : null;    
         Long completedActivities = activityResultService.countCompletedActivities(member);
-        Long foundWolfHoles = member.getFoundWolfHoles();
-        Long receivedNominations = member.getReceivedNominations();
 
         return new GeneralStats(
-                avgGraphTask,
-                avgFileTask,
-                surveysNumber,
+                getAvgGraphTask(member),
+                getAvgFileTask(member),
+                getSurveysNumber(member),
 
-                totalGraphTaskPoints, //Niespodzianki online
-                totalFileTaskPoints, //Niespodzianki stacjo
-                trueSurprisesPoints, //Punkty liczace sie do oceny
-                totalAnnihilatedPoints, 
-                excessPoints,
-                truePoints,
-                truePoints + excessPoints,
-                nextLvlPoints,
+                member.getTotalGraphTaskPoints(), //Niespodzianki online (Wszystkie punkty)
+                member.getTotalFileTaskPoints(), //Niespodzianki stacjo (Wszystkie punkty)
+                member.getTrueSurprisesPoints(), //Punkty liczace sie do oceny (3 najlepsze niespodzianki)
+                member.getTotalAuctionWonPoints(),
+                member.getTotalAuctionBidPoints(),
+                member.getTotalAnnihilatedPoints(), //Punkty utracone na anihilacje
+                member.getExcessPoints(), //Nadmiar oleju
+                member.getTruePoints(), //Punkty do wyliczenia oceny
+                member.getTotalPoints(), //Wszystkie punkty zdobyte przez studenta (range sie z nich wylicza)
+                member.getFirstCaskPoints(),
+                member.getOtherCaskPoints(),
+
+                getNextLvlPoints(member), //Pkt do nastepnej rangi
                 rankName,
-                badgesNumber,
+                (long) member.getUnlockedBadges().size(),
                 completedActivities,
-                foundWolfHoles,
-                receivedNominations
+                member.getFoundWolfHoles(), //Znalezione wilcze doły (scenariusz)
+                member.getReceivedNominations() //Nominacje uzyskane podczas spacerów (scenariusz)
         );
     }
 
@@ -405,23 +373,25 @@ public class DashboardService {
     }
 
     private Integer getStudentAuctionsParticipations(CourseMember member, Long courseId) {
+        log.info("Auction participations: {}",bidRepository.findAllByMemberAndCourse(member,courseId).size());
         return bidRepository.findAllByMemberAndCourse(member,courseId).size();
     }
 
     private Double getStudentAuctionsPoints(CourseMember member, Long courseId) {
-        double points = 0;
-        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+        // double points = 0;
+        // List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
-        if(!resolvedAuctions.isEmpty()) {
-            for (Auction auction : resolvedAuctions) {
-                Bid bid = auction.getHighestBid().get();
+        // if(!resolvedAuctions.isEmpty()) {
+        //     for (Auction auction : resolvedAuctions) {
+        //         Bid bid = auction.getHighestBid().get();
 
-                if (bid.getMember().getId().equals(member.getId())) {
-                  points = points + bid.getPoints();
-                }
-            }
-        }
-        return points;
+        //         if (bid.getMember().getId().equals(member.getId())) {
+        //           points = points + bid.getPoints();
+        //         }
+        //     }
+        // }
+        return member.getTotalAuctionWonPoints();
+        // return points;
     }
 
     private List<LastAddedActivity> getLastAddedActivities(Course course) {

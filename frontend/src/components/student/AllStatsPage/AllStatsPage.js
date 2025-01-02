@@ -24,7 +24,7 @@ function AllStatsPage(props){
     const rows_auctionStats = [
       ["Miejsce w rankingu licytacji",dashboardStats?.auctionStats.auctionRanking],
       ["Liczba wszystkich licytacji",dashboardStats?.auctionStats.auctionsCount],
-      ["Liczba udziałów w licytacjach",dashboardStats?.auctionsParticipations != undefined ? dashboardStats?.auctionsParticipations : 0],
+      ["Liczba udziałów w licytacjach",dashboardStats?.auctionStats.auctionsParticipations],
       ["Wygrane punkty", dashboardStats?.auctionStats.auctionsPoints.toFixed(2)],
       ["Rozwiązane zadania z licytacji", dashboardStats?.auctionStats.auctionsResolvedCount],
       ["Wygrane",dashboardStats?.auctionStats.auctionsWon],
@@ -35,9 +35,9 @@ function AllStatsPage(props){
       ["Całkowite punkty (Niespodzianki online)", dashboardStats?.generalStats.totalGraphTaskPoints.toFixed(2)],
       ["Całkowite punkty (Niespodzianki stacjo)", dashboardStats?.generalStats.totalFileTaskPoints.toFixed(2)],
       ["Rzeczywiste punkty z niespodzianek", dashboardStats?.generalStats.trueSurprisesPoints.toFixed(2) ],
-      ["Wykonane aktywności",dashboardStats?.generalStats.completedActivities],
       ["Średnia (Niespodzianki online)", dashboardStats?.generalStats.avgGraphTask!=undefined ?  dashboardStats?.generalStats.avgGraphTask + '%' : '0%'],
       ["Średnia (Niespodzianki stacjo)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask + '%' : '0%'],
+      ["Wykonane aktywności",dashboardStats?.generalStats.completedActivities],
       ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber]
       // ["Całkowite Punkty (Niespodzianki)", dashboardStats?.generalStats.graphTaskPoints.toFixed(2)],
       // ["Punkty (Zadania bojowe)", dashboardStats?.generalStats.fileTaskPoints.toFixed(2)],
@@ -46,12 +46,15 @@ function AllStatsPage(props){
 
     const rows_heroStats = [
       ["Wszystkie punkty",dashboardStats?.generalStats.totalPoints.toFixed(2)],
-      ["Nadmiar oleju", dashboardStats?.generalStats.excessPoints.toFixed(2)],
-      ["Punkty do oceny",dashboardStats?.generalStats.truePoints.toFixed(2)],
       ["Ranga",dashboardStats?.generalStats.rankName],
       ["Następna ranga od",dashboardStats?.generalStats.nextLvlPoints != null ? dashboardStats?.generalStats.nextLvlPoints : "MAX"],
-      ["Typ postaci", dashboardStats?.heroTypeStatsDTO.heroType == "UNFORTUNATE" ? "Nieszczęśnik" : "Nieszczęśnica"],
-      ["Zdobyte glejty",dashboardStats?.generalStats.badgesNumber]
+      ["Nadmiar oleju", dashboardStats?.generalStats.excessPoints.toFixed(2)],
+      ["Punkty do oceny",dashboardStats?.generalStats.truePoints.toFixed(2)],
+      ["Punkty (Antał 1)", dashboardStats?.generalStats.firstCaskPoints.toFixed(2)],
+      ["Punkty (Antały 2+3+4)", dashboardStats?.generalStats.otherCaskPoints.toFixed(2)], 
+      ["Zdobyte glejty",dashboardStats?.generalStats.badgesNumber],     
+      ["Wilcze doły",dashboardStats?.generalStats.foundWolfHoles],
+      ["Nominacje za pomoc",dashboardStats?.generalStats.receivedNominations],
     ]
 
     const rows_ranking = [
