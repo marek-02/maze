@@ -5,8 +5,8 @@ import ActivityService from '../services/activity.service';
 const emptyMapResponse: ActivityMapResponse = {
   id: 0,
   tasks: [],
-  mapSizeX: 0,
-  mapSizeY: 0,
+  // mapSizeX: 0,
+  // mapSizeY: 0,
   image: null
 };
 

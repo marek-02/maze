@@ -15,8 +15,8 @@ public class MapActivityStudent extends MapActivity {
 
 
     public MapActivityStudent(Long id,
-                              Integer posX,
-                              Integer posY,
+                            //   Integer posX,
+                            //   Integer posY,
                               ActivityType type,
                               String title,
                               Double points,
@@ -26,7 +26,7 @@ public class MapActivityStudent extends MapActivity {
                               Boolean isFulfilled,
                               Boolean isCompleted,
                               Double awardedPoint) {
-     super(id, posX, posY, type, title, points, creationTime, description, requirements);
+     super(id, type, title, points, creationTime, description, requirements);
         this.isFulfilled = isFulfilled;
         this.isCompleted = isCompleted;
         this.awardedPoints = awardedPoint;
@@ -34,8 +34,8 @@ public class MapActivityStudent extends MapActivity {
 
     public MapActivityStudent(Activity activity, Boolean isFulfilled, Boolean isCompleted, RequirementResponse requirements, double points) {
         super(activity.getId(),
-                activity.getPosX(),
-                activity.getPosY(),
+                // activity.getPosX(),
+                // activity.getPosY(),
                 activity.getActivityType(),
                 activity.getTitle(),
                 activity.getMaxPoints(),
@@ -52,8 +52,8 @@ public class MapActivityStudent extends MapActivity {
 
     public static class MapActivityStudentBuilder {
         private Long id;
-        private Integer posX;
-        private Integer posY;
+        // private Integer posX;
+        // private Integer posY;
         private ActivityType type;
         private String title;
         private Double points;
@@ -73,15 +73,15 @@ public class MapActivityStudent extends MapActivity {
             return this;
         }
 
-        public MapActivityStudentBuilder posX(Integer posX) {
-            this.posX = posX;
-            return this;
-        }
+        // public MapActivityStudentBuilder posX(Integer posX) {
+        //     this.posX = posX;
+        //     return this;
+        // }
 
-        public MapActivityStudentBuilder posY(Integer posY) {
-            this.posY = posY;
-            return this;
-        }
+        // public MapActivityStudentBuilder posY(Integer posY) {
+        //     this.posY = posY;
+        //     return this;
+        // }
 
         public MapActivityStudentBuilder type(ActivityType type) {
             this.type = type;
@@ -131,8 +131,8 @@ public class MapActivityStudent extends MapActivity {
 
         public MapActivityStudentBuilder fromActivity(Activity activity) {
             this.id = activity.getId();
-            this.posX = activity.getPosX();
-            this.posY = activity.getPosY();
+            // this.posX = activity.getPosX();
+            // this.posY = activity.getPosY();
             this.type = activity.getActivityType();
             this.title = activity.getTitle();
             this.points = activity.getMaxPoints();
@@ -143,8 +143,8 @@ public class MapActivityStudent extends MapActivity {
 
         public MapActivityStudent build() {
             return new MapActivityStudent(this.id,
-                    this.posX,
-                    this.posY,
+                    // this.posX,
+                    // this.posY,
                     this.type,
                     this.title,
                     this.points,
@@ -157,7 +157,7 @@ public class MapActivityStudent extends MapActivity {
         }
 
         public String toString() {
-            return "MapActivity.MapActivityBuilder(id=" + this.id + ", posX=" + this.posX + ", posY=" + this.posY + ", type=" + this.type + ", title=" + this.title + ", points=" + this.points + ", creationTime=" + this.creationTime + ", description=" + this.description + ", requirements=" + this.requirements + ")";
+            return "MapActivity.MapActivityBuilder(id=" + this.id + ", type=" + this.type + ", title=" + this.title + ", points=" + this.points + ", creationTime=" + this.creationTime + ", description=" + this.description + ", requirements=" + this.requirements + ")";
         }
     }
 }

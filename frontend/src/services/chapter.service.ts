@@ -25,14 +25,14 @@ class ChapterService {
     })
   }
 
-  sendNewChapterData({ name, sizeX, sizeY, imageId, posX, posY, courseId }: newChapterData) {
+  sendNewChapterData({ name, imageId, courseId }: newChapterData) {
     return axiosApiPost(POST_CHAPTER_CREATE, {
       name,
-      sizeX,
-      sizeY,
+      // sizeX,
+      // sizeY,
       imageId,
-      posX,
-      posY,
+      // posX,
+      // posY,
       courseId
     }).catch((error) => {
       throw error

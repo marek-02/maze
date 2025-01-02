@@ -21,11 +21,11 @@ public class CreateInfoForm extends CreateActivityForm {
 
     public CreateInfoForm(String title,
                           String description,
-                          Integer posX,
-                          Integer posY,
+                        //   Integer posX,
+                        //   Integer posY,
                           List<String> imageUrls,
                           String content){
-        super(ActivityType.INFO, title, description, posX, posY);
+        super(ActivityType.INFO, title, description);
         this.imageUrls = imageUrls;
         this.infoContent = content;
     }

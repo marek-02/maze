@@ -47,7 +47,7 @@ public class SubmitTaskService {
         CreateSubmitTaskForm form = chapterForm.getForm();
         Chapter chapter = chapterRepository.findChapterById(chapterForm.getChapterId());
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
         activityValidator.validateActivityTitle(form.getTitle(), submitTaskRepository.existsByTitle(form.getTitle()));
 
         User professor = authService.getCurrentUser();

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class SurveyValidator {
 
     public void validateCreateSurveyForm(CreateSurveyForm form) throws RequestValidationException {
-        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getPoints())
+        if (Stream.of(form.getTitle(), form.getDescription(), form.getPoints())
                 .anyMatch(Objects::isNull)) {
             log.info("All fields in CreateSurveyForm should not be null");
             throw new RequestValidationException(ExceptionMessage.FORM_FIELDS_NOT_NULL);

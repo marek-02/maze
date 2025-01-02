@@ -107,9 +107,9 @@ public class ChapterService {
         File image = fileRepository.findFileById(form.getImageId());
         activityValidator.validateFileIsNotNull(image, form.getImageId());
         chapterValidator.validateChapterCreation(form);
-        ActivityMap activityMap = new ActivityMap(form.getSizeX(), form.getSizeY(), image);
+        ActivityMap activityMap = new ActivityMap(image);
         activityMapService.saveActivityMap(activityMap);
-        Chapter chapter = new Chapter(form.getName(), activityMap, form.getPosX(), form.getPosY(), course);
+        Chapter chapter = new Chapter(form.getName(), activityMap, course);
         chapter.setRequirements(requirementService.getDefaultRequirements(false));
 
         chapterRepository.save(chapter);
@@ -156,13 +156,13 @@ public class ChapterService {
 
         // edit basic chapter data
         chapter.setName(chapterForm.getName());
-        chapter.setPosX(chapterForm.getPosX());
-        chapter.setPosY(chapterForm.getPosY());
+        // chapter.setPosX(chapterForm.getPosX());
+        // chapter.setPosY(chapterForm.getPosY());
 
         // edit chapter activity map
         ActivityMap chapterMap = chapter.getActivityMap();
-        chapterMap.setMapSizeX(chapterForm.getSizeX());
-        chapterMap.setMapSizeY(chapterForm.getSizeY());
+        // chapterMap.setMapSizeX(chapterForm.getSizeX());
+        // chapterMap.setMapSizeY(chapterForm.getSizeY());
         chapterMap.setImage(fileRepository.findFileById(chapterForm.getImageId()));
 
         chapter.setActivityMap(chapterMap);

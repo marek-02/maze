@@ -26,8 +26,8 @@ public abstract class CreateTaskForm extends CreateActivityForm {
     @Schema String taskContent;
 
 
-    public CreateTaskForm(ActivityType activityType, String title, String description, Integer posX, Integer posY, String taskContent,String addAuction) {
-        super(activityType, title, description, posX, posY);
+    public CreateTaskForm(ActivityType activityType, String title, String description, String taskContent,String addAuction) {
+        super(activityType, title, description);
         this.taskContent = taskContent;
         this.addAuction = addAuction;
     }

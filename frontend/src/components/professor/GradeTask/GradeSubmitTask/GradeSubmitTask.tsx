@@ -197,7 +197,7 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
               />
             </Form.Group>
 
-            <Form.Group controlId="posX" className={styles.formGroup}>
+            {/* <Form.Group controlId="posX" className={styles.formGroup}>
               <Form.Label>
                 <span>Pozycja X</span>
               </Form.Label>
@@ -221,7 +221,7 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
                 onChange={handleInputChange}
                 className={styles.formControl}
               />
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group controlId="taskContent" className={styles.formGroup}>
               <Form.Label>

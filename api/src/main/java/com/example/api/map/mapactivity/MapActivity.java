@@ -9,8 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public abstract class MapActivity {
     private Long id;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
     private ActivityType type;
     private String title;
     private Double points;

@@ -77,7 +77,7 @@ function GameManagement(props) {
                         <th>Nazwa rozdziału</th>
                         <th className='text-center'>Liczba aktywności</th>
                         <th className='text-center'>Punkty</th>
-                        <th className='text-center'>Wymiary mapy</th>
+                        {/* <th className='text-center'>Wymiary mapy</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -114,7 +114,7 @@ function GameManagement(props) {
                               <td>{chapter.name}</td>
                               <td className='text-center'>{chapter.noActivities}</td>
                               <td className='text-center'>{chapter.maxPoints}</td>
-                              <td className='text-center'>{chapter.mapSize}</td>
+                              {/* <td className='text-center'>{chapter.mapSize}</td> */}
                             </TableBodyRow>
                           </OverlayTrigger>
                         ))

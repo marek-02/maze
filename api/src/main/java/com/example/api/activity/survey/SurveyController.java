@@ -28,9 +28,9 @@ public class SurveyController {
         CreateSurveyForm form = new CreateSurveyForm(
                 MessageManager.TITLE,
                 MessageManager.DESC,
-                4,
-                5,
-                10.0
+                // 4,
+                // 5,
+                0.0
         );
         return ResponseEntity.ok().body(form);
     }

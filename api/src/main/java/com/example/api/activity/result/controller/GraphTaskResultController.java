@@ -1,15 +1,12 @@
 package com.example.api.activity.result.controller;
 
 import com.example.api.activity.result.dto.request.SaveGraphTaskResultForm;
-// import com.example.api.activity.result.dto.response.SuperPowerResponse;
-// import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
 import com.example.api.error.exception.*;
 import com.example.api.activity.result.service.GraphTaskResultService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

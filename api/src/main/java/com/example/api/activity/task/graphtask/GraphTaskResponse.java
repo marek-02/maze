@@ -13,8 +13,8 @@ public class GraphTaskResponse {
     private Long id;
     private String title;
     private String description;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
     private Double experience;
     private List<Requirement> requirements;
     private String requiredKnowledge;
@@ -26,8 +26,8 @@ public class GraphTaskResponse {
         this.id = graphTask.getId();
         this.title = graphTask.getTitle();
         this.description = graphTask.getDescription();
-        this.posX = graphTask.getPosX();
-        this.posY = graphTask.getPosY();
+        // this.posX = graphTask.getPosX();
+        // this.posY = graphTask.getPosY();
         this.experience = graphTask.getExperience();
         this.requirements = graphTask.getRequirements();
         this.requiredKnowledge = graphTask.getTaskContent();

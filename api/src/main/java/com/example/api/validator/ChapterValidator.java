@@ -36,46 +36,47 @@ public class ChapterValidator {
     }
 
     public void validateChapterCreation(ChapterForm form) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepository.findAllByCourse_Id(form.getCourseId());
-        if (chapters.stream()
-                .anyMatch(chapter ->
-                                Objects.equals(chapter.getPosX(), form.getPosX()) &&
-                                Objects.equals(chapter.getPosY(), form.getPosY()))) {
-            log.error("Two chapters cannot be on the same position!");
-            throw new RequestValidationException(ExceptionMessage.TWO_CHAPTERS_ON_THE_SAME_POSITION);
-        }
+        // List<Chapter> chapters = chapterRepository.findAllByCourse_Id(form.getCourseId());
+        // if (chapters.stream()
+        //         .anyMatch(chapter ->
+        //                         Objects.equals(chapter.getPosX(), form.getPosX()) &&
+        //                         Objects.equals(chapter.getPosY(), form.getPosY()))) {
+        //     log.error("Two chapters cannot be on the same position!");
+        //     throw new RequestValidationException(ExceptionMessage.TWO_CHAPTERS_ON_THE_SAME_POSITION);
+        // }
+        return;
     }
 
     public void validateChapterEdition(ChapterForm form, Chapter chapter) throws RequestValidationException{
-        ActivityMap chapterMap = chapter.getActivityMap();
+        // ActivityMap chapterMap = chapter.getActivityMap();
 
-        Integer newSizeX = form.getSizeX();
-        Integer newSizeY = form.getSizeY();
+        // Integer newSizeX = form.getSizeX();
+        // Integer newSizeY = form.getSizeY();
 
-        List<? extends Activity> activities = Stream.of(chapterMap.getSurveys(),
-                        chapterMap.getInfos(),
-                        chapterMap.getGraphTasks(),
-                        chapterMap.getFileTasks())
-                .flatMap(Collection::stream)
-                .toList();
+        // List<? extends Activity> activities = Stream.of(chapterMap.getSurveys(),
+        //                 chapterMap.getInfos(),
+        //                 chapterMap.getGraphTasks(),
+        //                 chapterMap.getFileTasks())
+        //         .flatMap(Collection::stream)
+        //         .toList();
 
-        // checking that the activities do not go beyond the map
-        if (activities.stream().anyMatch(activity -> activity.getPosX() >= newSizeX || activity.getPosY() >= newSizeY)){
-            log.error("New chapter size is too small for chapter " + chapter.getId());
-            throw new RequestValidationException(ExceptionMessage.CHAPTER_MAP_SIZE_TOO_SMALL);
-        }
+        // // checking that the activities do not go beyond the map
+        // if (activities.stream().anyMatch(activity -> activity.getPosX() >= newSizeX || activity.getPosY() >= newSizeY)){
+        //     log.error("New chapter size is too small for chapter " + chapter.getId());
+        //     throw new RequestValidationException(ExceptionMessage.CHAPTER_MAP_SIZE_TOO_SMALL);
+        // }
     }
 
     public void validatePositionTaken(ChapterForm form, Chapter chapter) throws RequestValidationException {
-        List<Chapter> chapters = chapterRepository.findAll();
+        // List<Chapter> chapters = chapterRepository.findAll();
 
-        if (chapters.stream().anyMatch(chapter_ ->
-                Objects.equals(chapter_.getPosX(), form.getPosX()) &&
-                Objects.equals(chapter_.getPosY(), form.getPosY()) &&
-                !Objects.equals(chapter.getId(), chapter_.getId()))){
-            log.error("Two chapters cannot be on the same position!");
-            throw new RequestValidationException(ExceptionMessage.TWO_CHAPTERS_ON_THE_SAME_POSITION);
-        }
+        // if (chapters.stream().anyMatch(chapter_ ->
+        //         Objects.equals(chapter_.getPosX(), form.getPosX()) &&
+        //         Objects.equals(chapter_.getPosY(), form.getPosY()) &&
+        //         !Objects.equals(chapter.getId(), chapter_.getId()))){
+        //     log.error("Two chapters cannot be on the same position!");
+        //     throw new RequestValidationException(ExceptionMessage.TWO_CHAPTERS_ON_THE_SAME_POSITION);
+        // }
     }
 
     public void validateImageExists(Long newImageId) throws RequestValidationException {

@@ -37,7 +37,7 @@ function GameMap() {
                     id: chapter.id,
                     targetIds:
                         chapter.id === Math.max(...chapterIds) ? [] : [chaptersList[chapterIds.lastIndexOf(chapter.id) + 1]?.id],
-                    position: {x: chapter.posX, y: chapter.posY},
+                    // position: {x: chapter.posX, y: chapter.posY},
                     edgeClass: 'gameMapEdge',
                     nodeClass: 'gameMapNode',
                     isBlocked: !chapter.isFulfilled

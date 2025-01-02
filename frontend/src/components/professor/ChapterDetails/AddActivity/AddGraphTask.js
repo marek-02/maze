@@ -34,8 +34,8 @@ function AddGraphTask(props) {
     const [title,setTitle] = useState("");
     const [topic,setTopic] = useState("");
     const [description,setDescription] = useState("");
-    const [posX,setPosX] = useState(0);
-    const [posY,setPosY] = useState(0);
+    // const [posX,setPosX] = useState(0);
+    // const [posY,setPosY] = useState(0);
     const [timeToSolve,setTimeToSolve] = useState("00:30:00");
 
     // useEffect(() => {
@@ -58,8 +58,8 @@ function AddGraphTask(props) {
             setTitle(placeholderJsonLoc.title);
             setTopic(placeholderJsonLoc.taskContent);
             setDescription(placeholderJsonLoc.description);
-            setPosX(placeholderJsonLoc.posX);
-            setPosY(placeholderJsonLoc.posY);
+            // setPosX(placeholderJsonLoc.posX);
+            // setPosY(placeholderJsonLoc.posY);
             setTimeToSolve(placeholderJsonLoc.timeToSolve);
 
             const filteredQuestions = placeholderJsonLoc.questions.filter((question,index) => index > 0);
@@ -143,8 +143,8 @@ function AddGraphTask(props) {
             title: title,
             taskContent: topic,   
             description: description,                     
-            posX: posX,
-            posY: posY,
+            // posX: posX,
+            // posY: posY,
             timeToSolve: timeToSolve,
             questions: questions.map((question,index) => ({
                 questionNum: index+1,
@@ -219,7 +219,7 @@ function AddGraphTask(props) {
                         onChange={(e) => setDescription(e.target.value)}
                         />
                 </Form.Group>
-                <Form.Group className="mb-3">
+                {/* <Form.Group className="mb-3">
                         <Form.Label>PosX</Form.Label>
                         <Form.Control
                         type="number"
@@ -236,7 +236,7 @@ function AddGraphTask(props) {
                         value={posY}
                         onChange={(e) => setPosY(parseInt(e.target.value))}
                         />
-                </Form.Group>
+                </Form.Group> */}
                 <Form.Group className="mb-3">
                         <Form.Label>Czas na rozwiązanie</Form.Label>
                         <Form.Control

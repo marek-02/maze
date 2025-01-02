@@ -12,7 +12,7 @@ import java.util.List;
 public class ActivityMapResponse {
     private Long id;
     private List<? extends MapActivity> tasks;
-    private Integer mapSizeX;
-    private Integer mapSizeY;
+    // private Integer mapSizeX;
+    // private Integer mapSizeY;
     private File image;
 }

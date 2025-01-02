@@ -38,10 +38,10 @@ const MAP_HEIGHT = 500
 const MAP_WIDTH = 1.5 * MAP_HEIGHT
 const EMPTY_INITIAL_VALUES = {
   name: '',
-  sizeX: '',
-  sizeY: '',
-  posX: '',
-  posY: '',
+  // sizeX: '',
+  // sizeY: '',
+  // posX: '',
+  // posY: '',
   imageId: ''
 }
 
@@ -110,15 +110,15 @@ function ChapterModal(props) {
   useEffect(() => {
     if (isLoaded) {
       if (chapterDetails) {
-        const { name, mapSize, posX, posY, imageId } = chapterDetails
-        const [sizeX, sizeY] = mapSize.split(' x ')
+        const { name, imageId } = chapterDetails
+        // const [sizeX, sizeY] = mapSize.split(' x ')
 
         setActivityValues({
           name,
-          sizeX: +sizeX,
-          sizeY: +sizeY,
-          posX,
-          posY,
+          // sizeX: +sizeX,
+          // sizeY: +sizeY,
+          // posX,
+          // posY,
           imageId
         })
       }
@@ -140,8 +140,8 @@ function ChapterModal(props) {
 
   const updateMap = () => {
     const labelValue = formikContextRef.current?.getValue('name')
-    const positionX = formikContextRef.current?.getValue('posX')
-    const positionY = formikContextRef.current?.getValue('posY')
+    // const positionX = formikContextRef.current?.getValue('posX')
+    // const positionY = formikContextRef.current?.getValue('posY')
     setGraphPreviewNode({ ...graphPreviewNode, label: labelValue, position: { x: positionX, y: positionY } })
   }
 
@@ -161,24 +161,24 @@ function ChapterModal(props) {
                   validate={(values) => {
                     const errors = {}
                     if (!values.name) errors.chapterName = FIELD_REQUIRED
-                    if (values.sizeX < 1 || values.sizeX > SANE_MAP_FIELDCOUNT_LIMIT)
-                      errors.sizeX = NUMBER_FROM_RANGE(1, 10)
-                    if (values.sizeY < 1 || values.sizeY > SANE_MAP_FIELDCOUNT_LIMIT)
-                      errors.sizeY = NUMBER_FROM_RANGE(1, 10)
+                    // if (values.sizeX < 1 || values.sizeX > SANE_MAP_FIELDCOUNT_LIMIT)
+                    //   errors.sizeX = NUMBER_FROM_RANGE(1, 10)
+                    // if (values.sizeY < 1 || values.sizeY > SANE_MAP_FIELDCOUNT_LIMIT)
+                    //   errors.sizeY = NUMBER_FROM_RANGE(1, 10)
                     if (values.imageId < 0) errors.imageId = NONNEGATIVE_NUMBER
                     if (!values.imageId) errors.imageId = FIELD_REQUIRED
-                    if (!values.posX || values.posX <= 0 || values.posX > 10) errors.posX = NUMBER_FROM_RANGE(1, 10)
-                    if (!values.posY || values.posY <= 0 || values.posY > 8) errors.posY = NUMBER_FROM_RANGE(1, 8)
+                    // if (!values.posX || values.posX <= 0 || values.posX > 10) errors.posX = NUMBER_FROM_RANGE(1, 10)
+                    // if (!values.posY || values.posY <= 0 || values.posY > 8) errors.posY = NUMBER_FROM_RANGE(1, 8)
                     return errors
                   }}
                   onSubmit={(values, { setSubmitting }) => {
                     const editedValues = {
                       name: values.name,
-                      sizeX: values.sizeX,
-                      sizeY: values.sizeY,
+                      // sizeX: values.sizeX,
+                      // sizeY: values.sizeY,
                       imageId: values.imageId,
-                      posX: values.posX,
-                      posY: values.posY
+                      // posX: values.posX,
+                      // posY: values.posY
                     }
                     sendAction(setSubmitting, editedValues, afterSendAction)
                   }}
@@ -190,21 +190,21 @@ function ChapterModal(props) {
                         <Row className='mx-auto'>
                           {FormCol('Nazwa rozdziału', 'text', 'name', 12, { errorColor: props.theme.danger })}
                           <div className='m-2' />
-                          {FormCol('Liczba kolumn', 'number', 'sizeX', 6, {
+                          {/* {FormCol('Liczba kolumn', 'number', 'sizeX', 6, {
                             min: 1,
                             errorColor: props.theme.danger
                           })}
                           {FormCol('Liczba wierszy', 'number', 'sizeY', 6, {
                             min: 1,
                             errorColor: props.theme.danger
-                          })}
+                          })} */}
                           <div className='m-2' />
-                          {FormCol('Pozycja X (na mapie gry)', 'number', 'posX', 6, {
+                          {/* {FormCol('Pozycja X (na mapie gry)', 'number', 'posX', 6, {
                             errorColor: props.theme.danger
                           })}
                           {FormCol('Pozycja Y (na mapie gry)', 'number', 'posY', 6, {
                             errorColor: props.theme.danger
-                          })}
+                          })} */}
                           <div className='m-2' />
                         </Row>
 

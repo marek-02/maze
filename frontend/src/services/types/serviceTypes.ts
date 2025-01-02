@@ -8,8 +8,8 @@ export type newChapterData = {
   sizeX: number
   sizeY: number
   imageId: number
-  posX: number
-  posY: number
+  // posX: number
+  // posY: number
   courseId: number
 }
 

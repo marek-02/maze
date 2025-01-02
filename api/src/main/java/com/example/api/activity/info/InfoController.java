@@ -29,8 +29,8 @@ public class InfoController {
         CreateInfoForm form = new CreateInfoForm(
                 MessageManager.TITLE,
                 MessageManager.DESC,
-                1,
-                2,
+                // 1,
+                // 2,
                 List.of(MessageManager.LINK),
                 MessageManager.LOREM_IPSUM
         );

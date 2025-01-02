@@ -18,10 +18,10 @@ public class ChapterInfoResponse {
     private Integer noInfoTasks;
     private Integer noFileTasks;
     private Double maxPoints;
-    private String mapSize;
+    // private String mapSize;
     private List<? extends MapActivity> mapTasks;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
     private Long imageId;
 
     public ChapterInfoResponse(Chapter chapter, List<? extends MapActivity> mapTasks) {
@@ -33,10 +33,10 @@ public class ChapterInfoResponse {
         this.noInfoTasks = chapter.getActivityMap().getInfos().size();
         this.noFileTasks = chapter.getActivityMap().getFileTasks().size();
         this.maxPoints = chapter.getMaxPoints();
-        this.mapSize = chapter.getActivityMap().getMapSizeX() + " x " + chapter.getActivityMap().getMapSizeY();
+        // this.mapSize = chapter.getActivityMap().getMapSizeX() + " x " + chapter.getActivityMap().getMapSizeY();
         this.mapTasks = mapTasks;
-        this.posX = chapter.getPosX();
-        this.posY = chapter.getPosY();
+        // this.posX = chapter.getPosX();
+        // this.posY = chapter.getPosY();
         this.imageId = chapter.getActivityMap().getImage().getId();
     }
 }

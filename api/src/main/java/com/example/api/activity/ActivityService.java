@@ -120,13 +120,13 @@ public class ActivityService {
         activity.setDescription(editForm.getDescription());
         chapterValidator.validateChapterIsNotNull(chapter, null);
 
-        if (activity.getPosX().equals(editForm.getPosX()) &&
-                activity.getPosY().equals(editForm.getPosY())) {
-            return;
-        }
-        activityValidator.validateActivityPosition(editForm, chapter);
-        activity.setPosX(editForm.getPosX());
-        activity.setPosY(editForm.getPosY());
+        // if (activity.getPosX().equals(editForm.getPosX()) &&
+        //         activity.getPosY().equals(editForm.getPosY())) {
+        //     return;
+        // }
+        // activityValidator.validateActivityPosition(editForm, chapter);
+        // activity.setPosX(editForm.getPosX());
+        // activity.setPosY(editForm.getPosY());
     }
 
     public void deleteActivity(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
