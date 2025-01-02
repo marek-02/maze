@@ -1,7 +1,6 @@
 package com.example.api.course;
 
 import com.example.api.course.coursetype.CourseType;
-import com.example.api.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

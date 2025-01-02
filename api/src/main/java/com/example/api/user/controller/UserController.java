@@ -9,7 +9,6 @@ import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.*;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
-import com.example.api.group.Group;
 import com.example.api.user.dto.response.UserDTO;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;

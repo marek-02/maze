@@ -1,9 +1,6 @@
 package com.example.api.config;
 
 import com.example.api.activity.result.model.*;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.result.repository.ColloquiumPointsRepository;
-import com.example.api.activity.result.repository.LaboratoryPointsRepository;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
@@ -37,7 +34,6 @@ import com.example.api.user.model.AccountType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.file.File;
 import com.example.api.file.image.Image;
 import com.example.api.file.image.ImageType;
 import com.example.api.util.model.Url;
@@ -65,7 +61,6 @@ import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
 import lombok.AllArgsConstructor;
 
-import org.aspectj.apache.bcel.classfile.Module.Require;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,7 +74,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @AllArgsConstructor
@@ -88,7 +82,6 @@ public class DatabaseConfig {
     private final UrlRepository urlRepository;
     private final ChapterRepository chapterRepository;
     private final RankRepository rankRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
@@ -392,7 +385,7 @@ public class DatabaseConfig {
             //GRAPHTASK RESULTS
             Calendar calendar = Calendar.getInstance();   
             calendar.set(2024, Calendar.JUNE, 15);         
-            List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
+            // List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
             List<Double> graphTask3_1_points_students2 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 5.0, 15.0, 19.5));
             List<Double> graphTask3_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 18.0, 2.0, 19.0, 15.0, 19.5));
 
@@ -455,27 +448,6 @@ public class DatabaseConfig {
                     result4_1,fileTask4_1,Long.valueOf(i),calendar.getTimeInMillis(),"moja szczera odpowiedz",fileTaskResultService
                 );
             }        
-
-
-            //SURVEY RESULTS (WE DONT GIVE POINTS FOR THEM)
-            // for(int i=0; i<students1Len/2;i++){
-            //     SurveyResult surveyResult4_1 = new SurveyResult();
-            //     setSurveyResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
-            //         surveyResult4_1, survey4_1, Long.valueOf(i), calendar.getTimeInMillis());
-            // }
-            
-            //ADDITIONAL POINTS
-            // AdditionalPoints additionalPoints = new AdditionalPoints();
-            // additionalPoints.setId(1L);
-            // CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
-            // additionalPoints.setMember(additionalPointsMember);
-            // additionalPoints.setPoints(100D);
-            // additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
-            // additionalPoints.setProfessorEmail(professor1.getEmail());
-            // additionalPoints.setDescription("Good job");
-            // addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPoints());
-            // additionalPointsRepository.save(additionalPoints);
-
 
             initAllRanks(course1);
             initBadges(course1);

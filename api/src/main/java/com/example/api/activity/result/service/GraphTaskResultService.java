@@ -1,7 +1,5 @@
 package com.example.api.activity.result.service;
 
-// import com.example.api.activity.result.dto.response.SuperPowerResponse;
-// import com.example.api.activity.result.dto.response.SuperPowerUsageResponse;
 import com.example.api.activity.result.repository.ActivityResultRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
@@ -9,20 +7,15 @@ import com.example.api.error.exception.*;
 import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.activity.result.model.ResultStatus;
 import com.example.api.activity.task.graphtask.GraphTask;
-import com.example.api.question.Question;
 import com.example.api.user.model.User;
-import com.example.api.user.hero.model.Hero;
 import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.activity.task.graphtask.GraphTaskRepository;
-import com.example.api.question.QuestionRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.service.UserService;
-import com.example.api.validator.ResultValidator;
 import com.example.api.validator.UserValidator;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.util.calculator.PointsCalculator;
 import com.example.api.util.calculator.TimeCalculator;
-// import com.example.api.user.hero.HeroVisitor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,15 +32,12 @@ import static com.example.api.error.exception.ExceptionMessage.*;
 public class GraphTaskResultService {
     private final GraphTaskResultRepository graphTaskResultRepository;
     private final GraphTaskRepository graphTaskRepository;
-    private final QuestionRepository questionRepository;
     private final PointsCalculator pointsCalculator;
-    private final ResultValidator resultValidator;
     private final UserValidator userValidator;
     private final TimeCalculator timeCalculator;
     private final LoggedInUserService authService;
     private final UserService userService;
     private final ActivityValidator activityValidator;
-    // private final HeroVisitor heroVisitor;
     private final ActivityResultRepository taskResultRepository;
 
     public Long getGraphTaskResultId(Long graphTaskId)
@@ -152,38 +142,6 @@ public class GraphTaskResultService {
 
     public List<GraphTaskResult> getAllGraphTaskResultsForStudentAndCourse(User student, Course course){
         return graphTaskResultRepository.findAllByUserAndCourse(student, course);
-    }
-
-    // public SuperPowerResponse<?> useSuperPower(Long graphTaskId, Long questionId) throws RequestValidationException {
-    //     User user = userService.getCurrentUserAndValidateStudentAccount();
-
-    //     GraphTask graphTask = graphTaskRepository.findGraphTaskById(graphTaskId);
-    //     GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTask, user);
-    //     Question question = questionRepository.findQuestionById(questionId);
-
-    //     Hero hero = user.getCourseMember(graphTask.getCourse())
-    //             .orElseThrow()
-    //             .getUserHero()
-    //             .getHero();
-
-    //     return hero.useSuperPower(heroVisitor, user, result, question);
-    // }
-
-    // public SuperPowerUsageResponse canSuperPowerBeUsed(Long graphTaskId) throws RequestValidationException {
-    //     User user = userService.getCurrentUserAndValidateStudentAccount();
-    //     GraphTaskResult result = getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
-
-    //     Hero hero = result.getMember().getUserHero().getHero();
-    //     boolean canBeUsed = hero.canPowerBeUsed(result);
-    //     String message = hero.getCanBeUsedMessage(result);
-
-    //     return new SuperPowerUsageResponse(canBeUsed, message);
-    // }
-
-    private GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(GraphTask graphTask, User user) throws EntityNotFoundException {
-        GraphTaskResult result = graphTaskResultRepository.findGraphTaskResultByGraphTaskAndUser(graphTask, user);
-        resultValidator.validateResultIsNotNull(result, graphTask.getId(), user.getEmail());
-        return result;
     }
 
     public GraphTaskResult getGraphTaskResultWithGraphTaskAndUser(Long graphTaskId, User user) throws EntityNotFoundException {

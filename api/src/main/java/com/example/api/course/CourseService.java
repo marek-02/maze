@@ -9,7 +9,6 @@ import com.example.api.file.image.Image;
 import com.example.api.file.image.ImageType;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.BadgeRepository;
-// import com.example.api.user.badge.types.ActivityScoreBadge;
 import com.example.api.user.badge.types.Badge;
 import com.example.api.user.hero.HeroFactory;
 import com.example.api.user.hero.HeroRepository;
@@ -22,13 +21,9 @@ import com.example.api.user.repository.RankRepository;
 import com.example.api.validator.UserValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Io;
 import org.springframework.stereotype.Service;
-
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,6 +1,5 @@
 package com.example.api.question;
 
-import com.example.api.question.Question;
 import com.example.api.question.option.OptionForm;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

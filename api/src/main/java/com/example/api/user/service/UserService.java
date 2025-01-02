@@ -21,10 +21,6 @@ import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.task.filetask.FileTaskRepository;
-import com.example.api.activity.task.graphtask.GraphTaskRepository;
-import com.example.api.activity.info.InfoRepository;
-import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.PasswordValidator;
@@ -41,7 +37,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor

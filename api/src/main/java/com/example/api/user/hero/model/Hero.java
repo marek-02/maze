@@ -1,16 +1,7 @@
 package com.example.api.user.hero.model;
 
-// import com.example.api.activity.result.dto.response.SuperPowerResponse;
-import com.example.api.activity.result.model.GraphTaskResult;
 import com.example.api.course.Course;
-// import com.example.api.course.coursemember.CourseMember;
-// import com.example.api.error.exception.RequestValidationException;
-// import com.example.api.question.Question;
 import com.example.api.user.hero.HeroType;
-// import com.example.api.user.model.User;
-// import com.example.api.util.message.HeroMessage;
-// // import com.example.api.user.hero.HeroVisitor;
-// import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -5,10 +5,7 @@ import com.example.api.chapter.ChapterForm;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.ExceptionMessage;
 import com.example.api.error.exception.RequestValidationException;
-import com.example.api.activity.Activity;
-import com.example.api.map.ActivityMap;
 import com.example.api.chapter.Chapter;
-import com.example.api.chapter.ChapterRepository;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.file.FileRepository;
@@ -16,16 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Stream;
-
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ChapterValidator {
-    private final ChapterRepository chapterRepository;
     private final FileRepository fileRepository;
 
     public void validateChapterIsNotNull(Chapter chapter, Long id) throws EntityNotFoundException {

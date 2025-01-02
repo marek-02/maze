@@ -1,6 +1,5 @@
 package com.example.api.user.hero;
 
-import com.example.api.user.hero.HeroType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

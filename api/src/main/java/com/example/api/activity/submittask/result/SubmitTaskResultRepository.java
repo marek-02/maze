@@ -1,7 +1,6 @@
 package com.example.api.activity.submittask.result;
 
 import com.example.api.activity.Activity;
-import com.example.api.activity.result.model.FileTaskResult;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.user.model.User;
