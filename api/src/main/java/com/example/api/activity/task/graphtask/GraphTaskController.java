@@ -54,8 +54,8 @@ public class GraphTaskController {
         CreateGraphTaskForm form = new CreateGraphTaskForm(
                 MessageManager.TITLE,
                 MessageManager.DESC,
-                3,
-                4,
+                // 3,
+                // 4,
                 MessageManager.REQ_KNOWLEDGE,
                 questionForms,
                 // new CreateAuctionDTO(0D, 100D, 0L, 10D),

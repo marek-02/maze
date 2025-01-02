@@ -21,11 +21,11 @@ public class CreateSubmitTaskForm extends CreateActivityForm {
 
     public CreateSubmitTaskForm(String title,
                                 String description,
-                                Integer posX,
-                                Integer posY,
+                                // Integer posX,
+                                // Integer posY,
                                 Integer percentageForAuthor,
                                 Double maxPointsForAuthor) {
-        super(ActivityType.SUBMIT, title, description, posX, posY);
+        super(ActivityType.SUBMIT, title, description);
         this.percentageForAuthor = percentageForAuthor;
         this.maxPointsForAuthor = maxPointsForAuthor;
     }
@@ -34,8 +34,8 @@ public class CreateSubmitTaskForm extends CreateActivityForm {
         return new CreateSubmitTaskForm(
                 "Przykładowy tytuł",
                 "Przykładowy opis",
-                0,
-                0,
+                // 0,
+                // 0,
                 10,
                 50D
         );

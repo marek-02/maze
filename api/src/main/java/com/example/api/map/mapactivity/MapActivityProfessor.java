@@ -11,7 +11,7 @@ public class MapActivityProfessor extends MapActivity {
     private Boolean isActivityBlocked;
 
     public MapActivityProfessor(Activity activity, Boolean isActivityBlocked, RequirementResponse requirements) {
-        super(activity.getId(), activity.getPosX(), activity.getPosY(), activity.getActivityType(), activity.getTitle(), activity.getMaxPoints(), activity.getCreationTime(), activity.getDescription(), requirements);
+        super(activity.getId(), activity.getActivityType(), activity.getTitle(), activity.getMaxPoints(), activity.getCreationTime(), activity.getDescription(), requirements);
         this.isActivityBlocked = isActivityBlocked;
     }
 }

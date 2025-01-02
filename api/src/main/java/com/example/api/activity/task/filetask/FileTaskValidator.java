@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class FileTaskValidator {
 
     public void validateCreateFileTaskForm(CreateFileTaskForm form) throws RequestValidationException {
-        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(),
+        if (Stream.of(form.getTitle(), form.getDescription(),
                 form.getTaskContent(), form.getMaxPoints()).anyMatch(Objects::isNull)) {
             log.info("All fields in CreateFileTaskForm should not be null");
             throw new RequestValidationException(ExceptionMessage.FORM_FIELDS_NOT_NULL);

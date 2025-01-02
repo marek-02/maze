@@ -37,7 +37,7 @@ public class GraphTask extends Task {
                      long timeToSolveMillis,
                      double maxPoints,
                      Course course){
-        super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor,
+        super(form.getTitle(), form.getDescription(), professor,
                 form.getTaskContent(), maxPoints, course);
         this.questions = questions;
         this.timeToSolveMillis = timeToSolveMillis;

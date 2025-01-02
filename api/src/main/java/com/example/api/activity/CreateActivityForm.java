@@ -26,14 +26,14 @@ public abstract class CreateActivityForm {
     @Schema(required = true) private ActivityType activityType;
     @Schema(required = true) private String title;
     @Schema(required = true) private String description;
-    @Schema(required = true) private Integer posX;
-    @Schema(required = true) private Integer posY;
+    // @Schema(required = true) private Integer posX;
+    // @Schema(required = true) private Integer posY;
 
     public CreateActivityForm(Activity activity) {
         this.activityType = activity.getActivityType();
         this.title = activity.getTitle();
         this.description = activity.getDescription();
-        this.posX = activity.getPosX();
-        this.posY = activity.getPosY();
+        // this.posX = activity.getPosX();
+        // this.posY = activity.getPosY();
     }
 }

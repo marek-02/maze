@@ -26,8 +26,8 @@ public class Chapter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
 
     @OneToOne
     private Chapter nextChapter;
@@ -44,11 +44,11 @@ public class Chapter {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Course course;
 
-    public Chapter(String name, ActivityMap activityMap, Integer posX, Integer poxY, Course course) {
+    public Chapter(String name, ActivityMap activityMap, Course course) {
         this.name = name;
         this.activityMap = activityMap;
-        this.posX = posX;
-        this.posY = poxY;
+        // this.posX = posX;
+        // this.posY = poxY;
         this.course = course;
     }
 

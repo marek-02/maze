@@ -31,7 +31,7 @@ import { ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../ut
 import { isMobileView } from '../../../utils/mobileHelper'
 import { successToast } from '../../../utils/toasts'
 import Loader from '../../general/Loader/Loader'
-import ChapterMap from '../../student/GameMapPage/Map/ChapterMap'
+// import ChapterMap from '../../student/GameMapPage/Map/ChapterMap'
 import ChapterModal from '../GameManagement/ChapterModal/ChapterModal'
 
 function ChapterDetails(props) {
@@ -191,32 +191,6 @@ function ChapterDetails(props) {
     <Container fluid style={{ overflowX: 'hidden', marginBottom: isMobileView() ? 60 : 0 }}>
       <Row className='px-0 m-0'>
         <Col className='m-0 h-100' md={6}>
-          <Col md={12}>
-            <Accordion style={{ paddingTop: '2em' }} onClick={() => setReloadMapNeeded(true)}>
-              <Accordion.Item eventKey='0'>
-                <Accordion.Header>
-                  <span style={{ fontWeight: 'bold', color: '#071542' }}>Mapa rozdziału</span>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <MapCard
-                    $bodyColor={props.theme.secondary}
-                    $headerColor={props.theme.primary}
-                    $fontColor={props.theme.font}
-                    className='mt-2'
-                  >
-                    <Card.Body ref={mapCardBody}>
-                      <ChapterMap
-                        chapterId={chapterId}
-                        marginNeeded
-                        parentSize={mapContainerSize}
-                        reload={reloadMapNeeded}
-                      />
-                    </Card.Body>
-                  </MapCard>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          </Col>
           <Col md={12} style={{ height: '25%' }}>
             <Accordion style={{ paddingTop: '1em' }}>
               <Accordion.Item eventKey='0'>
@@ -281,9 +255,9 @@ function ChapterDetails(props) {
                             <span style={{ fontWeight: 'bold' }}>Suma punktów możliwych do zdobycia w rozdziale: </span>
                             {chapterDetails.maxPoints}
                           </ListGroupItem>
-                          <ListGroupItem>
+                          {/* <ListGroupItem>
                             <span style={{ fontWeight: 'bold' }}>Aktualny rozmiar mapy: </span> {chapterDetails.mapSize}
-                          </ListGroupItem>
+                          </ListGroupItem> */}
                         </ListGroup>
                       )}
                     </Card.Body>
@@ -384,9 +358,9 @@ function ChapterDetails(props) {
                             </td>
                             <td>{getActivityTypeName(activity.type)}</td>
                             <td>{activity.title}</td>
-                            <td>
+                            {/* <td>
                               ({activity.posX}, {activity.posY})
-                            </td>
+                            </td> */}
                             <td style={{ minWidth: '70px' }}>Pkt: {activity.points ?? '-'}</td>
                             <td>
                               <FontAwesomeIcon

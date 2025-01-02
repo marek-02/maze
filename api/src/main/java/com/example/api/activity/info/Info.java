@@ -33,7 +33,7 @@ public class Info extends Activity {
     private String content;
 
     public Info(CreateInfoForm form, User professor, List<Url> imageUrls, Course course) {
-        super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor, course);
+        super(form.getTitle(), form.getDescription(), professor, course);
         this.imageUrls = imageUrls;
         this.content = form.getInfoContent();
     }

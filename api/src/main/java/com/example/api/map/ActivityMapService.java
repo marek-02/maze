@@ -49,7 +49,7 @@ public class ActivityMapService {
         } else {
             allTasks = getMapTasksForProfessor(activityMap);
         }
-        return new ActivityMapResponse(activityMap.getId(), allTasks, activityMap.getMapSizeX(), activityMap.getMapSizeY(), activityMap.getImage());
+        return new ActivityMapResponse(activityMap.getId(), allTasks, activityMap.getImage());
     }
 
     public List<MapActivityProfessor> getMapTasksForProfessor(ActivityMap activityMap) {

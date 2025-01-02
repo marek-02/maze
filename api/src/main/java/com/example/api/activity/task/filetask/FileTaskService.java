@@ -102,7 +102,7 @@ public class FileTaskService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateFileTaskFormFields(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         List<FileTask> fileTasks = fileTaskRepository.findAll();
         activityValidator.validateActivityTitle(form.getTitle(), fileTasks);

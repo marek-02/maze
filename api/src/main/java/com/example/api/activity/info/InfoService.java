@@ -62,7 +62,7 @@ public class InfoService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateInfoForm(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);

@@ -71,7 +71,7 @@ public class GraphTaskService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateGraphTaskFormFields(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         List<GraphTask> graphTasks = graphTaskRepository.findAll();
         activityValidator.validateActivityTitle(form.getTitle(), graphTasks);

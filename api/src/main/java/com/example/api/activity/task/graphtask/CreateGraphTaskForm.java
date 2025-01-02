@@ -26,13 +26,13 @@ public class CreateGraphTaskForm extends CreateTaskForm {
 
     public CreateGraphTaskForm(String title,
                                String description,
-                               Integer posX,
-                               Integer posY,
+                            //    Integer posX,
+                            //    Integer posY,
                                String requiredKnowledge,
                                List<QuestionForm> questions,
                             //    CreateAuctionDTO auctionDTO,
                                String timeToSolve) {
-        super(ActivityType.EXPEDITION, title, description, posX, posY, requiredKnowledge,"false");
+        super(ActivityType.EXPEDITION, title, description,requiredKnowledge,"false");
         this.questions = questions;
         this.timeToSolve = timeToSolve;
         // setAuction(auctionDTO);

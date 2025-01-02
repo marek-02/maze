@@ -63,7 +63,7 @@ public class SurveyService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateSurveyForm(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);

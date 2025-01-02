@@ -234,7 +234,7 @@ public class DatabaseConfig {
                 "(Nie)spodzianka I",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "model OSI, funkcje warstwy II oraz zasady przełączania",
-                5,4,professor1,20.0,course1,null,questions,12L,graphTaskService
+                professor1,20.0,course1,null,questions,12L,graphTaskService
             );
 
             List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
@@ -243,7 +243,7 @@ public class DatabaseConfig {
                 "Spodziewana Niespodzianka",
                 "model OSI, funkcje warstwy II oraz zasady przełączania.",
                 "Zapraszam chętnych...",
-                5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,20L,graphTaskService
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,20L,graphTaskService
             );
 
             List<Question> questions3 = addQuestionSet2(course1, questionService, optionService);
@@ -252,7 +252,7 @@ public class DatabaseConfig {
                 "(Nie)spodzianka II",
                 "model OSI, funkcje warstwy III oraz zasady przełączania.",
                 "Zapraszam chętnych...",
-                5,5,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
             );
 
             List<Question> questions4 = addQuestionSet3(course1, questionService, optionService);
@@ -261,7 +261,7 @@ public class DatabaseConfig {
                 "(Nie)spodzianka III",
                 "Zadania sprawdzające wiedzę z warstwy łącza danych",
                 "Zapraszam",
-                5,3,professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions4,20L,graphTaskService
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions4,20L,graphTaskService
             );
 
 
@@ -271,7 +271,7 @@ public class DatabaseConfig {
                 "Niespodzianka",
                 "Pochwal się wiedzą na temat okablowania szkieletowego",
                 "",
-                3,3,professor1,20.0,course1,null,fileTaskService
+                professor1,20.0,course1,null,fileTaskService
             );
 
 
@@ -280,7 +280,7 @@ public class DatabaseConfig {
             setInfoDataAndSave(info1_1,
                 "Konsultacje",
                 "Link do konsultacji",
-                0,0,professor1,0.0,course1,null,infoService,
+                professor1,0.0,course1,null,infoService,
                 List.of("https://mche.webex.com/wbxmjs/joinservice/sites/mche/meeting/download/6A5E9486079F2D17E0531AA2FD0A881B")
             );
 
@@ -288,7 +288,7 @@ public class DatabaseConfig {
             setInfoDataAndSave(info2_1,
                 "Konsole - dostep",
                 "Jak dostac sie do konsoli wybranego urzadzenia",
-                0,0,professor1,0.0,course1,null,infoService,
+                professor1,0.0,course1,null,infoService,
                 List.of("https://upel.agh.edu.pl/pluginfile.php/70580/mod_resource/content/2/4.23-podstawy-v0.5.pdf")
             );
 
@@ -296,7 +296,7 @@ public class DatabaseConfig {
             setInfoDataAndSave(info3_1,
                 "VLAN - Slajdy",
                 "Slajdy z laboratorium VLAN",
-                0,0,professor1,0.0,course1,null,infoService,
+                professor1,0.0,course1,null,infoService,
                 List.of("https://upel.agh.edu.pl/pluginfile.php/70581/mod_resource/content/1/lsk-lab03-vlan.pdf")
             );
 
@@ -304,7 +304,7 @@ public class DatabaseConfig {
             setInfoDataAndSave(info4_1,
                 "STP - Slajdy",
                 "Poniżej znajduje się link do slajdów z laboratorium",
-                3,0,professor1,0.0,course1,null,infoService,
+                professor1,0.0,course1,null,infoService,
                 List.of("https://upel.agh.edu.pl/pluginfile.php/70582/mod_resource/content/1/STP-lab-v1.0.pdf")
             );
 
@@ -312,7 +312,7 @@ public class DatabaseConfig {
             setInfoDataAndSave(info4_2,
                 "STP - Komendy",
                 "Przydatne komendy - link ponizej",
-                4,0,professor1,0.0,course1,null,infoService,
+                professor1,0.0,course1,null,infoService,
                 List.of("https://upel.agh.edu.pl/pluginfile.php/70583/mod_resource/content/0/stp-komendy.txt")
             );
 
@@ -371,16 +371,16 @@ public class DatabaseConfig {
 
             //CHAPTERS
             Chapter chapter1 = new Chapter();
-            setChapterDataAndSave(chapter1,"Lab1 - Wstep",0,0,activityMap1,null,false,course1);
+            setChapterDataAndSave(chapter1,"Lab1 - Wstep",activityMap1,null,false,course1);
             
             Chapter chapter2 = new Chapter();
-            setChapterDataAndSave(chapter2,"Lab2 - Switche",0,1,activityMap2,null,false,course1);
+            setChapterDataAndSave(chapter2,"Lab2 - Switche",activityMap2,null,false,course1);
             
             Chapter chapter3 = new Chapter();
-            setChapterDataAndSave(chapter3,"Lab3 - VLAN",0,2,activityMap3,null,false,course1);
+            setChapterDataAndSave(chapter3,"Lab3 - VLAN",activityMap3,null,false,course1);
             
             Chapter chapter4 = new Chapter();
-            setChapterDataAndSave(chapter4,"Lab4 - STP",0,3,activityMap4,null,false,course1);
+            setChapterDataAndSave(chapter4,"Lab4 - STP",activityMap4,null,false,course1);
 
             // Chapter chapter5 = new Chapter();
             // setChapterDataAndSave(chapter5,"Lab5 - ARP",0,3,activityMap5,null,false,course1);
@@ -493,11 +493,11 @@ public class DatabaseConfig {
     }
 
     public void setBasicActivityData(Activity activity,String title,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course, List<Requirement> requirements){
+        User professor,Double maxPoints,Course course, List<Requirement> requirements){
         activity.setTitle(title);        
         activity.setDescription(description);
-        activity.setPosX(posX);
-        activity.setPosY(posY);
+        // activity.setPosX(posX);
+        // activity.setPosY(posY);
         activity.setProfessor(professor);
         activity.setMaxPoints(maxPoints);
         activity.setExperience(maxPoints);
@@ -509,18 +509,18 @@ public class DatabaseConfig {
     }
 
     public void setBasicTaskData(Task task,String title,String taskContent,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course,List<Requirement> requirements){
+        User professor,Double maxPoints,Course course,List<Requirement> requirements){
 
-        setBasicActivityData(task, title, description, posX, posY, professor, maxPoints, course,requirements);
+        setBasicActivityData(task, title, description, professor, maxPoints, course,requirements);
         task.setTaskContent(taskContent);      
     }    
 
     //Ekspedycja
     public void setGraphTaskDataAndSave(GraphTask graphTask,String title,String taskContent,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course,List<Requirement> requirements,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,
         List<Question> questions, Long timeToSolveMinutes,GraphTaskService graphTaskService){
         
-        setBasicTaskData(graphTask, title,taskContent, description, posX, posY, professor, maxPoints, course,requirements);        
+        setBasicTaskData(graphTask, title,taskContent, description, professor, maxPoints, course,requirements);        
         graphTask.setQuestions(questions);
         graphTask.setTimeToSolveMillis(timeToSolveMinutes * 60 * 1000L);
         // graphTask.setId(1L);
@@ -529,17 +529,17 @@ public class DatabaseConfig {
 
     //Zadanie bojowe
     public void setFileTaskDataAndSave(FileTask fileTask,String title,String taskContent,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course,List<Requirement> requirements,FileTaskService fileTaskService){
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,FileTaskService fileTaskService){
         
-        setBasicTaskData(fileTask, title,taskContent, description, posX, posY, professor, maxPoints, course,requirements);        
+        setBasicTaskData(fileTask, title,taskContent, description, professor, maxPoints, course,requirements);        
         fileTaskService.saveFileTask(fileTask);      
     }    
 
     //Ogloszenia duszpasterskie
     public void setInfoDataAndSave(Info info,String title,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course,List<Requirement> requirements,InfoService infoService,List<String> urlStrings){
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,InfoService infoService,List<String> urlStrings){
         
-        setBasicActivityData(info, title, description, posX, posY, professor, maxPoints, course,requirements);
+        setBasicActivityData(info, title, description, professor, maxPoints, course,requirements);
         
         List<Url> urls = new ArrayList<>();
         for(String urlStr : urlStrings){
@@ -553,9 +553,9 @@ public class DatabaseConfig {
 
     //Ankiety
     public void setSurveyDataAndSave(Survey survey,String title,String description,
-        int posX,int posY,User professor,Double maxPoints,Course course,List<Requirement> requirements,SurveyService surveyService){
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,SurveyService surveyService){
         
-        setBasicActivityData(survey, title, description, posX, posY, professor, maxPoints, course,requirements);        
+        setBasicActivityData(survey, title, description, professor, maxPoints, course,requirements);        
         surveyService.saveSurvey(survey);      
     }    
 
@@ -563,8 +563,8 @@ public class DatabaseConfig {
     public void setActivityMapAndSave(ActivityMap map,List<GraphTask> graphTasks, List<FileTask> fileTasks, List<Info> infos,
          List<Survey> surveys,String imageStr, ActivityMapService mapService) throws IOException{
 
-        map.setMapSizeY(5);
-        map.setMapSizeX(8);
+        // map.setMapSizeY(5);
+        // map.setMapSizeX(8);
         map.setGraphTasks(graphTasks);
         map.setFileTasks(fileTasks);
         map.setInfos(infos);
@@ -574,12 +574,12 @@ public class DatabaseConfig {
     }
 
 
-    public void setChapterDataAndSave(Chapter chapter,String name,int posX,int posY,ActivityMap activityMap,List<Requirement> requirements,
+    public void setChapterDataAndSave(Chapter chapter,String name, ActivityMap activityMap,List<Requirement> requirements,
         boolean isBlocked, Course course){
         
         chapter.setName(name);
-        chapter.setPosX(posX);
-        chapter.setPosY(posY);
+        // chapter.setPosX(posX);
+        // chapter.setPosY(posY);
         chapter.setActivityMap(activityMap);
         if(requirements == null) chapter.setRequirements(createDefaultRequirements());
         else chapter.setRequirements(requirements);
