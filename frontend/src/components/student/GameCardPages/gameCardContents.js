@@ -96,7 +96,7 @@ export function HeroStatsContent(props) {
 
         <p className='pb-1'>Całkowite punkty: {Math.floor( props.stats.totalPoints )}</p>
         <p className='pb-1'>Nadmiar oleju: {Math.floor( props.stats.excessPoints )}</p>
-        <p className='pb-1'>Ranga: {props.rankName}</p>
+        <p className='pb-1'>Ranga: {props.stats.rankName}</p>
         <p className='pb-1'>Następna ranga od: {props.stats.nextLvlPoints!=null ? props.stats.nextLvlPoints : "MAX"}</p>
         <p className='pb-1'>Zdobyte glejty: {props.stats.badgesNumber}</p>        
         <p>Wykonanych aktywności: {props.stats.completedActivities}</p>

@@ -1,6 +1,5 @@
 package com.example.api.course.coursemember;
 
-import com.example.api.course.Course;
 import com.example.api.group.Group;
 import com.example.api.group.GroupService;
 import com.example.api.user.hero.model.UserHero;
@@ -9,10 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;;
 
 @Service
 @AllArgsConstructor

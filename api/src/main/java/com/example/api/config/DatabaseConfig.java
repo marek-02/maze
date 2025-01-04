@@ -195,7 +195,7 @@ public class DatabaseConfig {
             professor2.getCourses().add(course1);
             
 
-            //COURSE FINALE CONFIGURATION
+            //COURSE FINAL CONFIGURATION
             course1.setOwner(professor1);  
 
             userRepository.save(professor1);

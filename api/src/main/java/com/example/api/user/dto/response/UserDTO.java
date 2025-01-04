@@ -12,11 +12,13 @@ public class UserDTO {
     @Schema(required = true) private final String firstName;
     @Schema(required = true) private final String lastName;
     @Schema(required = true) private final Integer indexNumber;
+    @Schema(required = true) private final String email;
 
     public UserDTO(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.indexNumber = user.getIndexNumber();
+        this.email = user.getEmail();
     }
 }

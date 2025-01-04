@@ -257,7 +257,7 @@ function ChapterModal(props) {
                   </p>
                 )}
               </Tab>
-              <Tab eventKey='preview' title='Podgląd mapy gry'>
+              {/* <Tab eventKey='preview' title='Podgląd mapy gry'>
                 <GameMapContainer
                   elements={getGraphElements([graphPreviewNode])}
                   labels={[{ id: 0, label: graphPreviewNode.label }]}
@@ -265,7 +265,7 @@ function ChapterModal(props) {
                   nodeClickCallback={() => {}}
                 />
                 <FontAwesomeIcon icon={faRefresh} onClick={updateMap} style={{ cursor: 'pointer' }} />
-              </Tab>
+              </Tab> */}
             </Tabs>
           </ModalBody>
         </Modal>
