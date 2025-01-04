@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -61,9 +62,12 @@ public class CourseMember {
     @ElementCollection
     private Map<Long,Double> auctionBidPointsMap;
 
+    @ElementCollection
+    private Map<Long,Double> auctionWonPointsMap; //points won from auctions after solving their tasks with enough score
+
     Double firstCaskPoints; //Punkty z Antału 1 do oceny
     Double otherCaskPoints;
-    Double totalAuctionWonPoints; //Punkty z antałów 2-4 (Kolosy minus ewentualna lichwa)
+    // Double totalAuctionWonPoints; //Punkty z antałów 2-4 (Kolosy minus ewentualna lichwa)
 
     @Embedded
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -99,7 +103,7 @@ public class CourseMember {
         this.annihilatedPointsMap = new HashMap<>();
         this.colloquiumPointsMap = new HashMap<>();
         this.auctionBidPointsMap = new HashMap<>();
-        this.totalAuctionWonPoints = 0.0;
+        this.auctionWonPointsMap = new HashMap<>();
         this.firstCaskPoints = 0.0;
         this.otherCaskPoints = 0.0;
     }
@@ -141,8 +145,9 @@ public class CourseMember {
         this.recalculatePoints();
     }
 
-    public void addTotalAuctionWonPoints(Double points){
-        this.totalAuctionWonPoints += points;
+    public void addAuctionWonPoints(Double points,Long auctionId){
+        this.auctionWonPointsMap.put(auctionId,points);
+        // this.totalAuctionWonPoints += points;
         this.recalculatePoints();
     }
 
@@ -162,7 +167,7 @@ public class CourseMember {
         Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints 
             - trueSurprisesPoints - totalAnnihilatedPoints - totalAuctionBidPoints; //oil excess according to scenario
        
-        Double firstCaskPoints = trueSurprisesPoints + this.totalAuctionWonPoints;
+        Double firstCaskPoints = trueSurprisesPoints + this.getTotalAuctionWonPoints();
         if(excessPoints < 0){
             firstCaskPoints -= Math.abs(excessPoints); //Lichwa (Scenariusz)
             excessPoints = 0.0;
@@ -202,11 +207,16 @@ public class CourseMember {
     }
 
     public Double getTotalAuctionWonPoints(){
-        return this.totalAuctionWonPoints;
+        return this.auctionWonPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
-    public Double getTrueSurprisesPoints(){ //True points from ,,Antał I"
+    public int getAuctionWonPointsSize(){
+        return this.auctionWonPointsMap.values().size();
+    }
+
+    public Double getTrueSurprisesPoints(){
         Double trueSurprisesPoints = Stream.concat(this.fileTaskPointsList.stream(), this.graphTaskPointsList.stream())
+            .sorted(Comparator.reverseOrder())
             .limit(3)
             .mapToDouble(Double::doubleValue)
             .sum();

@@ -60,11 +60,9 @@ public class ProfessorFeedbackService {
             Auction auction = fileTask.getAuction().orElseThrow();
             if (auction.getMinScoreToGetPoints() <= form.getPoints()) {
                 member.removeAuctionBidPoints(auction.getId());
-                member.addTotalAuctionWonPoints(form.getPoints());
+                member.addAuctionWonPoints(form.getPoints(),auction.getId());
             }
-            else{
-                member.addTotalAuctionWonPoints(0.0);
-            }
+            
         }
         else{
             log.info("Auction was NOT detected");

@@ -2,6 +2,7 @@ package com.example.api.user.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.auction.bid.BidRepository;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoService;
@@ -182,7 +183,7 @@ public class DashboardService {
         Integer auctionsWon = getStudentAuctionsWonCount(member,courseId);
         Double auctionsPoints = getStudentAuctionsPoints(member,courseId);
         Integer auctionsParticipations = getStudentAuctionsParticipations(member,courseId);
-        Integer auctionsResolvedCount = getAuctionsResolvedCount(courseId);
+        Integer auctionsResolvedCount = getAuctionsResolvedCount(member,courseId);
         Integer auctionsCount = getAuctionsCount(courseId);
         Integer auctionRanking = getStudentAuctionRankingPosition(member,courseId);
         String bestAuctioner = getBestStudentRanking(courseId);
@@ -200,27 +201,24 @@ public class DashboardService {
 
     private List<Long> getStudentAuctionRanking(Long courseId){
         List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
-        Map<Long, List<Number>> ranking = new HashMap<>();
+        Map<Long, Long> ranking = new HashMap<>();
 
         if(!resolvedAuctions.isEmpty()) {
             for (Auction auction : resolvedAuctions) {
-                long id = auction.getHighestBid().get().getMember().getId();
-                double points = auction.getMaxPoints();
+                Optional<Bid> bid = auction.getHighestBid();
+                if(!bid.isPresent()) continue;
+                long id = bid.get().getMember().getId();
+                // double points = auction.getMaxPoints();
 
-                List<Number> curr = ranking.getOrDefault(id, Arrays.asList(0, 0.0));
-                ranking.put(id, Arrays.asList(curr.get(0).intValue() + 1, curr.get(1).doubleValue() + points));
+                Long currWins = ranking.getOrDefault(id, 0L);
+                ranking.put(id, currWins);
             }
         }
 
-        List<Map.Entry<Long, List<Number>>> rankingList = new ArrayList<>(ranking.entrySet());
+        List<Map.Entry<Long, Long>> rankingList = new ArrayList<>(ranking.entrySet());
 
         rankingList.sort((entry1, entry2) -> {
-            int compareValue = entry2.getValue().get(0).intValue() - entry1.getValue().get(0).intValue();
-            if (compareValue == 0) {
-                return Double.compare(entry2.getValue().get(1).doubleValue(), entry1.getValue().get(1).doubleValue());
-            } else {
-                return compareValue;
-            }
+            return entry2.getValue().intValue() - entry1.getValue().intValue();
         });
 
         // Convert the sorted list of map entries to a list of student IDs
@@ -346,16 +344,19 @@ public class DashboardService {
         return count.get();
     }
 
-    private Integer getAuctionsResolvedCount(Long courseId) {
-        List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
+    private Integer getAuctionsResolvedCount(CourseMember member,Long courseId) {
+        // List<Auction> resolvedAuctions = getResolvedAuctions(courseId);
 
-        if(!resolvedAuctions.isEmpty()) {
-            return resolvedAuctions.size();
-        }
+        // if(!resolvedAuctions.isEmpty()) {
+        //     return resolvedAuctions.size();
+        // }
 
-        else {
-            return 0;
-        }
+        // else {
+        //     return 0;
+        // }
+        
+        //Now its resolved auctions by student not by everyone
+        return member.getAuctionWonPointsSize();
 
     }
     private Integer getAuctionsCount(Long courseId) {
