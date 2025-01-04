@@ -151,9 +151,9 @@ function GameCardAchiever(props) {
                     currentRankNr = {currentRankNr}
                     allActivitiesNr = {allActivitiesNr}
                     submitStats = {dashboardStats.submitStats}
-                    completedActivitiesNr = {dashboardStats.heroStatsDTO.completedActivities}
-                    foundWolfHoles = {dashboardStats.heroStatsDTO.foundWolfHoles}
-                    receivedNominations = {dashboardStats.heroStatsDTO.receivedNominations}
+                    completedActivitiesNr = {dashboardStats.generalStats.completedActivities}
+                    foundWolfHoles = {dashboardStats.generalStats.foundWolfHoles}
+                    receivedNominations = {dashboardStats.generalStats.receivedNominations}
                   />
                 }
               />

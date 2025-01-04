@@ -110,7 +110,7 @@ function GameCardSocializer(props) {
                 headerText='Podgląd statystyk innego gracza'
                 content={
                 <SearchOthersStatsContent 
-                  stats={selectedUsersDashboardStats?.heroStatsDTO} 
+                  stats={selectedUsersDashboardStats?.generalStats} 
                   members={members}
                   heroType={selectedUsersDashboardStats?.heroTypeStatsDTO.heroType} 
                   handler={changeSelectedUserId}
