@@ -10,20 +10,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateInfoForm extends CreateActivityForm {
-    @Schema(required = true) private List<String> imageUrls;
+    @Schema(required = true) private String imageUrls;
     @Schema(required = true) private String infoContent;
 
     public CreateInfoForm(String title,
                           String description,
                         //   Integer posX,
                         //   Integer posY,
-                          List<String> imageUrls,
+                          String imageUrls, //urls separated by spaces
                           String content){
         super(ActivityType.INFO, title, description);
         this.imageUrls = imageUrls;
@@ -32,7 +33,7 @@ public class CreateInfoForm extends CreateActivityForm {
 
     public CreateInfoForm(Info info) {
         super(info);
-        this.imageUrls = info.getImageUrls().stream().map(Url::getUrl).toList();
+        this.imageUrls = info.getImageUrls().stream().map(Url::getUrl).collect(Collectors.joining(" "));
         this.infoContent = info.getContent();
     }
 }

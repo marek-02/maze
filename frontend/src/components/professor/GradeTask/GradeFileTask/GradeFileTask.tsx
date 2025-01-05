@@ -27,7 +27,7 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
   const prepareRequest = (body: GradeTaskRequest): FormData => {
     const formData = new FormData()
     Object.keys(body).forEach((key) => {
-      if (body[key]) {
+      if (body[key] || body[key] === 0) {
         formData.append(key, body[key])
       }
     })

@@ -31,7 +31,7 @@ public class InfoController {
                 MessageManager.DESC,
                 // 1,
                 // 2,
-                List.of(MessageManager.LINK),
+                MessageManager.LINK,
                 MessageManager.LOREM_IPSUM
         );
         return ResponseEntity.ok().body(form);
