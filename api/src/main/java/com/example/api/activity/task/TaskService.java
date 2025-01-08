@@ -9,6 +9,7 @@ import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.activity.submittask.result.SubmitTaskResultRepository;
 import com.example.api.activity.task.dto.response.ActivitiesResponse;
 import com.example.api.activity.task.dto.response.ActivityToEvaluateResponse;
+import com.example.api.chapter.ChapterService;
 import com.example.api.file.FileResponse;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
@@ -142,17 +143,20 @@ public class TaskService {
 
     public List<ActivitiesResponse> getAllActivities(Long courseId) throws EntityNotFoundException {
         log.info("Fetching all activities for course {}", courseId);
-        Course course = courseService.getCourse(courseId);
         courseValidator.validateCurrentUserCanAccess(courseId);
 
-        List<Chapter> chapters = chapterRepository.findAllByCourse(course);
-
-        return  chapters.stream().flatMap(chapter ->
-            chapter.getActivityMap()
-                    .getAllActivities()
+        List<Activity> activities = activityRepository.getActivitiesByCourseId(courseId);
+        List<ActivitiesResponse> activitiesResponses = new ArrayList<>();
+        activities.forEach(activity -> {
+            String chapterName = chapterRepository.findAll()
                     .stream()
-                    .map(activity -> new ActivitiesResponse(activity, chapter.getName())))
-                .toList();
+                    .filter(chapter -> chapter.getActivityMap().hasActivity(activity))
+                    .findAny()
+                    .orElse(null).getName();
+            activitiesResponses.add(new ActivitiesResponse(activity, chapterName));
+        });
+
+        return activitiesResponses;
     }
 
     public RequirementResponse getRequirementsForActivity(Long id) throws EntityNotFoundException {

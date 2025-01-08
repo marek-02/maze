@@ -5,20 +5,41 @@ import { Spinner, Table } from 'react-bootstrap'
 import { useAppSelector } from '../../../hooks/hooks'
 import ActivityService from '../../../services/activity.service'
 import { ERROR_OCCURRED, getActivityTypeName } from '../../../utils/constants'
+import configService from '../../../services/config.service'
 
 function ActivitiesTable(props) {
   const [activitiesList, setActivitiesList] = useState(undefined)
 
-  const courseId = useAppSelector((state) => state.user.courseId)
+  const courseId = useAppSelector((state) => state.user.courseId)  
 
   useEffect(() => {
-    ActivityService.getActivitiesList(courseId)
-      .then((response) => {
-        setActivitiesList(response)
-      })
-      .catch(() => {
-        setActivitiesList(null)
-      })
+    const fetchActivities = async () => {
+      try {
+        const activitiesResponse = await ActivityService.getActivitiesList(courseId)
+        const filteredActivities = activitiesResponse.filter(activity => activity.type !== "INFO")
+        
+        const colloquiumsResponse = await configService.getAllDetails()
+        const filteredColloquiums = colloquiumsResponse.map(colloquium => {
+          return {
+            id: -colloquium.id,
+            name: colloquium.name,
+            chapterName: "Kolokwium",
+            type: "COLLOQUIUM"
+          }
+        })
+        
+        setActivitiesList([...filteredActivities, ...filteredColloquiums, {
+          id: 0,
+          name: "Spacery",
+          chapterName: "Wszystkie",
+          type: "LABORATORIES",
+        }]);
+      } catch (error) {
+        console.error("Nieudana próba pobrania aktywności lub kolokwiów.", error);
+      }
+    };
+
+    fetchActivities()
   }, [])
 
   const headerInputChecked = (event) => event.target && event.target.checked
@@ -47,7 +68,7 @@ function ActivitiesTable(props) {
         )
       : props.setActivitiesToExportIds((prevState) => [...prevState, { id: +activityId, type: activityType }])
   }
-
+  
   return (
     <Table>
       <thead>

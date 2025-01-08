@@ -2,7 +2,8 @@ package com.example.api.activity.result.service;
 
 import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityRepository;
-import com.example.api.activity.result.repository.ActivityResultRepository;
+import com.example.api.activity.result.model.*;
+import com.example.api.activity.result.repository.*;
 import com.example.api.activity.result.service.util.GroupActivityStatisticsCreator;
 import com.example.api.activity.result.service.util.ScaleActivityStatisticsCreator;
 import com.example.api.activity.survey.Survey;
@@ -11,23 +12,18 @@ import com.example.api.activity.task.dto.response.result.ActivityStatisticsRespo
 import com.example.api.activity.task.dto.response.result.TaskPointsStatisticsResponse;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.colloquium.ColloquiumDetails;
+import com.example.api.colloquium.ColloquiumDetailsRepository;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.activity.ActivityType;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.activity.feedback.Feedback;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.feedback.ProfessorFeedbackRepository;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTaskRepository;
 import com.example.api.activity.task.graphtask.GraphTaskRepository;
 import com.example.api.activity.survey.SurveyRepository;
@@ -64,6 +60,9 @@ public class TaskResultService {
     private final CourseService courseService;
     private final ActivityResultRepository activityResultRepository;
     private final ActivityRepository activityRepository;
+    private final ColloquiumDetailsRepository colloquiumDetailsRepository;
+    private final LaboratoryPointsRepository laboratoryPointsRepository;
+    private final ColloquiumPointsRepository colloquiumPointsRepository;
 
     public ByteArrayResource getCSVFile(GetCSVForm csvForm) {
         log.info("Fetching csv files for students");
@@ -80,13 +79,19 @@ public class TaskResultService {
         Map<Long, Survey> formToSurveyMap = new HashMap<>();
         fillFirstRowAndAddTasksToMap(activityIds, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap, firstRow);
 
-        List<Activity> activities = activityRepository.findAllById(activityIds);
+        List<Activity> activities = activityRepository.findAllById(activityIds.stream().filter(a -> a > 0).toList());
         validateSameCourse(activities);
 
         students.forEach(student -> {
-            List<CSVTaskResult> csvTaskResults = activities.stream()
-                    .map(activity -> getCSVTaskResultForActivity(student, activity, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap))
+            List<CSVTaskResult> csvTaskResults = activityIds.stream()
+                    .map(activityId -> getCSVTaskResultForActivity(student, csvForm.getCourseId(), activityId, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap))
+                    .filter(Objects::nonNull)
                     .toList();
+
+//        students.forEach(student -> {
+//            List<CSVTaskResult> csvTaskResults = activities.stream()
+//                    .map(activity -> getCSVTaskResultForActivity(student, activity, formToGraphTaskMap, formToFileTaskMap, formToSurveyMap))
+//                    .toList();
 
             userToResultMap.put(student, csvTaskResults);
         });
@@ -101,30 +106,70 @@ public class TaskResultService {
         }
     }
 
-    private CSVTaskResult getCSVTaskResultForActivity(User student, Activity activity, Map<Long, GraphTask> formToGraphTaskMap, Map<Long, FileTask> formToFileTaskMap, Map<Long, Survey> formToSurveyMap) {
-        ActivityType type = activity.getActivityType();
-        switch (type) {
-            case EXPEDITION -> {
-                GraphTask graphTask = formToGraphTaskMap.get(activity.getId());
-                GraphTaskResult graphTaskResult = graphTaskResultRepository
-                        .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
-                return new CSVTaskResult(graphTaskResult);
+//    private CSVTaskResult getCSVTaskResultForActivity(User student, Activity activity, Map<Long, GraphTask> formToGraphTaskMap, Map<Long, FileTask> formToFileTaskMap, Map<Long, Survey> formToSurveyMap) {
+//        ActivityType type = activity.getActivityType();
+//        switch (type) {
+//            case EXPEDITION -> {
+//                GraphTask graphTask = formToGraphTaskMap.get(activity.getId());
+//                GraphTaskResult graphTaskResult = graphTaskResultRepository
+//                        .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
+//                return graphTaskResult.getPoints() == null ? null : new CSVTaskResult(graphTaskResult);
+//            }
+//            case TASK -> {
+//                FileTask fileTask = formToFileTaskMap.get(activity.getId());
+//                FileTaskResult fileTaskResult = fileTaskResultRepository
+//                        .findFileTaskResultByFileTaskAndUser(fileTask, student);
+//                Feedback feedback = professorFeedbackRepository
+//                        .findProfessorFeedbackByFileTaskResult(fileTaskResult);
+//                return fileTaskResult.getPoints() == null ? null :  new CSVTaskResult(fileTaskResult, feedback);
+//            }
+//            case SURVEY -> {
+//                Survey survey = formToSurveyMap.get(activity.getId());
+//                SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
+//                        student);
+//                return surveyResult.getPoints() == null ? null :  new CSVTaskResult(surveyResult);
+//            }
+//            default -> throw new IllegalStateException();
+//        }
+//    }
+
+    private CSVTaskResult getCSVTaskResultForActivity(User student, Long courseId, Long activityId, Map<Long, GraphTask> formToGraphTaskMap, Map<Long, FileTask> formToFileTaskMap, Map<Long, Survey> formToSurveyMap) {
+        if(activityId > 0) {
+            Activity activity = activityRepository.findById(activityId).orElseThrow();
+            ActivityType type = activity.getActivityType();
+            switch (type) {
+                case EXPEDITION -> {
+                    GraphTask graphTask = formToGraphTaskMap.get(activity.getId());
+                    GraphTaskResult graphTaskResult = graphTaskResultRepository
+                            .findGraphTaskResultByGraphTaskAndUser(graphTask, student);
+                    return new CSVTaskResult(graphTaskResult);
+                }
+                case TASK -> {
+                    FileTask fileTask = formToFileTaskMap.get(activity.getId());
+                    FileTaskResult fileTaskResult = fileTaskResultRepository
+                            .findFileTaskResultByFileTaskAndUser(fileTask, student);
+                    Feedback feedback = professorFeedbackRepository
+                            .findProfessorFeedbackByFileTaskResult(fileTaskResult);
+                    return new CSVTaskResult(fileTaskResult, feedback);
+                }
+                case SURVEY -> {
+                    Survey survey = formToSurveyMap.get(activity.getId());
+                    SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
+                            student);
+                    return new CSVTaskResult(surveyResult);
+                }
+                default -> throw new IllegalStateException();
             }
-            case TASK -> {
-                FileTask fileTask = formToFileTaskMap.get(activity.getId());
-                FileTaskResult fileTaskResult = fileTaskResultRepository
-                        .findFileTaskResultByFileTaskAndUser(fileTask, student);
-                Feedback feedback = professorFeedbackRepository
-                        .findProfessorFeedbackByFileTaskResult(fileTaskResult);
-                return new CSVTaskResult(fileTaskResult, feedback);
+        } else {
+            if (activityId == 0) {
+                List<LaboratoryPoints> laboratoryPoints = laboratoryPointsRepository.findAllByMember(student.getCourseMember(courseId).orElseThrow()).stream().toList();
+                return new CSVTaskResult(laboratoryPoints.stream().mapToDouble(ActivityResult::getPoints).sum(), "Punkty za wszystkie laboratoria");
+            } else {
+                ColloquiumDetails colloquiumDetails = colloquiumDetailsRepository.findById(-activityId).orElseThrow();
+                ColloquiumPoints colloquiumPoints = colloquiumPointsRepository.findByUserAndColloquiumDetails(student, colloquiumDetails);
+
+                return colloquiumPoints == null ?  new CSVTaskResult(0.0, "Brak danych w bazie") : new CSVTaskResult(colloquiumPoints.getPoints(), colloquiumPoints.getDescription());
             }
-            case SURVEY -> {
-                Survey survey = formToSurveyMap.get(activity.getId());
-                SurveyResult surveyResult = surveyResultRepository.findSurveyResultBySurveyAndUser(survey,
-                        student);
-                return new CSVTaskResult(surveyResult);
-            }
-            default -> throw new IllegalStateException();
         }
     }
 
@@ -173,27 +218,38 @@ public class TaskResultService {
             Map<Long, Survey> formToSurveyMap,
             List<String> firstRow) {
         activityIds.forEach(activityId -> {
-            Activity activity = getActivity(activityId);
-            if (activity != null) {
-                ActivityType type = activity.getActivityType();
-                switch (type) {
-                    case EXPEDITION -> {
-                        firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
-                                "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
-                        formToGraphTaskMap.put(activity.getId(), (GraphTask) activity);
+            if (activityId > 0) {
+                Activity activity = getActivity(activityId);
+                if (activity != null) {
+                    ActivityType type = activity.getActivityType();
+                    switch (type) {
+                        case EXPEDITION -> {
+                            firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
+                                    "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
+                            formToGraphTaskMap.put(activity.getId(), (GraphTask) activity);
 
-                    }
-                    case TASK -> {
-                        firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
-                                "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
-                        formToFileTaskMap.put(activity.getId(), (FileTask) activity);
+                        }
+                        case TASK -> {
+                            firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
+                                    "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
+                            formToFileTaskMap.put(activity.getId(), (FileTask) activity);
 
+                        }
+                        case SURVEY -> {
+                            firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
+                                    "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
+                            formToSurveyMap.put(activity.getId(), (Survey) activity);
+                        }
                     }
-                    case SURVEY -> {
-                        firstRow.addAll(List.of("Zadanie:" + activity.getTitle() + " (Punkty)",
-                                "Zadanie:" + activity.getTitle() + " (Informacja zwrotna)"));
-                        formToSurveyMap.put(activity.getId(), (Survey) activity);
-                    }
+                }
+            } else {
+                if (activityId == 0) {
+                    firstRow.addAll(List.of("Zadanie:Spacery (Punkty)",
+                            "Zadanie:Spacery (Informacja zwrotna)"));
+                } else {
+                    ColloquiumDetails colloquium = colloquiumDetailsRepository.findById(-activityId).orElseThrow();
+                    firstRow.addAll(List.of("Zadanie:" + colloquium.getName() + " (Punkty)",
+                            "Zadanie:" + colloquium.getName() + " (Informacja zwrotna)"));
                 }
             }
         });

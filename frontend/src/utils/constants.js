@@ -92,7 +92,9 @@ export const Activity = {
   TASK: 'TASK',
   AUCTION: 'AUCTION',
   SUBMIT: 'SUBMIT',
-  ADDITIONAL: 'ADDITIONAL'
+  ADDITIONAL: 'ADDITIONAL',
+  COLLOQUIUM: 'COLLOQUIUM',
+  LABORATORIES: 'LABORATORIES'
 }
 
 
@@ -172,6 +174,10 @@ export const getActivityTypeName = (type) => {
       return 'Propozycja'
     case Activity.ADDITIONAL:
       return 'Bonus'
+    case Activity.COLLOQUIUM:
+      return 'Kolokwium'
+    case Activity.LABORATORIES:
+      return 'Laboratoria'
     default:
   }
 }

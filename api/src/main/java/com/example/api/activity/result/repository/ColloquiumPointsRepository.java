@@ -1,6 +1,7 @@
 package com.example.api.activity.result.repository;
 
 import com.example.api.activity.result.model.ColloquiumPoints;
+import com.example.api.colloquium.ColloquiumDetails;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.user.model.User;
@@ -17,4 +18,7 @@ public interface ColloquiumPointsRepository extends JpaRepository<ColloquiumPoin
 
     @Query("SELECT cp FROM ColloquiumPoints cp WHERE cp.member.user = ?1 AND cp.member.course = ?2")
     List<ColloquiumPoints> findAllByUserAndCourse(User user, Course course);
+
+    @Query("SELECT cp FROM ColloquiumPoints cp WHERE cp.member.user = ?1 AND cp.colloquiumDetails = ?2")
+    ColloquiumPoints findByUserAndColloquiumDetails(User user, ColloquiumDetails colloquiumDetails);
 }
