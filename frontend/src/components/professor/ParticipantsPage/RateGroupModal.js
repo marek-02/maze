@@ -40,30 +40,28 @@ function RateGroupModal(props) {
   )
 
   const sendAction = async (setSubmitting, values, afterSendAction) => {
-    console.log("Role:",values);
-    for(const studentId in values) {
-      // console.log("Imie studenta:", studentId)
-      // console.log("Role:",values[studentId]);
-      const studentGrades = values[studentId]["grades"];      
+    for(const studentId in values) {      
+      const studentRoleGrade = values[studentId]["roleGrade"];      
+      const studentGroupGrade = values[studentId]["groupGrade"];
       const foundWolfHoles = values[studentId]["wolfHoles"];
       const receivedNominations = values[studentId]["nominations"];
-        for(const role in studentGrades) {
-            if((studentGrades[role] == 0 && role!="econom") || (studentGrades[role] == 0  && (studentGrades["oboe"] || studentGrades["scribe"]
-               || studentGrades["cablemaster"] || studentGrades["econom"]))) continue; //ungraded students get only 0 points for econom
-              // console.log("Przeszlo:",role);
-            try {
-                await professorService.sendLaboratoryPoints(studentId, courseId, studentGrades[role],role, "Spacer", Date.now(),foundWolfHoles,receivedNominations)
-            } catch(error) {
-                setSubmitting(false)
-                setErrorMessage(error)
-            }
-        }
+      const role = values[studentId]["role"];
+
+      if(studentRoleGrade == 0 && studentGroupGrade == 0 && foundWolfHoles == 0 && receivedNominations == 0 ) continue; //ungraded students don't get entry   
+      try {
+          await professorService.sendLaboratoryPoints(studentId, courseId, studentRoleGrade + studentGroupGrade + foundWolfHoles,studentRoleGrade
+            ,role, "Spacer", Date.now(),foundWolfHoles,receivedNominations)
+      } catch(error) {
+          console.log("Error:",error);
+          setSubmitting(false)
+          setErrorMessage(error)
+      }
     }
     afterSendAction(setSubmitting)
   }   
 
   const initialValues = studentList.sort((a, b) => a.subgroup - b.subgroup).reduce((acc, student) => {
-        acc[student.id] = {grades : { econom: 0, scribe: 0, cablemaster: 0, oboe: 0 }, wolfHoles : 0, nominations : 0};
+        acc[student.id] = {roleGrade : 0, wolfHoles : 0, nominations : 0, groupGrade : 0, role : student.role};
         return acc;
     }, {});
      
@@ -120,10 +118,11 @@ function RateGroupModal(props) {
                             <Col md={2}>
                             <h6><b>{getPolishFullStudentRoleName(student.role)}</b></h6>
                             </Col>
-                            {FormCol('Ocena', 'number', student.id + '.' + 'grades'+'.'+getFullStudentRoleName(student.role), 2, { min: 0, errorColor: props.theme.danger })}
-                            <Col md={1}></Col>
-                            {FormCol('Wilcze doły', 'number', student.id + '.' + 'wolfHoles', 2)}
-                            {FormCol('Nominacje', 'number', student.id + '.' + 'nominations', 2)}
+                            {FormCol('Ocena Rola', 'number', student.id + '.' + 'roleGrade', 2, { min: 0, errorColor: props.theme.danger })}
+                            {FormCol('Ocena Grupa', 'number', student.id + '.' + 'groupGrade', 2, { min: 0, errorColor: props.theme.danger })}
+                            {/* <Col md={1}></Col> */}
+                            {FormCol('Wilcze doły', 'number', student.id + '.' + 'wolfHoles', 2,{ min: 0, errorColor: props.theme.danger })}
+                            {FormCol('Nominacje', 'number', student.id + '.' + 'nominations', 1,{ min: 0, errorColor: props.theme.danger })}
                         </Row>
                     )})
                 }

@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class AddLaboratoryPointsForm {
     @Schema(required = true) private Long studentId;
     @Schema(required = true) private Long courseId;
-    @Schema(required = true) private Double points;
+    @Schema(required = true) private Double points; //all points (role+group+wolfHoles)
+    @Schema(required = true) private Double pointsForRole; //needed for badges
     @Schema(required = true) private String role;
     @Schema(required = false) private String description;
     @Schema(required = true) private Long dateInMillis;

@@ -43,7 +43,7 @@ public class BadgeVisitor {
 
                 int occurrences = 0;
                 for(LaboratoryPoints labPoints : allLabPoints){
-                    if(labPoints.getRole().equals(targetRoleName) && labPoints.getPoints().equals(Double.valueOf(3.0)) ){
+                    if(labPoints.getRole().equals(targetRoleName) && labPoints.getPointsForRole().equals(Double.valueOf(3.0)) ){
                         occurrences++;
                     }
                 }
@@ -61,7 +61,7 @@ public class BadgeVisitor {
                 int userScore = 0;
                 Map<Long,Integer> allOccurances = new HashMap<>();
                 for(LaboratoryPoints labPoints : allLabPoints){
-                    if(!labPoints.getRole().equals("econom") || !labPoints.getPoints().equals(Double.valueOf(3.0))) continue;
+                    if(!labPoints.getRole().equals("econom") || !labPoints.getPointsForRole().equals(Double.valueOf(3.0))) continue;
                     Long responseUserId = labPoints.getMember().getUser().getId();
                     allOccurances.put(responseUserId, allOccurances.getOrDefault(responseUserId,0)+1);
 

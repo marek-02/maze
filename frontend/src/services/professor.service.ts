@@ -81,11 +81,12 @@ class ProfessorService {
     })
   }
 
-  sendLaboratoryPoints(studentId: number,courseId: number, points: number, role:string, description: string, dateInMillis: number,foundWolfHoles : number, receivedNominations : number) {
+  sendLaboratoryPoints(studentId: number,courseId: number, points: number,rolePoints :number, role:string, description: string, dateInMillis: number,foundWolfHoles : number, receivedNominations : number) {
     return axiosApiPost(POST_LABORATORY_POINTS, {
       studentId,
       courseId,
       points,
+      rolePoints,
       role,
       description,
       dateInMillis,

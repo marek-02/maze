@@ -38,8 +38,9 @@ function AllStatsPage(props){
       ["Średnia (Niespodzianki online)", dashboardStats?.generalStats.avgGraphTask!=undefined ?  dashboardStats?.generalStats.avgGraphTask + '%' : '0%'],
       ["Średnia (Niespodzianki stacjo)", dashboardStats?.generalStats.avgFileTask !=undefined ? dashboardStats?.generalStats.avgFileTask + '%' : '0%'],
       ["Wykonane aktywności",dashboardStats?.generalStats.completedActivities],
-      ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber]
-      // ["Całkowite Punkty (Niespodzianki)", dashboardStats?.generalStats.graphTaskPoints.toFixed(2)],
+      ["Ilość wykonanych sondaży",dashboardStats?.generalStats.surveysNumber],
+      ["Całkowite Punkty (Spacery)", dashboardStats?.generalStats.totalStrollPoints.toFixed(2)],
+      ["Rzeczywiste punkty ze spacerów", dashboardStats?.generalStats.strollPointsForGrade.toFixed(2)],
       // ["Punkty (Zadania bojowe)", dashboardStats?.generalStats.fileTaskPoints.toFixed(2)],
       // ["Punkty bonusowe",dashboardStats?.generalStats.bonusPoints.toFixed(2)]
     ]

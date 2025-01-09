@@ -7,6 +7,7 @@ import com.example.api.activity.task.dto.response.result.LaboratoryPointsRespons
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
 import com.example.api.course.CourseValidator;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.RequestValidationException;
 import com.example.api.user.model.User;
@@ -43,6 +44,7 @@ public class LaboratoryPointsService {
 
         LaboratoryPoints laboratoryPoints = new LaboratoryPoints(
                 form.getPoints(),
+                form.getPointsForRole(),
                 form.getDateInMillis(),
                 professor.getEmail(),
                 "",
@@ -55,6 +57,11 @@ public class LaboratoryPointsService {
             laboratoryPoints.setDescription(form.getDescription());
         }
         laboratoryPointsRepository.save(laboratoryPoints);
+        
+        CourseMember member = user.getCourseMember(course, false);
+        member.addStrollPoints(form.getPoints(),laboratoryPoints.getId());
+        member.addFoundWolfHoles(form.getFoundWolfHoles(), laboratoryPoints.getId());
+        member.addReceivedNominations(form.getReceivedNominations(), laboratoryPoints.getId());
         // badgeService.checkAllBadges(user.getCourseMember(course).orElseThrow());
     }
 

@@ -17,6 +17,8 @@ public class GeneralStats {
     private Double totalGraphTaskPoints; //total file task (offline surprises)
     private Double totalFileTaskPoints; //total graph task (online surprises)
     private Double trueSurprisesPoints; //sum of best 3 surprises (graphtask + fileTask)
+    private Double totalStrollPoints;
+    private Double strollPointsForGrade;
     private Double totalAuctionWonPoints; //points won from solved tasks after winning an auction
     private Double totalAuctionBidPoints; //points lost on bidding
     private Double totalAnnihilatedPoints; //points lost by annihilations

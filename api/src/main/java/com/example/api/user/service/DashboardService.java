@@ -272,6 +272,8 @@ public class DashboardService {
                 member.getTotalGraphTaskPoints(), //Niespodzianki online (Wszystkie punkty)
                 member.getTotalFileTaskPoints(), //Niespodzianki stacjo (Wszystkie punkty)
                 member.getTrueSurprisesPoints(), //Punkty liczace sie do oceny (3 najlepsze niespodzianki)
+                member.getTotalStrollPoints(),
+                member.getStrollPointsForGrade(),
                 member.getTotalAuctionWonPoints(),
                 member.getTotalAuctionBidPoints(),
                 member.getTotalAnnihilatedPoints(), //Punkty utracone na anihilacje

@@ -19,12 +19,14 @@ import javax.persistence.Entity;
 public class LaboratoryPoints extends ActivityResult {
     private String professorEmail;
     private String description;
+    private Double pointsForRole;
     private String role;
     private Long foundWolfHoles;
     private Long receivedNominations;
 
     public LaboratoryPoints(
-            Double points,
+            Double points, //Total points (role + group + wolfHoles)
+            Double pointsForRole,
             Long sendDateMillis,
             String professorEmail,
             String description,
@@ -36,6 +38,7 @@ public class LaboratoryPoints extends ActivityResult {
         super(points, sendDateMillis, courseMember);
         this.professorEmail = professorEmail;
         this.description = description;
+        this.pointsForRole = pointsForRole;
         this.role = role;
         this.foundWolfHoles = foundWolfHoles;
         this.receivedNominations = receivedNominations;

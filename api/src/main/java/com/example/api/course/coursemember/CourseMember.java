@@ -44,8 +44,14 @@ public class CourseMember {
     private Long subgroup;
     private String role; //'E','K','S','O','', This field will be moved to ChapterRoles later
 
-    private Long foundWolfHoles;
-    private Long receivedNominations;
+    @ElementCollection
+    private Map<Long,Long> foundWolfHolesMap; 
+
+    @ElementCollection
+    private Map<Long,Long> receivedNominationsMap; 
+
+    @ElementCollection
+    private Map<Long,Double> strollPointsMap; //Spacery
 
     @ElementCollection
     private Map<Long,Double> fileTaskPointsMap;
@@ -95,9 +101,10 @@ public class CourseMember {
         this.subgroup = 0L; 
         this.role = "";
 
-        this.foundWolfHoles = 0L;
-        this.receivedNominations = 0L;
+        this.foundWolfHolesMap = new HashMap<>();
+        this.receivedNominationsMap = new HashMap<>();
 
+        this.strollPointsMap = new HashMap<>();
         this.fileTaskPointsMap = new HashMap<>();
         this.graphTaskPointsMap = new HashMap<>();
         this.annihilatedPointsMap = new HashMap<>();
@@ -120,6 +127,22 @@ public class CourseMember {
         if(points < 0) return;
         this.fileTaskPointsMap.put(fileTaskId,points);      
         this.recalculatePoints();
+    }
+
+    public void addStrollPoints(Double points, Long strollId){
+        if(points < 0) return;
+        this.strollPointsMap.put(strollId,points);
+        this.recalculatePoints();
+    }
+
+    public void addFoundWolfHoles(Long foundWolfHoles,Long strollId){
+        if(foundWolfHoles < 0) return;
+        this.foundWolfHolesMap.put(strollId,foundWolfHoles);
+    }
+
+    public void addReceivedNominations(Long receivedNomination,Long strollId){
+        if(receivedNomination < 0) return;
+        this.receivedNominationsMap.put(strollId,receivedNomination);
     }
 
     public void addGraphTaskPoints(Double points, Long graphTaskId){
@@ -163,11 +186,14 @@ public class CourseMember {
         Double totalAnnihilatedPoints = this.getTotalAnnihilatedPoints();        
         Double trueSurprisesPoints = this.getTrueSurprisesPoints();
         Double totalAuctionBidPoints = this.getTotalAuctionBidPoints(); //Points spent on bidding
+
+        Double strollPointsForGrade = this.getStrollPointsForGrade();
+        Double strollPointsForExcess = this.getStrollPointsForExcess();
         
-        Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints 
+        Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints + strollPointsForExcess
             - trueSurprisesPoints - totalAnnihilatedPoints - totalAuctionBidPoints; //oil excess according to scenario
        
-        Double firstCaskPoints = trueSurprisesPoints + this.getTotalAuctionWonPoints();
+        Double firstCaskPoints = trueSurprisesPoints + strollPointsForGrade + this.getTotalAuctionWonPoints();
         if(excessPoints < 0){
             firstCaskPoints -= Math.abs(excessPoints); //Lichwa (Scenariusz)
             excessPoints = 0.0;
@@ -184,6 +210,18 @@ public class CourseMember {
         this.firstCaskPoints = firstCaskPoints;
         this.otherCaskPoints = otherCaskPoints;
         this.excessPoints = excessPoints;
+    }
+
+    public Double getTotalStrollPoints(){
+        return this.strollPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
+
+    public Double getStrollPointsForGrade(){
+        return Math.min(this.getTotalStrollPoints(),12); //According to scenario
+    }
+
+    public Double getStrollPointsForExcess(){
+        return this.getTotalStrollPoints() - this.getStrollPointsForGrade();
     }
 
     public Double getTotalFileTaskPoints(){
@@ -212,6 +250,14 @@ public class CourseMember {
 
     public int getAuctionWonPointsSize(){
         return this.auctionWonPointsMap.values().size();
+    }
+
+    public Long getFoundWolfHoles(){
+        return this.foundWolfHolesMap.values().stream().mapToLong(Long::longValue).sum();
+    }
+
+    public Long getReceivedNominations(){
+        return this.receivedNominationsMap.values().stream().mapToLong(Long::longValue).sum();
     }
 
     public Double getTrueSurprisesPoints(){

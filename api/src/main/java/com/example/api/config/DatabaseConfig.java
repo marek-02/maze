@@ -385,7 +385,7 @@ public class DatabaseConfig {
             //GRAPHTASK RESULTS
             Calendar calendar = Calendar.getInstance();   
             calendar.set(2024, Calendar.JUNE, 15);         
-            // List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
+            List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
             List<Double> graphTask3_1_points_students2 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 5.0, 15.0, 19.5));
             List<Double> graphTask3_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 18.0, 2.0, 19.0, 15.0, 19.5));
 
@@ -399,10 +399,10 @@ public class DatabaseConfig {
             
             int students1Len = 8; //for some reason students1.size() returns 16!? Fix it if you know how
             for(int i=0; i<students1Len; i++){
-                // GraphTaskResult result3_1_students1 = new GraphTaskResult();
-                // setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
-                //     result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
-                // );
+                GraphTaskResult result3_1_students1 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
                 GraphTaskResult result3_1_students2 = new GraphTaskResult();
                 setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
