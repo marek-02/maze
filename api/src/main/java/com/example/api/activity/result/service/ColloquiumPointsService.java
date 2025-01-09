@@ -78,7 +78,7 @@ public class ColloquiumPointsService {
                 if (form.getDescription() != null) {
                     annihilatedPoints.setDescription(form.getDescription());
                 }
-                member.addAnnihilatedPoints(deductedPoints,colloquiumName);
+                member.addAnnihilatedPoints(Math.abs(deductedPoints),colloquiumName);
                 annihilatedPointsRepository.save(annihilatedPoints);
             }
         }

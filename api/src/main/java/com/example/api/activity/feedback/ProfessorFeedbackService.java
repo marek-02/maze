@@ -67,7 +67,7 @@ public class ProfessorFeedbackService {
         else{
             log.info("Auction was NOT detected");
             // fileTask.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints(), bid.getAuction().getId()));
-            member.addFileTaskPoints(form.getPoints()); 
+            member.addFileTaskPoints(form.getPoints(),fileTask.getId()); 
         }        
 
         log.debug(professorFeedback.getContent());

@@ -349,7 +349,7 @@ public class DatabaseConfig {
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             ActivityMap activityMap4 = new ActivityMap();
-            setActivityMapAndSave(activityMap4, List.of(graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
+            setActivityMapAndSave(activityMap4, List.of(graphTask4_1,graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
             null,"src/main/resources/images/chapter_image.png", activityMapService);
 
             // ActivityMap activityMap5 = new ActivityMap();
@@ -389,7 +389,7 @@ public class DatabaseConfig {
             List<Double> graphTask3_1_points_students2 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 5.0, 15.0, 19.5));
             List<Double> graphTask3_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 18.0, 2.0, 19.0, 15.0, 19.5));
 
-            List<Double> graphTask4_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 12.0, 10.0, 5.0, 2.0, 13.0, 15.0, 7.5));
+            List<Double> graphTask4_1_points_students1 = new ArrayList<Double>(Arrays.asList(15.0, 12.0, 10.0, 5.0, 2.0, 13.0, 15.0, 7.5));
             List<Double> graphTask4_1_points_students2 = new ArrayList<Double>(Arrays.asList(2.0, 2.0, 10.0, 15.0, 20.0, 3.0, 5.0, 7.5));
             List<Double> graphTask4_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 16.0, 20.0, 20.0, 15.0, 17.5));
 
@@ -569,7 +569,7 @@ public class DatabaseConfig {
         result.setStartDateMillis(startTimeMillis);
         result.setSendDateMillis(  startTimeMillis + timeSpentSec/1000 );
         //addReceivedPointsForUser(member, points);
-        member.addGraphTaskPoints(points);
+        member.addGraphTaskPoints(points,graphTask.getId());
         
         resultService.saveGraphTaskResult(result);        
         courseMemberRepository.save(member);

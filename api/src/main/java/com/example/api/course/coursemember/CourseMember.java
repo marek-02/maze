@@ -48,10 +48,10 @@ public class CourseMember {
     private Long receivedNominations;
 
     @ElementCollection
-    private List<Double> fileTaskPointsList;
+    private Map<Long,Double> fileTaskPointsMap;
 
     @ElementCollection
-    private List<Double> graphTaskPointsList;
+    private Map<Long,Double> graphTaskPointsMap;
 
     @ElementCollection
     private Map<String,Double> annihilatedPointsMap;
@@ -98,8 +98,8 @@ public class CourseMember {
         this.foundWolfHoles = 0L;
         this.receivedNominations = 0L;
 
-        this.fileTaskPointsList = new LinkedList<>();
-        this.graphTaskPointsList = new LinkedList<>();
+        this.fileTaskPointsMap = new HashMap<>();
+        this.graphTaskPointsMap = new HashMap<>();
         this.annihilatedPointsMap = new HashMap<>();
         this.colloquiumPointsMap = new HashMap<>();
         this.auctionBidPointsMap = new HashMap<>();
@@ -116,15 +116,15 @@ public class CourseMember {
         return userHero.getHero().getType();
     }
 
-    public void addFileTaskPoints(Double points){
+    public void addFileTaskPoints(Double points,Long fileTaskId){
         if(points < 0) return;
-        this.fileTaskPointsList.add(points);      
+        this.fileTaskPointsMap.put(fileTaskId,points);      
         this.recalculatePoints();
     }
 
-    public void addGraphTaskPoints(Double points){
+    public void addGraphTaskPoints(Double points, Long graphTaskId){
         if(points < 0) return;
-        this.graphTaskPointsList.add(points); 
+        this.graphTaskPointsMap.put(graphTaskId,points); 
         this.recalculatePoints();
     }
 
@@ -156,7 +156,7 @@ public class CourseMember {
         this.recalculatePoints();
     }
 
-    private void recalculatePoints(){
+    public void recalculatePoints(){
         //Antał 1
         Double totalGraphTaskPoints = this.getTotalGraphTaskPoints();
         Double totalFileTaskPoints = this.getTotalFileTaskPoints();
@@ -187,11 +187,11 @@ public class CourseMember {
     }
 
     public Double getTotalFileTaskPoints(){
-        return this.fileTaskPointsList.stream().mapToDouble(Double::doubleValue).sum();
+        return this.fileTaskPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
     public Double getTotalGraphTaskPoints(){
-        return this.graphTaskPointsList.stream().mapToDouble(Double::doubleValue).sum();
+        return this.graphTaskPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
     public Double getTotalAnnihilatedPoints(){
@@ -215,7 +215,7 @@ public class CourseMember {
     }
 
     public Double getTrueSurprisesPoints(){
-        Double trueSurprisesPoints = Stream.concat(this.fileTaskPointsList.stream(), this.graphTaskPointsList.stream())
+        Double trueSurprisesPoints = Stream.concat(this.fileTaskPointsMap.values().stream(), this.graphTaskPointsMap.values().stream())
             .sorted(Comparator.reverseOrder())
             .limit(3)
             .mapToDouble(Double::doubleValue)

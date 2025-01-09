@@ -109,8 +109,7 @@ public class QuestionService {
                 if (nextQuestions.isEmpty()){
                     result.setFinished(true);
                     //result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
-                    member.addGraphTaskPoints(allPoints);
-                    log.info("Expedition finished");
+                    member.addGraphTaskPoints(allPoints,graphTaskId);
                     badgeService.checkAllBadges(result.getMember());
                 }
 
