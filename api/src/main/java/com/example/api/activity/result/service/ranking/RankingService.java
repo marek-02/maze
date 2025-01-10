@@ -1,5 +1,6 @@
 package com.example.api.activity.result.service.ranking;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
@@ -107,10 +108,11 @@ public class RankingService {
         List<RankingResponse> rankingList = activityResultService.getResultsForActivity(activityID)
                 .stream()
                 .map(result -> {
+                    Double points = result.getPoints() == null ? 0.0 : result.getPoints();
                     RankingResponse response = new RankingResponse(
                             rankService.getCurrentRank(result.getMember()).getName(),
                             result.getMember(),
-                            result.getPoints());
+                            points);
 
                     if (result.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
                         response.setStudentAnswer(new SurveyAnswerResponse((SurveyResult) result));
