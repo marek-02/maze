@@ -39,7 +39,7 @@ export function FormCol(name, type, colName, size = 12, additionalOptions) {
         <Field className="form-control" name={colName} as="select">
           <option value=""></option>
           <option value="colloquium_points">Kolokwium</option>
-          <option value="laboratory_points">Spacer</option>
+          {/* <option value="laboratory_points">Spacer</option> */}
           <option value="additional_points">Dodatkowe punkty</option>
         </Field>
       ) : type === 'dropdown' && colName === 'role' ? (

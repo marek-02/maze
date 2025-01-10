@@ -3,6 +3,7 @@ package com.example.api.activity;
 import com.example.api.activity.info.CreateInfoForm;
 import com.example.api.activity.survey.CreateSurveyForm;
 import com.example.api.activity.submittask.CreateSubmitTaskForm;
+import com.example.api.activity.task.filetask.CreateFileTaskForm;
 import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = CreateSurveyForm.class, name = "SURVEY"),
         @JsonSubTypes.Type(value = CreateSubmitTaskForm.class, name = "AUCTION"),
         @JsonSubTypes.Type(value = CreateSubmitTaskForm.class, name = "SUBMIT"),
+        @JsonSubTypes.Type(value = CreateFileTaskForm.class, name = "TASK"),
 })
 public abstract class CreateActivityForm {
     @Schema(required = true) private ActivityType activityType;

@@ -63,7 +63,9 @@ function AddActivityModal(props) {
             {activities.map(
               (activity, index) =>
                 activity !== Activity.ADDITIONAL &&
-                activity !== Activity.AUCTION && (
+                activity !== Activity.AUCTION && 
+                activity !== Activity.LABORATORIES &&
+                activity !== Activity.COLLOQUIUM && (
                   <Tab title={getActivityTypeName(activity)} eventKey={activity} key={index + Date.now()}>
                     {getActivityTab(activity)}
                   </Tab>
