@@ -3,6 +3,9 @@ package com.example.api.activity.submittask;
 import com.example.api.activity.CreateSubmitTaskChapterForm;
 import com.example.api.activity.submittask.result.*;
 import com.example.api.activity.task.filetask.CreateFileTaskForm;
+import com.example.api.activity.task.graphtask.CreateGraphTaskForm;
+import com.example.api.activity.task.graphtask.EditGraphTaskForm;
+import com.example.api.activity.task.graphtask.GraphTask;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.chapter.Chapter;
 import com.example.api.chapter.ChapterRepository;
@@ -16,6 +19,7 @@ import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
 import com.example.api.file.File;
 import com.example.api.file.FileRepository;
+import com.example.api.question.Question;
 import com.example.api.validator.ChapterValidator;
 import com.example.api.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +28,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -117,4 +124,14 @@ public class SubmitTaskService {
 
         return fileTask;
     }
+
+    public void editSubmitTask(SubmitTask submitTask, EditSubmitTaskForm form) throws RequestValidationException{
+        CreateSubmitTaskForm submitTaskForm = (CreateSubmitTaskForm) form.getActivityBody();
+        submitTask.setMaxPointsForAuthor(submitTaskForm.getMaxPointsForAuthor());
+        submitTask.setPercentageForAuthor(submitTaskForm.getPercentageForAuthor());
+        submitTask.setTitle(submitTaskForm.getTitle());
+        submitTask.setDescription(submitTaskForm.getDescription());
+
+    }
+
 }
