@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import styles from './GradeSubmitTask.module.scss';
 import { useEvaluateSubmitTaskMutation, useGradeSubmitTaskMutation } from '../../../../api/apiGrades';
-import { ActivityResponseInfo } from '../../../../api/types';
+import { ActivityResponseInfo, ChapterResponse } from '../../../../api/types';
 import CombatTaskService from '../../../../services/combatTask.service';
 import { Activity, getActivityTypeName } from '../../../../utils/constants';
 import StudentFileService from '../../ActivityAssessmentDetails/StudentFileService';
+import ChapterService from '../../../../services/chapter.service';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 type GradeSubmitTaskProps = {
   showDetails: boolean;
@@ -19,6 +21,23 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
   const [activityDetails, setActivityDetails] = useState<ActivityResponseInfo>({
     ...props.activity,
   });
+  const [chapterList,setChapterList] = useState<ChapterResponse[]>([]);
+  
+  const courseId = useAppSelector((state) => state.user.courseId)
+  
+  useEffect(() => {
+    fetchChaptersList()
+  }, [])
+  
+  const fetchChaptersList = () => {
+    ChapterService.getChaptersList(courseId)
+      .then((response) => {
+        setChapterList(response)
+      })
+      .catch(() => {
+        setChapterList([])
+      })
+  }
 
   const [gradeSubmitTask] = useGradeSubmitTaskMutation();
   const [evaluateSubmitTask] = useEvaluateSubmitTaskMutation();
@@ -77,6 +96,11 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
       ...prevDetails,
       [name]: value,
     }));
+  };
+
+  const handleChapterInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setChapterId(value);
   };
 
   return (
@@ -197,32 +221,6 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
               />
             </Form.Group>
 
-            {/* <Form.Group controlId="posX" className={styles.formGroup}>
-              <Form.Label>
-                <span>Pozycja X</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="posX"
-                value={activityDetails.posX}
-                onChange={handleInputChange}
-                className={styles.formControl}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="posY" className={styles.formGroup}>
-              <Form.Label>
-                <span>Pozycja Y</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="posY"
-                value={activityDetails.posY}
-                onChange={handleInputChange}
-                className={styles.formControl}
-              />
-            </Form.Group> */}
-
             <Form.Group controlId="taskContent" className={styles.formGroup}>
               <Form.Label>
                 <span>Treść zadania</span>
@@ -249,6 +247,25 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
                 onChange={handleInputChange}
                 className={styles.formControl}
               />
+            </Form.Group>
+
+            <Form.Group controlId='chapter' className={styles.formGroup}>
+              <Form.Label>
+                <span>Rozdział</span>
+              </Form.Label>
+              <Form.Control
+                as="select"
+                name="chapter"
+                values={chapterId}
+                onChange={handleChapterInputChange}
+                className={styles.formControl}
+              >
+                {chapterList.map((chapter,index) => (
+                  <option key={chapter.id} value={chapter.id}>
+                    {chapter.name}
+                  </option>
+                ))}
+              </Form.Control>
             </Form.Group>
           </Form>
           <Button

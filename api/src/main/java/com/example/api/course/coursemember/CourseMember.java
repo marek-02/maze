@@ -54,6 +54,9 @@ public class CourseMember {
     private Map<Long,Double> strollPointsMap; //Spacery
 
     @ElementCollection
+    private Map<Long,Double> submitTaskPointsMap;
+
+    @ElementCollection
     private Map<Long,Double> fileTaskPointsMap;
 
     @ElementCollection
@@ -105,6 +108,7 @@ public class CourseMember {
         this.receivedNominationsMap = new HashMap<>();
 
         this.strollPointsMap = new HashMap<>();
+        this.submitTaskPointsMap = new HashMap<>();
         this.fileTaskPointsMap = new HashMap<>();
         this.graphTaskPointsMap = new HashMap<>();
         this.annihilatedPointsMap = new HashMap<>();
@@ -132,6 +136,12 @@ public class CourseMember {
     public void addStrollPoints(Double points, Long strollId){
         if(points < 0) return;
         this.strollPointsMap.put(strollId,points);
+        this.recalculatePoints();
+    }
+
+    public void setSubmitTaskPoints(Double points,Long submitTaskResultId){
+        if(points < 0) return;
+        this.submitTaskPointsMap.put(submitTaskResultId,points);
         this.recalculatePoints();
     }
 
@@ -193,7 +203,7 @@ public class CourseMember {
         Double excessPoints = totalFileTaskPoints + totalGraphTaskPoints + strollPointsForExcess
             - trueSurprisesPoints - totalAnnihilatedPoints - totalAuctionBidPoints; //oil excess according to scenario
        
-        Double firstCaskPoints = trueSurprisesPoints + strollPointsForGrade + this.getTotalAuctionWonPoints();
+        Double firstCaskPoints = trueSurprisesPoints + strollPointsForGrade + this.getTotalAuctionWonPoints() + this.getTotalSubmitTaskPoints();
         if(excessPoints < 0){
             firstCaskPoints -= Math.abs(excessPoints); //Lichwa (Scenariusz)
             excessPoints = 0.0;
@@ -222,6 +232,10 @@ public class CourseMember {
 
     public Double getStrollPointsForExcess(){
         return this.getTotalStrollPoints() - this.getStrollPointsForGrade();
+    }
+
+    public Double getTotalSubmitTaskPoints(){
+        return this.submitTaskPointsMap.values().stream().mapToDouble(Double::doubleValue).sum();
     }
 
     public Double getTotalFileTaskPoints(){
