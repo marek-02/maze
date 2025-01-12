@@ -158,6 +158,7 @@ public class DashboardService {
 
         List<RankingResponse> overallRanking = getOverallRanking(member);
         RankingResponse overallRank = getRank(member.getUser(), overallRanking);
+        Double userPoints = overallRank.getPoints();
 
         Integer overallRankPosition = overallRank.getPosition();
         Long overallRankLength = (long) overallRanking.size();
@@ -166,7 +167,7 @@ public class DashboardService {
         Double worsePlayerPointsOvearll = overallRankPosition < overallRankLength ? overallRanking.get(overallRankPosition).getPoints() : null;
 
 
-        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll, ranking, overallRanking);
+        return new HeroTypeStatsDTO(heroType, rankPosition, rankLength, overallRankPosition, overallRankLength, betterPlayerPoints, worsePlayerPoints, betterPlayerPointsOverall, worsePlayerPointsOvearll, ranking, overallRanking, userPoints);
     }
 
     private RankingResponse getRank(User student, List<RankingResponse> ranking) {

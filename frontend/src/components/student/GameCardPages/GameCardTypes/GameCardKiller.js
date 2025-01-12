@@ -72,7 +72,6 @@ function GameCardKiller(props) {
                       betterPlayerPoints: dashboardStats.heroTypeStatsDTO.betterPlayerPoints,
                       worsePlayerPoints: dashboardStats.heroTypeStatsDTO.worsePlayerPoints,
                       ranking: dashboardStats.heroTypeStatsDTO.ranking,
-                      userPoints: Math.floor( dashboardStats.generalStats.allPoints )
                     }} 
                     email={dashboardStats.email}
                     id={"year"}
@@ -89,11 +88,10 @@ function GameCardKiller(props) {
                     stats={{
                       rankPosition: dashboardStats.heroTypeStatsDTO.overallRankPosition,
                       rankLength: dashboardStats.heroTypeStatsDTO.overallRankLength,
-                      userPoints: dashboardStats.heroTypeStatsDTO.userPoints,
                       betterPlayerPoints: dashboardStats.heroTypeStatsDTO.betterPlayerPointsOverall,
                       worsePlayerPoints: dashboardStats.heroTypeStatsDTO.worsePlayerPointsOverall,
                       ranking: dashboardStats.heroTypeStatsDTO.overallRanking,
-                      userPoints: dashboardStats.generalStats.allPoints
+                      userPoints: Math.floor( dashboardStats.heroTypeStatsDTO.userPoints ),
                     }}
                     email={dashboardStats.email}
                     id={"overall"}

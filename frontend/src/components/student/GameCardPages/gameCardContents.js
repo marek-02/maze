@@ -352,6 +352,10 @@ export function PersonalRankingInfoContent(props) {
       const barPoints = [props.stats.betterPlayerPoints, Math.floor( props.stats.userPoints ), props.stats.worsePlayerPoints].filter(
         (points) => points != null
       )
+
+      console.log(props);
+      
+
       return barConfig(barLabels, barPoints, colorPalette(barLabels.length))
     }
     return pieConfig(

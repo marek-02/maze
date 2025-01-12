@@ -24,4 +24,5 @@ public class HeroTypeStatsDTO {
     private Double worsePlayerPointsOverall;
     private List<RankingResponse> ranking;
     private List<RankingResponse> overallRanking;
+    private Double userPoints;
 }
