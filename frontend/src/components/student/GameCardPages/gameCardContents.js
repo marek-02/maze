@@ -153,11 +153,11 @@ export function SearchOthersStatsContent(props){
             }
           </Form.Select>
           {/* <button onClick={() => props.handler(userId)}>Szukaj</button> */}
-          <p className='pb-1'>Punkty doświadczenia: {Math.floor( props?.stats?.experiencePoints )}</p>
-          <p className='pb-1'>Następna ranga od: {props?.stats?.nextLvlPoints}</p>
+          <p className='pb-1'>Całkowite punkty: {Math.floor( props.stats?.totalPoints )}</p>
+          <p className='pb-1'>Nadmiar oleju: {Math.floor( props.stats?.excessPoints )}</p>
           <p className='pb-1'>Ranga: {props?.stats?.rankName}</p>
+          <p className='pb-1'>Następna ranga od: {props?.stats?.nextLvlPoints}</p>
           <p className='pb-1'>Zdobyte glejty: {props?.stats?.badgesNumber}</p>
-          <p>Wykonanych aktywności: {props?.stats?.completedActivities}</p>
         </Col>
       </Row>
     )
@@ -249,7 +249,6 @@ export function CollectiblesInfoContent(props){
           <img style={{ maxWidth: '100%' }} className='mt-3' height='70%' src={CoinImg} alt='Collectible image' />
         </Col>
         <Col md={7}>
-          {/* [FK] Stworzylem prototyp kafelka na szybko bo nie mamy funkcji wszystkich do tego jeszcze */}
           <p className='pb-2'>Zdobyte glejty: {props.unlockedBadgesNr}/{props.allBadgesNr}</p>
           <p className='pb-2'>Osiągnięte rangi: {props.currentRankNr}/{props.allRanksNr} </p>
           <p className='pb-2'>Wykonane aktywności: {props.completedActivitiesNr}/{props.allActivitiesNr}</p>
