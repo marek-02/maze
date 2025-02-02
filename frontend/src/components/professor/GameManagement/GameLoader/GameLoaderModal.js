@@ -15,7 +15,7 @@ function GameLoaderModal(props) {
 
   const saveJson = () => {
     const editedJson = jsonEditorRef.current?.getJson()
-    console.log(editedJson)
+    // console.log(editedJson)
 
     setIsSending(true)
     // TODO: send config using endpoint

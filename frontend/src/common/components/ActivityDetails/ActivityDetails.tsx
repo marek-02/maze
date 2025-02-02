@@ -48,9 +48,6 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
               <p>
                 <span>Nazwa:</span> {props.name}
               </p>
-              <p>
-                <span>Typ:</span> {getActivityTypeName(props.type)}
-              </p>
             </div>
             <div className={styles.dateInfo}>
               <img
@@ -105,7 +102,9 @@ const ActivityDetails = (props: ActivityDetailsProps) => {
             </div>
             <div className={props.awardedPoints > 0 ? styles.resultFieldCompleted : styles.resultField}>
               <span>Twój wynik:</span>
-              <p>{props.awardedPoints > 0 ? `${props.awardedPoints}/${props.points}` : 'nie ukończono'}</p>
+              <p>{!props.points ? "Zadanie niepunktowane" : props.awardedPoints > 0 ? `${Math.floor( props.awardedPoints )}/${props.points}` :
+               'nie ukończono'}</p>
+              {/* <p>{}</p> */}
             </div>
           </div>
         </Modal.Body>

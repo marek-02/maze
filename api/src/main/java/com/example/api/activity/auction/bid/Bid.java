@@ -34,17 +34,18 @@ public class Bid extends ActivityResult {
     @Override
     public void setPoints(Double points) {
         if (this.points == null) {
-            member.decreasePoints(points);
+            // member.decreasePoints(points);
             this.points = points;
         } else {
-            member.decreasePoints(points - this.points);
+            // member.decreasePoints(points - this.points);
             this.points = points;
         }
     }
 
-    public void returnPoints(Double taskResult) {
-        if (getAuction().getMinScoreToGetPoints() <= taskResult) {
-            member.changePoints(points);
+    public void returnPoints(Double points,Long auctionId) {
+        log.info("Returning bid points for auction:{}",auctionId);
+        if (getAuction().getMinScoreToGetPoints() <= points) {
+            // member.removeAuctionBidPoints(points, auctionId);
             points = 0D;
         }
     }

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../actions/auth'
 import { parseJwt } from '../utils/Api'
 import { refreshSessionToast } from '../utils/toasts'
+import authService from '../services/auth.service'
 
 function AuthVerify(props) {
   const navigate = useNavigate()
@@ -20,7 +21,7 @@ function AuthVerify(props) {
       if (decodedJwt.exp * 1000 < Date.now()) {
         props.dispatch(logout(navigate))
       } else if (decodedJwt.exp * 1000 < Date.now() + 15 * 60 * 1000) {
-        refreshSessionToast(props.user, props.dispatch, navigate)
+        refreshSessionToast(authService.refreshSessionHandler(props.user, props.dispatch, navigate))
       }
     }
   }, [navigate, props, pathname])

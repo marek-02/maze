@@ -11,8 +11,8 @@ import ActivityService from '../../../../services/activity.service'
 import { Activity, ERROR_OCCURRED } from '../../../../utils/constants'
 import { isMobileView } from '../../../../utils/mobileHelper'
 import { getChartConfig, getChartDetails } from '../../../general/chartHelper'
-import { ChartCol, CustomTable } from '../../../student/GameCardPage/gameCardContentsStyle'
-import { CustomCard } from '../../../student/GameCardPage/GameCardStyles'
+import { ChartCol, CustomTable } from '../../../student/GameCardPages/gameCardContentsStyle'
+import { CustomCard } from '../../../student/GameCardPages/GameCardStyles'
 import PercentageCircle from '../../../student/PointsPage/ChartAndStats/PercentageCircle'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)

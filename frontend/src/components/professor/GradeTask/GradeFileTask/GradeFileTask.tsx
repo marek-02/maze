@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
-
 import styles from './GradeFileTask.module.scss'
 import { useGradeTaskMutation } from '../../../../api/apiGrades'
 import { ActivityResponseInfo, GradeTaskRequest } from '../../../../api/types'
@@ -16,63 +14,66 @@ type GradeFileTaskProps = {
 }
 
 const GradeFileTask = (props: GradeFileTaskProps) => {
-  const [gradeValue, setGradeValue] = useState<number>(0)
+  const [gradeValue, setGradeValue] = useState<string | number>('')
   const [fileBlob, setFileBlob] = useState<Blob | null>(null)
   const [fileName, setFileName] = useState<string>('')
   const [remarks, setRemarks] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false) // Nowy stan dla modala błędów
 
   const fileRef = React.useRef<HTMLInputElement>(null)
-
   const [gradeTask] = useGradeTaskMutation()
 
   const prepareRequest = (body: GradeTaskRequest): FormData => {
     const formData = new FormData()
     Object.keys(body).forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (body[key]) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+      if (body[key] || body[key] === 0) {
         formData.append(key, body[key])
       }
     })
-    // formData.append('fileTaskResultId', body.fileTaskResultId.toString())
-    // formData.append('content', body.content)
-    // formData.append('points', body.points.toString())
-    // formData.append('file', body.file)
-    // formData.append('fileName', body.fileName)
     return formData
   }
 
   const handleSubmit = async () => {
+    // Walidacja dla punktów
+    if (gradeValue === '' || isNaN(Number(gradeValue))) {
+      setErrorMessage('Wartość punktów jest wymagana.')
+      setShowErrorModal(true)
+      return
+    }
+
+    if (typeof gradeValue === 'number' && (gradeValue < 0 || gradeValue > props.activity.maxPoints)) {
+      setErrorMessage(
+        gradeValue < 0
+          ? 'Wartość punktów nie może być ujemna.'
+          : `Wynik nie może być większy niż ${props.activity.maxPoints} punktów.`
+      )
+      setShowErrorModal(true)
+      return
+    }
+
     const requestBody = {
       fileTaskResultId: props.activity.fileTaskResponseId,
       content: remarks,
-      points: gradeValue,
+      points: gradeValue === '' ? 0 : gradeValue,
       file: fileBlob,
       fileName
     }
-    // 09.12.2023: Ten endpoint postanowił nagle się zepsuć.
-    // Pliki są przerąbane kolego. https://github.com/axios/axios/issues/4406
-    // ProfessorService.sendTaskEvaluation(
-    //   requestBody.fileTaskResultId,
-    //   requestBody.content,
-    //   requestBody.points,
-    //   requestBody.file,
-    //   requestBody.fileName
-    // ).then(() => {
-    //   setTimeout(() => props.onCloseDetails(), 200)
-    //   setRemarks('')
-    //   setGradeValue(0)
-    //   setFileName('')
-    //   setFileBlob(null)
-    // })
+
     await gradeTask(prepareRequest(requestBody)).then(() => {
-      setTimeout(() => props.onCloseDetails(), 200)
       setRemarks('')
-      setGradeValue(0)
+      setGradeValue('')
       setFileName('')
       setFileBlob(null)
+      setErrorMessage('')
+      setShowErrorModal(false) // Ukryj modal błędu po pomyślnym wysłaniu
+
+      if (fileRef.current) {
+        fileRef.current.value = ''
+      }
+    }).catch((error) => {
+      setErrorMessage('Wystąpił błąd podczas oceniania zadania. Spróbuj ponownie.')
+      setShowErrorModal(true) // Pokaż modal błędu w przypadku niepowodzenia
     })
   }
 
@@ -94,11 +95,8 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
             <button
               type='button'
               className={styles.customButtonClose}
-              onClick={() => {
-                props.onCloseDetails()
-              }}
+              onClick={props.onCloseDetails}
             >
-              {/* Close button content */}
               <span>&times;</span>
             </button>
           </Modal.Header>
@@ -123,7 +121,13 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
                   <Form.Label>
                     <span>Uwagi do zadania</span>
                   </Form.Label>
-                  <Form.Control as='textarea' rows={3} required onChange={(event) => setRemarks(event.target.value)} />
+                  <Form.Control
+                    as='textarea'
+                    rows={3}
+                    required
+                    value={remarks}
+                    onChange={(event) => setRemarks(event.target.value)}
+                  />
                 </Form.Group>
               </Row>
               <Row className={styles.form}>
@@ -142,7 +146,8 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
                 type='number'
                 min={0}
                 max={props.activity.maxPoints}
-                onChange={(e) => setGradeValue(parseInt(e.target.value, 10))}
+                value={gradeValue}
+                onChange={(e) => setGradeValue(e.target.value === '' ? '' : parseInt(e.target.value, 10))}
               />
               <span>{` / ${props.activity.maxPoints}`}</span>
             </label>
@@ -151,9 +156,22 @@ const GradeFileTask = (props: GradeFileTaskProps) => {
             </Button>
           </Modal.Footer>
         </Modal>
-      ) : (
-        <></>
-      )}
+      ) : null}
+
+      {/* Modal błędu */}
+      <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Błąd</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>{errorMessage}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={() => setShowErrorModal(false)}>
+            Zamknij
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

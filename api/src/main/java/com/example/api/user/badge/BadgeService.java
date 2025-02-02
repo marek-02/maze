@@ -8,7 +8,7 @@ import com.example.api.security.LoggedInUserService;
 import com.example.api.user.badge.types.*;
 import com.example.api.user.badge.unlockedbadge.UnlockedBadge;
 import com.example.api.user.badge.dtos.BadgeAddForm;
-import com.example.api.user.badge.types.BadgeType;
+// import com.example.api.user.badge.types.BadgeType;
 import com.example.api.user.badge.dtos.BadgeUpdateForm;
 import com.example.api.user.dto.response.badge.BadgeResponse;
 import com.example.api.user.dto.response.badge.UnlockedBadgeResponse;
@@ -98,11 +98,11 @@ public class BadgeService {
         Long id = form.getId();
         Badge badge = badgeRepository.findBadgeById(id);
         badgeValidator.validateBadgeIsNotNull(badge, id);
-        User student = userService.getCurrentUserAndValidateStudentAccount();
-        CourseMember member = student.getCourseMember(badge.getCourse()).orElseThrow();
+        // User student = userService.getCurrentUserAndValidateProfessorAccount();
+        // CourseMember member = student.getCourseMember(badge.getCourse()).orElseThrow();
 
         badge.update(form, badgeValidator);
-        checkAllBadges(member);
+        // checkAllBadges(member);
         badgeRepository.save(badge);
     }
 
@@ -117,28 +117,28 @@ public class BadgeService {
         Course course = courseService.getCourse(form.getCourseId());
         courseValidator.validateCourseOwner(course, authService.getCurrentUser());
 
-        BadgeType type = form.getType();
+        // BadgeType type = form.getType();
         String title = form.getTitle();
         String description = form.getDescription();
         Image image = new Image("badge", form.getImage().getBytes(), ImageType.BADGE);
         fileRepository.save(image);
-        String value = form.getValue();
-        Boolean forValue = form.getForValue();
-        Badge badge = null;
-        switch (type) {
-            case ACTIVITY_NUMBER ->
-                    badge = new ActivityNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
-            case ACTIVITY_SCORE ->
-                    badge = new ActivityScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
-            case CONSISTENCY ->
-                    badge = new ConsistencyBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
-            case FILE_TASK_NUMBER ->
-                    badge = new FileTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
-            case GRAPH_TASK_NUMBER ->
-                    badge = new GraphTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
-            case TOP_SCORE ->
-                    badge = new TopScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
-        }
+        // String value = form.getValue();
+        // Boolean forValue = form.getForValue();
+        Badge badge = new Badge(null,title, description, image,course);
+        // switch (type) {
+        //     case ACTIVITY_NUMBER ->
+        //             badge = new ActivityNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
+        //     case ACTIVITY_SCORE ->
+        //             badge = new ActivityScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
+        //     case CONSISTENCY ->
+        //             badge = new ConsistencyBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
+        //     case FILE_TASK_NUMBER ->
+        //             badge = new FileTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
+        //     case GRAPH_TASK_NUMBER ->
+        //             badge = new GraphTaskNumberBadge(null, title, description, image, badgeValidator.validateAndGetIntegerValue(value), course);
+        //     // case TOP_SCORE ->
+        //     //         badge = new TopScoreBadge(null, title, description, image, badgeValidator.validateAndGetDoubleValue(value), forValue, course);
+        // }
         return badge;
     }
 }

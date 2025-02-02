@@ -1,0 +1,55 @@
+.table-container {
+    background-color: #2E4C80;
+    padding: 0;
+    margin-bottom: 5px;
+    font-size: small;
+}
+  
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.03); 
+}
+
+.table th,
+.table td {
+    padding: 3px 5px;
+    vertical-align: middle;   
+}
+
+.pagination {
+    justify-content: center;  
+}
+.page-link {
+    font-size: x-small;
+    padding: 0 6px;
+    margin: 0 5px;
+    color: black;
+    background-color: white;
+    border: 0;
+}
+.active>.page-link, .page-link.active {
+    background-color: #FFB30D;
+}
+
+.custom-select {
+    color: #FFB30D; 
+    background-color: #2a6b99; 
+    margin-bottom: 5px;
+    padding: 3px;
+    border: 0;
+    width: 110%;
+}
+
+.custom-select option:checked {
+    /* background-color: #0056b3;  */
+    color: #FFB30D; 
+}
+
+.custom-select option {
+    /* background-color: #007bff;  */
+    color: #FFB30D; 
+}
+
+.custom-select:hover {
+    /* background-color: #0056b3;  */
+    color: #FFB30D; 
+}

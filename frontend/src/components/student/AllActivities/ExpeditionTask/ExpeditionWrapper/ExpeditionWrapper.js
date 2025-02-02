@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo,useRef } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -82,6 +82,27 @@ export function ExpeditionWrapper() {
     ) {
       goToSummary()
     }
+
+    //skips the door
+    if(expeditionState && expeditionState.status === EXPEDITION_STATUS.CHOOSE ){
+        const questionId = expeditionState?.questions[0]?.id;
+        if(!questionId) return; 
+      
+        const sendExpeditionAction = async () => {
+            try {
+              await ExpeditionService.sendAction({
+                status: EXPEDITION_STATUS.CHOOSE,
+                graphTaskId: activityId,
+                questionId: questionId,
+                answerForm: null
+              });
+              reloadState();
+            } catch (error) {
+              console.error('Failed to send action:', error);
+            }
+          };
+        sendExpeditionAction();
+    }
   }, [expeditionState, goToSummary])
 
   const wrapperContent = useMemo(() => {
@@ -97,14 +118,15 @@ export function ExpeditionWrapper() {
             reloadInfo={reloadState}
           />
         )
-      case EXPEDITION_STATUS.CHOOSE:
-        return (
-          <QuestionSelectionDoor
-            activityId={activityId}
-            questions={expeditionState.questions}
-            reloadInfo={reloadState}
-          />
-        )
+    //   case EXPEDITION_STATUS.CHOOSE:
+    //     return (
+    //       <QuestionSelectionDoor
+    //         activityId={activityId}
+    //         questions={expeditionState.questions}
+    //         reloadInfo={reloadState}
+    //       />
+
+    //     )
       default:
         return <></>
     }

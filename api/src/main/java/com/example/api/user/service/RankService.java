@@ -119,7 +119,7 @@ public class RankService {
     public CurrentRankResponse getCurrentRankResponse(User user, Long courseId)  {
         CourseMember member = user.getCourseMember(courseId).orElseThrow();
 
-        double points = member.getPoints();
+        double points = member.getTotalPoints();
         List<Rank> ranks = getSortedRanksForHeroType(member);
         Rank currentRank = getCurrentRankResponse(ranks, points);
         if (currentRank == null) {
@@ -170,7 +170,7 @@ public class RankService {
 
     public Rank getCurrentRank(CourseMember member) {
         List<Rank> ranks = getSortedRanksForHeroType(member);
-        return getCurrentRankResponse(ranks, member.getPoints());
+        return getCurrentRankResponse(ranks, member.getTotalPoints());
     }
 
     public void deleteRank(Long id) throws RequestValidationException {

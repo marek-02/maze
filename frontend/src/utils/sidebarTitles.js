@@ -59,11 +59,6 @@ export const studentSubtitles = [
     icon: faHouse,
     navigateTo: StudentRoutes.GAME_CARD
   },
-  // {
-  //   name: 'Mapa gry (stara)',
-  //   icon: faChessBoard,
-  //   navigateTo: StudentRoutes.GAME_MAP.MAIN
-  // },
   {
     name: 'Mapa gry',
     icon: faChessBoard,
@@ -83,6 +78,11 @@ export const studentSubtitles = [
     name: 'Rangi i odznaki',
     icon: faCertificate,
     navigateTo: StudentRoutes.BADGES
+  },
+  {
+    name: 'Statystyki',
+    icon: faChessBoard,
+    navigateTo: StudentRoutes.ALL_STATS
   },
   {
     name: 'Profil',
@@ -125,7 +125,7 @@ export const professorSubtitles = [
     ]
   },
   {
-    name: 'Uczestnicy',
+    name: 'Ocenianie',
     icon: faUsers,
     navigateTo: TeacherRoutes.PARTICIPANTS
   },
@@ -136,7 +136,7 @@ export const professorSubtitles = [
     action: 'BADGE'
   },
   {
-    name: 'Oceny',
+    name: 'Uczestnicy',
     icon: fa5,
     navigateTo: TeacherRoutes.GRADES
   }

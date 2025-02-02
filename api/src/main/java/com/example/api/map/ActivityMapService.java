@@ -1,6 +1,5 @@
 package com.example.api.map;
 
-import com.example.api.activity.Activity;
 import com.example.api.activity.task.TaskService;
 import com.example.api.map.mapactivity.MapActivityConverter;
 import com.example.api.map.mapactivity.MapActivity;
@@ -17,10 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +46,7 @@ public class ActivityMapService {
         } else {
             allTasks = getMapTasksForProfessor(activityMap);
         }
-        return new ActivityMapResponse(activityMap.getId(), allTasks, activityMap.getMapSizeX(), activityMap.getMapSizeY(), activityMap.getImage());
+        return new ActivityMapResponse(activityMap.getId(), allTasks, activityMap.getImage());
     }
 
     public List<MapActivityProfessor> getMapTasksForProfessor(ActivityMap activityMap) {

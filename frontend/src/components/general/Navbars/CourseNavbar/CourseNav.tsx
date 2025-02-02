@@ -32,9 +32,9 @@ const CourseNav = (props: CourseNavProps): JSX.Element => {
 
   return (
     <Row className={styles.topRow}>
-      <Col xs={1} className='d-flex'>
+      <Col xs={2} className='d-flex'>
         <FontAwesomeIcon icon={faFire} size='3x' />
-        <span className={styles.appTitle}>Maze</span>
+        <span className={styles.appTitle}>PacketHunt</span>
       </Col>
       <Col xs={10}>
         <div className={styles.links}>

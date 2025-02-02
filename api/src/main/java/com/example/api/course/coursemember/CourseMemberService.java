@@ -36,4 +36,36 @@ public class CourseMemberService {
     public List<CourseMember> getAll(Long courseId) {
         return repository.findAllByCourse_Id(courseId);
     }
+
+    // public CourseMember getCourseMember(Long courseId,Long courseMemberId){
+    //     List<CourseMember> courseMembers = this.getAll(courseId);
+    //     CourseMember courseMember = courseMembers.stream().
+    //         filter(member -> member.getUser().getId() == courseMemberId).findFirst()
+    //         .orElseThrow(() -> new EntityNotFoundException("CourseMember not found with id="+courseMemberId ));
+    //         return courseMember;
+    // }
+
+    public void updateSubgroup(CourseMember member, Long subgroup) {
+        log.info("Changing subgroup for user {} from {} to {}", member.getUser(), member.getGroup(), subgroup);
+        
+        //groupService.removeUser(member, member.getGroup()); //?
+        //groupService.addUser(member, group);
+        //member.setGroup(group);
+        member.setSubgroup(subgroup);
+        repository.save(member);
+    }
+
+    public void updateRole(CourseMember member, String role){
+        log.info("Changing role for user {} from {} to {}", member.getUser(), member.getRole(), role);
+
+        //groupService.removeUser(member, member.getGroup());
+        member.setRole(role);
+        repository.save(member);
+    }
+
+    // public void addPoints(CourseMember member, Double points){
+    //     member.changePoints(points);
+    //     repository.save(member);
+    // }
+
 }

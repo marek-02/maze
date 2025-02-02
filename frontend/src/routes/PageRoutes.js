@@ -41,6 +41,7 @@ export const StudentRoutes = {
   POINTS: '/points',
   RANKING: '/ranking',
   BADGES: '/badges-achievements',
+  ALL_STATS: '/all-stats',
   PROFILE: '/profile'
 }
 
@@ -50,6 +51,8 @@ export const TeacherRoutes = {
   GAME_MANAGEMENT: {
     MAIN: '/game-management',
     GROUPS: '/game-management/groups',
+    SUBGROUPS: '/game-management/subgroups',
+    COLLOQUIUM: '/game-management/colloquium',
     CHAPTER: {
       MAIN: '/game-management/chapter',
       REQUIREMENTS: '/game-management/chapter/:name/:id/requirements'

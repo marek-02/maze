@@ -1,0 +1,10 @@
+.form-group-margin-top {
+    margin-top: 20px; /* Możesz dostosować wartość według potrzeb */
+}
+
+.multi-line {
+    min-height: 3em; /* Minimalna wysokość równoważna 3 liniom tekstu */
+    resize: vertical; /* Umożliwia zmianę rozmiaru w pionie */
+    white-space: pre-wrap; /* Zawijanie tekstu */
+    overflow-wrap: break-word; /* Zawijanie długich słów */
+}

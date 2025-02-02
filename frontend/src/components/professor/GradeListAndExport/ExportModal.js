@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 import ActivitiesTable from './ActivitiesTable'
 import ProfessorService from '../../../services/professor.service'
-
+import { useAppSelector } from '../../../hooks/hooks'
 
 
 function ExportModal(props) {
@@ -16,6 +16,8 @@ function ExportModal(props) {
   const [activitiesToExportIds, setActivitiesToExportIds] = useState([])
 
   const [isFetching, setIsFetching] = useState(false)
+
+  const courseId = useAppSelector((state) => state.user.courseId)
 
   useEffect(() => {
     setExportButtonDisabled(activitiesToExportIds.length === 0)
@@ -25,7 +27,8 @@ function ExportModal(props) {
     setIsFetching(true)
     ProfessorService.getCSVGradesFile(
       props.data,
-      activitiesToExportIds.map((activity) => activity.id)
+      activitiesToExportIds.map((activity) => activity.id),
+      courseId
     )
       .then((response) => {
         const date = moment(new Date()).format('DD-MM-YYYY')

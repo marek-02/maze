@@ -4,11 +4,11 @@ import { Button, Card } from 'react-bootstrap'
 import CardHeader from 'react-bootstrap/CardHeader'
 import { connect } from 'react-redux'
 
-import { CustomCard } from '../GameCardPage/GameCardStyles'
+import { CustomCard } from '../GameCardPages/GameCardStyles'
 
 function ProfileCard(props) {
   const buttonColor = props.customButton ?? props.theme.warning
-  return (
+  return (    
     <CustomCard $fontColor={props.theme.font} $background={props.theme.primary} $bodyColor={props.theme.secondary}>
       <CardHeader>
         <h5>{props.header}</h5>

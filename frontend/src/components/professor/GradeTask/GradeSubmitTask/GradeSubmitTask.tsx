@@ -1,76 +1,107 @@
-import React, { useRef, useState } from 'react'
-
-import { Button, Modal } from 'react-bootstrap'
-import JSONInput from 'react-json-editor-ajrm'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import locale from 'react-json-editor-ajrm/locale/en'
-
-import styles from './GradeSubmitTask.module.scss'
-import { useGradeSubmitTaskMutation } from '../../../../api/apiGrades'
-import { ActivityResponseInfo } from '../../../../api/types'
-import CombatTaskService from '../../../../services/combatTask.service'
-import { Activity, getActivityTypeName } from '../../../../utils/constants'
-import StudentFileService from '../../ActivityAssessmentDetails/StudentFileService'
+import React, { useEffect, useState } from 'react';
+import { Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import styles from './GradeSubmitTask.module.scss';
+import { useEvaluateSubmitTaskMutation, useGradeSubmitTaskMutation } from '../../../../api/apiGrades';
+import { ActivityResponseInfo, ChapterResponse } from '../../../../api/types';
+import CombatTaskService from '../../../../services/combatTask.service';
+import { Activity, getActivityTypeName } from '../../../../utils/constants';
+import StudentFileService from '../../ActivityAssessmentDetails/StudentFileService';
+import ChapterService from '../../../../services/chapter.service';
+import { useAppSelector } from '../../../../hooks/hooks';
 
 type GradeSubmitTaskProps = {
-  showDetails: boolean
-  onCloseDetails: () => void
-  activity: ActivityResponseInfo
-}
+  showDetails: boolean;
+  onCloseDetails: () => void;
+  activity: ActivityResponseInfo;
+};
 
 const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
-  const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState<boolean>(false)
+  const [chapterId, setChapterId] = useState<string>('1');
+  const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState<boolean>(false);
+  const [activityDetails, setActivityDetails] = useState<ActivityResponseInfo>({
+    ...props.activity,
+  });
+  const [chapterList,setChapterList] = useState<ChapterResponse[]>([]);
+  
+  const courseId = useAppSelector((state) => state.user.courseId)
+  
+  useEffect(() => {
+    fetchChaptersList()
+  }, [])
+  
+  const fetchChaptersList = () => {
+    ChapterService.getChaptersList(courseId)
+      .then((response) => {
+        setChapterList(response)
+      })
+      .catch(() => {
+        setChapterList([])
+      })
+  }
 
-  const [chapterId, setChapterId] = useState<string>('1')
-  const [jsonData, setJsonData] = useState<ActivityResponseInfo | undefined>(props.activity)
-  const [jsonResult, setJsonResult] = useState<ActivityResponseInfo>(props.activity)
-  const jsonRef = useRef<JSONInput>(null)
-  const [gradeSubmitTask] = useGradeSubmitTaskMutation()
+  const [gradeSubmitTask] = useGradeSubmitTaskMutation();
+  const [evaluateSubmitTask] = useEvaluateSubmitTaskMutation();
 
   const handleSubmit = async (accepted: boolean) => {
     try {
-      const response = await gradeSubmitTask({
-        id: props.activity.fileTaskResponseId,
-        accepted
-      })
-
-      // Check if 'data' property exists before accessing it
-      if ('data' in response) {
-        setJsonData(response.data)
-        setJsonResult(response.data)
-      }
-
-      if (accepted) {
-        setIsAddActivityModalOpen(true)
+      if (!accepted) {
+        await evaluateSubmitTask({
+          id: props.activity.fileTaskResponseId,
+          accepted: false,
+        }).then(() => {
+          props.onCloseDetails(); // Zamykamy obecny modal
+        });
       } else {
-        setIsAddActivityModalOpen(false)
-        props.onCloseDetails()
+        const response = await gradeSubmitTask(props.activity.fileTaskResponseId);
+
+        if ('data' in response) {
+          setActivityDetails(response.data);
+        }
+
+        setActivityDetails((prevDetails) => ({
+          ...prevDetails,
+          ['auction']: null,
+        }));
+
+        setIsAddActivityModalOpen(true);
       }
     } catch (error) {
-      console.error('Error submitting task:', error)
+      console.error('Error submitting task:', error);
     }
-    // props.onCloseDetails()
-  }
+  };
 
   const handleCreateTask = () => {
-    CombatTaskService.setFileTaskJson({ chapterId, form: jsonResult })
+    setActivityDetails((prevDetails) => ({
+      ...prevDetails,
+      ['auction']: null,
+    }));
+
+    CombatTaskService.setFileTaskJson({ chapterId, form: activityDetails })
       .then(() => {
-        props.onCloseDetails()
-        setIsAddActivityModalOpen(false)
+        evaluateSubmitTask({
+          id: props.activity.fileTaskResponseId,
+          accepted: true
+        });
+        props.onCloseDetails();
+        setIsAddActivityModalOpen(false);
       })
       .catch((response) => {
-        console.error(response)
-      })
-  }
+        console.error(response);
+      });
+  };
 
-  const handleJsonInput = (event: any) => {
-    try {
-      setJsonResult(JSON.parse(event.json))
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setActivityDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleChapterInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setChapterId(value);
+  };
 
   return (
     <>
@@ -79,22 +110,21 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
           fullscreen
           show={props.showDetails}
           onHide={props.onCloseDetails}
-          size='xl'
+          size="xl"
           className={styles.modalContainer}
           centered
         >
           <Modal.Header className={styles.modalHeader}>
-            <Modal.Title className={styles.modalTitle}>{`${getActivityTypeName(Activity.SUBMIT)} - ${
-              props.activity.activityName
-            }`}</Modal.Title>
+            <Modal.Title className={styles.modalTitle}>
+              {`${getActivityTypeName(Activity.SUBMIT)} - ${props.activity.activityName}`}
+            </Modal.Title>
             <button
-              type='button'
+              type="button"
               className={styles.customButtonClose}
               onClick={() => {
-                props.onCloseDetails()
+                props.onCloseDetails();
               }}
             >
-              {/* Close button content */}
               <span>&times;</span>
             </button>
           </Modal.Header>
@@ -113,58 +143,142 @@ const GradeSubmitTask = (props: GradeSubmitTaskProps) => {
           </Modal.Body>
           <Modal.Footer className={styles.modalFooter}>
             <Button
-              variant='secondary'
-              type='submit'
+              variant="secondary"
+              type="submit"
               className={styles.rejectButton}
               onClick={() => handleSubmit(false)}
             >
               <span>Odrzuć</span>
             </Button>
-            <Button variant='primary' type='submit' className={styles.acceptButton} onClick={() => handleSubmit(true)}>
+            <Button
+              variant="primary"
+              type="submit"
+              className={styles.acceptButton}
+              onClick={() => handleSubmit(true)}
+            >
               <span>Stwórz zadanie</span>
             </Button>
           </Modal.Footer>
         </Modal>
-      ) : (
-        <></>
-      )}
+      ) : null}
       <Modal
         show={isAddActivityModalOpen}
         onHide={() => setIsAddActivityModalOpen(false)}
-        size='xl'
+        size="xl"
         centered
         fullscreen
       >
-        <Modal.Header style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>Dodawanie nowej aktywności</Modal.Header>
+        <Modal.Header style={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+          Dodawanie nowej aktywności
+        </Modal.Header>
         <Modal.Body className={styles.editorContainer}>
-          <label htmlFor='chapterId' className={styles.chapterForm}>
-            Do którego rozdziału przypisać aktywność?
-            <input
-              id='chapterId'
-              name='chapterId'
-              type='text'
-              value={chapterId}
-              required
-              onChange={(event) => setChapterId(event.target.value)}
-            />
-          </label>
-          <JSONInput
-            ref={jsonRef}
-            placeholder={jsonData}
-            locale={locale}
-            height='100%'
-            width='100%'
-            style={{ body: { fontSize: '15px' }, outerBox: { maxHeight: '60vh', overflowY: 'auto' } }}
-            onChange={handleJsonInput}
-            waitAfterKeyPress={400}
-          />
-          <Button type='submit' className={styles.editorButton} onClick={handleCreateTask}>
+          <Row>
+            <Col>
+              <p>
+                <strong>Chapter ID:</strong> {chapterId}
+              </p>
+            </Col>
+            <Col>
+              <p>
+                <strong>Based On:</strong> {activityDetails.basedOn}
+              </p>
+            </Col>
+            <Col>
+              <p>
+                <strong>Rodzaj aktywności:</strong> {activityDetails.activityType}
+              </p>
+            </Col>
+          </Row>
+          <hr />
+          <Form className={styles.formContainer}>
+            <Form.Group controlId="title" className={styles.formGroup}>
+              <Form.Label>
+                <span>Tytuł</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="title"
+                rows={1}
+                as="textarea"
+                value={activityDetails.title}
+                onChange={handleInputChange}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="description" className={styles.formGroup}>
+              <Form.Label>
+                <span>Opis</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="description"
+                as="textarea"
+                rows={3}
+                value={activityDetails.description}
+                onChange={handleInputChange}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="taskContent" className={styles.formGroup}>
+              <Form.Label>
+                <span>Treść zadania</span>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="taskContent"
+                as="textarea"
+                rows={3}
+                value={activityDetails.taskContent}
+                onChange={handleInputChange}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="maxPoints" className={styles.formGroup}>
+              <Form.Label>
+                <span>Maksymalna liczba punktów</span>
+              </Form.Label>
+              <Form.Control
+                type="number"
+                name="maxPoints"
+                value={activityDetails.maxPoints}
+                onChange={handleInputChange}
+                className={styles.formControl}
+              />
+            </Form.Group>
+
+            <Form.Group controlId='chapter' className={styles.formGroup}>
+              <Form.Label>
+                <span>Rozdział</span>
+              </Form.Label>
+              <Form.Control
+                as="select"
+                name="chapter"
+                values={chapterId}
+                onChange={handleChapterInputChange}
+                className={styles.formControl}
+              >
+                {chapterList.map((chapter,index) => (
+                  <option key={chapter.id} value={chapter.id}>
+                    {chapter.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </Form>
+          <Button
+            type="submit"
+            className={styles.editorButton}
+            onClick={handleCreateTask}
+          >
             Dodaj aktywność
           </Button>
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default GradeSubmitTask
+export default GradeSubmitTask;

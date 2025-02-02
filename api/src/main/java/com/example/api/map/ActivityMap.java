@@ -13,9 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.action.internal.OrphanRemovalAction;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -57,15 +54,15 @@ public class ActivityMap {
     @JoinColumn
     private List<SubmitTask> submitTasks = new LinkedList<>();
 
-    private Integer mapSizeX;
-    private Integer mapSizeY;
+    // private Integer mapSizeX;
+    // private Integer mapSizeY;
 
     @OneToOne
     private File image;
 
-    public ActivityMap(int mapSizeX, int mapSizeY, File image) {
-        this.mapSizeX = mapSizeX;
-        this.mapSizeY = mapSizeY;
+    public ActivityMap(File image) {
+        // this.mapSizeX = mapSizeX;
+        // this.mapSizeY = mapSizeY;
         this.image = image;
     }
 

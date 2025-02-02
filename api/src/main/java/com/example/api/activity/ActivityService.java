@@ -1,9 +1,15 @@
 package com.example.api.activity;
 
+import com.example.api.activity.auction.Auction;
+import com.example.api.activity.auction.AuctionRepository;
 import com.example.api.activity.info.EditInfoForm;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.info.InfoRepository;
 import com.example.api.activity.info.InfoService;
+import com.example.api.activity.submittask.EditSubmitTaskForm;
+import com.example.api.activity.submittask.SubmitTask;
+import com.example.api.activity.submittask.SubmitTaskRepository;
+import com.example.api.activity.submittask.SubmitTaskService;
 import com.example.api.activity.survey.EditSurveyForm;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.survey.SurveyRepository;
@@ -56,6 +62,9 @@ public class ActivityService {
     private final ChapterRepository chapterRepository;
     private final ChapterValidator chapterValidator;
     private final ActivityRepository activityRepository;
+    private final SubmitTaskService submitTaskService;
+    private final SubmitTaskRepository submitTaskRepository;
+    private final AuctionRepository auctionRepository;
 
     public EditActivityForm getActivityEditInfo(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
         User professor = authService.getCurrentUser();
@@ -83,6 +92,7 @@ public class ActivityService {
             case TASK -> fileTaskService.editFileTask((FileTask) activity, (EditFileTaskForm) form);
             case INFO -> infoService.editInfo((Info) activity, (EditInfoForm) form);
             case SURVEY -> surveyService.editSurvey((Survey) activity, (EditSurveyForm) form);
+            case SUBMIT -> submitTaskService.editSubmitTask((SubmitTask) activity, (EditSubmitTaskForm) form);
         }
     }
 
@@ -99,6 +109,9 @@ public class ActivityService {
             }
             case INFO -> {
                 return new EditInfoForm((Info) activity);
+            }
+            case SUBMIT -> {
+                return new EditSubmitTaskForm((SubmitTask) activity);
             }
             default -> {
                 log.error("Cannot create EditActivityForm for given activity with type {}", activity.getActivityType());
@@ -120,13 +133,13 @@ public class ActivityService {
         activity.setDescription(editForm.getDescription());
         chapterValidator.validateChapterIsNotNull(chapter, null);
 
-        if (activity.getPosX().equals(editForm.getPosX()) &&
-                activity.getPosY().equals(editForm.getPosY())) {
-            return;
-        }
-        activityValidator.validateActivityPosition(editForm, chapter);
-        activity.setPosX(editForm.getPosX());
-        activity.setPosY(editForm.getPosY());
+        // if (activity.getPosX().equals(editForm.getPosX()) &&
+        //         activity.getPosY().equals(editForm.getPosY())) {
+        //     return;
+        // }
+        // activityValidator.validateActivityPosition(editForm, chapter);
+        // activity.setPosX(editForm.getPosX());
+        // activity.setPosY(editForm.getPosY());
     }
 
     public void deleteActivity(Long activityID) throws WrongUserTypeException, EntityNotFoundException {
@@ -140,6 +153,7 @@ public class ActivityService {
             case TASK -> fileTaskRepository.delete((FileTask) activity);
             case INFO -> infoRepository.delete((Info) activity);
             case SURVEY -> surveyRepository.delete((Survey) activity);
+            case SUBMIT -> submitTaskRepository.delete((SubmitTask) activity);
         }
     }
 

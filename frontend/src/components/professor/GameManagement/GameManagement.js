@@ -8,7 +8,7 @@ import ChapterModal from './ChapterModal/ChapterModal'
 import GameButton from './GameButton'
 import GameLoaderModal from './GameLoader/GameLoaderModal'
 import styles from './GameManagement.module.scss'
-import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
+// import SuperPowerEditionModal from './GameSettings/SuperPowerEditionModal'
 import ManagementCard from './ManagementCard'
 import { TableBodyRow } from './TableStyles'
 import { useAppSelector } from '../../../hooks/hooks'
@@ -27,7 +27,7 @@ function GameManagement(props) {
   const [showAddChapterModal, setShowAddChapterModal] = useState(false)
   const [chapterList, setChapterList] = useState(undefined)
   const [shouldLoadAddChapterModal, setShouldLoadAddChapterModal] = useState(false)
-  const [isSuperpowerModalVisible, setIsSuperpowerModalVisible] = useState(false)
+  // const [isSuperpowerModalVisible, setIsSuperpowerModalVisible] = useState(false)
 
   const courseId = useAppSelector((state) => state.user.courseId)
 
@@ -77,7 +77,7 @@ function GameManagement(props) {
                         <th>Nazwa rozdziału</th>
                         <th className='text-center'>Liczba aktywności</th>
                         <th className='text-center'>Punkty</th>
-                        <th className='text-center'>Wymiary mapy</th>
+                        {/* <th className='text-center'>Wymiary mapy</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -114,7 +114,7 @@ function GameManagement(props) {
                               <td>{chapter.name}</td>
                               <td className='text-center'>{chapter.noActivities}</td>
                               <td className='text-center'>{chapter.maxPoints}</td>
-                              <td className='text-center'>{chapter.mapSize}</td>
+                              {/* <td className='text-center'>{chapter.mapSize}</td> */}
                             </TableBodyRow>
                           </OverlayTrigger>
                         ))
@@ -138,9 +138,9 @@ function GameManagement(props) {
         <Row className='py-2 text-center'>
           <Col md={4} className='py-2'>
             <ManagementCard
-              header='Grupy'
-              description='Sprawdź listę grup zajęciowych i ich kody dostępu.'
-              routePath={TeacherRoutes.GAME_MANAGEMENT.GROUPS}
+              header='Kolokwia'
+              description='Skonfiguruj kolokwia'
+              routePath={TeacherRoutes.GAME_MANAGEMENT.COLLOQUIUM}
             />
           </Col>
           <Col md={4} className='py-2'>
@@ -151,16 +151,12 @@ function GameManagement(props) {
             />
           </Col>
           <Col md={4} className='py-2'>
-            {/* <ManagementCard */}
-            {/*  header={'Ustawienia gry'} */}
-            {/*  description={'Dopasuj temat fabuły i wygląd całej gry oraz całego systemu.'} */}
-            {/*  routePath={TeacherRoutes.GAME_MANAGEMENT.GAME_SETTINGS} */}
-            {/* /> */}
             <ManagementCard
-              header='Umiejętności postaci'
-              description='Zmiana ustawienia umiejętności postaci .'
-              callback={() => setIsSuperpowerModalVisible(true)}
+                header='Podgrupy'
+                description='Sprawdź lub przypisz studentow do zespolow wewnatrz grup.'
+                routePath={TeacherRoutes.GAME_MANAGEMENT.SUBGROUPS}
             />
+
           </Col>
           <Col md={4} className='py-2'>
             <ManagementCard
@@ -192,7 +188,7 @@ function GameManagement(props) {
         onSuccess={fetchChaptersList}
         isLoaded={shouldLoadAddChapterModal}
       />
-      <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} />
+      {/* <SuperPowerEditionModal isModalVisible={isSuperpowerModalVisible} setModalVisible={setIsSuperpowerModalVisible} /> */}
     </Container>
   )
 }

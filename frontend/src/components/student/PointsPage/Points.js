@@ -54,22 +54,16 @@ function Points(props) {
           <Col className='p-0'>
             <PercentageCircle
               percentageValue={calculatedPercentageValue()}
-              points={totalPointsData.totalPointsReceived}
+              points={totalPointsData.totalPointsReceived.toFixed(2)}
               maxPoints={totalPointsData.totalPointsPossibleToReceive}
             />
           </Col>
-          <Col className='p-0 justify-content-center d-flex flex-column'>
+          {/* <Col className='p-0 justify-content-center d-flex flex-column'>
             <h5>
-              <strong>Twój wynik to: {totalPointsData.totalPointsReceived}pkt</strong>
+              <strong>Twój wynik to: {totalPointsData.totalPointsReceived.toFixed(2)}pkt</strong>
             </h5>
-            <h5>
-              <strong>{`Co stanowi: ${  calculatedPercentageValue()}`}%</strong>
-            </h5>
-            <h5>
-              {/* not yet here */}
-              <strong>Do kolejnego poziomu wymagane jest: {pointsToNextRank}pkt</strong>
-            </h5>
-          </Col>
+           
+          </Col> */}
         </Row>
       )}
       <Row className='m-0 m-md-3'>

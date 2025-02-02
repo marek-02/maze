@@ -1,10 +1,10 @@
 package com.example.api.question;
 
-import com.example.api.activity.auction.Auction;
 import com.example.api.activity.result.dto.request.QuestionActionForm;
 import com.example.api.activity.task.dto.response.result.question.QuestionDetails;
 import com.example.api.activity.task.dto.response.result.question.QuestionInfoResponse;
 import com.example.api.activity.task.dto.response.result.question.QuestionList;
+import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.EntityRequiredAttributeNullException;
 import com.example.api.error.exception.ExceptionMessage;
@@ -62,14 +62,16 @@ public class QuestionService {
         ResultStatus status = form.getStatus();
         Long graphTaskId = form.getGraphTaskId();
         User user = userService.getCurrentUserAndValidateStudentAccount();
-
+        
         GraphTaskResult result = graphTaskResultService.getGraphTaskResultWithGraphTaskAndUser(graphTaskId, user);
+        CourseMember member = result.getMember();
 
         Long timeRemaining = graphTaskResultService.getTimeRemaining(result);
         if (timeRemaining < 0) {
             throw new TimeLimitExceededException(ExceptionMessage.TIME_REMAINING_IS_UP);
         }
-
+        log.info("Performing action");
+        log.info("Status:",status);
         switch (status) {
             case CHOOSE -> {
                 resultValidator.validateGraphTaskResultStatusIsChoose(result);
@@ -94,10 +96,10 @@ public class QuestionService {
                 // counting current state of points
                 double allPoints = pointsCalculator.calculateAllPoints(result);
 
-                result.getGraphTask()
-                        .getAuction()
-                        .flatMap(Auction::getHighestBid)
-                        .ifPresent(bid -> bid.returnPoints(allPoints));
+                // result.getGraphTask()
+                //         .getAuction()
+                //         .flatMap(Auction::getHighestBid)
+                //         .ifPresent(bid -> bid.returnPoints(allPoints));
 
                 result.setPoints(allPoints);
                 
@@ -106,8 +108,8 @@ public class QuestionService {
 
                 if (nextQuestions.isEmpty()){
                     result.setFinished(true);
-                    result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
-                    log.info("Expedition finished");
+                    //result.getMember().getUserHero().setTimesSuperPowerUsedInResult(0);
+                    member.addGraphTaskPoints(allPoints,graphTaskId);
                     badgeService.checkAllBadges(result.getMember());
                 }
 

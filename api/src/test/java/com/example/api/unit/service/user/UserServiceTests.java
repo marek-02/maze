@@ -135,7 +135,7 @@ public class UserServiceTests {
         registerUserForm.setEmail(user.getEmail());
         registerUserForm.setInvitationCode(group.getInvitationCode());
         registerUserForm.setAccountType(AccountType.STUDENT);
-        registerUserForm.setHeroType(HeroType.PRIEST);
+        registerUserForm.setHeroType(HeroType.UNFORTUNATE);
         registerUserForm.setIndexNumber(99);
         String encodedPassword = "encodedPassword";
         given(userRepository.findUserByEmail(registerUserForm.getEmail())).willReturn(null);

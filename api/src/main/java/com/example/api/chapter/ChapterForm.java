@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChapterForm {
     @Schema(required = true) private String name;
-    @Schema(required = true) private Integer sizeX;
-    @Schema(required = true) private Integer sizeY;
+    // @Schema(required = true) private Integer sizeX;
+    // @Schema(required = true) private Integer sizeY;
     @Schema(required = true) private Long imageId;
-    @Schema(required = true) private Integer posX;
-    @Schema(required = true) private Integer posY;
+    // @Schema(required = true) private Integer posX;
+    // @Schema(required = true) private Integer posY;
     @Schema(required = true) private Long courseId;
 }

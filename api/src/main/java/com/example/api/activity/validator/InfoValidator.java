@@ -15,7 +15,7 @@ public class InfoValidator {
     private static final int MAX_CONTENT_LENGTH = 1000;
 
     public void validateCreateInfoForm(CreateInfoForm form) throws RequestValidationException {
-        if (Stream.of(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), form.getImageUrls(),
+        if (Stream.of(form.getTitle(), form.getDescription(),form.getImageUrls(),
                 form.getInfoContent()).anyMatch(Objects::isNull)) {
             log.info("All fields in CreateInfoForm should not be null");
             throw new RequestValidationException(ExceptionMessage.FORM_FIELDS_NOT_NULL);

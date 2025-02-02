@@ -14,7 +14,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -66,7 +65,7 @@ public abstract class ActivityResult {
     }
 
     public void setPoints(Double newPoints) {
-        member.changePoints(newPoints - Optional.ofNullable(points).orElse(0D));
+        // member.changePoints(newPoints - Optional.ofNullable(points).orElse(0D));
         points = newPoints;
     }
 }

@@ -4,14 +4,15 @@ import { Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 
 import { CarouselItem, CustomCarousel } from './CarouselStyle'
-import wizard from '../../../../utils/resources/newHeroes/mage.png'
-import priest from '../../../../utils/resources/newHeroes/priest.png'
-import rogue from '../../../../utils/resources/newHeroes/rouge.png'
-import warrior from '../../../../utils/resources/newHeroes/warrior.png'
+// import wizard from '../../../../utils/resources/newHeroes/mage.png'
+import sheunfortunate from '../../../../utils/resources/newHeroes/sheUnfortunate.png'
+import unfortunate from '../../../../utils/resources/newHeroes/unfortunate.png'
+
+// import warrior from '../../../../utils/resources/newHeroes/warrior.png'
 // import gameMapExample from '../../../../storage/resources/game_example.png'
 
 function Carousel(props) {
-  const images = [warrior, wizard, priest, rogue]
+  const images = [unfortunate, sheunfortunate]
 
   const ItemsList = images.map((image, index) => (
     <CarouselItem key={index}>

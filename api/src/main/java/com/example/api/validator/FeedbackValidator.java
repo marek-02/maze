@@ -1,6 +1,5 @@
 package com.example.api.validator;
 
-import com.example.api.activity.auction.Auction;
 import com.example.api.activity.feedback.SaveProfessorFeedbackForm;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -14,6 +13,7 @@ import com.example.api.user.model.User;
 import com.example.api.file.File;
 import com.example.api.activity.feedback.ProfessorFeedbackRepository;
 import com.example.api.activity.result.repository.FileTaskResultRepository;
+import com.example.api.activity.submittask.result.SubmitTaskResult;
 import com.example.api.file.FileRepository;
 import com.example.api.security.LoggedInUserService;
 import lombok.RequiredArgsConstructor;
@@ -73,8 +73,15 @@ public class FeedbackValidator {
             fileTaskResult.setPoints(form.getPoints());
             fileTaskResultRepository.save(fileTaskResult);
 
-            task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints()));
-            task.getAuthoredByStudent().ifPresent(authored -> authored.setPoints(form.getPoints()));
+            // task.getAuction().flatMap(Auction::getHighestBid).ifPresent(bid -> bid.returnPoints(form.getPoints(), bid.getAuction().getId()));
+            if(task.getAuthoredByStudent().isPresent()){
+                SubmitTaskResult submitResult = task.getAuthoredByStudent().get();
+                submitResult.setPoints(form.getPoints()); //it adds points not sets them!
+                CourseMember author = submitResult.getMember();
+                author.setSubmitTaskPoints(submitResult.getPoints(),submitResult.getId());
+            }
+            // task.getAuthoredByStudent().ifPresent(authored -> authored.setPoints(form.getPoints()));
+
         }
 
         // Feedback file can be set only once

@@ -1,13 +1,10 @@
 package com.example.api.activity.result.service.ranking;
 
+import com.example.api.activity.Activity;
 import com.example.api.activity.ActivityType;
 import com.example.api.activity.result.dto.response.RankingResponse;
 import com.example.api.activity.result.dto.response.SurveyAnswerResponse;
 import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.result.repository.FileTaskResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
-import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.result.service.ActivityResultService;
 import com.example.api.course.Course;
 import com.example.api.course.CourseService;
@@ -18,7 +15,6 @@ import com.example.api.course.coursemember.CourseMemberService;
 import com.example.api.error.exception.EntityNotFoundException;
 import com.example.api.error.exception.WrongUserTypeException;
 import com.example.api.group.Group;
-import com.example.api.security.LoggedInUserService;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
 import com.example.api.user.service.RankService;
@@ -33,24 +29,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.DoubleStream;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
 public class RankingService {
-    private final GraphTaskResultRepository graphTaskResultRepository;
-    private final FileTaskResultRepository fileTaskResultRepository;
-    private final SurveyResultRepository surveyResultRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
     private final UserService userService;
     private final RankService rankService;
     private final CourseService courseService;
     private final CourseValidator courseValidator;
     private final ActivityResultService activityResultService;
     private final CourseMemberService courseMemberService;
-    private final LoggedInUserService authService;
 
     public List<RankingResponse> getRanking(Long courseId) {
         List<RankingResponse> rankingList = courseMemberService.getAll(courseId)
@@ -70,7 +60,6 @@ public class RankingService {
     }
 
     public List<RankingResponse> getRankingForLoggedStudentGroup(Long courseId) throws StudentNotEnrolledException {
-        CourseMember member = authService.getCurrentUser().getCourseMember(courseId).orElseThrow();
         Group group = userService.getCurrentUserGroup(courseId);
         List<RankingResponse> rankingList = group.getMembers()
                 .stream()
@@ -119,10 +108,11 @@ public class RankingService {
         List<RankingResponse> rankingList = activityResultService.getResultsForActivity(activityID)
                 .stream()
                 .map(result -> {
+                    Double points = result.getPoints() == null ? 0.0 : result.getPoints();
                     RankingResponse response = new RankingResponse(
                             rankService.getCurrentRank(result.getMember()).getName(),
                             result.getMember(),
-                            result.getPoints());
+                            points);
 
                     if (result.getActivity().getActivityType().equals(ActivityType.SURVEY)) {
                         response.setStudentAnswer(new SurveyAnswerResponse((SurveyResult) result));
@@ -189,47 +179,6 @@ public class RankingService {
 
     private RankingResponse studentToRankingEntry(CourseMember member) throws EntityNotFoundException {
         String rankName = Optional.ofNullable(rankService.getCurrentRank(member)).map(Rank::getName).orElse(null);
-        return new RankingResponse(rankName, member, getStudentPoints(member));
+        return new RankingResponse(rankName, member, member.getTotalPoints());
     }
-
-    private Double getGraphTaskPoints(CourseMember member) {
-        return graphTaskResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getFileTaskPoints(CourseMember member) {
-        return fileTaskResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getAdditionalPoints(CourseMember member) {
-        return additionalPointsRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getSurveyPoints(CourseMember member) {
-        return surveyResultRepository.findAllByMember(member)
-                .stream()
-                .flatMap(task -> Optional.ofNullable(task.getPoints()).stream())
-                .mapToDouble(d -> d)
-                .sum();
-    }
-
-    private Double getStudentPoints(CourseMember student) {
-        Double graphTaskPoints = getGraphTaskPoints(student);
-        Double fileTaskPoints = getFileTaskPoints(student);
-        Double additionalPoints = getAdditionalPoints(student);
-        Double surveyPoints = getSurveyPoints(student);
-        return DoubleStream.of(graphTaskPoints, fileTaskPoints, additionalPoints, surveyPoints).sum();
-    }
-
 }

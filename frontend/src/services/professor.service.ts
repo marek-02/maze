@@ -9,8 +9,8 @@ import {
   GET_SUMMARY,
   GET_TASK_EVALUATE_ALL,
   GET_TASK_EVALUATE_FIRST,
-  POST_ADDITIONAL_POINTS,
-  POST_FEEDBACK_PROFESSOR,
+  POST_ADDITIONAL_POINTS, POST_COLLOQUIUM_POINTS,
+  POST_FEEDBACK_PROFESSOR, POST_LABORATORY_POINTS,
   POST_TASK_RESULT_CSV,
   PUT_HERO
 } from './urls'
@@ -34,8 +34,10 @@ class ProfessorService {
     return parseJwt(this.getUser().access_token).sub
   }
 
-  getCSVGradesFile(studentsId: number[], activitiesId: number[]) {
-    return axiosApiGetFile(POST_TASK_RESULT_CSV, { studentIds: studentsId, activityIds: activitiesId }).catch(
+  getCSVGradesFile(studentsId: number[], activitiesId: number[], courseId: number) {    
+    console.log(activitiesId);
+    
+    return axiosApiGetFile(POST_TASK_RESULT_CSV, { studentIds: studentsId, activityIds: activitiesId, courseId: courseId }).catch(
       (error) => {
         throw error
       }
@@ -66,9 +68,11 @@ class ProfessorService {
     })
   }
 
-  sendBonusPoints(studentId: number, points: number, description: string, dateInMillis: number) {
+
+  sendBonusPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number) {
     return axiosApiPost(POST_ADDITIONAL_POINTS, {
       studentId,
+      courseId,
       points,
       description,
       dateInMillis
@@ -77,8 +81,39 @@ class ProfessorService {
     })
   }
 
-  getStudentPointsList(studentEmail: string) {
-    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, { studentEmail }).catch((error) => {
+  sendLaboratoryPoints(studentId: number,courseId: number, points: number,rolePoints :number, role:string, description: string, dateInMillis: number,foundWolfHoles : number, receivedNominations : number) {
+    return axiosApiPost(POST_LABORATORY_POINTS, {
+      studentId,
+      courseId,
+      points,
+      rolePoints,
+      role,
+      description,
+      dateInMillis,
+      foundWolfHoles,
+      receivedNominations
+    }).catch((error) => {
+      throw error
+    })
+  }
+
+  sendColloquiumPoints(studentId: number,courseId: number, points: number, description: string, dateInMillis: number, colloquiumId: number,annihilatedQuestions:number, annihilatedPoints:number) {
+    return axiosApiPost(POST_COLLOQUIUM_POINTS, {
+      studentId,
+      courseId,
+      points,
+      colloquiumId,
+      description,
+      annihilatedQuestions,
+      annihilatedPoints,
+      dateInMillis
+    }).catch((error) => {
+      throw error
+    })
+  }
+
+  getStudentPointsList(courseId: number, studentEmail: string) {
+    return axiosApiGet(GET_POINTS_ALL_LIST_PROFESSOR, {courseId, studentEmail }).catch((error) => {
       throw error
     })
   }
@@ -109,16 +144,6 @@ class ProfessorService {
 
   getProfessorsEmails() {
     return axiosApiGet(GET_PROFESSOR_EMAILS).catch((error) => {
-      throw error
-    })
-  }
-
-  editHeroSuperPower(heroType: any, powerBaseValue: number, coolDownMs: number) {
-    return axiosApiPut(PUT_HERO, {
-      type: heroType,
-      value: powerBaseValue,
-      coolDownMillis: coolDownMs
-    }).catch((error) => {
       throw error
     })
   }

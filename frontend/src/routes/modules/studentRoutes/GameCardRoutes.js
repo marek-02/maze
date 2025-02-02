@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import NotFound from '../../../components/general/NotFoundPage/NotFound'
 import PageGuard from '../../../components/general/PageGuard/PageGuard'
-import GameCardView from '../../../components/student/GameCardPage/GameCardView'
+import GameCardView from '../../../components/student/GameCardPages/GameCardView'
 import { Role } from '../../../utils/userRole'
 
 export default function GameCardRoutes() {

@@ -21,10 +21,6 @@ import com.example.api.group.Group;
 import com.example.api.user.model.AccountType;
 import com.example.api.user.model.User;
 import com.example.api.activity.result.repository.AdditionalPointsRepository;
-import com.example.api.activity.task.filetask.FileTaskRepository;
-import com.example.api.activity.task.graphtask.GraphTaskRepository;
-import com.example.api.activity.info.InfoRepository;
-import com.example.api.activity.survey.SurveyRepository;
 import com.example.api.user.repository.UserRepository;
 import com.example.api.security.LoggedInUserService;
 import com.example.api.validator.PasswordValidator;
@@ -41,7 +37,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -143,6 +138,18 @@ public class UserService implements UserDetailsService {
         return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup();
     }
 
+    public Long getCurrentUserGroupId(Long courseId) throws StudentNotEnrolledException {
+        User user = authService.getCurrentUser();
+        log.info("Fetching group for user {}", user.getEmail());
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getGroup().getId();
+    }
+
+    public Long getCurrentUserSubgroupId(Long courseId) throws StudentNotEnrolledException {
+        User user = authService.getCurrentUser();
+        log.info("Fetching subgroup for user {}", user.getEmail());
+        return user.getCourseMember(courseId).orElseThrow(() -> new StudentNotEnrolledException(user, courseId)).getSubgroup();
+    }
+
     public List<BasicStudent> getAllStudentsWithGroup(Long courseId) {
         log.info("Fetching all students with group for course {}", courseId);
 
@@ -171,6 +178,22 @@ public class UserService implements UserDetailsService {
         return newGroup;
     }
 
+    public Long updateStudentSubGroup(Long userID, Long newSubgroupId, Long courseId) {
+        User user = getUser(userID);
+        Optional<CourseMember> courseMember = user.getCourseMember(courseId);
+            courseMemberService.updateSubgroup(courseMember.orElseThrow(), newSubgroupId);
+        return newSubgroupId;
+    }
+    public String updateStudentRole(Long userID, String newRoleId, Long courseId) {
+        User user = getUser(userID);
+        CourseMember courseMember = user.getCourseMember(courseId).orElseThrow();
+
+        log.info("Updating user: {} role from: {} to {}",user.getId(), courseMember.getRole(),newRoleId);
+        courseMemberService.updateRole(courseMember, newRoleId);
+        return newRoleId;
+    }
+
+
     public void addUserToGroup(String invitationCode, HeroType heroType) throws WrongUserTypeException, EntityNotFoundException {
         User student = authService.getCurrentUser();
         userValidator.validateStudentAccount(student);
@@ -182,7 +205,7 @@ public class UserService implements UserDetailsService {
         userValidator.validateUserNotInCourse(user, group.getCourse());
 
         Hero hero = heroRepository.findHeroByTypeAndCourse(heroType, group.getCourse());
-        UserHero userHero = new UserHero(hero, 0, 0L);
+        UserHero userHero = new UserHero(hero);
         CourseMember courseMember = courseMemberService.create(user, group, userHero);
         user.getCourseMemberships().add(courseMember);
         groupService.addUser(courseMember, group);

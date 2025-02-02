@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
@@ -12,7 +12,7 @@ import { isProfessor, isStudent } from '../../utils/storageManager'
 import Navbar from '../general/Navbars/Navbar'
 
 function App(props: any) {
-  const [showNavbar, setShowNavbar] = useState(false)
+  const [showNavbar, setShowNavbar] = useState(true)
   const student = isStudent(props.user)
   const professor = isProfessor(props.user)
 

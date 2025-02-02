@@ -1,10 +1,8 @@
 package com.example.api.user.hero;
 
 public enum HeroType {
-    WARRIOR("WARRIOR"),
-    WIZARD("WIZARD"),
-    PRIEST("PRIEST"),
-    ROGUE("ROGUE");
+    UNFORTUNATE("Nieszczęśnik"),
+    SHEUNFORTUNATE("Nieszczęśnica");
 
     private final String type;
 
@@ -18,10 +16,8 @@ public enum HeroType {
 
     public String getPolishTypeName() {
         return switch (this.type) {
-            case "WARRIOR" -> "WOJOWNIK";
-            case "WIZARD" -> "CZARODZIEJ";
-            case "PRIEST" -> "KAPŁAN";
-            case "ROGUE" -> "ŁOTRZYK";
+            case "UNFORTUNATE" -> "NIESZCZĘŚNIK";
+            case "SHEUNFORTUNATE" -> "NIESZCZĘŚNICA";
             default -> "";
         };
     }

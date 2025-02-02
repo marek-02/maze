@@ -6,7 +6,6 @@ import com.example.api.activity.auction.bid.Bid;
 import com.example.api.activity.task.Task;
 import com.example.api.chapter.requirement.model.Requirement;
 import com.example.api.course.Course;
-import com.example.api.file.File;
 import com.example.api.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,8 +39,8 @@ public class Auction extends Activity {
     public Auction(Long id,
                    String title,
                    String description,
-                   Integer posX,
-                   Integer posY,
+                //    Integer posX,
+                //    Integer posY,
                    Double experience,
                    Long creationTime,
                    List<Requirement> requirements,
@@ -57,8 +55,8 @@ public class Auction extends Activity {
         super(id,
                 title,
                 description,
-                posX,
-                posY,
+                // posX,
+                // posY,
                 experience,
                 creationTime,
                 new LinkedList<>(),
@@ -91,8 +89,8 @@ public class Auction extends Activity {
         private Long id;
         private String title;
         private String description;
-        private Integer posX;
-        private Integer posY;
+        // private Integer posX;
+        // private Integer posY;
         private Double experience;
         private Long creationTime;
         private List<Requirement> requirements;
@@ -112,8 +110,8 @@ public class Auction extends Activity {
             return new AuctionBuilder()
                     .title("Licytacja - " + task.getTitle())
                     .description(task.getDescription())
-                    .posX(task.getPosX())
-                    .posY(task.getPosY())
+                    // .posX(task.getPosX())
+                    // .posY(task.getPosY())
                     .experience(task.getExperience())
                     .creationTime(task.getCreationTime())
                     .isBlocked(task.getIsBlocked())
@@ -137,15 +135,15 @@ public class Auction extends Activity {
             return this;
         }
 
-        public AuctionBuilder posX(Integer posX) {
-            this.posX = posX;
-            return this;
-        }
+        // public AuctionBuilder posX(Integer posX) {
+        //     this.posX = posX;
+        //     return this;
+        // }
 
-        public AuctionBuilder posY(Integer posY) {
-            this.posY = posY;
-            return this;
-        }
+        // public AuctionBuilder posY(Integer posY) {
+        //     this.posY = posY;
+        //     return this;
+        // }
 
         public AuctionBuilder experience(Double experience) {
             this.experience = experience;
@@ -206,8 +204,8 @@ public class Auction extends Activity {
             return new  Auction( id,
                     title,
                     description,
-                    posX,
-                    posY,
+                    // posX,
+                    // posY,
                     experience,
                     creationTime,
                     requirements,

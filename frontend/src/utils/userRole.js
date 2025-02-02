@@ -12,10 +12,12 @@ export const AccountType = {
 }
 
 export const HeroType = {
-  WIZARD: 'WIZARD',
-  WARRIOR: 'WARRIOR',
-  PRIEST: 'PRIEST',
-  ROGUE: 'ROGUE'
+    UNFORTUNATE: "UNFORTUNATE",
+    SHEUNFORTUNATE: "SHEUNFORTUNATE"
+//   WIZARD: 'WIZARD',
+//   WARRIOR: 'WARRIOR',
+//   PRIEST: 'PRIEST',
+//   ROGUE: 'ROGUE'
 }
 
 export const PlayerType = {

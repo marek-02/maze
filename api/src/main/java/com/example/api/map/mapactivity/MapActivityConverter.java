@@ -3,7 +3,6 @@ package com.example.api.map.mapactivity;
 import com.example.api.activity.Activity;
 import com.example.api.activity.result.model.ActivityResult;
 import com.example.api.activity.result.repository.ActivityResultRepository;
-import com.example.api.activity.result.repository.GraphTaskResultRepository;
 import com.example.api.chapter.requirement.RequirementDTO;
 import com.example.api.chapter.requirement.RequirementResponse;
 import com.example.api.chapter.requirement.RequirementService;

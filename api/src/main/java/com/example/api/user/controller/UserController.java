@@ -9,7 +9,6 @@ import com.example.api.security.LoggedInUserService;
 import com.example.api.user.dto.request.*;
 import com.example.api.user.dto.response.BasicStudent;
 import com.example.api.error.exception.*;
-import com.example.api.group.Group;
 import com.example.api.user.dto.response.UserDTO;
 import com.example.api.user.model.User;
 import com.example.api.user.service.UserService;
@@ -59,6 +58,16 @@ public class UserController {
         return ResponseEntity.ok().body(new GroupNameDTO(userService.getCurrentUserGroup(courseId).getName()));
     }
 
+    @GetMapping("/user/groupId")
+    public ResponseEntity<Long> getUserGroupId(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.getCurrentUserGroupId(courseId));
+    }
+
+    @GetMapping("/user/subgroupId")
+    public ResponseEntity<Long> getUserSubgroup(@RequestParam Long courseId) throws EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.getCurrentUserSubgroupId(courseId));
+    }
+
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws BadRequestHeadersException, IOException {
@@ -97,6 +106,16 @@ public class UserController {
         return ResponseEntity.ok().body(new GroupNameDTO(userService.updateStudentGroup(setStudentGroupForm).getName()));
     }
 
+    @PostMapping("/user/subgroup/set")
+    public ResponseEntity<Long> setUserSubgroup(@RequestParam Long userId, @RequestParam Long newSubgroupId, @RequestParam Long courseId)
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.updateStudentSubGroup(userId,newSubgroupId,courseId));
+    }
+    @PostMapping("/user/role/set")
+    public ResponseEntity<String> setUserRole(@RequestParam Long userId, @RequestParam String newRoleId, @RequestParam Long courseId)
+            throws WrongUserTypeException, EntityNotFoundException {
+        return ResponseEntity.ok().body(userService.updateStudentRole(userId,newRoleId,courseId));
+    }
     @PostMapping("/user/group/join")
     public ResponseEntity<?> joinGroup(@RequestBody JoinGroupDTO dto)
             throws WrongUserTypeException, EntityNotFoundException {

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import {Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row, Tab} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
-import BadgeCreationForm from './BadgeCreationForm'
+// import BadgeCreationForm from './BadgeCreationForm'
 import ContentCard from './ContentCard'
 import EditionForm from './EditionForm'
 import RankCreationForm from './RankCreationForm'
@@ -114,7 +114,7 @@ function RankAndBadgesManagement(props) {
                 body={rank.ranks.map((listElements) => [
                   <img width={100} src={base64Header + listElements.image} alt='rank-icon' />,
                   <span>{listElements.name}</span>,
-                  <span>{`> ${listElements.minPoints}`}</span>
+                  <span>{`>= ${listElements.minPoints}`}</span>
                 ])}
                 deleteIconCallback={(idx) => {
                   setIsDeleteModalOpen(true)
@@ -173,7 +173,7 @@ function RankAndBadgesManagement(props) {
             }}
           />
         </div>
-        <Button
+        {/* <Button
           className='my-3 start-50 translate-middle-x position-relative'
           onClick={() => {
             setIsBadgeAdditionModalOpen(true)
@@ -181,7 +181,7 @@ function RankAndBadgesManagement(props) {
           style={{ backgroundColor: props.theme.success, borderColor: props.theme.success }}
         >
           Dodaj nową odznakę
-        </Button>
+        </Button> */}
       </>
     )
   }, [badgesList, props.theme])
@@ -251,14 +251,14 @@ function RankAndBadgesManagement(props) {
         </ModalBody>
       </Modal>
 
-      <Modal show={isBadgeAdditionModalOpen} onHide={() => setIsBadgeAdditionModalOpen(false)}>
+      {/* <Modal show={isBadgeAdditionModalOpen} onHide={() => setIsBadgeAdditionModalOpen(false)}>
         <ModalHeader>
           <h5>Dodawanie nowej odznaki</h5>
         </ModalHeader>
         <ModalBody>
           <BadgeCreationForm setModalOpen={setIsBadgeAdditionModalOpen} onSuccess={getBadgesList} />
         </ModalBody>
-      </Modal>
+      </Modal> */}
     </Container>
   )
 }

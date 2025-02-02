@@ -1,6 +1,5 @@
 package com.example.api.file.image;
 
-import com.example.api.course.Course;
 import com.example.api.file.File;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

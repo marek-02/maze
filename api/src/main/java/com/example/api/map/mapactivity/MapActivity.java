@@ -14,8 +14,8 @@ public abstract class MapTaskDTO {
 public abstract class MapActivity {
 >>>>>>>> development:api/src/main/java/com/example/api/map/mapactivity/MapActivity.java
     private Long id;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
     private ActivityType type;
     private String title;
     private Double points;

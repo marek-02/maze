@@ -2,6 +2,8 @@ import moment from 'moment'
 
 import heroImg from './resources/achiever_type.png'
 import achieverImg from './resources/achieverImg.png'
+import bidImg from './resources/activities/auctionDashboardIcon.png'
+import coinImg from './resources/activities/collectiblesDashboardIcon.png'
 import AuctionImg from './resources/activities/auctionTaskIcon.png'
 import TaskImg from './resources/activities/fileTaskIcon.png'
 import ExpeditionImg from './resources/activities/graphTaskIcon.png'
@@ -9,15 +11,18 @@ import InformationImg from './resources/activities/infoTaskIcon.png'
 import SubmitImg from './resources/activities/submitTaskIcon.png'
 import SurveyImg from './resources/activities/surveyTaskIcon.png'
 import explorerImg from './resources/explorerImg.png'
-import priestImg from './resources/heroes/pope.png'
+// import unfImg from './resources/heroes/pope.png'
+import priestImg from './resources/heroes/pope.png'// ?
 import rogueImg from './resources/heroes/rogue.png'
 import warriorImg from './resources/heroes/warrior.png'
 import wizardImg from './resources/heroes/wizard.png'
 import killerImg from './resources/killerImg.png'
-import newMage from './resources/newHeroes/mage.png'
-import newPriest from './resources/newHeroes/priest.png'
-import newRogue from './resources/newHeroes/rouge.png'
-import newWarrior from './resources/newHeroes/warrior.png'
+// import newMage from './resources/newHeroes/mage.png'
+// import newPriest from './resources/newHeroes/priest.png'
+// import newRogue from './resources/newHeroes/rouge.png'
+// import newWarrior from './resources/newHeroes/warrior.png'
+import newSheUnfortunate from './resources/newHeroes/sheUnfortunate.png'
+import newUnfortunate from './resources/newHeroes/unfortunate.png'
 import socializerImg from './resources/socializerImg.png'
 import warrior1 from './resources/warrior/0.png'
 import warrior2 from './resources/warrior/1.png'
@@ -35,8 +40,14 @@ import warrior6 from './resources/warrior/5.png'
 import warrior7 from './resources/warrior/6.png'
 import warrior8 from './resources/warrior/7.png'
 import warrior10 from './resources/warrior/9.png'
+import scribeImg from './resources/roles/scribe.png'
+import economistImg from './resources/roles/economist.png'
+import soakImg from './resources/roles/soak.png'
+import placeholderImg from './resources/roles/placeholder.png'
+import cablemasterImg from './resources/roles/cablemaster.png'
 import { HeroType, PlayerType } from './userRole'
 import { GeneralRoutes, StudentRoutes } from '../routes/PageRoutes'
+
 
 export const FIELD_REQUIRED = 'Pole wymagane.'
 export const NONNEGATIVE_NUMBER = 'Wymagana liczba nieujemna'
@@ -64,6 +75,15 @@ export const GRAPH_NODE_SPECIAL_SIZE = 40
 export const base64Header = 'data:image/jpeg;base64,'
 
 export const getBackgroundImage = (id) => `/backgrounds/bg_${id % 11}.png`
+export const BidImg = bidImg
+export const CoinImg = coinImg
+
+export const SoakImg = soakImg
+export const CableMasterImg = cablemasterImg
+export const EconomistImg = economistImg
+export const ScribeImg = scribeImg
+export const PlaceholderImg = placeholderImg
+
 
 export const Activity = {
   EXPEDITION: 'EXPEDITION',
@@ -72,8 +92,11 @@ export const Activity = {
   TASK: 'TASK',
   AUCTION: 'AUCTION',
   SUBMIT: 'SUBMIT',
-  ADDITIONAL: 'ADDITIONAL'
+  ADDITIONAL: 'ADDITIONAL',
+  COLLOQUIUM: 'COLLOQUIUM',
+  LABORATORIES: 'LABORATORIES'
 }
+
 
 export const QuestionType = {
   SINGLE_CHOICE: 'SINGLE_CHOICE',
@@ -138,19 +161,23 @@ export const getActivityImg = (type) => {
 export const getActivityTypeName = (type) => {
   switch (type) {
     case Activity.EXPEDITION:
-      return 'Ekspedycja'
+      return 'Niespodzianka ONLINE'
     case Activity.INFO:
       return 'Wytyczne'
     case Activity.SURVEY:
       return 'Sondaż'
     case Activity.TASK:
-      return 'Zadanie bojowe'
+      return 'Niespodzianka OFFLINE'
     case Activity.AUCTION:
       return 'Licytacja'
     case Activity.SUBMIT:
       return 'Propozycja'
     case Activity.ADDITIONAL:
       return 'Bonus'
+    case Activity.COLLOQUIUM:
+      return 'Kolokwium'
+    case Activity.LABORATORIES:
+      return 'Laboratoria'
     default:
   }
 }
@@ -204,30 +231,34 @@ export const RegistrationLabelsAndTypes = {
   index: ['Nr. indeksu', 'text'],
   email: ['Email', 'email'],
   token: ['Klucz dostępu', 'password'],
-  heroType: ['Typ osobowości postaci', 'select'],
+  heroType: ['Typ postaci', 'select'],
   password: ['Hasło', 'password'],
   passwordRepeat: ['Powtórz hasło', 'password']
 }
 
 export const HeroDescriptions = {
-  [HeroType.WARRIOR]: `Skupiony na zdolnościach walki, całkowicie pozbawiony magicznych zdolności. 
-            Łatwiej mu pokonać trudnego przeciwnika. Pozwala na odkrycie typu pytania kilka razy w jednej ekspedycji (umiejętność dostępna raz na tydzień).
-            W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`,
-  [HeroType.WIZARD]: `Przejawiający zdolności magiczne, lecz fizycznie słaby. Dzięki swoim czarom może kilka razy w jednek ekspedycji
-            poznać punktację dowolnego pytania przed przejściem do tego pytania (umiejętność dostępna raz na tydzień).
-            W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
-  [HeroType.PRIEST]: `Specjalizujący się w uzdrawianiu. Dzięki swoim umiejętnościom uzdrawiania może jednorazowo w ekspedycji wydłużyć czas jej trwania 
-            (umiejętność dostępna raz na tydzień). W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
-  [HeroType.ROGUE]: `Potrafi poruszać się bezszelestnie, skradanie to jego dominująca umiejętność. Dzięki swoim zdolnościom 
-            umożliwi Ci pominąć jedno pytanie w ekspedycji na poziomie łatwym warte nie więcej niż 5pkt. 
-            W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`
+  [HeroType.UNFORTUNATE]: 'Opis klasy meskiej',
+  [HeroType.SHEUNFORTUNATE]: 'Opis klasy żeńskiej'
+  // [HeroType.WARRIOR]: `Skupiony na zdolnościach walki, całkowicie pozbawiony magicznych zdolności.
+  //           Łatwiej mu pokonać trudnego przeciwnika. Pozwala na odkrycie typu pytania kilka razy w jednej ekspedycji (umiejętność dostępna raz na tydzień).
+  //           W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`,
+  // [HeroType.WIZARD]: `Przejawiający zdolności magiczne, lecz fizycznie słaby. Dzięki swoim czarom może kilka razy w jednek ekspedycji
+  //           poznać punktację dowolnego pytania przed przejściem do tego pytania (umiejętność dostępna raz na tydzień).
+  //           W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
+  // [HeroType.PRIEST]: `Specjalizujący się w uzdrawianiu. Dzięki swoim umiejętnościom uzdrawiania może jednorazowo w ekspedycji wydłużyć czas jej trwania
+  //           (umiejętność dostępna raz na tydzień). W karcie gry widzisz informację w jakim % graczy się znajdujesz.`,
+  // [HeroType.ROGUE]: `Potrafi poruszać się bezszelestnie, skradanie to jego dominująca umiejętność. Dzięki swoim zdolnościom
+  //           umożliwi Ci pominąć jedno pytanie w ekspedycji na poziomie łatwym warte nie więcej niż 5pkt.
+  //           W karcie gry widzisz informację, na którym miejscu w rankingu się znajdujesz oraz porównanie z osobą przed Tobą i za Tobą w rankingu.`
 }
 
 export const HeroImg = {
-  WARRIOR: newWarrior,
-  WIZARD: newMage,
-  PRIEST: newPriest,
-  ROGUE: newRogue
+  UNFORTUNATE: newUnfortunate,
+  SHEUNFORTUNATE: newSheUnfortunate
+  // WARRIOR: newWarrior,
+  // WIZARD: newMage,
+  // PRIEST: newPriest,
+  // ROGUE: newRogue
 }
 
 export const HeroDataset = {
@@ -271,14 +302,18 @@ export const percentagesToGrade = (percentages) => {
 
 export const getHeroName = (heroName) => {
   switch (heroName) {
-    case HeroType.PRIEST:
-      return 'Kapłan'
-    case HeroType.ROGUE:
-      return 'Łotrzyk'
-    case HeroType.WARRIOR:
-      return 'Wojownik'
-    case HeroType.WIZARD:
-      return 'Czarodziej'
+    // case HeroType.PRIEST:
+    //   return 'Kapłan'
+    // case HeroType.ROGUE:
+    //   return 'Łotrzyk'
+    // case HeroType.WARRIOR:
+    //   return 'Wojownik'
+    // case HeroType.WIZARD:
+    //   return 'Czarodziej'
+    case HeroType.UNFORTUNATE:
+      return 'Nieszczęśnik'
+    case HeroType.SHEUNFORTUNATE:
+      return 'Nieszczęśnica'
     default:
   }
 }
@@ -315,38 +350,58 @@ export const EXPEDITION_STATUS = {
   CHOOSE: 'CHOOSE'
 }
 
-export const convertHeroTypeToPlayerType = (heroType) => {
-  if (heroType === HeroType.ROGUE || heroType === HeroType.WARRIOR) {
-    return PlayerType.CHALLENGING
-  }
-  return PlayerType.CALM
-}
+// export const convertHeroTypeToPlayerType = (heroType) => {
+//   if (heroType === HeroType.ROGUE || heroType === HeroType.WARRIOR) {
+//     return PlayerType.CHALLENGING
+//   }
+//   return PlayerType.CALM
+// }
 
-export const getGameCardInfo = (playerType, data) => {
-  if (playerType === PlayerType.CHALLENGING) {
+export const getGameCardInfo = (viewType, data) => {
+  if (viewType === 'Tabela') {
     return (
       <span>
         Zajmujesz <strong>{data.rankPosition}</strong> miejsce na <strong>{data.rankLength}</strong>!
       </span>
     )
+  } else if (viewType === 'Wykres') {
+    return (
+      <span>
+        Jesteś w grupie <strong>{data.userPointsGroup}</strong>% najlepszych graczy.
+      </span>
+    )
+  } else if (data.betterPlayerPoints != null) {
+    return (
+    <span>
+      Brakuje Ci <strong>{data.betterPlayerPoints - data.userPoints} punktów</strong> do kolejnego gracza.
+    </span>
+    )
+  } else if (data.worsePlayerPoints != null) {
+    return (
+      <span>
+        Masz <strong>{Math.floor( data.userPoints - data.worsePlayerPoints)} punktów</strong> więcej od drugiego gracza.
+      </span>
+    )
   }
   return (
     <span>
-      Jesteś w grupie <strong>{data.userPoints}</strong>% najlepszych graczy.
+      Nie masz <strong>żadnego</strong> rywala.
     </span>
   )
+  
+  
 }
 
 export const INVALID_DATE_MESSAGE = 'Invalid date object given'
 
-export const BadgeType = {
-  ACTIVITY_NUMBER: 'ACTIVITY_NUMBER',
-  ACTIVITY_SCORE: 'ACTIVITY_SCORE',
-  CONSISTENCY: 'CONSISTENCY',
-  FILE_TASK_NUMBER: 'FILE_TASK_NUMBER',
-  GRAPH_TASK_NUMBER: 'GRAPH_TASK_NUMBER',
-  TOP_SCORE: 'TOP_SCORE'
-}
+// export const BadgeType = {
+//   ACTIVITY_NUMBER: 'ACTIVITY_NUMBER',
+//   ACTIVITY_SCORE: 'ACTIVITY_SCORE',
+//   CONSISTENCY: 'CONSISTENCY',
+//   FILE_TASK_NUMBER: 'FILE_TASK_NUMBER',
+//   GRAPH_TASK_NUMBER: 'GRAPH_TASK_NUMBER',
+//   TOP_SCORE: 'TOP_SCORE'
+// }
 
 export const sidebarExcludedPaths = [GeneralRoutes.HOME, GeneralRoutes.PASSWORD_RESET]
 
@@ -355,17 +410,17 @@ export const getSpecifyDescription = (heroType) => {
     heroType
   )} wartość ta oznacza <br/>`
 
-  const MAX_NUMBER_OF_USAGE = 'maksymalną liczbę możliwych wykorzystań umiejętności w jednej ekspedycji.'
+  // const MAX_NUMBER_OF_USAGE = 'maksymalną liczbę możliwych wykorzystań umiejętności w jednej ekspedycji.'
 
-  const heroTypeSuperPowerDescription = {
-    [HeroType.PRIEST]: 'liczbę ms o jaką gracz wydłuży sobie czas. Umiejętność jest dostępna raz na ekspedycję.',
-    [HeroType.ROGUE]:
-      'maksymalną liczbę punktów, którą może mieć zadanie, aby gracz mógł je pominąć. Umiejętność jest dostępna raz na ekspedycję.',
-    [HeroType.WARRIOR]: MAX_NUMBER_OF_USAGE,
-    [HeroType.WIZARD]: MAX_NUMBER_OF_USAGE
-  }
+  // const heroTypeSuperPowerDescription = {
+  //   [HeroType.PRIEST]: 'liczbę ms o jaką gracz wydłuży sobie czas. Umiejętność jest dostępna raz na ekspedycję.',
+  //   [HeroType.ROGUE]:
+  //     'maksymalną liczbę punktów, którą może mieć zadanie, aby gracz mógł je pominąć. Umiejętność jest dostępna raz na ekspedycję.',
+  //   [HeroType.WARRIOR]: MAX_NUMBER_OF_USAGE,
+  //   [HeroType.WIZARD]: MAX_NUMBER_OF_USAGE
+  // }
 
-  return baseInfo + heroTypeSuperPowerDescription[heroType]
+  return baseInfo // + heroTypeSuperPowerDescription[heroType]
 }
 
 export const coolDownDescription = (heroType) =>

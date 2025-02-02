@@ -1,22 +1,23 @@
 package com.example.api.config;
 
-import com.example.api.activity.result.model.AdditionalPoints;
-import com.example.api.activity.result.model.FileTaskResult;
-import com.example.api.activity.result.model.GraphTaskResult;
-import com.example.api.activity.result.model.SurveyResult;
-import com.example.api.activity.result.repository.AdditionalPointsRepository;
+import com.example.api.activity.result.model.*;
 import com.example.api.activity.result.repository.SurveyResultRepository;
 import com.example.api.activity.task.filetask.FileTask;
 import com.example.api.activity.task.graphtask.GraphTask;
+import com.example.api.activity.task.Task;
 import com.example.api.activity.info.Info;
 import com.example.api.activity.survey.Survey;
 import com.example.api.activity.task.graphtask.GraphTaskService;
 import com.example.api.chapter.requirement.model.*;
+import com.example.api.colloquium.ColloquiumDetails;
+import com.example.api.colloquium.ColloquiumDetailsRepository;
 import com.example.api.course.Course;
 import com.example.api.course.coursemember.CourseMember;
 import com.example.api.course.coursemember.CourseMemberRepository;
 import com.example.api.course.CourseRepository;
 import com.example.api.course.coursemember.CourseMemberService;
+import com.example.api.course.coursetype.CourseType;
+import com.example.api.course.coursetype.CourseTypeRepository;
 import com.example.api.group.accessdate.AccessDate;
 import com.example.api.group.Group;
 import com.example.api.map.ActivityMap;
@@ -33,7 +34,6 @@ import com.example.api.user.model.AccountType;
 import com.example.api.user.hero.HeroType;
 import com.example.api.user.model.Rank;
 import com.example.api.user.model.User;
-import com.example.api.file.File;
 import com.example.api.file.image.Image;
 import com.example.api.file.image.ImageType;
 import com.example.api.util.model.Url;
@@ -42,6 +42,7 @@ import com.example.api.chapter.requirement.RequirementRepository;
 import com.example.api.user.repository.*;
 import com.example.api.file.FileRepository;
 import com.example.api.util.repository.UrlRepository;
+import com.example.api.activity.Activity;
 import com.example.api.activity.feedback.ProfessorFeedbackService;
 import com.example.api.activity.survey.SurveyResultService;
 import com.example.api.activity.result.service.FileTaskResultService;
@@ -59,11 +60,13 @@ import com.example.api.user.badge.BadgeService;
 import com.example.api.user.service.UserService;
 import com.example.api.util.message.MessageManager;
 import lombok.AllArgsConstructor;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.lang.String;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -71,7 +74,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Configuration
 @AllArgsConstructor
@@ -80,7 +82,6 @@ public class DatabaseConfig {
     private final UrlRepository urlRepository;
     private final ChapterRepository chapterRepository;
     private final RankRepository rankRepository;
-    private final AdditionalPointsRepository additionalPointsRepository;
     private final SurveyResultRepository surveyResultRepository;
     private final FileRepository fileRepository;
     private final UserRepository userRepository;
@@ -88,8 +89,9 @@ public class DatabaseConfig {
     private final RequirementRepository requirementRepository;
     private final HeroRepository heroRepository;
     private final CourseRepository courseRepository;
+    private final ColloquiumDetailsRepository colloquiumDetailsRepository;
+    private final CourseTypeRepository courseTypeRepository;
     private final CourseMemberRepository courseMemberRepository;
-    private final long week = TimeUnit.DAYS.toMillis(7);
     private final PasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
 
     @Bean
@@ -102,115 +104,25 @@ public class DatabaseConfig {
                                                FileTaskService fileTaskService, InfoService infoService,
                                                SurveyService surveyService, BadgeService badgeService){
         return args -> {
-
-//            Course testCourse = new Course(null,
-//                    "Sieci komputerowe",
-//                    "Kurs sieci komputerowych w semestrz zimowym 2023",
-//                    false,
-//                    null);
-//            courseRepository.save(testCourse);
-//
-//            Hero testPriest = new Priest(HeroType.PRIEST, week, testCourse);
-//            Hero testRogue = new Rogue(HeroType.ROGUE, week, testCourse);
-//            Hero testWarrior = new Warrior(HeroType.WARRIOR, week, testCourse);
-//            Hero testWizard = new Wizard(HeroType.WIZARD, week, testCourse);
-//            List<Hero> testHeroes = List.of(testPriest, testRogue, testWarrior, testWizard);
-//            heroRepository.saveAll(testHeroes);
-//
-//            List<User> studentsMon13 = createTestUsers("pon13");
-//            List<User> studentsMon15 = createTestUsers("pon15");
-//            //List<User> studentsFri15 = createTestUsers("pt15");
-//            //List<User> studentsFri16 = createTestUsers("pt16");
-//            //List<User> studentsFri18 = createTestUsers("pt18");
-//
-//            User szielinski = new User("szielinski@agh.edu.pl",
-//                    "Sławomir",
-//                    "Zieliński",
-//                    AccountType.PROFESSOR);
-//            szielinski.setPassword(passwordEncoder.encode("12345"));
-//            userRepository.save(szielinski);
-//
-//            Group groupMon13 = createGroup("pn-1300", studentsMon13, testCourse, groupService);
-//            Group groupMon15 = createGroup("pn-1500", studentsMon15, testCourse, groupService);
-////            Group groupFri15 = createGroup("pt-1500", studentsFri15, testCourse, groupService);
-////            Group groupFri16 = createGroup("pt-1640", studentsFri16, testCourse, groupService);
-////            Group groupFri18 = createGroup("pt-1820", studentsFri18, testCourse, groupService);
-//
-//            Random rand = new Random();
-//            User student;
-//
-//            for (int i = 0; i < studentsMon13.size(); i++) {
-//                student = studentsMon13.get(i);
-//                addToGroup(student, groupMon13, testHeroes.get(rand.nextInt(testHeroes.size())));
-//            }
-//
-//            for (int i = 0; i < studentsMon15.size(); i++) {
-//                student = studentsMon15.get(i);
-//                addToGroup(student, groupMon15, testHeroes.get(rand.nextInt(testHeroes.size())));
-//            }
-//
-////            for (int i = 0; i < studentsFri15.size(); i++) {
-////                student = studentsFri15.get(i);
-////                addToGroup(student, groupFri15, testHeroes.get(rand.nextInt(testHeroes.size())));
-////            }
-////
-////            for (int i = 0; i < studentsFri16.size(); i++) {
-////                student = studentsFri16.get(i);
-////                addToGroup(student, groupFri16, testHeroes.get(rand.nextInt(testHeroes.size())));
-////            }
-////
-////            for (int i = 0; i < studentsFri18.size(); i++) {
-////                student = studentsFri18.get(i);
-////                addToGroup(student, groupFri18, testHeroes.get(rand.nextInt(testHeroes.size())));
-////            }
-//
-//            szielinski.getCourses().add(testCourse);
-//            testCourse.setOwner(szielinski);
-//
-//            userRepository.save(szielinski);
-//            courseRepository.save(testCourse);
-//
-//            List<Group> testGroups = new ArrayList<>();
-//            testGroups.add(groupMon13);
-//            testGroups.add(groupMon15);
-////            testGroups.add(groupFri15);
-////            testGroups.add(groupFri16);
-////            testGroups.add(groupFri18);
-//
-//            testCourse.setGroups(testGroups);
-//            courseRepository.save(testCourse);
-//
-//            initAllRanks(testCourse);
-//            initBadges(testCourse);
+    
+            
+            //TYPY KURSOW
+            CourseType courseType1 = new CourseType("Sieci komputerowe");            
+            courseTypeRepository.save(courseType1);
 
 
-            /////////////////////////////////////////////////
-             //////////// PREVIOUS CONFIGURATION ////////////
-            ///////////////////////////////////////////////
-
-
-            Course course1 = new Course(null, "course1", "description for course1", null);
-            Course course2 = new Course(null, "course2", "description for course1", null);
-            Course course3 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", null);
-
+            //ZAKLADANIE KURSOW (WYMAGA ZDEFINIOWANEGO WYŻEJ TYPU KURSU CHYBA)
+            Course course1 = new Course(null, "Sieci komputerowe", "Kurs przedmiotu sieci komputerowe", null);
             courseRepository.save(course1);
-            courseRepository.save(course2);
-            courseRepository.save(course3);
 
-            // HEROES
-            Hero priest = new Priest(HeroType.PRIEST, week, course1);
-            Hero priest3 = new Priest(HeroType.PRIEST, week, course3);
-            Hero priest2 = new Priest(HeroType.PRIEST, week, course2);
-            Hero rogue = new Rogue(HeroType.ROGUE, week, course1);
-            Hero rogue3 = new Rogue(HeroType.ROGUE, week, course3);
-            Hero warrior = new Warrior(HeroType.WARRIOR, week, course1);
-            Hero warrior3 = new Warrior(HeroType.WARRIOR, week, course3);
-            Hero wizard = new Wizard(HeroType.WIZARD, week, course1);
-            Hero wizard3 = new Wizard(HeroType.WIZARD, week, course3);
-            heroRepository.saveAll(List.of(priest, rogue, wizard, warrior, priest2));
-            heroRepository.saveAll(List.of(priest3, rogue3, wizard3, warrior3));
 
-            // USERS & GROUPS
+            // HEROES for COURSES
+            Hero unfortunate1 = new Hero(HeroType.UNFORTUNATE,course1);
+            Hero sheUnfortunate1 = new Hero(HeroType.SHEUNFORTUNATE, course1);
+            heroRepository.saveAll(List.of(unfortunate1, sheUnfortunate1));
+
+ 
+            //STUDENT CREATION (1 LIST == 1 GROUP)
             List<User> students1 = Collections.synchronizedList(new ArrayList<>());
             students1.add(createStudent("jgorski@student.agh.edu.pl", "Jerzy", "Górski", 123456));
             students1.add(createStudent("smazur@student.agh.edu.pl", "Szymon", "Mazur", 123457));
@@ -220,11 +132,9 @@ public class DatabaseConfig {
             students1.add(createStudent("kkruk@student.agh.edu.pl", "Kornel", "Kruk",323456));
             students1.add(createStudent("mdabrowska@student.agh.edu.pl", "Maria", "Dąbrowska",423456));
             students1.add(createStudent("aczajkowski@student.agh.edu.pl", "Antoni", "Czajkowski",523456));
-
             userRepository.saveAll(students1);
 
             List<User> students2 = Collections.synchronizedList(new ArrayList<>());
-
             students2.add(createStudent("mnowak@student.agh.edu.pl", "Magdalena", "Nowak", 623456));
             students2.add(createStudent("jlewandowska@student.agh.edu.pl", "Julia", "Lewandowska", 723456));
             students2.add(createStudent("mwojcik@student.agh.edu.pl", "Milena", "Wójcik", 823456));
@@ -234,549 +144,313 @@ public class DatabaseConfig {
             students2.add(createStudent("kostrowska@student.agh.edu.pl", "Karina", "Ostrowska", 153456));
             students2.add(createStudent("dkowalska@student.agh.edu.pl", "Dominika", "Kowalska", 163456));
             students2.add(createStudent("manowak@student.agh.edu.pl", "Małgorzata Anna", "Kowalska", 163457));
-
             userRepository.saveAll(students2);
 
             List<User> students3 = Collections.synchronizedList(new ArrayList<>());
-            List<User> students4 = Collections.synchronizedList(new ArrayList<>());
-            students4.add(createStudent(  "pon131@student.agh.edu.pl", "student", "1", 11));
-            students4.add(createStudent(  "pon132@student.agh.edu.pl", "student", "2", 12));
-            students4.add(createStudent(  "pon133@student.agh.edu.pl", "student", "3", 13));
-            students4.add(createStudent(  "pon134@student.agh.edu.pl", "student", "4", 14));
-            students4.add(createStudent(  "pon135@student.agh.edu.pl", "student", "5", 15));
-            students4.add(createStudent(  "pon136@student.agh.edu.pl", "student", "6", 16));
-            students4.add(createStudent(  "pon137@student.agh.edu.pl", "student", "7", 17));
-            students3.add(createStudent(  "pon138@student.agh.edu.pl", "student", "8", 18));
-            students3.add(createStudent(  "pon139@student.agh.edu.pl", "student", "9", 19));
-            students3.add(createStudent(  "pon1310@student.agh.edu.pl", "student", "10", 110));
-            students3.add(createStudent(  "pon1311@student.agh.edu.pl", "student", "11", 111));
-            students3.add(createStudent(  "pon1312@student.agh.edu.pl", "student", "12", 112));
-            students3.add(createStudent(  "pon1313@student.agh.edu.pl", "student", "13", 113));
-            students3.add(createStudent(  "pon1314@student.agh.edu.pl", "student", "14", 114));
-            students3.add(createStudent(  "pon1315@student.agh.edu.pl", "student", "15", 115));
+            students3.add(createStudent(  "jmalina@student.agh.edu.pl", "Jacek", "Malina", 184434));
+            students3.add(createStudent(  "wwisienka@student.agh.edu.pl", "Wojciech", "Wiesienka", 192345));
+            students3.add(createStudent(  "ckowalski@student.agh.edu.pl", "Cyprian", "Kowalski", 113560));
+            students3.add(createStudent(  "wdabrowski@student.agh.edu.pl", "Wiktor", "Dabrowski", 111678));
+            students3.add(createStudent(  "amisiewski@student.agh.edu.pl", "Aleksander", "Misiewski", 114632));
+            students3.add(createStudent(  "zwalczak@student.agh.edu.pl", "Zuzanna", "Walczak", 111233));
+            students3.add(createStudent(  "asuchacka@student.agh.edu.pl", "Anna", "Suchacka", 116784));
+            students3.add(createStudent(  "ptuteja@student.agh.edu.pl", "Pola", "Tuteja", 113455));
             userRepository.saveAll(students3);
-            userRepository.saveAll(students4);
+            
+            
+            //GROUP CREATION
+            Group group1_course1 = createGroup("pn-1440-A", students1, course1, groupService);
+            Group group2_course1 = createGroup("pn-1440-B", students2, course1, groupService);
+            Group group3_course1 = createGroup("pt-1500-A", students3, course1, groupService);        
+            List<Group> groups_course1 = List.of(group1_course1,group2_course1 ,group3_course1);
 
-            List<User> students5 = Collections.synchronizedList(new ArrayList<>());
-            List<User> students6 = Collections.synchronizedList(new ArrayList<>());
-            students5.add(createStudent(  "pon151@student.agh.edu.pl", "student", "1", 21));
-            students5.add(createStudent(  "pon152@student.agh.edu.pl", "student", "2", 22));
-            students5.add(createStudent(  "pon153@student.agh.edu.pl", "student", "3", 23));
-            students5.add(createStudent(  "pon154@student.agh.edu.pl", "student", "4", 24));
-            students5.add(createStudent(  "pon155@student.agh.edu.pl", "student", "5", 25));
-            students5.add(createStudent(  "pon156@student.agh.edu.pl", "student", "6", 26));
-            students5.add(createStudent(  "pon157@student.agh.edu.pl", "student", "7", 27));
-            students6.add(createStudent(  "pon158@student.agh.edu.pl", "student", "8", 28));
-            students6.add(createStudent(  "pon159@student.agh.edu.pl", "student", "9", 29));
-            students6.add(createStudent(  "pon1510@student.agh.edu.pl", "student", "10", 210));
-            students6.add(createStudent(  "pon1511@student.agh.edu.pl", "student", "11", 211));
-            students6.add(createStudent(  "pon1512@student.agh.edu.pl", "student", "12", 212));
-            students6.add(createStudent(  "pon1513@student.agh.edu.pl", "student", "13", 213));
-            students6.add(createStudent(  "pon1514@student.agh.edu.pl", "student", "14", 214));
-            students6.add(createStudent(  "pon1515@student.agh.edu.pl", "student", "15", 215));
-            userRepository.saveAll(students5);
-            userRepository.saveAll(students6);
+                
+            //STUDENT ASSIGNMENT TO GROUPS
+            List<List<User>> students = List.of(students1,students2,students3);   
 
-            List<User> studentsFri15A = Collections.synchronizedList(new ArrayList<>());
-            List<User> studentsFri15B = Collections.synchronizedList(new ArrayList<>());
-            studentsFri15A.add(createStudent(  "pt151@student.agh.edu.pl", "student", "1", 31));
-            studentsFri15A.add(createStudent(  "pt152@student.agh.edu.pl", "student", "2", 32));
-            studentsFri15A.add(createStudent(  "pt153@student.agh.edu.pl", "student", "3", 33));
-            studentsFri15A.add(createStudent(  "pt154@student.agh.edu.pl", "student", "4", 34));
-            studentsFri15A.add(createStudent(  "pt155@student.agh.edu.pl", "student", "5", 35));
-            studentsFri15A.add(createStudent(  "pt156@student.agh.edu.pl", "student", "6", 36));
-            studentsFri15A.add(createStudent(  "pt157@student.agh.edu.pl", "student", "7", 37));
-            studentsFri15B.add(createStudent(  "pt158@student.agh.edu.pl", "student", "8", 38));
-            studentsFri15B.add(createStudent(  "pt159@student.agh.edu.pl", "student", "9", 39));
-            studentsFri15B.add(createStudent(  "pt1510@student.agh.edu.pl", "student", "10", 310));
-            studentsFri15B.add(createStudent(  "pt1511@student.agh.edu.pl", "student", "11", 311));
-            studentsFri15B.add(createStudent(  "pt1512@student.agh.edu.pl", "student", "12", 312));
-            studentsFri15B.add(createStudent(  "pt1513@student.agh.edu.pl", "student", "13", 313));
-            studentsFri15B.add(createStudent(  "pt1514@student.agh.edu.pl", "student", "14", 314));
-            studentsFri15B.add(createStudent(  "pt1515@student.agh.edu.pl", "student", "15", 315));
-            userRepository.saveAll(studentsFri15A);
-            userRepository.saveAll(studentsFri15B);
+            for(int i=0; i<students.size(); i++){
+                int noStudentsInGroup = students.get(i).size();
+                for(int j=0; j<noStudentsInGroup;j++){
+                    String name = students.get(i).get(j).getFirstName();
+                    int nameLen = name.length();
 
-            List<User> studentsFri16A = Collections.synchronizedList(new ArrayList<>());
-            List<User> studentsFri16B = Collections.synchronizedList(new ArrayList<>());
-            studentsFri16A.add(createStudent(  "pt161@student.agh.edu.pl", "student", "1", 41));
-            studentsFri16A.add(createStudent(  "pt162@student.agh.edu.pl", "student", "2", 42));
-            studentsFri16A.add(createStudent(  "pt163@student.agh.edu.pl", "student", "3", 43));
-            studentsFri16A.add(createStudent(  "pt164@student.agh.edu.pl", "student", "4", 44));
-            studentsFri16A.add(createStudent(  "pt165@student.agh.edu.pl", "student", "5", 45));
-            studentsFri16A.add(createStudent(  "pt166@student.agh.edu.pl", "student", "6", 46));
-            studentsFri16A.add(createStudent(  "pt167@student.agh.edu.pl", "student", "7", 47));
-            studentsFri16B.add(createStudent(  "pt168@student.agh.edu.pl", "student", "8", 48));
-            studentsFri16B.add(createStudent(  "pt169@student.agh.edu.pl", "student", "9", 49));
-            studentsFri16B.add(createStudent(  "pt1610@student.agh.edu.pl", "student", "10", 410));
-            studentsFri16B.add(createStudent(  "pt1611@student.agh.edu.pl", "student", "11", 411));
-            studentsFri16B.add(createStudent(  "pt1612@student.agh.edu.pl", "student", "12", 412));
-            studentsFri16B.add(createStudent(  "pt1613@student.agh.edu.pl", "student", "13", 413));
-            studentsFri16B.add(createStudent(  "pt1614@student.agh.edu.pl", "student", "14", 414));
-            studentsFri16B.add(createStudent(  "pt1615@student.agh.edu.pl", "student", "15", 415));
-            userRepository.saveAll(studentsFri16A);
-            userRepository.saveAll(studentsFri16B);
+                    if(name.charAt(nameLen-1)=='a'){ //dziewczyna
+                        addToGroup(students.get(i).get(j), groups_course1.get(i), sheUnfortunate1);
+                    }
+                    else{ //chlop
+                        addToGroup(students.get(i).get(j), groups_course1.get(i), unfortunate1);
+                    }
+                }       
+            }
+                
 
-
-            List<User> studentsFri18A = Collections.synchronizedList(new ArrayList<>());
-            List<User> studentsFri18B = Collections.synchronizedList(new ArrayList<>());
-            studentsFri18A.add(createStudent(  "pt181@student.agh.edu.pl", "student", "1", 51));
-            studentsFri18A.add(createStudent(  "pt182@student.agh.edu.pl", "student", "2", 52));
-            studentsFri18A.add(createStudent(  "pt183@student.agh.edu.pl", "student", "3", 53));
-            studentsFri18A.add(createStudent(  "pt184@student.agh.edu.pl", "student", "4", 54));
-            studentsFri18A.add(createStudent(  "pt185@student.agh.edu.pl", "student", "5", 55));
-            studentsFri18A.add(createStudent(  "pt186@student.agh.edu.pl", "student", "6", 56));
-            studentsFri18A.add(createStudent(  "pt187@student.agh.edu.pl", "student", "7", 57));
-            studentsFri18B.add(createStudent(  "pt188@student.agh.edu.pl", "student", "8", 58));
-            studentsFri18B.add(createStudent(  "pt189@student.agh.edu.pl", "student", "9", 59));
-            studentsFri18B.add(createStudent(  "pt1810@student.agh.edu.pl", "student", "10", 510));
-            studentsFri18B.add(createStudent(  "pt1811@student.agh.edu.pl", "student", "11", 511));
-            studentsFri18B.add(createStudent(  "pt1812@student.agh.edu.pl", "student", "12", 512));
-            studentsFri18B.add(createStudent(  "pt1813@student.agh.edu.pl", "student", "13", 513));
-            studentsFri18B.add(createStudent(  "pt1814@student.agh.edu.pl", "student", "14", 514));
-            studentsFri18B.add(createStudent(  "pt1815@student.agh.edu.pl", "student", "15", 515));
-            userRepository.saveAll(studentsFri18A);
-            userRepository.saveAll(studentsFri18B);
-
-
-            User professor1 = new User("bmaj@agh.edu.pl",
-                    "Bernard",
-                    "Maj",
-                    AccountType.PROFESSOR);
+            //PROFESSOR CREATION AND COURSE ASSIGNMENT
+            User professor1 = new User("bmaj@agh.edu.pl","Bernard","Maj",AccountType.PROFESSOR);
             professor1.setPassword(passwordEncoder.encode("12345"));
-
-            User professor2 = new User("szielinski@agh.edu.pl",
-                    "Sławomir",
-                    "Zieliński",
-                    AccountType.PROFESSOR);
-            professor2.setPassword(passwordEncoder.encode("12345"));
-            userRepository.save(professor2);
-
-            userRepository.saveAll(List.of(professor1, professor2));
-
-
-            Group group = createGroup("pn-1440-A", students1, course1, groupService);
-
-            Group group1 = createGroup("pn-1440-B", students2, course1, groupService);
-
-            Group group3 = createGroup("pn-1300a", students3, course3, groupService);
-            Group group4 = createGroup("pn-1300b", students4, course3, groupService);
-
-            Group group5 = createGroup("pn-1500a", students5, course3, groupService);
-            Group group6 = createGroup("pn-1500b", students6, course3, groupService);
-
-
-            Group groupFri15A = createGroup("pt-1500a", studentsFri15A, course3, groupService);
-            Group groupFri15B = createGroup("pt-1500b", studentsFri15B, course3, groupService);
-
-
-            Group groupFri16A = createGroup("pt-1640a", studentsFri16A, course3, groupService);
-            Group groupFri16B = createGroup("pt-1640b", studentsFri16B, course3, groupService);
-
-
-            Group groupFri18A = createGroup("pt-1820a", studentsFri18A, course3, groupService);
-            Group groupFri18B = createGroup("pt-1820b", studentsFri18B, course3, groupService);
-
-            Group group1course2 = new Group();
-            group1course2.setInvitationCode("3333");
-            group1course2.setName("xd");
-            group1course2.setCourse(course2);
-            groupService.saveGroup(group1course2);
-
-            addToGroup(students1.get(0), group1course2, priest2);
-
-            addToGroup(students1.get(0), group, priest);
-            addToGroup(students1.get(1), group, rogue);
-            addToGroup(students1.get(2), group, wizard);
-            addToGroup(students1.get(3), group, warrior);
-            addToGroup(students1.get(4), group, priest);
-            addToGroup(students1.get(5), group, rogue);
-            addToGroup(students1.get(6), group, wizard);
-            addToGroup(students1.get(7), group, warrior);
-
-            addToGroup(students2.get(0), group1, priest);
-            addToGroup(students2.get(1), group1, rogue);
-            addToGroup(students2.get(2), group1, wizard);
-            addToGroup(students2.get(3), group1, warrior);
-            addToGroup(students2.get(4), group1, priest);
-            addToGroup(students2.get(5), group1, rogue);
-            addToGroup(students2.get(6), group1, wizard);
-            addToGroup(students2.get(7), group1, warrior);
-
-            addToGroup(students3.get(0), group3, priest);
-            addToGroup(students3.get(1), group3, rogue);
-            addToGroup(students3.get(2), group3, wizard);
-            addToGroup(students3.get(3), group3, warrior);
-            addToGroup(students3.get(4), group3, priest);
-            addToGroup(students3.get(5), group3, rogue);
-            addToGroup(students3.get(6), group3, wizard);
-            addToGroup(students3.get(7), group3, warrior);
-
-            addToGroup(students4.get(0), group4, priest);
-            addToGroup(students4.get(1), group4, rogue);
-            addToGroup(students4.get(2), group4, wizard);
-            addToGroup(students4.get(3), group4, warrior);
-            addToGroup(students4.get(4), group4, priest);
-            addToGroup(students4.get(5), group4, rogue);
-            addToGroup(students4.get(6), group4, wizard);
-
-            addToGroup(students5.get(0), group5, priest);
-            addToGroup(students5.get(1), group5, rogue);
-            addToGroup(students5.get(2), group5, wizard);
-            addToGroup(students5.get(3), group5, warrior);
-            addToGroup(students5.get(4), group5, priest);
-            addToGroup(students5.get(5), group5, rogue);
-            addToGroup(students5.get(6), group5, wizard);
-            addToGroup(students5.get(7), group5, warrior);
-
-            addToGroup(students6.get(0), group6, priest);
-            addToGroup(students6.get(1), group6, rogue);
-            addToGroup(students6.get(2), group6, wizard);
-            addToGroup(students6.get(3), group6, warrior);
-            addToGroup(students6.get(4), group6, priest);
-            addToGroup(students6.get(5), group6, rogue);
-            addToGroup(students6.get(6), group6, wizard);
-
-
-            addToGroup(studentsFri15A.get(0), groupFri15A, priest);
-            addToGroup(studentsFri15A.get(1), groupFri15A, rogue);
-            addToGroup(studentsFri15A.get(2), groupFri15A, wizard);
-            addToGroup(studentsFri15A.get(3), groupFri15A, warrior);
-            addToGroup(studentsFri15A.get(4), groupFri15A, priest);
-            addToGroup(studentsFri15A.get(5), groupFri15A, rogue);
-            addToGroup(studentsFri15A.get(6), groupFri15A, wizard);
-            addToGroup(studentsFri15A.get(7), groupFri15A, warrior);
-            addToGroup(studentsFri15B.get(0), groupFri15B, priest);
-            addToGroup(studentsFri15B.get(1), groupFri15B, rogue);
-            addToGroup(studentsFri15B.get(2), groupFri15B, wizard);
-            addToGroup(studentsFri15B.get(3), groupFri15B, warrior);
-            addToGroup(studentsFri15B.get(4), groupFri15B, priest);
-            addToGroup(studentsFri15B.get(5), groupFri15B, rogue);
-            addToGroup(studentsFri15B.get(6), groupFri15B, wizard);
-
-            addToGroup(studentsFri16A.get(0), groupFri16A, priest);
-            addToGroup(studentsFri16A.get(1), groupFri16A, rogue);
-            addToGroup(studentsFri16A.get(2), groupFri16A, wizard);
-            addToGroup(studentsFri16A.get(3), groupFri16A, warrior);
-            addToGroup(studentsFri16A.get(4), groupFri16A, priest);
-            addToGroup(studentsFri16A.get(5), groupFri16A, rogue);
-            addToGroup(studentsFri16A.get(6), groupFri16A, wizard);
-            addToGroup(studentsFri16A.get(7), groupFri16A, warrior);
-            addToGroup(studentsFri16B.get(0), groupFri16B, priest);
-            addToGroup(studentsFri16B.get(1), groupFri16B, rogue);
-            addToGroup(studentsFri16B.get(2), groupFri16B, wizard);
-            addToGroup(studentsFri16B.get(3), groupFri16B, warrior);
-            addToGroup(studentsFri16B.get(4), groupFri16B, priest);
-            addToGroup(studentsFri16B.get(5), groupFri16B, rogue);
-            addToGroup(studentsFri16B.get(6), groupFri16B, wizard);
-
-            addToGroup(studentsFri18A.get(0), groupFri18A, priest);
-            addToGroup(studentsFri18A.get(1), groupFri18A, rogue);
-            addToGroup(studentsFri18A.get(2), groupFri18A, wizard);
-            addToGroup(studentsFri18A.get(3), groupFri18A, warrior);
-            addToGroup(studentsFri18A.get(4), groupFri18A, priest);
-            addToGroup(studentsFri18A.get(5), groupFri18A, rogue);
-            addToGroup(studentsFri18A.get(6), groupFri18A, wizard);
-            addToGroup(studentsFri18A.get(7), groupFri18A, warrior);
-            addToGroup(studentsFri18B.get(0), groupFri18B, priest);
-            addToGroup(studentsFri18B.get(1), groupFri18B, rogue);
-            addToGroup(studentsFri18B.get(2), groupFri18B, wizard);
-            addToGroup(studentsFri18B.get(3), groupFri18B, warrior);
-            addToGroup(studentsFri18B.get(4), groupFri18B, priest);
-            addToGroup(studentsFri18B.get(5), groupFri18B, rogue);
-            addToGroup(studentsFri18B.get(6), groupFri18B, wizard);
-
-
             professor1.getCourses().add(course1);
-            course1.setOwner(professor1);
 
-            professor2.getCourses().add(course3);
-            course3.setOwner(professor2);
+            User professor2 = new User("szielinski@agh.edu.pl","Sławomir","Zieliński",AccountType.PROFESSOR);
+            professor2.setPassword(passwordEncoder.encode("12345"));
+            userRepository.saveAll(List.of(professor1, professor2));  
+            professor2.getCourses().add(course1);
+            
+
+            //COURSE FINAL CONFIGURATION
+            course1.setOwner(professor1);  
 
             userRepository.save(professor1);
-            courseRepository.save(course1);
-
             userRepository.save(professor2);
-            courseRepository.save(course3);
 
-            List<Group> groups = new ArrayList<>();
-            groups.add(group);
-            groups.add(group1);
-            course1.setGroups(groups);
+            course1.setGroups(groups_course1);
+
             courseRepository.save(course1);
+            courseTypeRepository.save(courseType1); //?
+            
 
-            List<Group> groups3 = new ArrayList<>();
-            groups.add(group3);
-            groups.add(group4);
-            groups.add(group5);
-            groups.add(group6);
-            groups.add(groupFri15A);
-            groups.add(groupFri15B);
-            groups.add(groupFri16A);
-            groups.add(groupFri16A);
-            groups.add(groupFri18A);
-            groups.add(groupFri18B);
-            course3.setGroups(groups3);
-            courseRepository.save(course3);
-
-            course2.setGroups(List.of(group1course2));
-            courseRepository.save(course2);
-
-            // TASKS
-            List<Question> questions = addQuestionSet(course1, questionService, optionService);
-            AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1));
-            AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group));
+            //ACCESS DATES
+            AccessDate ac1 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group1_course1));
+            AccessDate ac2 = new AccessDate(null, System.currentTimeMillis(), System.currentTimeMillis(), List.of(group2_course1));
             accessDateService.saveAccessDate(ac1);
             accessDateService.saveAccessDate(ac2);
 
-            GraphTask graphTask = new GraphTask();
-            graphTask.setIsBlocked(false);
-            graphTask.setQuestions(questions);
-            graphTask.setTitle("Dżungla kabli");
-            graphTask.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
-            graphTask.setTaskContent("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
-            graphTask.setMaxPoints(60.0);
-            graphTask.setExperience(20D);
-            graphTask.setTimeToSolveMillis(12 * 60 * 1000L);
-            graphTask.setRequirements(createDefaultRequirements());
-            graphTask.setProfessor(professor1);
-            graphTask.setPosX(5);
-            graphTask.setPosY(4);
-            graphTask.setCourse(course1);
+            //COLLOQUIMS
+            colloquiumDetailsRepository.save(new ColloquiumDetails(1L, "Gon Listopadowy",72,4, new int[] {4, 5, 6, 5, 6, 5, 8, 4, 7, 8, 9, 5}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(2L, "Wielki Mróz",72,4, new int[] {6, 3, 3, 6, 3, 5, 6, 9, 10, 10, 9,2}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(3L, "Kolokwium praktyczne",56,0, new int[] {24,20,12}));
+            colloquiumDetailsRepository.save(new ColloquiumDetails(4L, "Kolokwium ustne - teoria",16,1, new int[] {8,8}));
 
-            graphTaskService.saveGraphTask(graphTask);
+
+            //GRAPH TASKS (EXPEDITIONS, NIESPODZIANKI ONLINE)
+            List<Question> questions = addQuestionSet(course1, questionService, optionService);
+            GraphTask graphTask4_1 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask4_1,
+                "(Nie)spodzianka I",
+                "model OSI, funkcje warstwy II oraz zasady przełączania.",
+                "model OSI, funkcje warstwy II oraz zasady przełączania",
+                professor1,20.0,course1,null,questions,12L,graphTaskService
+            );
 
             List<Question> questions2 = addQuestionSet(course1, questionService, optionService);
+            GraphTask graphTask4_2 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask4_2,
+                "Spodziewana Niespodzianka",
+                "model OSI, funkcje warstwy II oraz zasady przełączania.",
+                "Zapraszam chętnych...",
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions2,20L,graphTaskService
+            );
 
-            List<Requirement> graphTaskTwoReq = requirementService.getDefaultRequirements(true);
+            List<Question> questions3 = addQuestionSet2(course1, questionService, optionService);
+            GraphTask graphTask3_1 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask3_1,
+                "(Nie)spodzianka II",
+                "model OSI, funkcje warstwy III oraz zasady przełączania.",
+                "Zapraszam chętnych...",
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions3,20L,graphTaskService
+            );
 
-            GraphTask graphTaskTwo = new GraphTask();
-            graphTaskTwo.setIsBlocked(false);
-            graphTaskTwo.setQuestions(questions2);
-            graphTaskTwo.setTitle("Dżungla kabli II");
-            graphTaskTwo.setDescription("Przebij się przez gąszcz pytań związanych z łączeniem urządzeń w lokalnej sieci i odkryj tajemnice łączenia bulbulatorów ze sobą!");
-            graphTaskTwo.setTaskContent("skrętki, rodzaje ich ekranowania, łączenie urządzeń różnych warstw ze sobą");
-            graphTaskTwo.setMaxPoints(60.0);
-            graphTaskTwo.setExperience(25D);
-            graphTaskTwo.setTimeToSolveMillis(12 * 60 * 1000L);
-            graphTaskTwo.setProfessor(professor1);
-            graphTaskTwo.setPosX(2);
-            graphTaskTwo.setPosY(2);
-            graphTaskTwo.setCourse(course1);
-            graphTaskTwo.setRequirements(graphTaskTwoReq);
-            graphTaskTwo.setCourse(course1);
-
-            graphTaskService.saveGraphTask(graphTaskTwo);
-
-            FileTask fileTask = new FileTask();
-            fileTask.setIsBlocked(false);
-            fileTask.setPosX(3);
-            fileTask.setPosY(3);
-            fileTask.setTitle("Niszczator kabli");
-            fileTask.setDescription("Jak złamałbyś kabel światłowodowy? Czym?");
-            fileTask.setProfessor(professor1);
-            fileTask.setMaxPoints(30.0);
-            fileTask.setExperience(10D);
-            fileTask.setCourse(course1);
-            fileTask.setRequirements(createDefaultRequirements());
-
-            fileTaskService.saveFileTask(fileTask);
-
-            Info info1 = new Info();
-            info1.setIsBlocked(false);
-            info1.setPosX(3);
-            info1.setPosY(0);
-            info1.setTitle("Skrętki");
-            info1.setDescription("Przewody internetowe da się podzielić także pod względem ich ekranowania.");
-            info1.setContent(MessageManager.LOREM_IPSUM);
-            info1.setRequirements(createDefaultRequirements());
-            info1.setCourse(course1);
-
-            Url url1 = new Url();
-            Url url2 = new Url();
-            url1.setUrl("https://upload.wikimedia.org/wikipedia/commons/c/cb/UTP_cable.jpg");
-            url2.setUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/25_pair_color_code_chart.svg/800px-25_pair_color_code_chart.svg.png");
-            urlRepository.save(url1);
-            urlRepository.save(url2);
-            info1.setImageUrls(List.of(url1, url2));
-            info1.setTitle("Skrętki");
-            info1.setExperience(10.0);
-            info1.setProfessor(professor1);
-            info1.setCourse(course1);
-            infoService.saveInfo(info1);
+            List<Question> questions4 = addQuestionSet3(course1, questionService, optionService);
+            GraphTask graphTask3_2 = new GraphTask();
+            setGraphTaskDataAndSave(graphTask3_2,
+                "(Nie)spodzianka III",
+                "Zadania sprawdzające wiedzę z warstwy łącza danych",
+                "Zapraszam",
+                professor1,20.0,course1,requirementService.getDefaultRequirements(true),questions4,20L,graphTaskService
+            );
 
 
-            Survey survey = new Survey();
-            survey.setIsBlocked(false);
-            survey.setTitle("Example map feedback");
-            survey.setDescription("Pomóż nam polepszyć kurs dzieląc się swoją opinią!");
-            survey.setPosX(7);
-            survey.setPosY(3);
-            survey.setPoints(10.0);
-            survey.setExperience(5D);
-            survey.setRequirements(createDefaultRequirements());
-            survey.setCourse(course1);
-            surveyService.saveSurvey(survey);
+            //FILE TASKS (ZADANIA BOJOWE)
+            FileTask fileTask4_1 = new FileTask();
+            setFileTaskDataAndSave(fileTask4_1,
+                "Niespodzianka",
+                "Pochwal się wiedzą na temat okablowania szkieletowego",
+                "",
+                professor1,20.0,course1,null,fileTaskService
+            );
 
-            byte[] chapterImageBytes = getByteArrayForFile("src/main/resources/images/chapter_image.png");
-            Image chapterImage = new Image("Chapter image 1", chapterImageBytes, ImageType.CHAPTER);
-            fileRepository.save(chapterImage);
 
+            //INFOS (OGŁOSZENIA)
+            Info info1_1 = new Info();
+            setInfoDataAndSave(info1_1,
+                "Konsultacje",
+                "Link do konsultacji",
+                professor1,0.0,course1,null,infoService,
+                List.of("https://mche.webex.com/wbxmjs/joinservice/sites/mche/meeting/download/6A5E9486079F2D17E0531AA2FD0A881B")
+            );
+
+            Info info2_1 = new Info();
+            setInfoDataAndSave(info2_1,
+                "Konsole - dostep",
+                "Jak dostac sie do konsoli wybranego urzadzenia",
+                professor1,0.0,course1,null,infoService,
+                List.of("https://upel.agh.edu.pl/pluginfile.php/70580/mod_resource/content/2/4.23-podstawy-v0.5.pdf")
+            );
+
+            Info info3_1 = new Info();
+            setInfoDataAndSave(info3_1,
+                "VLAN - Slajdy",
+                "Slajdy z laboratorium VLAN",
+                professor1,0.0,course1,null,infoService,
+                List.of("https://upel.agh.edu.pl/pluginfile.php/70581/mod_resource/content/1/lsk-lab03-vlan.pdf")
+            );
+
+            Info info4_1 = new Info();
+            setInfoDataAndSave(info4_1,
+                "STP - Slajdy",
+                "Poniżej znajduje się link do slajdów z laboratorium",
+                professor1,0.0,course1,null,infoService,
+                List.of("https://upel.agh.edu.pl/pluginfile.php/70582/mod_resource/content/1/STP-lab-v1.0.pdf")
+            );
+
+            Info info4_2 = new Info();
+            setInfoDataAndSave(info4_2,
+                "STP - Komendy",
+                "Przydatne komendy - link ponizej",
+                professor1,0.0,course1,null,infoService,
+                List.of("https://upel.agh.edu.pl/pluginfile.php/70583/mod_resource/content/0/stp-komendy.txt")
+            );
+
+            // Info info5_1 = new Info();
+            // setInfoDataAndSave(info5_1,
+            //     "DHCP - Slajdy",
+            //     "Przebieg laboratorium z DHCP",
+            //     0,0,professor1,0.0,course1,null,infoService,
+            //     List.of("https://upel.agh.edu.pl/pluginfile.php/70586/mod_resource/content/0/DHCP-lab.pdf")
+            // );
+
+            // Info info6_1 = new Info();
+            // setInfoDataAndSave(info6_1,
+            //     "ARP - Slajdy",
+            //     "Przebieg laboratorium z ARP",
+            //     0,0,professor1,0.0,course1,null,infoService,
+            //     List.of("https://upel.agh.edu.pl/pluginfile.php/70585/mod_resource/content/1/ARP-lab.pdf")
+            // );
+            
+
+            //SURVEYS
+            // Survey survey4_1 = new Survey();
+            // setSurveyDataAndSave(survey4_1,
+            //     "Tytul ankietki",
+            //     "Pomóż nam polepszyć kurs dzieląc się swoją opinią!",
+            //     7,3,null,2.0,course1,null,surveyService
+            // );
+
+            
+            //ACTIVITY MAPS
             ActivityMap activityMap1 = new ActivityMap();
-            activityMap1.setMapSizeX(8);
-            activityMap1.setMapSizeY(5);
-            activityMap1.setGraphTasks(List.of(graphTask, graphTaskTwo));
-            activityMap1.setFileTasks(List.of(fileTask));
-            activityMap1.setInfos(List.of(info1));
-            activityMap1.setSurveys(List.of(survey));
-            activityMap1.setImage(chapterImage);
-            activityMapService.saveActivityMap(activityMap1);
+            setActivityMapAndSave(activityMap1, null,null, List.of(info1_1),
+            null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            Calendar calendar = Calendar.getInstance();
+            ActivityMap activityMap2 = new ActivityMap();
+            setActivityMapAndSave(activityMap2, List.of(graphTask4_1),null, List.of(info2_1),
+            null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            GraphTaskResult result1 = new GraphTaskResult();
-            CourseMember result1Member = (students1.get(0).getCourseMember(course1).orElseThrow());
+            ActivityMap activityMap3 = new ActivityMap();
+            setActivityMapAndSave(activityMap3, List.of(graphTask3_1,graphTask3_2),null, List.of(info3_1),
+            null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            result1.setGraphTask(graphTask);
-            result1.setMember(result1Member);
-            result1.setPoints(12.0);
-            addReceivedPointsForUser(result1Member, result1.getPoints());
-            result1.setTimeSpentSec(60 * 10);
-            calendar.set(2022, Calendar.APRIL, 28);
-            result1.setStartDateMillis(calendar.getTimeInMillis());
-            result1.setSendDateMillis(calendar.getTimeInMillis() + result1.getTimeSpentSec() / 1000);
-            graphTaskResultService.saveGraphTaskResult(result1);
+            ActivityMap activityMap4 = new ActivityMap();
+            setActivityMapAndSave(activityMap4, List.of(graphTask4_1,graphTask4_2),List.of(fileTask4_1), List.of(info4_1,info4_2),
+            null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            GraphTaskResult result2 = new GraphTaskResult();
-            result2.setGraphTask(graphTaskTwo);
-            CourseMember result2Member = students1.get(1).getCourseMember(course1).orElseThrow();
-            result2.setMember(result2Member);
-            result2.setPoints(10.0);
-            addReceivedPointsForUser(result2Member, result2.getPoints());
-            result2.setTimeSpentSec(60 * 10);
-            calendar.set(2022, Calendar.APRIL, 13);
-            result2.setStartDateMillis(calendar.getTimeInMillis());
-            result2.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
-            graphTaskResultService.saveGraphTaskResult(result2);
+            // ActivityMap activityMap5 = new ActivityMap();
+            // setActivityMapAndSave(activityMap4, List.of(),List.of(), List.of(),
+            // null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            GraphTaskResult result3 = new GraphTaskResult();
-            result3.setGraphTask(graphTaskTwo);
-            CourseMember result3Member = students2.get(0).getCourseMember(course1).orElseThrow();
-            result3.setMember(result3Member);
-            result3.setPoints(11.0);
-            addReceivedPointsForUser(result3Member, result3.getPoints());
-            result3.setTimeSpentSec(60 * 10);
-            calendar.set(2022, Calendar.APRIL, 14);
-            result3.setStartDateMillis(calendar.getTimeInMillis());
-            result3.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
-            graphTaskResultService.saveGraphTaskResult(result3);
+            // ActivityMap activityMap6 = new ActivityMap();
+            // setActivityMapAndSave(activityMap4, List.of(),List.of(), List.of(),
+            // null,"src/main/resources/images/chapter_image.png", activityMapService);
 
-            GraphTaskResult result4 = new GraphTaskResult();
-            result4.setGraphTask(graphTaskTwo);
-            CourseMember result4Member = students2.get(1).getCourseMember(course1).orElseThrow();
-            result4.setMember(result4Member);
-            result4.setPoints(30.5);
-            addReceivedPointsForUser(result4Member, result4.getPoints());
-            result4.setTimeSpentSec(60 * 10);
-            calendar.set(2022, Calendar.APRIL, 14);
-            result4.setStartDateMillis(calendar.getTimeInMillis());
-            result4.setSendDateMillis(calendar.getTimeInMillis() + result2.getTimeSpentSec() / 1000);
-            graphTaskResultService.saveGraphTaskResult(result4);
+        
 
-            FileTaskResult fileResult = new FileTaskResult();
-            fileResult.setId(1L);
-            fileResult.setFileTask(fileTask);
-            CourseMember fileResultMember = students1.get(0).getCourseMember(course1).orElseThrow();
-            fileResult.setMember(fileResultMember);
-            fileResult.setEvaluated(false);
-            fileResult.setAnswer("Lorem ipsum");
-            calendar.set(2022, Calendar.JUNE, 11);
-            fileResult.setSendDateMillis(calendar.getTimeInMillis());
-            fileTaskResultService.saveFileTaskResult(fileResult);
+            //CHAPTERS
+            Chapter chapter1 = new Chapter();
+            setChapterDataAndSave(chapter1,"Lab1 - Wstep",activityMap1,null,false,course1);
+            
+            Chapter chapter2 = new Chapter();
+            setChapterDataAndSave(chapter2,"Lab2 - Switche",activityMap2,null,false,course1);
+            
+            Chapter chapter3 = new Chapter();
+            setChapterDataAndSave(chapter3,"Lab3 - VLAN",activityMap3,null,false,course1);
+            
+            Chapter chapter4 = new Chapter();
+            setChapterDataAndSave(chapter4,"Lab4 - STP",activityMap4,null,false,course1);
 
-            Chapter chapter = new Chapter();
-            chapter.setName("Rozdział 1");
-            chapter.setPosX(2);
-            chapter.setPosY(2);
-            chapter.setActivityMap(activityMap1);
-            chapter.setRequirements(requirementService.getDefaultRequirements(false));
-            chapter.setIsBlocked(false);
-            chapter.setCourse(course1);
-            chapterRepository.save(chapter);
+            // Chapter chapter5 = new Chapter();
+            // setChapterDataAndSave(chapter5,"Lab5 - ARP",0,3,activityMap5,null,false,course1);
 
-            calendar.set(2022, Calendar.JUNE, 15);
-            AdditionalPoints additionalPoints = new AdditionalPoints();
-            additionalPoints.setId(1L);
-            CourseMember additionalPointsMember = students1.get(0).getCourseMember(course1).orElseThrow();
-            additionalPoints.setMember(additionalPointsMember);
-            additionalPoints.setPoints(100D);
-            additionalPoints.setSendDateMillis(calendar.getTimeInMillis());
-            additionalPoints.setProfessorEmail(professor1.getEmail());
-            additionalPoints.setDescription("Good job");
-            addReceivedPointsForUser(additionalPointsMember, additionalPoints.getPoints());
-            additionalPointsRepository.save(additionalPoints);
+            // Chapter chapter6 = new Chapter();
+            // setChapterDataAndSave(chapter6,"Lab6 - Routing statyczny",0,3,activityMap6,null,false,course1);
+             
 
-            SurveyResult surveyResult1 = new SurveyResult();
-            surveyResult1.setSurvey(survey);
-            surveyResult1.setId(1L);
-            CourseMember surveyResult1Member = students1.get(0).getCourseMember(course1).orElseThrow();
-            surveyResult1.setMember(surveyResult1Member);
-            surveyResult1.setPoints(survey.getMaxPoints());
-            addReceivedPointsForUser(surveyResult1Member, surveyResult1.getPoints());
-            calendar.set(2022, Calendar.JUNE, 16);
-            surveyResult1.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult1);
+            //GRAPHTASK RESULTS
+            Calendar calendar = Calendar.getInstance();   
+            calendar.set(2024, Calendar.JUNE, 15);         
+            List<Double> graphTask3_1_points_students1 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 0.0, 15.0, 19.5));
+            List<Double> graphTask3_1_points_students2 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 5.0, 2.0, 5.0, 15.0, 19.5));
+            List<Double> graphTask3_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 18.0, 2.0, 19.0, 15.0, 19.5));
 
-            SurveyResult surveyResult2 = new SurveyResult();
-            surveyResult2.setSurvey(survey);
-            surveyResult2.setId(2L);
-            CourseMember surveyResult2Member = students1.get(1).getCourseMember(course1).orElseThrow();
-            surveyResult2.setMember(surveyResult2Member);
-            surveyResult2.setPoints(survey.getMaxPoints());
-            addReceivedPointsForUser(surveyResult2Member, surveyResult2.getPoints());
-            calendar.set(2022, Calendar.JUNE, 18);
-            surveyResult2.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult2);
+            List<Double> graphTask4_1_points_students1 = new ArrayList<Double>(Arrays.asList(15.0, 12.0, 10.0, 5.0, 2.0, 13.0, 15.0, 7.5));
+            List<Double> graphTask4_1_points_students2 = new ArrayList<Double>(Arrays.asList(2.0, 2.0, 10.0, 15.0, 20.0, 3.0, 5.0, 7.5));
+            List<Double> graphTask4_1_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 18.0, 16.0, 20.0, 20.0, 15.0, 17.5));
 
-            SurveyResult surveyResult3 = new SurveyResult();
-            surveyResult3.setSurvey(survey);
-            surveyResult3.setId(3L);
-            CourseMember surveyResult3Member = students2.get(2).getCourseMember(course1).orElseThrow();
-            surveyResult3.setMember(surveyResult3Member);
-            surveyResult3.setPoints(survey.getMaxPoints());
-            addReceivedPointsForUser(surveyResult3Member, surveyResult3.getPoints());
-            calendar.set(2022, Calendar.JUNE, 19);
-            surveyResult3.setSendDateMillis(calendar.getTimeInMillis());
-            surveyResultRepository.save(surveyResult3);
+            List<Double> graphTask4_2_points_students2 = new ArrayList<Double>(Arrays.asList(5.0, 3.0, 12.0, 15.0, 20.0, 3.0, 5.0, 17.5));
+            List<Double> graphTask4_2_points_students3 = new ArrayList<Double>(Arrays.asList(20.0, 20.0, 20.0, 15.0, 20.0, 20.0, 19.0, 17.5));
 
-            File file = new File();
-            fileRepository.save(file);
+            
+            int students1Len = 8; //for some reason students1.size() returns 16!? Fix it if you know how
+            for(int i=0; i<students1Len; i++){
+                GraphTaskResult result3_1_students1 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students1,graphTask3_1,graphTask3_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
+                GraphTaskResult result3_1_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students2,graphTask3_1,graphTask3_1_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
-            byte[] chapterImageBytes2 = getByteArrayForFile("src/main/resources/images/chapter_image2.png");
-            Image chapterImage2 = new Image("Chapter image 2", chapterImageBytes2, ImageType.CHAPTER);
-            fileRepository.save(chapterImage2);
+                GraphTaskResult result3_1_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
+                    result3_1_students3,graphTask3_1,graphTask3_1_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
-            byte[] chapterImageBytes3 = getByteArrayForFile("src/main/resources/images/chapter_image3.png");
-            Image chapterImage3 = new Image("Chapter image 3", chapterImageBytes3, ImageType.CHAPTER);
-            fileRepository.save(chapterImage3);
+                GraphTaskResult result4_1_students1 = new GraphTaskResult();
+                setGraphTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students1,graphTask4_1,graphTask4_1_points_students1.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
-            byte[] chapterImageBytes4 = getByteArrayForFile("src/main/resources/images/chapter_image4.png");
-            Image chapterImage4 = new Image("Chapter image 4", chapterImageBytes4, ImageType.CHAPTER);
-            fileRepository.save(chapterImage4);
+                GraphTaskResult result4_1_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students2,graphTask4_1,graphTask4_1_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
-            byte[] chapterImageBytes5 = getByteArrayForFile("src/main/resources/images/chapter_image5.png");
-            Image chapterImage5 = new Image("Chapter image 5", chapterImageBytes5, ImageType.CHAPTER);
-            fileRepository.save(chapterImage5);
+                GraphTaskResult result4_1_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1_students3,graphTask4_1,graphTask4_1_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
 
-            userRepository.saveAll(students1);
-            userRepository.saveAll(students2);
+                GraphTaskResult result4_2_students2 = new GraphTaskResult();
+                setGraphTaskResAndSave(students2.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_2_students2,graphTask4_2,graphTask4_2_points_students2.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );
+
+                GraphTaskResult result4_2_students3 = new GraphTaskResult();
+                setGraphTaskResAndSave(students3.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_2_students3,graphTask4_2,graphTask4_2_points_students3.get(i), 10 * 60,calendar.getTimeInMillis(),graphTaskResultService
+                );                
+            }
+
+           
+            //FILETASK RESULTS (Niespodzianki stacjo)
+            for(int i=0; i<students1Len; i++){ 
+                FileTaskResult result4_1 = new FileTaskResult();
+                setFileTaskResAndSave(students1.get(i).getCourseMember(course1).orElseThrow(),
+                    result4_1,fileTask4_1,Long.valueOf(i),calendar.getTimeInMillis(),"moja szczera odpowiedz",fileTaskResultService
+                );
+            }        
 
             initAllRanks(course1);
-            initAllRanks(course2);
-            initAllRanks(course3);
             initBadges(course1);
-            initBadges(course3);
         };
     }
 
@@ -790,6 +464,162 @@ public class DatabaseConfig {
         return group;
     }
 
+    public void setBasicActivityData(Activity activity,String title,String description,
+        User professor,Double maxPoints,Course course, List<Requirement> requirements){
+        activity.setTitle(title);        
+        activity.setDescription(description);
+        // activity.setPosX(posX);
+        // activity.setPosY(posY);
+        activity.setProfessor(professor);
+        activity.setMaxPoints(maxPoints);
+        activity.setExperience(maxPoints);
+        activity.setCourse(course);
+        activity.setIsBlocked(false);
+        if(requirements == null) activity.setRequirements(createDefaultRequirements());
+        else activity.setRequirements(requirements);
+        
+    }
+
+    public void setBasicTaskData(Task task,String title,String taskContent,String description,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements){
+
+        setBasicActivityData(task, title, description, professor, maxPoints, course,requirements);
+        task.setTaskContent(taskContent);      
+    }    
+
+    //Ekspedycja
+    public void setGraphTaskDataAndSave(GraphTask graphTask,String title,String taskContent,String description,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,
+        List<Question> questions, Long timeToSolveMinutes,GraphTaskService graphTaskService){
+        
+        setBasicTaskData(graphTask, title,taskContent, description, professor, maxPoints, course,requirements);        
+        graphTask.setQuestions(questions);
+        graphTask.setTimeToSolveMillis(timeToSolveMinutes * 60 * 1000L);
+        // graphTask.setId(1L);
+        graphTaskService.saveGraphTask(graphTask);      
+    }    
+
+    //Zadanie bojowe
+    public void setFileTaskDataAndSave(FileTask fileTask,String title,String taskContent,String description,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,FileTaskService fileTaskService){
+        
+        setBasicTaskData(fileTask, title,taskContent, description, professor, maxPoints, course,requirements);        
+        fileTaskService.saveFileTask(fileTask);      
+    }    
+
+    //Ogloszenia duszpasterskie
+    public void setInfoDataAndSave(Info info,String title,String description,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,InfoService infoService,List<String> urlStrings){
+        
+        setBasicActivityData(info, title, description, professor, maxPoints, course,requirements);
+        
+        List<Url> urls = new ArrayList<>();
+        for(String urlStr : urlStrings){
+            Url url= new Url(urlStr);
+            urlRepository.save(url);
+            urls.add(url);
+        }  
+        info.setImageUrls(urls);
+        infoService.saveInfo(info);      
+    }    
+
+    //Ankiety
+    public void setSurveyDataAndSave(Survey survey,String title,String description,
+        User professor,Double maxPoints,Course course,List<Requirement> requirements,SurveyService surveyService){
+        
+        setBasicActivityData(survey, title, description, professor, maxPoints, course,requirements);        
+        surveyService.saveSurvey(survey);      
+    }    
+
+    
+    public void setActivityMapAndSave(ActivityMap map,List<GraphTask> graphTasks, List<FileTask> fileTasks, List<Info> infos,
+         List<Survey> surveys,String imageStr, ActivityMapService mapService) throws IOException{
+
+        // map.setMapSizeY(5);
+        // map.setMapSizeX(8);
+        map.setGraphTasks(graphTasks);
+        map.setFileTasks(fileTasks);
+        map.setInfos(infos);
+        map.setSurveys(surveys);
+        map.setImage(createImageForChapter(imageStr));
+        mapService.saveActivityMap(map);
+    }
+
+
+    public void setChapterDataAndSave(Chapter chapter,String name, ActivityMap activityMap,List<Requirement> requirements,
+        boolean isBlocked, Course course){
+        
+        chapter.setName(name);
+        // chapter.setPosX(posX);
+        // chapter.setPosY(posY);
+        chapter.setActivityMap(activityMap);
+        if(requirements == null) chapter.setRequirements(createDefaultRequirements());
+        else chapter.setRequirements(requirements);
+        chapter.setIsBlocked(isBlocked);
+        chapter.setCourse(course);
+        chapterRepository.save(chapter);
+    }
+
+    public void setGraphTaskResAndSave(CourseMember member,GraphTaskResult result,GraphTask graphTask,Double points,
+        int timeSpentSec,Long startTimeMillis,GraphTaskResultService resultService){
+        result.setMember(member);
+        result.setGraphTask(graphTask);
+        result.setPoints(points);
+        result.setTimeSpentSec(timeSpentSec);
+        result.setStartDateMillis(startTimeMillis);
+        result.setSendDateMillis(  startTimeMillis + timeSpentSec/1000 );
+        //addReceivedPointsForUser(member, points);
+        member.addGraphTaskPoints(points,graphTask.getId());
+        
+        resultService.saveGraphTaskResult(result);        
+        courseMemberRepository.save(member);
+    }
+
+    public void setFileTaskResAndSave(CourseMember member,FileTaskResult result,FileTask fileTask, Long taskId,
+        Long sendTimeMillis,String answer,FileTaskResultService resultService){
+        result.setMember(member);
+        result.setFileTask(fileTask);
+        result.setEvaluated(false);
+        result.setSendDateMillis(sendTimeMillis);
+        result.setId(taskId);
+        result.setAnswer(answer);
+        // member.addFileTaskPoints();
+        resultService.saveFileTaskResult(result);
+    }
+
+    public void setSurveyResAndSave(CourseMember member,SurveyResult result,Survey survey, Long surveyId,
+        Long sendTimeMillis){
+        result.setMember(member);
+        result.setSurvey(survey);
+        result.setPoints(0.0);
+        result.setSendDateMillis(sendTimeMillis);
+        result.setId(surveyId);
+        surveyResultRepository.save(result);
+    }
+
+
+    public Image createImageForChapter(String source) throws IOException{
+        byte[] chapterImageBytes = getByteArrayForFile(source);
+        Image chapterImage = new Image("myImageForChapter", chapterImageBytes, ImageType.CHAPTER);
+        fileRepository.save(chapterImage);
+        return chapterImage;
+    }
+
+    public Image createImageForRank(String source) throws IOException{
+        byte[] chapterImageBytes = getByteArrayForFile(source);
+        Image chapterImage = new Image("myImageForRank", chapterImageBytes, ImageType.RANK);
+        fileRepository.save(chapterImage);
+        return chapterImage;
+    }
+
+    public Image createImageForBadge(String source) throws IOException{
+        byte[] chapterImageBytes = getByteArrayForFile(source);
+        Image chapterImage = new Image("myImageForBadge", chapterImageBytes, ImageType.BADGE);
+        fileRepository.save(chapterImage);
+        return chapterImage;
+    }
+
+
     private void addToGroup(User user, Group group, Hero hero) {
         UserHero userHero = userHero(hero);
         CourseMember cm = new CourseMember(user, group, userHero);
@@ -801,41 +631,13 @@ public class DatabaseConfig {
     }
 
     private List<Requirement> createDefaultRequirements() {
-        DateFromRequirement dateFromRequirement = new DateFromRequirement(
-                MessageManager.DATE_FROM_REQ_NAME,
-                false,
-                null
-        );
-        DateToRequirement dateToRequirement = new DateToRequirement(
-                MessageManager.DATE_TO_REQ_NAME,
-                false,
-                null
-        );
-        FileTasksRequirement fileTasksRequirement = new FileTasksRequirement(
-                MessageManager.FILE_TASKS_REQ_NAME,
-                false,
-                new LinkedList<>()
-        );
-        GraphTasksRequirement graphTasksRequirement = new GraphTasksRequirement(
-                MessageManager.GRAPH_TASKS_REQ_NAME,
-                false,
-                new LinkedList<>()
-        );
-        GroupsRequirement groupsRequirement = new GroupsRequirement(
-                MessageManager.GROUPS_REQ_NAME,
-                false,
-                new LinkedList<>()
-        );
-        MinPointsRequirement minPointsRequirement = new MinPointsRequirement(
-                MessageManager.MIN_POINTS_REQ_NAME,
-                false,
-                null
-        );
-        StudentsRequirement studentsRequirement = new StudentsRequirement(
-                MessageManager.STUDENTS_REQ_NAME,
-                false,
-                new LinkedList<>()
-        );
+        DateFromRequirement dateFromRequirement = new DateFromRequirement(MessageManager.DATE_FROM_REQ_NAME,false,null);
+        DateToRequirement dateToRequirement = new DateToRequirement(MessageManager.DATE_TO_REQ_NAME,false,null);
+        FileTasksRequirement fileTasksRequirement = new FileTasksRequirement(MessageManager.FILE_TASKS_REQ_NAME,false,new LinkedList<>());      
+        GraphTasksRequirement graphTasksRequirement = new GraphTasksRequirement(MessageManager.GRAPH_TASKS_REQ_NAME,false,new LinkedList<>());
+        GroupsRequirement groupsRequirement = new GroupsRequirement(MessageManager.GROUPS_REQ_NAME,false,new LinkedList<>());
+        MinPointsRequirement minPointsRequirement = new MinPointsRequirement(MessageManager.MIN_POINTS_REQ_NAME,false,null);
+        StudentsRequirement studentsRequirement = new StudentsRequirement(MessageManager.STUDENTS_REQ_NAME,false,new LinkedList<>());
         List<Requirement> requirements = List.of(
                 dateFromRequirement,
                 dateToRequirement,
@@ -845,131 +647,46 @@ public class DatabaseConfig {
                 graphTasksRequirement,
                 fileTasksRequirement
         );
-
         requirementRepository.saveAll(requirements);
         return requirements;
     }
 
-    private List<User> createTestUsers(String prefix) {
-        List<User> students = new ArrayList<User>();
-        for (int i = 0; i < 15; i++) {
-            User student = createStudent(prefix + i, "Student", String.valueOf(i), i);
-            students.add(student);
+    private void initAllRanks(Course course) throws IOException {
+        List<Image> sheUnfortunateImages = Collections.synchronizedList(new ArrayList<>());
+        for(int i=0;i<7;i++){
+            String source = "src/main/resources/images/sheUnfortunate" + (i+1) + ".png";
+            sheUnfortunateImages.add(createImageForRank(source));
         }
 
-        userRepository.saveAll(students);
-        return students;
-    }
+        List<Image> unfortunateImages = Collections.synchronizedList(new ArrayList<>());
+        for(int i=0;i<7;i++){
+            String source = "src/main/resources/images/unfortunate" + (i+1) + ".png";
+            unfortunateImages.add(createImageForRank(source));
+        }        
 
-    private void initAllRanks(Course course) throws IOException {
-        byte[] warriorImageBytes1 = getByteArrayForFile("src/main/resources/images/warrior1.png");
-        Image warriorImage1 = new Image("Warrior rank image 1", warriorImageBytes1, ImageType.RANK);
-        fileRepository.save(warriorImage1);
+        Rank SheUnfortunateRank1 = new Rank(null, HeroType.SHEUNFORTUNATE, "Nornica", 0.0, sheUnfortunateImages.get(0), course);
+        Rank SheUnfortunateRank2 = new Rank(null, HeroType.SHEUNFORTUNATE, "Mamuna", 20.0, sheUnfortunateImages.get(1), course);
+        Rank SheUnfortunateRank3 = new Rank(null, HeroType.SHEUNFORTUNATE, "Fochna", 50.0, sheUnfortunateImages.get(2), course);
+        Rank SheUnfortunateRank4 = new Rank(null, HeroType.SHEUNFORTUNATE, "Ognista Potwora", 80.0, sheUnfortunateImages.get(3), course);
+        Rank SheUnfortunateRank5 = new Rank(null, HeroType.SHEUNFORTUNATE, "Busianna", 120.0, sheUnfortunateImages.get(4), course);
+        Rank SheUnfortunateRank6 = new Rank(null, HeroType.SHEUNFORTUNATE, "Lubawa", 160.0, sheUnfortunateImages.get(5), course);
+        Rank SheUnfortunateRank7 = new Rank(null, HeroType.SHEUNFORTUNATE, "Ciotka Jaga", 200.0, sheUnfortunateImages.get(6), course);
 
-        byte[] warriorImageBytes2 = getByteArrayForFile("src/main/resources/images/warrior.png");
-        Image warriorImage2 = new Image("Warrior rank image 2", warriorImageBytes2, ImageType.RANK);
-        fileRepository.save(warriorImage2);
+        Rank UnfortunateRank1 = new Rank(null, HeroType.UNFORTUNATE, "Chomik", 0.0, unfortunateImages.get(0), course);
+        Rank UnfortunateRank2 = new Rank(null, HeroType.UNFORTUNATE, "Woj Wit", 20.0, unfortunateImages.get(1), course);
+        Rank UnfortunateRank3 = new Rank(null, HeroType.UNFORTUNATE, "Mirmił", 50.0, unfortunateImages.get(2), course);
+        Rank UnfortunateRank4 = new Rank(null, HeroType.UNFORTUNATE, "Miluś", 80.0,unfortunateImages.get(3), course);
+        Rank UnfortunateRank5 = new Rank(null, HeroType.UNFORTUNATE, "Kajko", 120.0, unfortunateImages.get(4), course);
+        Rank UnfortunateRank6 = new Rank(null, HeroType.UNFORTUNATE, "Kokosz", 160.0, unfortunateImages.get(5), course);
+        Rank UnfortunateRank7 = new Rank(null, HeroType.UNFORTUNATE, "Łamignat", 200.0, unfortunateImages.get(6), course);
 
-        byte[] warriorImageBytes3 = getByteArrayForFile("src/main/resources/images/swordsman.png");
-        Image warriorImage3 = new Image("Warrior rank image 3", warriorImageBytes3, ImageType.RANK);
-        fileRepository.save(warriorImage3);
 
-        byte[] warriorImageBytes4 = getByteArrayForFile("src/main/resources/images/knight.png");
-        Image warriorImage4 = new Image("Warrior rank image 4", warriorImageBytes4, ImageType.RANK);
-        fileRepository.save(warriorImage4);
+        rankRepository.saveAll(List.of(SheUnfortunateRank1, SheUnfortunateRank2, SheUnfortunateRank3, SheUnfortunateRank4, SheUnfortunateRank5
+        , SheUnfortunateRank6, SheUnfortunateRank7));
 
-        byte[] warriorImageBytes5 = getByteArrayForFile("src/main/resources/images/knightHorse.png");
-        Image warriorImage5 = new Image("Warrior rank image 5", warriorImageBytes5, ImageType.RANK);
-        fileRepository.save(warriorImage5);
+        rankRepository.saveAll(List.of(UnfortunateRank1, UnfortunateRank2, UnfortunateRank3, UnfortunateRank4, UnfortunateRank5,
+        UnfortunateRank6,UnfortunateRank7));
 
-        byte[] wizardImageBytes1 = getByteArrayForFile("src/main/resources/images/wizard1.png");
-        Image wizardImage1 = new Image("Wizard rank image 1", wizardImageBytes1, ImageType.RANK);
-        fileRepository.save(wizardImage1);
-
-        byte[] wizardImageBytes2 = getByteArrayForFile("src/main/resources/images/wizard2.png");
-        Image wizardImage2 = new Image("Wizard rank image 2", wizardImageBytes2, ImageType.RANK);
-        fileRepository.save(wizardImage2);
-
-        byte[] wizardImageBytes3 = getByteArrayForFile("src/main/resources/images/wizard3.png");
-        Image wizardImage3 = new Image("Wizard rank image 3", wizardImageBytes3, ImageType.RANK);
-        fileRepository.save(wizardImage3);
-
-        byte[] wizardImageBytes4 = getByteArrayForFile("src/main/resources/images/wizard4.png");
-        Image wizardImage4 = new Image("Wizard rank image 4", wizardImageBytes4, ImageType.RANK);
-        fileRepository.save(wizardImage4);
-
-        byte[] wizardImageBytes5 = getByteArrayForFile("src/main/resources/images/wizard5.png");
-        Image wizardImage5 = new Image("Wizard rank image 5", wizardImageBytes5, ImageType.RANK);
-        fileRepository.save(wizardImage5);
-
-        byte[] priestImageBytes1 = getByteArrayForFile("src/main/resources/images/priest1.png");
-        Image priestImage1 = new Image("Priest rank image 1", priestImageBytes1, ImageType.RANK);
-        fileRepository.save(priestImage1);
-
-        byte[] priestImageBytes2 = getByteArrayForFile("src/main/resources/images/priest2.png");
-        Image priestImage2 = new Image("Priest rank image 2", priestImageBytes2, ImageType.RANK);
-        fileRepository.save(priestImage2);
-
-        byte[] priestImageBytes3 = getByteArrayForFile("src/main/resources/images/priest3.png");
-        Image priestImage3 = new Image("Priest rank image 3", priestImageBytes3, ImageType.RANK);
-        fileRepository.save(priestImage3);
-
-        byte[] priestImageBytes4 = getByteArrayForFile("src/main/resources/images/priest4.png");
-        Image priestImage4 = new Image("Priest rank image 4", priestImageBytes4, ImageType.RANK);
-        fileRepository.save(priestImage4);
-
-        byte[] priestImageBytes5 = getByteArrayForFile("src/main/resources/images/priest5.png");
-        Image priestImage5 = new Image("Priest rank image 5", priestImageBytes5, ImageType.RANK);
-        fileRepository.save(priestImage5);
-
-        byte[] rogueImageBytes1 = getByteArrayForFile("src/main/resources/images/rogue1.png");
-        Image rogueImage1 = new Image("Rogue rank image 1", rogueImageBytes1, ImageType.RANK);
-        fileRepository.save(rogueImage1);
-
-        byte[] rogueImageBytes2 = getByteArrayForFile("src/main/resources/images/rogue2.png");
-        Image rogueImage2 = new Image("Rogue rank image 2", rogueImageBytes2, ImageType.RANK);
-        fileRepository.save(rogueImage2);
-
-        byte[] rogueImageBytes3 = getByteArrayForFile("src/main/resources/images/rogue3.png");
-        Image rogueImage3 = new Image("Rogue rank image 3", rogueImageBytes3, ImageType.RANK);
-        fileRepository.save(rogueImage3);
-
-        byte[] rogueImageBytes4 = getByteArrayForFile("src/main/resources/images/rogue4.png");
-        Image rogueImage4 = new Image("Rogue rank image 4", rogueImageBytes4, ImageType.RANK);
-        fileRepository.save(rogueImage4);
-
-        byte[] rogueImageBytes5 = getByteArrayForFile("src/main/resources/images/rogue5.png");
-        Image rogueImage5 = new Image("Rogue rank image 5", rogueImageBytes5, ImageType.RANK);
-        fileRepository.save(rogueImage5);
-
-        Rank warriorRank1 = new Rank(null, HeroType.WARRIOR, "Chłop", 0.0, warriorImage1, course);
-        Rank warriorRank2 = new Rank(null, HeroType.WARRIOR, "Giermek", 100.0, warriorImage2, course);
-        Rank warriorRank3 = new Rank(null, HeroType.WARRIOR, "Wojownik", 200.0, warriorImage3, course);
-        Rank warriorRank4 = new Rank(null, HeroType.WARRIOR, "Rycerz", 300.0, warriorImage4, course);
-        Rank warriorRank5 = new Rank(null, HeroType.WARRIOR, "Paladyn", 400.0, warriorImage5, course);
-
-        Rank wizardRank1 = new Rank(null, HeroType.WIZARD, "Adept magii", 0.0, wizardImage1, course);
-        Rank wizardRank2 = new Rank(null, HeroType.WIZARD, "Początkujący czarnoksiężnik", 100.0, wizardImage2, course);
-        Rank wizardRank3 = new Rank(null, HeroType.WIZARD, "Czarnoksiężnik", 200.0, wizardImage3, course);
-        Rank wizardRank4 = new Rank(null, HeroType.WIZARD, "Mistrz magii", 300.0,wizardImage4, course);
-        Rank wizardRank5 = new Rank(null, HeroType.WIZARD, "Arcymistrz magii", 400.0, wizardImage5, course);
-
-        Rank priestRank1 = new Rank(null, HeroType.PRIEST, "Duchowny", 0.0, priestImage1, course);
-        Rank priestRank2 = new Rank(null, HeroType.PRIEST, "Mnich", 100.0, priestImage2, course);
-        Rank priestRank3 = new Rank(null, HeroType.PRIEST, "Inkwizytor", 200.0, priestImage3, course);
-        Rank priestRank4 = new Rank(null, HeroType.PRIEST, "Kapłan", 300.0, priestImage4, course);
-        Rank priestRank5 = new Rank(null, HeroType.PRIEST, "Arcykapłan", 400.0, priestImage5, course);
-
-        Rank rogueRank1 = new Rank(null, HeroType.ROGUE, "Złodziej", 0.0, rogueImage1, course);
-        Rank rogueRank2 = new Rank(null, HeroType.ROGUE, "Zwiadowca", 100.0, rogueImage2, course);
-        Rank rogueRank3 = new Rank(null, HeroType.ROGUE, "Zabójca", 200.0, rogueImage3, course);
-        Rank rogueRank4 = new Rank(null, HeroType.ROGUE, "Skrytobójca", 300.0, rogueImage4, course);
-        Rank rogueRank5 = new Rank(null, HeroType.ROGUE, "Przywódca bractwa", 400.0, rogueImage5, course);
-
-        rankRepository.saveAll(List.of(warriorRank1, warriorRank2, warriorRank3, warriorRank4, warriorRank5));
-        rankRepository.saveAll(List.of(wizardRank1, wizardRank2, wizardRank3, wizardRank4, wizardRank5));
-        rankRepository.saveAll(List.of(priestRank1, priestRank2, priestRank3, priestRank4, priestRank5));
-        rankRepository.saveAll(List.of(rogueRank1, rogueRank2, rogueRank3, rogueRank4, rogueRank5));
         courseRepository.save(course);
     }
 
@@ -980,219 +697,78 @@ public class DatabaseConfig {
         return output.toByteArray();
     }
 
-    private void initBadges(Course course) throws IOException {
-        Image activityMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_master.png"), ImageType.BADGE);
-        Image activityExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/activity_experienced.png"), ImageType.BADGE);
-        Image fileTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_experienced.png"), ImageType.BADGE);
-        Image fileTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_first_steps.png"), ImageType.BADGE);
-        Image fileTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/file_task_master.png"), ImageType.BADGE);
-        Image topFive = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/five.png"), ImageType.BADGE);
-        Image graphTaskExperienced = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_experienced.png"), ImageType.BADGE);
-        Image graphTaskFirstSteps = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_first_steps.png"), ImageType.BADGE);
-        Image graphTaskMaster = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/graph_task_master.png"), ImageType.BADGE);
-        Image groupLeader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/group_leader.png"), ImageType.BADGE);
-        Image handshake = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/handshake.png"), ImageType.BADGE);
-        Image inTheMiddle = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/in_the_middle.png"), ImageType.BADGE);
-        Image itsTheBeginning = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/its_the_beginning.png"), ImageType.BADGE);
-        Image leader = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/leader.png"), ImageType.BADGE);
-        Image longA = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/long.png"), ImageType.BADGE);
-        Image lookingUp = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/looking_up.png"), ImageType.BADGE);
-        Image smileFromProfessor = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/smile.png"), ImageType.BADGE);
-        Image theEnd = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/the_end.png"), ImageType.BADGE);
-        Image topTwenty = new Image("Badge", getByteArrayForFile("src/main/resources/images/badge/twenty.png"), ImageType.BADGE);
+    private void initBadges(Course course) throws IOException {        
+        Image badgeImage1 = createImageForBadge("src/main/resources/images/badge/dzierzymorda.png");
+        Image badgeImage2 = createImageForBadge("src/main/resources/images/badge/tropiciel.png");
+        Image badgeImage3 = createImageForBadge("src/main/resources/images/badge/kronikarz.png");
+        Image badgeImage4 = createImageForBadge("src/main/resources/images/badge/arcymotacz.png");
+        Image badgeImage5 = createImageForBadge("src/main/resources/images/badge/eugenius.png");
+        Image badgeImage6 = createImageForBadge("src/main/resources/images/badge/abnormal.png");
+        Image badgeImage7 = createImageForBadge("src/main/resources/images/badge/grimreaper.png");
 
-        fileRepository.saveAll(List.of(activityMaster, activityExperienced, fileTaskExperienced,fileTaskFirstSteps,
-                fileTaskMaster,topFive,graphTaskExperienced,graphTaskFirstSteps,graphTaskMaster,groupLeader
-                ,handshake,inTheMiddle,itsTheBeginning,leader,longA,lookingUp, smileFromProfessor, theEnd, topTwenty));
-
-        Badge badge1 = new ConsistencyBadge(
+        Badge badge1 = new Badge(
                 null,
-                "To dopiero początek",
-                "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres miesiąca",
-                itsTheBeginning,
-                4,
+                "Dzierżymorda",
+                "Dzierżymordą zostaje Nieszczęśnik, który najwięcej razy uzyskał maksymalną nagrodę pełniąc rolę Ekonoma",
+                badgeImage1,
                 course
         );
 
-        Badge badge2 = new ConsistencyBadge(
+        Badge badge2 = new Badge(
                 null,
-                "Długo jeszcze?",
-                "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 3 miesięcy",
-                longA,
-                12,
+                "Tropiciel",
+                "Każdy, kto znalazl przynajmniej trzy wilcze doły.",
+                badgeImage2,
                 course
         );
 
-        Badge badge3 = new ConsistencyBadge(
+        Badge badge3 = new Badge(
                 null,
-                "To już jest koniec, ale czy na pewno?",
-                "Wykonaj co najmniej jedną aktywność w przeciągu tygodnia od poprzedniej aktywności (7 dni) przez okres 6 mięsięcy",
-                theEnd,
-                24,
+                "Kronikarz",
+                "Każdy, który będąc skrybą wykonał przynajmniej trzy bardzo dobre (100% nagrody) dokumentacje",
+                badgeImage3,
                 course
         );
 
-        Badge badge4 = new TopScoreBadge(
+        Badge badge4 = new Badge(
                 null,
-                "Topowowa dwudziestka",
-                "Bądź w 20% najepszych użytkowników (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
-                topTwenty,
-                0.2,
-                false,
+                "Arcymotacz",
+                "Każdy, który będąc kabelmistrzem wykonał przynajmniej trzy bardzo dobre (100% nagrody) topologie",
+                badgeImage4,
+                course
+        );
+        
+        Badge badge5 = new Badge(
+                null,
+                "E.U.geniusz",
+                "Ten, który najwięcej razy wskutek udzielonej w czasie spaceru pomocy został do tego glejtu nominowany przez nie swoją grupę",
+                badgeImage5,
                 course
         );
 
-
-        Badge badge5 = new TopScoreBadge(
+        Badge badge6 = new Badge(
                 null,
-                "Topowa piątka",
-                "Bądź w 5% najepszych użytkowników (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
-                topFive,
-                0.05,
-                false,
+                "A.B.Normal",
+                "Ten, który wygrał i rozwiązał najwięcej licytacji o zadania",
+                badgeImage6,
                 course
         );
 
-        Badge badge6 = new TopScoreBadge(
+        Badge badge7 = new Badge(
                 null,
-                "Lider grupy",
-                "Bądź najepszym użytkownikiem w swojej grupie (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
-                groupLeader,
-                0.0,
-                true,
+                "Grim Reaper",
+                "Każdy, kto co najmniej trzy razy został Zausznikiem Krwiopijcy",
+                badgeImage7,
                 course
-        );
+        );       
 
-        Badge badge7 = new TopScoreBadge(
-                null,
-                "Lider",
-                "Bądź najepszym użytkownikiem (liczone po wykonaniu 5 ekspedycji lub zadań bojowych)",
-                leader,
-                0.0,
-                false,
-                course
-        );
-
-
-        Badge badge8 = new GraphTaskNumberBadge(
-                null,
-                "Pierwsze kroki w ekspedycji",
-                "Wykonaj swoją pierwszą ekspedycję",
-                graphTaskFirstSteps,
-                1,
-                course
-        );
-
-        Badge badge9 = new GraphTaskNumberBadge(
-                null,
-                "Doświadczony w ekspedycjach",
-                "Wykonaj 10 ekspedycji",
-                graphTaskExperienced,
-                10,
-                course
-        );
-
-        Badge badge10 = new GraphTaskNumberBadge(
-                null,
-                "Zaprawiony w ekspedycjach",
-                "Wykonaj 50 ekspedycji",
-                graphTaskMaster,
-                50,
-                course
-        );
-
-        Badge badge11 = new FileTaskNumberBadge(
-                null,
-                "Pierwsze kroki w zadaniu bojowym",
-                "Wykonaj swoje pierwsze zadanie bojowe",
-                fileTaskFirstSteps,
-                1,
-                null
-        );
-
-        Badge badge12 = new FileTaskNumberBadge(
-                null,
-                "Doświadczony w zadaniach bojowych",
-                "Wykonaj 10 zadań bojowych",
-                fileTaskExperienced,
-                10,
-                course
-        );
-
-        Badge badge13 = new FileTaskNumberBadge(
-                null,
-                "Zaprawiony w zadaniach bojowych",
-                "Wykonaj 50 zadań bojowych",
-                fileTaskMaster,
-                50,
-                course
-        );
-
-        Badge badge14 = new ActivityNumberBadge(
-                null,
-                "Doświadczony w aktywnościach",
-                "Wykonaj 30 aktywności",
-                activityExperienced,
-                30,
-                course
-        );
-
-        Badge badge15 = new ActivityNumberBadge(
-                null,
-                "Zaprawiony w aktywnościach",
-                "Wykonaj 100 aktywności",
-                activityMaster,
-                100,
-                course
-        );
-
-        Badge badge16 = new ActivityScoreBadge(
-                null,
-                "Marsz ku lepszemu",
-                "Posiadaj ponad 60% ze wszystkich punktów z wykonanych ekspedycji oraz zadań bojowych (liczone po wykonaniu 3 ekspedycji lub zadań bojowych)",
-                lookingUp,
-                0.6,
-                false,
-                course
-        );
-
-        Badge badge17 = new ActivityScoreBadge(
-                null,
-                "Uśmiech prowadzącego",
-                "Posiadaj ponad 80% ze wszystkich punktów z wykonanych ekspedycji oraz zadań bojowych (liczone po wykonaniu 3 ekspedycji lub zadań bojowych)",
-                smileFromProfessor,
-                0.8,
-                false,
-                course
-        );
-
-        Badge badge18 = new ActivityScoreBadge(
-                null,
-                "Uścisk dłoni prowadzącego",
-                "Posiadaj ponad 95% ze wszystkich punktów z wykonanych ekspedycji oraz zadań bojowych (liczone po wykonaniu 3 ekspedycji lub zadań bojowych)",
-                handshake,
-                0.95,
-                false,
-                course
-        );
-
-        Badge badge19 = new ActivityScoreBadge(
-                null,
-                "W sam środek tarczy",
-                "Posiadaj 100% z ekspedycji lub zadania bojowego",
-                inTheMiddle,
-                1.0,
-                true,
-                course
-        );
-
-        badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7, badge8, badge9, badge10,
-                badge11, badge12, badge13, badge14, badge15, badge16, badge17, badge18, badge19));
+        badgeRepository.saveAll(List.of(badge1, badge2, badge3, badge4, badge5, badge6, badge7));
     }
 
-    private void addReceivedPointsForUser(CourseMember student, Double points){
-        student.setPoints(student.getPoints() + points);
-    }
+    // private void addReceivedPointsForUser(CourseMember student, Double points){
+    //     student.changePoints(points);
+    //     courseMemberRepository.save(student);
+    // }
 
     private User createStudent(String email,
                                String name,
@@ -1209,52 +785,195 @@ public class DatabaseConfig {
     }
 
     private UserHero userHero(Hero hero) {
-        return new UserHero(hero, 0, 0L);
+        return new UserHero(hero);
     }
 
     private List<Question> addQuestionSet(Course course, QuestionService questionService, OptionService optionService) {
-        Option option = new Option("hub z routerem", true, null);
-        Option option1 = new Option("komputer z komputerem", false, null);
-        Option option2 = new Option("switch z routerem", true, null);
-        Option option3 = new Option("hub ze switchem", false, null);
-
-        Option option4 = new Option("Tak", true, null);
-        Option option5 = new Option("Nie", false, null);
-
-        List<Option> options = List.of(option, option1, option2, option3, option4, option5);
-
         Question startQuestion = new Question();
-        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Które urządzenia można połączyć ze sobą skrętką “prostą”?", "Kable",
-                Difficulty.EASY, List.of(option, option1, option2, option3), 10.0, new LinkedList<>(), null);
-        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy ciąg znaków 1001100101101010010110 to poprawnie zakodowany za pomocą kodu Manchester ciąg 10100111001?",
-                "Manchester", Difficulty.MEDIUM, List.of(option4, option5), 20.0, new LinkedList<>(), null);
-        Question question3 = new Question(QuestionType.OPENED, "Jeśli zawiniesz kabel kawałkiem folii aluminiowej, jaki rodzaj skrętki Ci to przypomina?",
-                "?", Difficulty.HARD, null, 30.0, new LinkedList<>(), "FTP");
-        Question question4 = new Question(QuestionType.OPENED, "Jaki rodzaj powszechnie używanego kabla byłby możliwy do użytku po użyciu jak skakanka? Dlaczego ten?",
-                "Kable 2", Difficulty.MEDIUM, null, 20.0, new LinkedList<>(), "skrętka");
-        Question question5 = new Question(QuestionType.OPENED, "Zakoduj swoje imię i nazwisko za pomocą kodowania NRZI. ",
-                "Kable 2", Difficulty.HARD, null, 30.0, new LinkedList<>(), "Jan Kowalski");
+        Option option1_1 = new Option("MTU", true, null);
+        Option option1_2 = new Option("mostek", true, null);
+        Option option1_3 = new Option("WAN", true, null);
+        Option option1_4 = new Option("drukarka sieciowa", false, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Spośród poniższych wybierz pojęcia warstwy łącza danych", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4), 5.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
 
-        List<Question> questions = List.of(startQuestion, question1, question2, question3, question4, question5);
+        
+        Option option2_1 = new Option("Prawda", false, null);
+        Option option2_2 = new Option("Fałsz", true, null);
+        List<Option> options_q2 = List.of(option2_1,option2_2);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Czy z uwagi na wymaganie minimalizacji opóźnienia dla ruchu głosowego szybsze porty switcha asymetrycznego powinny być wykorzystywane do podłączania telefonów IP?",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 5.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
 
+        Option option3_1 = new Option("Dopełnianie ramek", true, null);
+        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG", true, null);
+        Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
+        Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5e:",
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question2.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("dla zapewnienia samosynchronizacji sygnałów", true, null);
+        Option option4_2 = new Option("dla zmniejszenia zapotrzebowania na przepustowość", false, null);
+        Option option4_3 = new Option("dla umożliwienia korekcji błędów przez odbiorcę", false, null);
+        Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "W jakim celu stosuje się kodowanie dwuetapowe?",
+                "", Difficulty.MEDIUM, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4);
         questionService.saveQuestions(questions);
-
-        startQuestion.getNext().addAll(List.of(question1, question2, question3));
-
-        question1.getNext().addAll(List.of(question2, question4));
-        question3.getNext().addAll(List.of(question5));
-
-        questionService.saveQuestions(questions);
-        optionService.saveAll(options);
-
-        option.setQuestion(question1);
-        option1.setQuestion(question1);
-        option2.setQuestion(question1);
-        option3.setQuestion(question1);
-        option4.setQuestion(question2);
-        option5.setQuestion(question2);
-        optionService.saveAll(options);
-
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option2_1,option2_2,option3_1,option3_2,
+            option3_3,option3_4,option4_1,option4_2,option4_3,option4_4));
         return questions;
     }
+
+    private List<Question> addQuestionSet2(Course course, QuestionService questionService, OptionService optionService) {
+        Question startQuestion = new Question();
+        Option option1_1 = new Option("MTU", false, null);
+        Option option1_2 = new Option("mostek", false, null);
+        Option option1_3 = new Option("WAN", false, null);
+        Option option1_4 = new Option("drukarka sieciowa", false, null);
+        Option option1_5 = new Option("router", true, null);
+        Option option1_6 = new Option("laptop", true, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Spośród poniższych wybierz pojęcia warstwy sieciowej", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4,option1_5,option1_6), 5.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
+
+        Option option2_1 = new Option("OSPF nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety HELLO ", true, null);
+        Option option2_2 = new Option("RIP nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety HELLO", false, null);
+        Option option2_3 = new Option("EIGRP nawiązuje relacje sąsiedztwa wykorzystując do tego periodycznie wysyłane pakiety AHOY",false,null);
+        Option option2_4 = new Option("BGP jest zewnętrznym protokołem routingu dynamicznego ",true,null);
+        List<Option> options_q2 = List.of(option2_1,option2_2,option2_3,option2_4);
+        Question question2 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz poprawne stwierdzenia odnoszące się do protokołów routingu",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2,option2_3,option2_4), 5.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
+
+        Option option3_1 = new Option("Dopełnianie (sztuczne wydłużanie) ramek", true, null);
+        Option option3_2 = new Option("Używanie specjalnych symboli sterujących w miejsce IFG przy wysyłaniu serii ramek", true, null);
+        Option option3_3 = new Option("Kodowanie 4DPAM5", true, null);
+        Option option3_4 = new Option("dwukrotne zwiększenie szczeliny czasowej", false, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "Zaznacz techniki stosowane w sieci Ethernet 1Gb/s na skrętce kategorii 5e:",
+                "", Difficulty.EASY, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question2.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("dla zapewnienia samosynchronizacji", true, null);
+        Option option4_2 = new Option("dla zmniejszenia zapotrzebowania na przepustowość", false, null);
+        Option option4_3 = new Option("dla umożliwienia korekcji błędów przez odbiorcę", false, null);
+        Option option4_4 = new Option("dla zwiększenia bezpieczeństwa transmisji", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "W jakim celu stosuje się kodowanie dwuetapowe?",
+                "", Difficulty.MEDIUM, List.of(option4_1, option4_2,option4_3,option4_4), 2.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        Option option5_1 = new Option("Adresy IP i MAC następnego przeskoku, ale tylko wtedy, gdy nie da się podjąć decyzji na podstawie innych kryteriów", false, null);
+        Option option5_2 = new Option("Adres IP routera, który przysłał ostatnią aktualizację", false, null);
+        Option option5_3 = new Option("Dystans administracyjny", true, null);
+        Option option5_4 = new Option("Metryka, posiadająca interpretację zależną od protokołu routingu dynamicznego ", true, null);
+        Option option5_5 = new Option("Aktualne obciążenie bufora na najczęściej wykorzystywanym interfejsie routera", false, null);
+        List<Option> options_q5 = List.of(option5_1,option5_2,option5_3,option5_4,option5_5);
+        Question question5 = new Question(QuestionType.MULTIPLE_CHOICE, "Które z poniższych wartości są brane pod uwagę w procesie wyboru pomiędzy trasami, z których jedna zostanie zainstalowana w tablicy\n" + //
+                        "routingu?",
+                "", Difficulty.MEDIUM, List.of(option5_1, option5_2,option5_3,option5_4,option5_5), 3.0, new LinkedList<>(), null);
+        question4.getNext().addAll(List.of(question5));
+        options_q5.forEach((option -> option.setQuestion(question5)));
+
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4,question5
+        );
+        questionService.saveQuestions(questions);
+        
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6,
+        option2_1,option2_2,option2_3,option2_4,
+        option3_1,option3_2,option3_3,option3_4,
+        option4_1,option4_2,option4_3,option4_4,option5_1,option5_2,option5_3,option5_4,option5_5
+        ));
+        return questions;
+    }
+
+    //For lab2
+    private List<Question> addQuestionSet3(Course course, QuestionService questionService, OptionService optionService) {
+        Question startQuestion = new Question();
+        Option option1_1 = new Option("wykrywanie błędów transmisji", true, null);
+        Option option1_2 = new Option("nadawanie adresacji fizycznej", true, null);
+        Option option1_3 = new Option("komunikacja w ramach segmentu fizycznego sieci", true, null);
+        Option option1_4 = new Option("budowa drzewa rozpinającego", true, null);
+        Option option1_5 = new Option("wybór kodowania danych", false, null);
+        Option option1_6 = new Option("taktowanie wysyłania danych", false, null);
+        List<Option> options_q1 = List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6);
+        Question question1 = new Question(QuestionType.MULTIPLE_CHOICE, "Zadaniem warstwy drugiej modelu OSI/ISO jest", "",
+                Difficulty.EASY, List.of(option1_1, option1_2, option1_3, option1_4,option1_5,option1_6), 5.0, new LinkedList<>(), null);
+        startQuestion.getNext().addAll(List.of(question1));
+        options_q1.forEach((option -> option.setQuestion(question1)));
+
+        Option option2_1 = new Option("Prawda", false, null);
+        Option option2_2 = new Option("Fałsz", true, null);
+        List<Option> options_q2 = List.of(option2_1,option2_2);
+        Question question2 = new Question(QuestionType.SINGLE_CHOICE, "Domena rozgłoszeniowa to część sieci, gdzie transmitować może tylko jedno urządzenie naraz. Granicę wyznaczają switche",
+                "", Difficulty.MEDIUM, List.of(option2_1, option2_2), 2.0, new LinkedList<>(), null);
+        question1.getNext().addAll(List.of(question2));
+        options_q2.forEach((option -> option.setQuestion(question2)));
+
+        Option option3_1 = new Option("512b", true, null);
+        Option option3_2 = new Option("51,2ms", false, null);
+        Option option3_3 = new Option("5,12us", false, null);
+        Option option3_4 = new Option("64B", true, null);
+        List<Option> options_q3 = List.of(option3_1,option3_2,option3_3,option3_4);
+        Question question3 = new Question(QuestionType.MULTIPLE_CHOICE, "W Ethernecie 100Mbps szczelina czasowa wynosi:",
+                "", Difficulty.EASY, List.of(option3_1, option3_2,option3_3,option3_4), 5.0, new LinkedList<>(), null);
+        question2.getNext().addAll(List.of(question3));
+        options_q3.forEach((option -> option.setQuestion(question3)));
+
+        Option option4_1 = new Option("10", false, null);
+        Option option4_2 = new Option("12", false, null);
+        Option option4_3 = new Option("16", true, null);
+        Option option4_4 = new Option("14", false, null);
+        List<Option> options_q4 = List.of(option4_1,option4_2,option4_3,option4_4);
+        Question question4 = new Question(QuestionType.MULTIPLE_CHOICE, "Maksymalna liczba prób nadawania podejmowanych przez stację w CSMA/CD wynosi",
+                "", Difficulty.MEDIUM, List.of(option4_1, option4_2,option4_3,option4_4), 3.0, new LinkedList<>(), null);
+        question3.getNext().addAll(List.of(question4));
+        options_q4.forEach((option -> option.setQuestion(question4)));
+
+        Option option5_1 = new Option("Jest stosowany zawsze, jeśli używany jest UTP 5e", false, null);
+        Option option5_2 = new Option("Zapewnia transmisję full-duplex", false, null);
+        Option option5_3 = new Option("Nie ogranicza długości światłowodu jednomodowego", false, null);
+        Option option5_4 = new Option("Wymusza transmisję half-duplex", true, null);
+        Option option5_5 = new Option("Wpływa na zmniejszenie przepustowości medium", true, null);
+        Option option5_6 = new Option("Jest stosowany w mediach bezprzewodowych", false, null);
+        Option option5_7 = new Option("Jest stosowany w mediach przewodowych", true, null);
+        List<Option> options_q5 = List.of(option5_1,option5_2,option5_3,option5_4,option5_5,option5_6,option5_7);
+        Question question5 = new Question(QuestionType.MULTIPLE_CHOICE, "Protokół CSMA/CD",
+                "", Difficulty.MEDIUM, List.of(option5_1, option5_2,option5_3,option5_4,option5_5), 5.0, new LinkedList<>(), null);
+        question4.getNext().addAll(List.of(question5));
+        options_q5.forEach((option -> option.setQuestion(question5)));
+
+
+        List<Question> questions = List.of(startQuestion,question1,question2,question3,question4,question5
+        );
+        questionService.saveQuestions(questions);
+        
+        optionService.saveAll(List.of(option1_1,option1_2,option1_3,option1_4,option1_5,option1_6,
+        option2_1,option2_2,
+        option3_1,option3_2,option3_3,option3_4,
+        option4_1,option4_2,option4_3,option4_4,option5_1,option5_2,option5_3,option5_4,option5_5,option5_6,option5_7
+        ));
+        return questions;
+    }
+
+
+
 }

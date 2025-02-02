@@ -31,8 +31,8 @@ public abstract class Activity {
     private Long id;
     private String title;
     private String description;
-    private Integer posX;
-    private Integer posY;
+    // private Integer posX;
+    // private Integer posY;
     private Double experience;
     private Long creationTime = System.currentTimeMillis();
 
@@ -61,17 +61,17 @@ public abstract class Activity {
 
     private Double maxPoints;
 
-    public Activity(String name, String description, int posX, int posY, User professor, Course course) {
+    public Activity(String name, String description, User professor, Course course) {
         this.title = name;
         this.description = description;
-        this.posX = posX;
-        this.posY = posY;
+        // this.posX = posX;
+        // this.posY = posY;
         this.professor = professor;
         this.course = course;
     }
 
-    public Activity(String name, String description, int posX, int posY, User professor, Course course, Double maxPoints) {
-        this(name, description, posX, posY, professor, course);
+    public Activity(String name, String description, User professor, Course course, Double maxPoints) {
+        this(name, description, professor, course);
         this.maxPoints = maxPoints;
     }
 

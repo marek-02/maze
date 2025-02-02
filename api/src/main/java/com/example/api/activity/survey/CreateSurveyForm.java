@@ -15,8 +15,8 @@ import lombok.Setter;
 public class CreateSurveyForm extends CreateActivityForm {
     @Schema(required = true) private Double points;
 
-    public CreateSurveyForm(String title, String description, Integer posX, Integer posY, Double points){
-        super(ActivityType.SURVEY, title, description, posX, posY);
+    public CreateSurveyForm(String title, String description, Double points){
+        super(ActivityType.SURVEY, title, description);
         this.points = points;
     }
 

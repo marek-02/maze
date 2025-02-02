@@ -16,8 +16,12 @@ export const POST_LOGIN = `${BASE_URL}/login`
 export const PUT_PASSWORD_EDITION = `${BASE_URL}/password-edition`
 export const POST_USER_INDEX = `${BASE_URL}/user/index/set`
 export const POST_USER_GROUP = `${BASE_URL}/user/group/set`
+export const POST_USER_SUBGROUP = `${BASE_URL}/user/subgroup/set`
+export const POST_USER_ROLE = `${BASE_URL}/user/role/set`
 export const POST_REGISTER = `${BASE_URL}/register`
 export const GET_USER_GROUP = `${BASE_URL}/user/group`
+export const GET_USER_SUBGROUP_ID = `${BASE_URL}/user/subgroupId`
+export const GET_USER_GROUP_ID = `${BASE_URL}/user/groupId`
 export const GET_USER_CURRENT = `${BASE_URL}/user/current`
 export const GET_TOKEN_REFRESH = `${BASE_URL}/token/refresh`
 export const GET_STUDENTS_WITH_GROUP_ALL = `${BASE_URL}/students-with-group/all`
@@ -25,6 +29,9 @@ export const GET_PROFESSOR_REGISTER_TOKEN = `${BASE_URL}/professor/register/toke
 export const GET_PROFESSOR_EMAILS = `${BASE_URL}/user/professor/emails`
 export const DELETE_USER_STUDENT = `${BASE_URL}/user/delete-student`
 export const DELETE_USER_PROFESSOR = `${BASE_URL}/user/delete-professor`
+
+// Member Controller
+export const GET_ALL_MEMBERS = `${BASE_URL}/coursemembers`
 
 // Chapter Controller
 export const GET_CHAPTER = `${BASE_URL}/chapter`
@@ -108,8 +115,11 @@ export const POST_INFO_CREATE = `${GET_INFO}/create`
 export const POST_GROUP = `${BASE_URL}/group`
 export const GET_GROUP_USERS = `${POST_GROUP}/users`
 export const GET_GROUP_STUDENTS = `${POST_GROUP}/students`
+export const GET_GROUP_STUDENTS_EXTENDED = `${POST_GROUP}/students-extended` 
+export const GET_SUBGROUP_STUDENTS_EXTENDED = `${POST_GROUP}/students-extended/subgroup`
 export const GET_GROUP_PROFESSORS = `${POST_GROUP}/professors`
 export const GET_GROUP_INVITATION_CODE_LIST = `${POST_GROUP}/invitation-code/list`
+
 
 // User Feedback Controller
 export const POST_FEEDBACK_USER = `${BASE_URL}/feedback/user`
@@ -122,6 +132,16 @@ export const GET_FEEDBACK_PROFESSOR_GET_BY_FILE_TASK_RESULT_ID = `${POST_FEEDBAC
 // Additional Points Controller
 export const GET_ADDITIONAL_POINTS = `${BASE_URL}/additional/points`
 export const POST_ADDITIONAL_POINTS = `${GET_ADDITIONAL_POINTS}/add`
+
+// Colloquium Controller
+export const GET_COLLOQUIUM_POINTS = `${BASE_URL}/colloquium/points`
+export const POST_COLLOQUIUM_POINTS = `${GET_COLLOQUIUM_POINTS}/add`
+export const GET_COLLOQUIUM_DETAILS = `${BASE_URL}/colloquium/details`
+export const PUT_COLLOQUIUM_POINTS = `${GET_COLLOQUIUM_DETAILS}`
+
+// Laboratory Points Controller
+export const GET_LABORATORY_POINTS = `${BASE_URL}/lab/points`
+export const POST_LABORATORY_POINTS = `${GET_LABORATORY_POINTS}/add`
 
 // Summary Controller
 export const GET_SUMMARY = `${BASE_URL}/summary`
@@ -152,6 +172,7 @@ export const GET_FILE_LOG = `${GET_FILE}/log`
 
 // Dashboard Controller
 export const GET_DASHBOARD = `${BASE_URL}/dashboard`
+export const GET_SOMEONES_DASHBOARD = `${BASE_URL}/someonesdashboard`
 
 // Activity Controller
 const ACTIVITY = `${BASE_URL}/activity`

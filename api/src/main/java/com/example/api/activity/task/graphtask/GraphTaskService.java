@@ -1,6 +1,6 @@
 package com.example.api.activity.task.graphtask;
 
-import com.example.api.activity.auction.AuctionService;
+// import com.example.api.activity.auction.AuctionService;
 import com.example.api.activity.validator.ActivityValidator;
 import com.example.api.course.Course;
 import com.example.api.error.exception.EntityNotFoundException;
@@ -49,7 +49,7 @@ public class GraphTaskService {
     private final RequirementService requirementService;
     private final ChapterValidator chapterValidator;
     private final GraphTaskValidator graphTaskValidator;
-    private final AuctionService auctionService;
+    // private final AuctionService auctionService;
 
     public GraphTask saveGraphTask(GraphTask graphTask) {
         return graphTaskRepository.save(graphTask);
@@ -71,7 +71,7 @@ public class GraphTaskService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateGraphTaskFormFields(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         List<GraphTask> graphTasks = graphTaskRepository.findAll();
         activityValidator.validateActivityTitle(form.getTitle(), graphTasks);
@@ -95,9 +95,9 @@ public class GraphTaskService {
         graphTask.setRequirements(requirementService.getDefaultRequirements(true));
         graphTaskRepository.save(graphTask);
 
-        if (form.getAuction() != null) {
-            auctionService.createAuction(graphTask, form.getAuction(), chapter.getActivityMap());
-        }
+        // if (form.getAuction() != null) {
+        //     auctionService.createAuction(graphTask, form.getAuction(), chapter.getActivityMap());
+        // }
 
         chapter.getActivityMap().getGraphTasks().add(graphTask);
     }

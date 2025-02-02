@@ -35,13 +35,13 @@ public abstract class Task extends Activity {
 
     public Task(String name,
                 String description,
-                int posX,
-                int posY,
+                // int posX,
+                // int posY,
                 User professor,
                 String taskContent,
                 Double maxPoints,
                 Course course){
-        super(name, description, posX, posY, professor, course, maxPoints);
+        super(name, description, professor, course, maxPoints);
         this.taskContent = taskContent;
     }
 

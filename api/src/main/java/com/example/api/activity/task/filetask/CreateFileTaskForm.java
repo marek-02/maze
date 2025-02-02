@@ -22,12 +22,13 @@ public class CreateFileTaskForm extends CreateTaskForm {
 
     public CreateFileTaskForm(String title,
                               String description,
-                              Integer posX,
-                              Integer posY,
+                            //   Integer posX,
+                            //   Integer posY,
                               String requiredKnowledge,
+                              String addAuction,
                               CreateAuctionDTO auction,
                               Double maxPoints) {
-        super(ActivityType.TASK, title, description, posX, posY, requiredKnowledge);
+        super(ActivityType.TASK, title, description, requiredKnowledge,addAuction);
         this.maxPoints = maxPoints;
         this.setAuction(auction);
     }
@@ -41,11 +42,12 @@ public class CreateFileTaskForm extends CreateTaskForm {
         return new CreateFileTaskForm(
                 MessageManager.TITLE,
                 MessageManager.DESC,
-                3,
-                4,
+                // 3,
+                // 4,
                 MessageManager.REQ_KNOWLEDGE,
-                new CreateAuctionDTO(0D, 100D, 0L, 10D),
-                30.0
+                "false",
+                new CreateAuctionDTO(0D, 50D, 0L, 10D),
+                20.0
         );
     }
 }

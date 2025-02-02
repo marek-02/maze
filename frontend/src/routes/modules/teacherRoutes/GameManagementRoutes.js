@@ -10,6 +10,9 @@ import Logs from '../../../components/professor/GameManagement/Logs/Logs'
 import RankAndBadgesManagement from '../../../components/professor/GameManagement/RanksAndBadges/RankAndBadgesManagement'
 import Groups from '../../../components/professor/GroupsPage/Groups'
 import { Role } from '../../../utils/userRole'
+import Subgroups from '../../../components/professor/GameManagement/SubgroupsPage/Subgroups'
+import ColloquiumConfiguration
+  from '../../../components/professor/GameManagement/ColloquiumConfiguration/ColloquiumConfiguration'
 
 export default function GameManagementRoutes() {
   return (
@@ -28,6 +31,15 @@ export default function GameManagementRoutes() {
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <Groups />
+          </PageGuard>
+        }
+      />
+
+      <Route
+        path='subgroups'
+        element={
+          <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
+            <Subgroups />
           </PageGuard>
         }
       />
@@ -73,6 +85,15 @@ export default function GameManagementRoutes() {
         element={
           <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
             <RankAndBadgesManagement />
+          </PageGuard>
+        }
+      />
+
+      <Route
+        path='colloquium'
+        element={
+          <PageGuard role={Role.LOGGED_IN_AS_TEACHER}>
+            <ColloquiumConfiguration />
           </PageGuard>
         }
       />

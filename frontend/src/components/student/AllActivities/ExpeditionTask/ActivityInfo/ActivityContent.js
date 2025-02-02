@@ -11,7 +11,7 @@ import ExpeditionService from '../../../../../services/expedition.service'
 import { convertDateToStringInfo } from '../../../../../utils/Api'
 import { Activity, ERROR_OCCURRED, getActivityImg, getActivityTypeName } from '../../../../../utils/constants'
 import { isMobileView } from '../../../../../utils/mobileHelper'
-import { CustomTable } from '../../../GameCardPage/gameCardContentsStyle'
+import { CustomTable } from '../../../GameCardPages/gameCardContentsStyle'
 import PercentageCircle from '../../../PointsPage/ChartAndStats/PercentageCircle'
 
 
@@ -80,14 +80,14 @@ function ActivityContent(props) {
       },
       { name: 'Typ aktywności', value: getActivityTypeName(Activity.EXPEDITION) },
       { name: 'Nazwa aktywności', value: props.activity.title },
-      {
-        name: 'Pozycja na mapie',
-        value: (
-          <span>
-            ({props.activity.posX}, {props.activity.posY})
-          </span>
-        )
-      },
+      // {
+      //   name: 'Pozycja na mapie',
+      //   value: (
+      //     <span>
+      //       ({props.activity.posX}, {props.activity.posY})
+      //     </span>
+      //   )
+      // },
       {
         name: 'Czas na rozwiązanie aktywności',
         value: <span>{props.activity.timeToSolveMillis / 1000 / 60} min</span>

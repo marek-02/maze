@@ -19,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,12 +65,12 @@ public class InfoService {
 
         chapterValidator.validateChapterIsNotNull(chapter, chapterForm.getChapterId());
         activityValidator.validateCreateInfoForm(form);
-        activityValidator.validateActivityPosition(form, chapter);
+        // activityValidator.validateActivityPosition(form, chapter);
 
         User professor = authService.getCurrentUser();
         userValidator.validateProfessorAccount(professor);
 
-        List<Url> imageUrls = form.getImageUrls()
+        List<Url> imageUrls = Arrays.asList(form.getImageUrls().split(" "))
                 .stream()
                 .map(url -> new Url(null, url))
                 .toList();
@@ -94,7 +97,7 @@ public class InfoService {
     public void editInfo(Info info, EditInfoForm form) {
         CreateInfoForm infoForm = (CreateInfoForm) form.getActivityBody();
         info.setContent(infoForm.getInfoContent());
-        editImageUrls(info, infoForm.getImageUrls());
+        editImageUrls(info, Arrays.asList(infoForm.getImageUrls().split(" ")));
     }
 
     private void editImageUrls(Info info, List<String> newUrlsString) {

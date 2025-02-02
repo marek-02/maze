@@ -1,0 +1,11 @@
+//package com.example.api.chapter.role;
+//import com.example.api.chapter.Chapter;
+//import com.example.api.course.coursemember.CourseMember;
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//import java.util.List;
+//
+//public interface ChapterRoleRepository extends JpaRepository<ChapterRole, Long> {
+//    List<ChapterRole> findByChapter(Chapter chapter);
+//    List<ChapterRole> findByCourseMember(CourseMember courseMember);
+//}

@@ -19,7 +19,7 @@ public class Survey extends Activity {
     private double points;
 
     public Survey(CreateSurveyForm form, User professor, Course course) {
-        super(form.getTitle(), form.getDescription(), form.getPosX(), form.getPosY(), professor, course);
+        super(form.getTitle(), form.getDescription(), professor, course);
         this.points = form.getPoints();
     }
 

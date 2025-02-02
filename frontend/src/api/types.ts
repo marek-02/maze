@@ -1,4 +1,4 @@
-type SupportedHeroes = 'WARRIOR' | 'WIZARD' | 'PRIEST' | 'ROGUE'
+type SupportedHeroes = 'UNFORTUNATE' | 'SHEUNFORTUNATE'
 
 export type CourseHeroDTO = {
   type: SupportedHeroes
@@ -27,24 +27,24 @@ export type ChapterResponse = {
   name: string
   noActivities: number
   maxPoints: number
-  mapSize: string
-  posX: number
-  posY: number
+  // mapSize: string
+  // posX: number
+  // posY: number
   isFulfilled: boolean
 }
 
 export type ActivityMapResponse = {
   id: number
   tasks: ActivityResponse[]
-  mapSizeX: number
-  mapSizeY: number
+  // mapSizeX: number
+  // mapSizeY: number
   image: any
 }
 
 export type ActivityResponse = {
   id: number
-  posX: number
-  posY: number
+  // posX: number
+  // posY: number
   type: string
   title: string
   points: number
@@ -99,8 +99,8 @@ export type SubmitTaskForm = {
   activityType: string
   title: string
   description: string
-  posX: number
-  posY: number
+  // posX: number
+  // posY: number
   percentageForAuthor: number
   maxPointsForAuthor: number
 }
@@ -121,8 +121,8 @@ export type ProfessorGradeResponse = FileTask | null
 export type FileTask = {
   title: string
   description: string
-  posX: number
-  posY: number
+  // posX: number
+  // posY: number
   requiredKnowledge: number
   auction: Auction
   maxPoints: number

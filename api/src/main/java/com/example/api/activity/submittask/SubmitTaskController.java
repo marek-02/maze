@@ -43,13 +43,18 @@ public class SubmitTaskController {
         return ResponseEntity.ok().body(submitTaskService.createResultForSubmitTask(dto));
     }
 
+    @PostMapping("/result/create/{id}")
+    public ResponseEntity<?> createResult(@PathVariable Long id) {
+        return ResponseEntity.ok().body(submitTaskService.createResult(id));
+    }
+
     @PostMapping("/result/{id}")
     public ResponseEntity<?> rejectResult(@PathVariable Long id, @RequestParam boolean accept) {
         if (accept) {
-           return ResponseEntity.ok(submitTaskService.acceptResult(id));
+           submitTaskService.acceptResult(id);
         } else {
             submitTaskService.rejectResult(id);
-            return new ResponseEntity<>(HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
